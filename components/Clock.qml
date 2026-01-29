@@ -6,7 +6,6 @@ import QtQuick.Layouts
 
 Item {
     id: root
-    Layout.alignment: Qt.AlignVCenter
 
     property int slideDuration: 250
     property color colMain: "#b0b4bc"
@@ -16,6 +15,7 @@ Item {
     property int fontSize: 14
     property bool ecoMode: false
 
+    Layout.alignment: Qt.AlignVCenter
     implicitWidth: (hoverDetector.containsMouse ? dateContainer.width + 8 : 0) + clockText.width
     implicitHeight: clockText.height
 
@@ -32,15 +32,40 @@ Item {
     }
 
     Process {
-        id: wlogoutProc
+        id: wlogout
         command: ["wlogout"]
         Component.onCompleted: running = false
     }
 
     Process {
-        id: lowpowerProc
-        command: ["lowpowermode", root.ecoMode ? 1 : 0]
+        id: hyprctlReload
+        command: ["hyprctl", "reload", "--quiet"]
         Component.onCompleted: running = false
+    }
+
+    Process {
+        id: hyprctlBatch
+        command: ["hyprctl", "--quiet", "--batch", "keyword animations:enabled false;keyword decoration:blur:enabled false;keyword decoration:shadow:enabled false;"]
+        Component.onCompleted: running = false
+    }
+
+    Process {
+        id: notify
+        Component.onCompleted: running = false
+    }
+
+    function toggleEcoMode() {
+        root.ecoMode = !root.ecoMode;
+
+        if (root.ecoMode) {
+            hyprctlBatch.running = true;
+            notify.command = ["notify-send", "-u", "low", "ECO MODE", "ON", "--icon=dialog-information-symbolic"];
+        } else {
+            hyprctlReload.running = true;
+            notify.command = ["notify-send", "-u", "low", "ECO MODE", "OFF", "--icon=dialog-information-symbolic"];
+        }
+
+        notify.running = true;
     }
 
     RowLayout {
@@ -108,10 +133,7 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: {
-                    root.ecoMode = !root.ecoMode;
-                    lowpowerProc.running = true;
-                }
+                onClicked: root.toggleEcoMode()
             }
         }
 
@@ -130,7 +152,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    wlogoutProc.running = true;
+                    wlogout.running = true;
                 }
             }
         }

@@ -19,64 +19,117 @@ Item {
     property real temperature: 0
     property string ip: "n/a"
 
-    Process {
-        id: weatherProcess
-        command: ["weather-req"]
-        running: true
+    function getWeatherIcon(code, isDay) {
+        switch (code) {
+        case 0:
+            return isDay ? "" : "󰖔";
+        case 1:
+        case 2:
+        case 3:
+            return isDay ? "󰖕" : "󰼱";
+        case 45:
+        case 48:
+            return "󰱋";
+        case 51:
+        case 53:
+        case 55:
+        case 56:
+        case 57:
+            return "";
+        case 61:
+        case 63:
+        case 65:
+        case 66:
+        case 67:
+            return "";
+        case 71:
+        case 73:
+        case 75:
+        case 77:
+            return "󰜗";
+        case 80:
+        case 81:
+        case 82:
+            return "";
+        case 85:
+        case 86:
+            return "";
+        case 95:
+            return "";
+        case 96:
+        case 99:
+            return "󰖒";
+        default:
+            return "󱣶";
+        }
+    }
 
-        stdout: SplitParser {
-            onRead: function (data) {
-                if (!data)
-                    return;
+    function fetchWeather() {
+        var geoReq = new XMLHttpRequest();
+        geoReq.timeout = 5000;
+        geoReq.open("GET", "http://ip-api.com/json/", true);
+        geoReq.onreadystatechange = function () {
+            if (geoReq.readyState === XMLHttpRequest.DONE) {
+                if (geoReq.status === 200) {
+                    try {
+                        var geoData = JSON.parse(geoReq.responseText);
+                        var lat = geoData.lat;
+                        var lon = geoData.lon;
 
-                try {
-                    var jsonString = data.trim();
-                    var start = jsonString.indexOf('{');
-                    var end = jsonString.lastIndexOf('}');
+                        root.ip = geoData.query;
 
-                    if (start !== -1 && end !== -1) {
-                        jsonString = jsonString.substring(start, end + 1);
-                        var weatherData = JSON.parse(jsonString);
+                        var weatherReq = new XMLHttpRequest();
+                        weatherReq.timeout = 5000;
 
-                        if (weatherData.conditions) {
-                            root.icon = weatherData.conditions;
-                        }
+                        var weatherUrl = "https://api.open-meteo.com/v1/forecast?" + "latitude=" + lat + "&longitude=" + lon + "&current_weather=true";
 
-                        if (weatherData.temp) {
-                            root.temperature = weatherData.temp;
-                        }
+                        weatherReq.open("GET", weatherUrl, true);
+                        weatherReq.onreadystatechange = function () {
+                            if (weatherReq.readyState === XMLHttpRequest.DONE) {
+                                if (weatherReq.status === 200) {
+                                    try {
+                                        var weatherData = JSON.parse(weatherReq.responseText);
+                                        var currentWeather = weatherData.current_weather;
 
-                        if (weatherData.ip) {
-                            root.ip = weatherData.ip;
-                        }
+                                        root.temperature = currentWeather.temperature;
+                                        root.icon = getWeatherIcon(currentWeather.weathercode, currentWeather.is_day === 1);
+                                    } catch (error) {
+                                        console.error("Failed to parse weather data:", error);
+                                    }
+                                } else {
+                                    console.error("Weather request failed:", weatherReq.status);
+                                }
+                            }
+                        };
+
+                        weatherReq.send();
+                    } catch (error) {
+                        console.error("Failed to parse weather geo data:", error);
                     }
-                } catch (error) {
-                    console.error("Failed to parse weather data:", error, "Raw data:", data);
+                } else {
+                    console.error("Weather geo request failed:", geoReq.status);
                 }
             }
-        }
+        };
 
-        Component.onCompleted: running = true
+        geoReq.send();
     }
 
     Timer {
-        id: pTimer
+        id: updateTimer
         interval: 1200
         running: true
         repeat: true
 
         onTriggered: {
+            root.fetchWeather();
             var randomValue = Math.floor(Math.random() * (680000 - 100000) + 100000);
-            pTimer.interval = 1000000 + randomValue;
-            weatherProcess.running = false;
-            restartTimer.start();
+            updateTimer.interval = 1000000 + randomValue;
         }
     }
 
-    Timer {
-        id: restartTimer
-        interval: 100
-        onTriggered: weatherProcess.running = true
+    Component.onCompleted: {
+        fetchWeather();
     }
 
     implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0) + weatherText.width

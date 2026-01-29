@@ -54,14 +54,6 @@ PanelWindow {
     anchors.top: true
     color: "transparent"
 
-    IpcHandler {
-        target: "bar"
-
-        function setEcoMode(eco: bool): void {
-            root.ecoMode = eco;
-        }
-    }
-
     GlobalShortcut {
         name: "volume-up"
         onPressed: {
@@ -279,6 +271,13 @@ PanelWindow {
                     Layout.topMargin: 2
                     Layout.leftMargin: -1
                     Layout.rightMargin: 2
+                    ecoMode: root.ecoMode
+
+                    onEcoModeChanged: {
+                        if (root.ecoMode !== ecoMode) {
+                            root.ecoMode = ecoMode;
+                        }
+                    }
                 }
 
                 // battery
