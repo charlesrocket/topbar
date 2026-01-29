@@ -22,8 +22,6 @@ Item {
     readonly property bool isEmpty: battery?.state === 3
     readonly property bool isFullyCharged: battery?.state === 4
 
-    visible: battery
-
     function getBatteryIcon(percentage) {
         if (isCharging || isFullyCharged) {
             if (percentage == 100)

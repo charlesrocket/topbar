@@ -33,7 +33,6 @@ Text {
         return "";
     }
 
-    //visible: hasAdapter
     color: root.colMain
 
     font {
