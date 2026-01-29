@@ -82,6 +82,7 @@ Item {
 
     Connections {
         target: OSS
+
         function onHeadphonesChanged(state) {
             buttonText.text = state ? "󰋋" : root.getActiveDeviceIcon();
         }
@@ -89,6 +90,7 @@ Item {
 
     Connections {
         target: OSS
+
         function onDevicesChanged() {
             buttonText.text = root.getActiveDeviceIcon();
         }

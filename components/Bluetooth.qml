@@ -35,6 +35,7 @@ Text {
 
     //visible: hasAdapter
     color: root.colMain
+
     font {
         family: root.fontFamily
         pixelSize: root.fontSize

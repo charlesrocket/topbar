@@ -91,6 +91,7 @@ RowLayout {
         interval: 5000
         running: true
         repeat: true
+
         onTriggered: {
             cpuProc.running = true;
             memProc.running = true;
@@ -130,6 +131,7 @@ RowLayout {
                 anchors.margins: 1
                 height: (root.cpuPercent / 100.0) * (parent.height - 2)
                 radius: 1
+
                 color: {
                     if (root.cpuPercent > 90)
                         return root.colCritical;
@@ -216,6 +218,7 @@ RowLayout {
                 anchors.margins: 1
                 height: (root.diskPercent / 100.0) * (parent.height - 2)
                 radius: 1
+
                 color: {
                     if (root.diskPercent > 90)
                         return root.colCritical;

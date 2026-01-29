@@ -49,7 +49,6 @@ Item {
         anchors.rightMargin: hoverDetector.containsMouse ? 8 : 0
         anchors.verticalCenter: parent.verticalCenter
         spacing: 10
-
         opacity: hoverDetector.containsMouse ? 1 : 0
         scale: hoverDetector.containsMouse ? 1 : 0
         transformOrigin: Item.Right
@@ -80,6 +79,7 @@ Item {
             id: dateText
             text: ""
             color: root.colMain
+
             font {
                 family: root.fontFamily
                 pixelSize: root.fontSize - 1
@@ -148,6 +148,7 @@ Item {
             anchors.centerIn: parent
             text: Qt.formatDateTime(clock.date, "HH:mm")
             color: root.colMain
+
             font {
                 family: root.fontFamily
                 pixelSize: root.fontSize - 1
@@ -158,6 +159,7 @@ Item {
 
     Connections {
         target: hoverDetector
+
         function onContainsMouseChanged() {
             if (hoverDetector.containsMouse) {
                 dateText.text = Qt.formatDateTime(clock.date, "ddd dd MMMM yyyy");
@@ -170,6 +172,7 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         propagateComposedEvents: true
+
         onPressed: function (mouse) {
             mouse.accepted = false;
         }

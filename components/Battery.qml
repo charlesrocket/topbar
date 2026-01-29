@@ -131,6 +131,7 @@ Item {
             anchors.centerIn: parent
             text: ""
             color: root.colMain
+
             font {
                 family: root.fontFamily
                 pixelSize: root.fontSize - 2
@@ -151,6 +152,7 @@ Item {
 
             visible: UPower.onBattery || root.isCharging || root.isDischarging || root.isEmpty || root.isFullyCharged
             text: root.battery?.ready ? `${root.getBatteryIcon(root.batteryPercentage)}` : ""
+
             color: {
                 if (root.isCharging)
                     return root.colCharging;
@@ -176,6 +178,7 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
+
                 onClicked: {
                     // TODO
                     console.log("Battery clicked:", root.battery);
@@ -186,6 +189,7 @@ Item {
 
     Connections {
         target: hoverDetector
+
         function onContainsMouseChanged() {
             if (hoverDetector.containsMouse) {
                 infoText.text = `${root.batteryInfo(root.battery)}`;
@@ -198,6 +202,7 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         propagateComposedEvents: true
+
         onPressed: function (mouse) {
             mouse.accepted = false;
         }

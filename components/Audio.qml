@@ -129,6 +129,7 @@ Item {
 
             SequentialAnimation {
                 id: scaleAnimation
+
                 NumberAnimation {
                     target: iconText
                     property: "scale"
@@ -136,6 +137,7 @@ Item {
                     duration: 75
                     easing.type: Easing.InQuad
                 }
+
                 NumberAnimation {
                     target: iconText
                     property: "scale"

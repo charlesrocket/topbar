@@ -24,11 +24,13 @@ Item {
 
     readonly property bool hasActiveVpn: {
         var devices = devicesList;
+
         for (var i = 0; i < devices.length; i++) {
             var dev = devices[i];
 
             if (dev && dev.connected && dev.name) {
                 var name = dev.name.toLowerCase();
+
                 if (name.startsWith("tun") || name.startsWith("tap") || name.startsWith("wg") || name.startsWith("ppp")) {
                     return true;
                 }
@@ -110,6 +112,7 @@ Item {
     Timer {
         id: tmr
         running: !root.ecoMode
+
         onTriggered: {
             onlineCheck.running = true;
         }
