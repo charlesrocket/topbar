@@ -1,5 +1,7 @@
 # TopBar
 
+An interactive bar for [Quickshell](https://quickshell.org/).
+
 ## Installation
 
 Add a submodule to the configuration repository:
