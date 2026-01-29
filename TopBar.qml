@@ -183,6 +183,7 @@ PanelWindow {
 
                 BarSeparator {
                     visible: !root.ecoMode
+                    colMain: root.colMuted
                 }
 
                 // audio
@@ -219,7 +220,9 @@ PanelWindow {
                     }
                 }
 
-                BarSeparator {}
+                BarSeparator {
+                    colMain: root.colMuted
+                }
 
                 // bt
                 Bluetooth {
@@ -234,7 +237,9 @@ PanelWindow {
                     fontSize: root.fontSize
                 }
 
-                BarSeparator {}
+                BarSeparator {
+                    colMain: root.colMuted
+                }
 
                 // weather
                 Loader {
