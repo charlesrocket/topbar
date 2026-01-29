@@ -9,7 +9,7 @@ import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
 
-import "../" // Settings.qml
+import qs // Settings.qml
 import "components"
 
 PanelWindow {
