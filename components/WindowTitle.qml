@@ -16,6 +16,7 @@ Item {
     property color colBg: "#aa000000"
     property color colFg: "#b0b4bc"
     property color colMuted: "#aa4e4e4e"
+    property int animDuration: 250
     property string emptyTitle: "X"
     property string fullTitle: {
         var win = Hyprland.activeToplevel;
@@ -83,7 +84,7 @@ Item {
         id: hoverActiveWindow
         anchors.fill: parent
         frameColor: root.colMuted
-        animDuration: animDuration
+        animDuration: root.animDuration
     }
 
     Text {

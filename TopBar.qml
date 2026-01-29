@@ -149,6 +149,7 @@ PanelWindow {
                     colMuted: root.colMuted
                     fontFamily: "Hack Nerd Font"
                     fontSize: root.fontSize
+                    animDuration: root.animDuration
                 }
 
                 Item {
