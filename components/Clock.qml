@@ -9,7 +9,7 @@ Item {
 
     property int slideDuration: 250
     property color colMain: "#b0b4bc"
-    property color colBtn: "#cc0000"
+    property color colButton: "#cc0000"
     property color colGreen: "#9ece6a"
     property string fontFamily: "FiraCode Nerd Font"
     property int fontSize: 14
@@ -140,7 +140,7 @@ Item {
         Text {
             id: powerBtn
             text: ""
-            color: root.colBtn
+            color: root.colButton
             Layout.bottomMargin: 2
 
             font {
@@ -151,6 +151,7 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
+
                 onClicked: {
                     wlogout.running = true;
                 }

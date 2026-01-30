@@ -279,7 +279,7 @@ PanelWindow {
                     fontFamily: "FiraCode Nerd Font"
                     fontSize: root.fontSize + 1
                     colMain: root.colFg
-                    colBtn: root.colRed
+                    colButton: root.colRed
                     Layout.topMargin: 2
                     Layout.leftMargin: -1
                     Layout.rightMargin: 2
