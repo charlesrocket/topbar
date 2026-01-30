@@ -27,27 +27,28 @@ PanelWindow {
     property color colGreen: Settings.colors.green ?? "#9ece6a" // zoot zone
     property color colPurple: Settings.colors.purple ?? "#bf00ff" // some stuff
 
-    property string ws01: Settings.workspaces.one ?? ""
-    property string ws02: Settings.workspaces.two ?? ""
-    property string ws03: Settings.workspaces.three ?? ""
-    property string ws04: Settings.workspaces.four ?? ""
-    property string ws05: Settings.workspaces.five ?? ""
-    property string ws06: Settings.workspaces.six ?? "󰉕"
-    property string ws07: Settings.workspaces.seven ?? ""
-    property string ws08: Settings.workspaces.eight ?? ""
-    property string ws09: Settings.workspaces.tine ?? ""
-    property string ws10: Settings.workspaces.ten ?? ""
+    property string ws01: Settings.workspaces.one ?? "" // 01
+    property string ws02: Settings.workspaces.two ?? "" // 02
+    property string ws03: Settings.workspaces.three ?? "" // 03
+    property string ws04: Settings.workspaces.four ?? "" // 04
+    property string ws05: Settings.workspaces.five ?? "" // 05
+    property string ws06: Settings.workspaces.six ?? "󰉕" // 06
+    property string ws07: Settings.workspaces.seven ?? "" // 07
+    property string ws08: Settings.workspaces.eight ?? "" // 08
+    property string ws09: Settings.workspaces.tine ?? "" // 09
+    property string ws10: Settings.workspaces.ten ?? "" // 10
 
-    property string fontFamily: Settings.font ?? "Hack Nerd Font"
-    property int fontSize: Settings.fontSize ?? 14
+    property string fontFamily: Settings.font ?? "Hack Nerd Font" // main font
+    property int fontSize: Settings.fontSize ?? 14 // base size
 
-    property int cornerRadius: Settings.radius ?? 8
+    property int cornerRadius: Settings.radius ?? 8 // base radius
+    property int animDuration: Settings.duration ?? 250 // base animations
+
     property int barHeight: Settings.barHeight ?? 30
     property int extraPadding: Settings.barExtraPadding ?? 16
-    property int animDuration: Settings.duration ?? 250
 
     property var screen: Quickshell.screens[0]
-    property bool ecoMode: false
+    property bool ecoMode: false // via clock widget
 
     implicitWidth: screen.width - extraPadding
     implicitHeight: barHeight + extraPadding / 2
