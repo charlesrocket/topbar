@@ -54,6 +54,9 @@ PanelWindow {
     anchors.top: true
     color: "transparent"
 
+    // Global shortcuts depend on Hyprland bindings:
+    // bind = , XF86AudioMute, global, quickshell:volume-mute
+
     GlobalShortcut {
         name: "volume-up"
         onPressed: {
