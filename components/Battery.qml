@@ -173,15 +173,6 @@ Item {
                     easing.type: Easing.InOutExpo
                 }
             }
-
-            MouseArea {
-                anchors.fill: parent
-
-                onClicked: {
-                    // TODO
-                    console.log("Battery clicked:", root.battery);
-                }
-            }
         }
     }
 
