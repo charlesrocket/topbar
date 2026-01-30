@@ -150,7 +150,7 @@ PanelWindow {
                     colBg: root.colBg
                     colFg: root.colFg
                     colMuted: root.colMuted
-                    fontFamily: "Hack Nerd Font"
+                    fontFamily: root.fontFamily
                     fontSize: root.fontSize
                     animDuration: root.animDuration
                 }
