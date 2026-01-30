@@ -15,16 +15,17 @@ import "components"
 PanelWindow {
     id: root
 
-    property color colBg: Settings.colors.bg ?? "#aa000000"
-    property color colFg: Settings.colors.fg ?? "#b0b4bc"
-    property color colMuted: Settings.colors.muted ?? "#aa4e4e4e"
-    property color colDark: Settings.colors.dark ?? Qt.darker(colMuted, 1.5)
-    property color colCyan: Settings.colors.cyan ?? "#0db9d7"
-    property color colRed: Settings.colors.red ?? "#cc0000"
-    property color colBlue: Settings.colors.blue ?? "#7aa2f7"
-    property color colYellow: Settings.colors.yellow ?? "#ffd700"
-    property color colGreen: Settings.colors.green ?? "#9ece6a"
-    property color colPurple: Settings.colors.purple ?? "#bf00ff"
+    property color colBg: Settings.colors.bg ?? "#aa000000" // background
+    property color colBgE: Settings.colors.bgE ?? "#000000" // eco mode background
+    property color colFg: Settings.colors.fg ?? "#b0b4bc" // main color
+    property color colMuted: Settings.colors.muted ?? "#aa4e4e4e" // passive color
+    property color colDark: Settings.colors.dark ?? Qt.darker(colMuted, 1.5) // dark stuff
+    property color colCyan: Settings.colors.cyan ?? "#0db9d7" // action color
+    property color colRed: Settings.colors.red ?? "#cc0000" // evil color
+    property color colBlue: Settings.colors.blue ?? "#7aa2f7" // some stuff
+    property color colYellow: Settings.colors.yellow ?? "#ffd700" // danger zone
+    property color colGreen: Settings.colors.green ?? "#9ece6a" // zoot zone
+    property color colPurple: Settings.colors.purple ?? "#bf00ff" // some stuff
 
     property string ws01: Settings.workspaces.one ?? ""
     property string ws02: Settings.workspaces.two ?? ""
@@ -78,6 +79,7 @@ PanelWindow {
         }
     }
 
+    // update audio
     Timer {
         id: refreshOSS
         interval: 100
@@ -93,7 +95,7 @@ PanelWindow {
         border.width: 1
         border.color: root.colMuted
         height: root.barHeight
-        color: root.colBg
+        color: root.ecoMode ? root.colBgE : root.colBg
         radius: root.cornerRadius
 
         // startup animation
@@ -146,7 +148,7 @@ PanelWindow {
 
                 // active window title
                 WindowTitle {
-                    emptyTitle: ""
+                    emptyTitle: "" // idle
                     colBg: root.colBg
                     colFg: root.colFg
                     colMuted: root.colMuted
