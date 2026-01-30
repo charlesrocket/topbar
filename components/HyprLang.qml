@@ -8,9 +8,9 @@ Rectangle {
 
     property string currentLayout: ""
     property string fontFamily: "Fira Code Nerd Font"
-    property color colMain: null
-    property color colBorder: null
-    property color colBackground: null
+    property color colMain: "#b0b4bc"
+    property color colBorder: "#aa4e4e4e"
+    property color colBackground: "transparent"
 
     width: layoutText.width + 8
     height: layoutText.height
