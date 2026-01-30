@@ -25,7 +25,7 @@ PanelWindow {
     property color colBlue: Settings.colors.blue ?? "#7aa2f7" // some stuff
     property color colYellow: Settings.colors.yellow ?? "#ffd700" // danger zone
     property color colGreen: Settings.colors.green ?? "#9ece6a" // zoot zone
-    property color colPurple: Settings.colors.purple ?? "#bf00ff" // some stuff
+    property color colPurple: Settings.colors.purple ?? "#bf00ff" // more stuff
 
     property string ws01: Settings.workspaces.one ?? "" // 01
     property string ws02: Settings.workspaces.two ?? "" // 02
