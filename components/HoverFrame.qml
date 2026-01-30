@@ -2,14 +2,16 @@ import QtQuick
 
 Rectangle {
     id: root
+
+    property int animDuration: 250
+    property int frameRadius: 6
+    property color frameColor: "white"
+
     color: "transparent"
     border.width: 1
-    radius: 6
+    radius: root.frameRadius
     opacity: 0
     z: -1
-
-    property color frameColor: "white"
-    property int animDuration: 250
 
     border.color: frameColor
 
