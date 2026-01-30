@@ -9,7 +9,8 @@ Repeater {
     id: root
     model: 10
 
-    property var names: null
+    required property var names
+
     property int animDuration: 250
     property int fontSize: 14
     property string fontFamily: "Symbols Nerd Font"
