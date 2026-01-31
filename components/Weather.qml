@@ -210,7 +210,7 @@ Item {
 
             font {
                 family: "Symbols Nerd Font"
-                pixelSize: root.fontSize
+                pixelSize: root.fontSize + 1
                 bold: true
             }
         }
