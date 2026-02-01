@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
+import Quickshell.Services.SystemTray
 import Quickshell.Services.OSS
 import Quickshell.Services.UPower
 
@@ -49,6 +50,7 @@ PanelWindow {
 
     property var screen: Quickshell.screens[0]
     property bool ecoMode: false // via clock widget
+    property bool systemTray: Settings.systemTray ?? false
 
     implicitWidth: screen.width - extraPadding
     implicitHeight: barHeight + extraPadding / 2
@@ -249,16 +251,23 @@ PanelWindow {
                 }
 
                 // system tray
-                Tray {
-                    iconSize: root.fontSize
-                    iconColor: root.colFg
+                Loader {
+                    id: sysTray
+                    active: !root.ecoMode && root.systemTray
+                    visible: sysTray.active && SystemTray.items && SystemTray.items.values.length > 0
+                    asynchronous: true
+
+                    sourceComponent: Tray {
+                        iconSize: root.fontSize
+                        iconColor: root.colFg
+                    }
                 }
 
                 // weather
                 Loader {
-                    id: wthr
+                    id: localWeather
                     active: !root.ecoMode
-                    visible: wthr.active
+                    visible: localWeather.active
                     asynchronous: true
                     Layout.rightMargin: 2
 
