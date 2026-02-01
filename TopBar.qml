@@ -51,6 +51,7 @@ PanelWindow {
     property var screen: Quickshell.screens[0]
     property bool ecoMode: false // via clock widget
     property bool systemTray: Settings.systemTray ?? false
+    property bool systemStats: Settings.systemStats ?? false
 
     implicitWidth: screen.width - extraPadding
     implicitHeight: barHeight + extraPadding / 2
@@ -177,7 +178,7 @@ PanelWindow {
                 // system stats
                 Loader {
                     id: stats
-                    active: !root.ecoMode
+                    active: !root.ecoMode && root.systemStats
                     visible: stats.active
                     asynchronous: true
 
