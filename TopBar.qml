@@ -248,6 +248,12 @@ PanelWindow {
                     colMain: root.colMuted
                 }
 
+                // system tray
+                Tray {
+                    iconSize: root.fontSize
+                    iconColor: root.colFg
+                }
+
                 // weather
                 Loader {
                     id: wthr
