@@ -10,46 +10,10 @@ import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
 
-import qs // Settings.qml
 import "components"
 
 PanelWindow {
     id: root
-
-    property color colBg: Settings.colors.bg ?? "#aa000000" // background
-    property color colBgE: Settings.colors.bgE ?? "#000000" // eco mode background
-    property color colFg: Settings.colors.fg ?? "#b0b4bc" // main color
-    property color colMuted: Settings.colors.muted ?? "#aa4e4e4e" // passive color
-    property color colDark: Settings.colors.dark ?? Qt.darker(colMuted, 1.5) // dark stuff
-    property color colCyan: Settings.colors.cyan ?? "#0db9d7" // action color
-    property color colRed: Settings.colors.red ?? "#cc0000" // evil color
-    property color colBlue: Settings.colors.blue ?? "#7aa2f7" // some stuff
-    property color colYellow: Settings.colors.yellow ?? "#ffd700" // danger zone
-    property color colGreen: Settings.colors.green ?? "#9ece6a" // zoot zone
-    property color colPurple: Settings.colors.purple ?? "#bf00ff" // more stuff
-
-    property string ws01: Settings.workspaces.one ?? "" // 01
-    property string ws02: Settings.workspaces.two ?? "" // 02
-    property string ws03: Settings.workspaces.three ?? "" // 03
-    property string ws04: Settings.workspaces.four ?? "" // 04
-    property string ws05: Settings.workspaces.five ?? "" // 05
-    property string ws06: Settings.workspaces.six ?? "󰉕" // 06
-    property string ws07: Settings.workspaces.seven ?? "" // 07
-    property string ws08: Settings.workspaces.eight ?? "" // 08
-    property string ws09: Settings.workspaces.tine ?? "" // 09
-    property string ws10: Settings.workspaces.ten ?? "" // 10
-
-    property string fontFamily: Settings.font ?? "Hack Nerd Font" // main font
-    property int fontSize: Settings.fontSize ?? 14 // base size
-
-    property int cornerRadius: Settings.radius ?? 8 // base radius
-    property int animDuration: Settings.duration ?? 250 // base animations
-    property int barHeight: Settings.barHeight ?? 30
-    property int extraPadding: Settings.barExtraPadding ?? 8
-
-    property bool ecoMode: false // via clock widget
-    property bool systemTray: Settings.systemTray ?? false
-    property bool systemStats: Settings.systemStats ?? false
 
     property var screen: Quickshell.screens[0]
 
@@ -62,20 +26,19 @@ PanelWindow {
     mask: itemsRegions
     color: "transparent"
     implicitHeight: screen.height
-    exclusiveZone: bar.visible ? bar.height + extraPadding : 0
+    exclusiveZone: bar.visible ? bar.height + Config.extraPadding : 0
 
-    // bar
     Rectangle {
         id: bar
-        y: root.extraPadding
+        y: Config.extraPadding
         anchors.horizontalCenter: parent.horizontalCenter
-        implicitWidth: root.screen.width - root.extraPadding * 2
-        implicitHeight: root.barHeight
+        implicitWidth: root.screen.width - Config.extraPadding * 2
+        implicitHeight: Config.barHeight
         border.width: 1
-        border.color: root.colMuted
-        height: root.barHeight
-        color: root.ecoMode ? root.colBgE : root.colBg
-        radius: root.cornerRadius
+        border.color: Config.colMuted
+        height: Config.barHeight
+        color: Config.ecoMode ? Config.colBgE : Config.colBg
+        radius: Config.cornerRadius
 
         // startup animation
         transform: Translate {
@@ -84,7 +47,7 @@ PanelWindow {
 
             Behavior on y {
                 NumberAnimation {
-                    duration: root.animDuration * 5
+                    duration: Config.animDuration * 5
                     // OutBounce is alright too
                     easing.type: Easing.OutQuint
                 }
@@ -107,8 +70,8 @@ PanelWindow {
 
                 // workspaces
                 HyprWorkspaces {
-                    names: [root.ws01, root.ws02, root.ws03, root.ws04, root.ws05, root.ws06, root.ws07, root.ws08, root.ws09, root.ws10]
-                    fontSize: root.fontSize
+                    names: [Config.ws01, Config.ws02, Config.ws03, Config.ws04, Config.ws05, Config.ws06, Config.ws07, Config.ws08, Config.ws09, Config.ws10]
+                    fontSize: Config.fontSize
                     fontFamily: "Symbols Nerd Font"
                 }
 
@@ -128,12 +91,12 @@ PanelWindow {
                 // active window title
                 WindowTitle {
                     emptyTitle: "" // idle
-                    colBg: root.colBg
-                    colFg: root.colFg
-                    colMuted: root.colMuted
-                    fontFamily: root.fontFamily
-                    fontSize: root.fontSize
-                    animDuration: root.animDuration
+                    colBg: Config.colBg
+                    colFg: Config.colFg
+                    colMuted: Config.colMuted
+                    fontFamily: Config.fontFamily
+                    fontSize: Config.fontSize
+                    animDuration: Config.animDuration
                 }
 
                 Item {
@@ -153,22 +116,22 @@ PanelWindow {
                 // system stats
                 Loader {
                     id: stats
-                    active: !root.ecoMode && root.systemStats
+                    active: !Config.ecoMode && Config.systemStats
                     visible: stats.active
                     asynchronous: true
 
                     sourceComponent: Stats {
-                        fontSize: root.fontSize
-                        colBar: root.colDark
-                        colCpu: root.colFg
-                        colMem: root.colFg
-                        colDisk: root.colFg
+                        fontSize: Config.fontSize
+                        colBar: Config.colDark
+                        colCpu: Config.colFg
+                        colMem: Config.colFg
+                        colDisk: Config.colFg
                     }
                 }
 
                 BarSeparator {
-                    visible: !root.ecoMode
-                    colMain: root.colMuted
+                    visible: !Config.ecoMode
+                    colMain: Config.colMuted
                 }
 
                 // audio
@@ -177,108 +140,108 @@ PanelWindow {
 
                     // devices
                     AudioDevices {
-                        colBg: root.colBg
-                        colMain: root.colFg
-                        colDecor: root.colMuted
-                        colActive: root.colRed
-                        colCheck: root.colGreen
-                        colWinBorder: root.colMuted
-                        fontFamily: root.fontFamily
-                        fontSize: root.fontSize
+                        colBg: Config.colBg
+                        colMain: Config.colFg
+                        colDecor: Config.colMuted
+                        colActive: Config.colRed
+                        colCheck: Config.colGreen
+                        colWinBorder: Config.colMuted
+                        fontFamily: Config.fontFamily
+                        fontSize: Config.fontSize
                     }
 
                     // mic
                     Audio {
                         id: mic
                         mic: true
-                        slideDuration: root.animDuration
+                        slideDuration: Config.animDuration
                         visible: mic.control
-                        colMuted: root.colRed
+                        colMuted: Config.colRed
                     }
 
                     // speaker
                     Audio {
                         id: speaker
-                        slideDuration: root.animDuration
+                        slideDuration: Config.animDuration
                         visible: speaker.control
-                        colMuted: root.colRed
+                        colMuted: Config.colRed
                     }
                 }
 
                 BarSeparator {
-                    colMain: root.colMuted
+                    colMain: Config.colMuted
                 }
 
                 // bt
                 Bluetooth {
-                    colMain: root.colFg
-                    fontSize: root.fontSize
+                    colMain: Config.colFg
+                    fontSize: Config.fontSize
                 }
 
                 // comms
                 Network {
-                    ecoMode: root.ecoMode
-                    colFg: root.colFg
-                    fontSize: root.fontSize
+                    ecoMode: Config.ecoMode
+                    colFg: Config.colFg
+                    fontSize: Config.fontSize
                 }
 
                 BarSeparator {
-                    colMain: root.colMuted
+                    colMain: Config.colMuted
                 }
 
                 // system tray
                 Loader {
                     id: sysTray
-                    active: !root.ecoMode && root.systemTray
+                    active: !Config.ecoMode && Config.systemTray
                     visible: sysTray.active && SystemTray.items && SystemTray.items.values.length > 0
                     asynchronous: true
 
                     sourceComponent: Tray {
-                        iconSize: root.fontSize
-                        iconColor: root.colFg
+                        iconSize: Config.fontSize
+                        iconColor: Config.colFg
                     }
                 }
 
                 // weather
                 Loader {
                     id: localWeather
-                    active: !root.ecoMode
+                    active: !Config.ecoMode
                     visible: localWeather.active
                     asynchronous: true
                     Layout.rightMargin: 2
 
                     sourceComponent: Weather {
                         fontFamily: "FiraCode Nerd Font"
-                        fontSize: root.fontSize
-                        colMain: root.colFg
+                        fontSize: Config.fontSize
+                        colMain: Config.colFg
                         colBg: "transparent"
-                        colBorder: root.colCyan
+                        colBorder: Config.colCyan
                     }
                 }
 
                 // language
                 HyprLang {
-                    colMain: root.colFg
-                    colBorder: Qt.darker(root.colRed, 1.5)
+                    colMain: Config.colFg
+                    colBorder: Qt.darker(Config.colRed, 1.5)
                     colBackground: "transparent"
                     fontFamily: "SpaceMono Nerd Font"
                 }
 
                 // time
                 Clock {
-                    slideDuration: root.animDuration
+                    slideDuration: Config.animDuration
                     fontFamily: "FiraCode Nerd Font"
-                    fontSize: root.fontSize + 1
-                    colMain: root.colFg
-                    colButton: root.colRed
+                    fontSize: Config.fontSize + 1
+                    colMain: Config.colFg
+                    colButton: Config.colRed
                     Layout.topMargin: 2
                     Layout.leftMargin: -1
                     Layout.rightMargin: 2
-                    ecoMode: root.ecoMode
+                    ecoMode: Config.ecoMode
 
                     onEcoModeChanged: {
-                        if (root.ecoMode !== ecoMode) {
-                            root.ecoMode = ecoMode;
+                        if (Config.ecoMode !== ecoMode) {
+                            Config.ecoMode = ecoMode;
                         }
                     }
                 }
@@ -291,14 +254,14 @@ PanelWindow {
                     asynchronous: true
 
                     sourceComponent: Battery {
-                        fontSize: root.fontSize + 2
-                        fontFamily: root.fontFamily
-                        slideDuration: root.animDuration
-                        colMain: root.colFg
-                        colGood: root.colGreen
-                        colBad: root.colRed
-                        colCharging: root.colYellow
-                        colBg: root.colDark
+                        fontSize: Config.fontSize + 2
+                        fontFamily: Config.fontFamily
+                        slideDuration: Config.animDuration
+                        colMain: Config.colFg
+                        colGood: Config.colGreen
+                        colBad: Config.colRed
+                        colCharging: Config.colYellow
+                        colBg: Config.colDark
                     }
                 }
             }
