@@ -44,58 +44,33 @@ PanelWindow {
 
     property int cornerRadius: Settings.radius ?? 8 // base radius
     property int animDuration: Settings.duration ?? 250 // base animations
-
     property int barHeight: Settings.barHeight ?? 30
-    property int extraPadding: Settings.barExtraPadding ?? 16
+    property int extraPadding: Settings.barExtraPadding ?? 8
 
-    property var screen: Quickshell.screens[0]
     property bool ecoMode: false // via clock widget
     property bool systemTray: Settings.systemTray ?? false
     property bool systemStats: Settings.systemStats ?? false
 
-    implicitWidth: screen.width - extraPadding
-    implicitHeight: barHeight + extraPadding / 2
+    property var screen: Quickshell.screens[0]
 
-    anchors.top: true
+    anchors {
+        top: true
+        left: true
+        right: true
+    }
+
+    mask: itemsRegions
     color: "transparent"
-
-    // Global shortcuts depend on Hyprland bindings:
-    // bind = , XF86AudioMute, global, quickshell:volume-mute
-
-    GlobalShortcut {
-        name: "volume-up"
-        onPressed: {
-            refreshOSS.start();
-        }
-    }
-
-    GlobalShortcut {
-        name: "volume-down"
-        onPressed: {
-            refreshOSS.start();
-        }
-    }
-
-    GlobalShortcut {
-        name: "volume-mute"
-        onPressed: {
-            refreshOSS.start();
-        }
-    }
-
-    // update audio
-    Timer {
-        id: refreshOSS
-        interval: 100
-        onTriggered: OSS.refresh()
-    }
+    implicitHeight: screen.height
+    exclusiveZone: bar.visible ? bar.height + extraPadding : 0
 
     // bar
     Rectangle {
         id: bar
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+        y: root.extraPadding
+        anchors.horizontalCenter: parent.horizontalCenter
+        implicitWidth: root.screen.width - root.extraPadding * 2
+        implicitHeight: root.barHeight
         border.width: 1
         border.color: root.colMuted
         height: root.barHeight
@@ -104,7 +79,7 @@ PanelWindow {
 
         // startup animation
         transform: Translate {
-            id: slideTransform
+            id: launchSequence
             y: -(root.implicitHeight)
 
             Behavior on y {
@@ -117,7 +92,7 @@ PanelWindow {
         }
 
         Component.onCompleted: {
-            slideTransform.y = 0;
+            launchSequence.y = 0;
         }
 
         RowLayout {
@@ -328,5 +303,59 @@ PanelWindow {
                 }
             }
         }
+    }
+
+    Region {
+        id: itemsRegions
+        regions: regions.instances
+    }
+
+    Variants {
+        id: regions
+        model: root.contentItem.children
+
+        delegate: Region {
+            required property Item modelData
+            item: modelData
+        }
+    }
+
+    Connections {
+        target: launchSequence
+        // post-start region refresh
+        function onYChanged() {
+            itemsRegions.changed();
+        }
+    }
+
+    // Global shortcuts depend on Hyprland bindings:
+    // bind = , XF86AudioMute, global, quickshell:volume-mute
+
+    GlobalShortcut {
+        name: "volume-up"
+        onPressed: {
+            refreshOSS.start();
+        }
+    }
+
+    GlobalShortcut {
+        name: "volume-down"
+        onPressed: {
+            refreshOSS.start();
+        }
+    }
+
+    GlobalShortcut {
+        name: "volume-mute"
+        onPressed: {
+            refreshOSS.start();
+        }
+    }
+
+    // update audio
+    Timer {
+        id: refreshOSS
+        interval: 50
+        onTriggered: OSS.refresh()
     }
 }
