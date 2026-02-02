@@ -1,6 +1,9 @@
+import Quickshell.Hyprland
+
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Hyprland
+
+import ".."
 
 Item {
     id: root
