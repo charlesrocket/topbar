@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
 import Quickshell.Services.OSS
+import Quickshell.Wayland
 
 import QtQuick
 import QtQuick.Layouts
@@ -35,7 +36,7 @@ PanelWindow {
         border.width: 1
         border.color: Config.colMuted
         height: Config.barHeight
-        color: Config.ecoMode ? Config.colBgE : Config.colBg
+        color: States.ecoMode ? Config.colBgE : Config.colBg
         radius: Config.cornerRadius
 
         // startup animation
@@ -76,11 +77,20 @@ PanelWindow {
 
     Variants {
         id: regions
-        model: root.contentItem.children
+        model: States.dropdownRevealed ? getAllVisibleItems() : root.contentItem.children
 
         delegate: Region {
             required property Item modelData
             item: modelData
+        }
+    }
+
+    Connections {
+        target: States
+
+        function onDropdownRevealedChanged() {
+            regions.model = States.dropdownRevealed ? getAllVisibleItems() : root.contentItem.children;
+            itemsRegions.changed();
         }
     }
 
@@ -121,5 +131,31 @@ PanelWindow {
         id: refreshOSS
         interval: 50
         onTriggered: OSS.refresh()
+    }
+
+    Component.onCompleted: {
+        if (this.WlrLayershell != null) {
+            this.WlrLayershell.layer = WlrLayer.Top;
+        }
+    }
+
+    function getAllVisibleItems() {
+        const items = [];
+
+        function collect(item) {
+            if (!item)
+                return;
+
+            items.push(item);
+
+            for (const child of item.children) {
+                if (child.visible) {
+                    collect(child);
+                }
+            }
+        }
+
+        collect(root.contentItem);
+        return items;
     }
 }

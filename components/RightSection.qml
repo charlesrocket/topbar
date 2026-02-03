@@ -18,7 +18,7 @@ RowLayout {
     // system stats
     Loader {
         id: stats
-        active: !Config.ecoMode && Config.systemStats
+        active: !States.ecoMode && Config.systemStats
         visible: stats.active
         asynchronous: true
 
@@ -32,7 +32,7 @@ RowLayout {
     }
 
     BarSeparator {
-        visible: !Config.ecoMode
+        visible: !States.ecoMode
         colMain: Config.colMuted
     }
 
@@ -44,6 +44,7 @@ RowLayout {
         AudioDevices {
             colBg: Config.colBg
             colMain: Config.colFg
+            colButtonHover: Config.colPurple
             colDecor: Config.colMuted
             colActive: Config.colRed
             colCheck: Config.colGreen
@@ -82,7 +83,7 @@ RowLayout {
 
     // comms
     Network {
-        ecoMode: Config.ecoMode
+        ecoMode: States.ecoMode
         colFg: Config.colFg
         fontSize: Config.fontSize
     }
@@ -94,7 +95,7 @@ RowLayout {
     // system tray
     Loader {
         id: sysTray
-        active: !Config.ecoMode && Config.systemTray
+        active: !States.ecoMode && Config.systemTray
         visible: sysTray.active && SystemTray.items && SystemTray.items.values.length > 0
         asynchronous: true
 
@@ -107,7 +108,7 @@ RowLayout {
     // weather
     Loader {
         id: localWeather
-        active: !Config.ecoMode
+        active: !States.ecoMode
         visible: localWeather.active
         asynchronous: true
         Layout.rightMargin: 2
@@ -139,11 +140,11 @@ RowLayout {
         Layout.topMargin: 2
         Layout.leftMargin: -1
         Layout.rightMargin: 2
-        ecoMode: Config.ecoMode
+        ecoMode: States.ecoMode
 
         onEcoModeChanged: {
-            if (Config.ecoMode !== ecoMode) {
-                Config.ecoMode = ecoMode;
+            if (States.ecoMode !== ecoMode) {
+                States.ecoMode = ecoMode;
             }
         }
     }

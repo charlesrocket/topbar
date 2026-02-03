@@ -37,7 +37,6 @@ Singleton {
     property int barHeight: Settings.barHeight ?? 30
     property int extraPadding: Settings.barExtraPadding ?? 8
 
-    property bool ecoMode: false // via clock widget
     property bool systemTray: Settings.systemTray ?? false
     property bool systemStats: Settings.systemStats ?? false
 }
