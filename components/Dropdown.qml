@@ -44,7 +44,7 @@ Item {
         }
         y: {
             const mapped = root.boxParent.mapToItem(root.parent, 0, 0);
-            return mapped.y + root.boxParent.height + 14;
+            return mapped.y + root.boxParent.height + 7;
         }
 
         opacity: 0

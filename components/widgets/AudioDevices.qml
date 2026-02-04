@@ -102,6 +102,9 @@ Item {
             color: root.colBg
             radius: root.cornerRadius
             border.color: root.colWinBorder
+            border.width: 1
+            topLeftRadius: 0
+            topRightRadius: 0
             implicitWidth: layout.implicitWidth + 24
             implicitHeight: layout.implicitHeight + 24
 
