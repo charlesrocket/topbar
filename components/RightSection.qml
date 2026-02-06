@@ -51,7 +51,7 @@ RowLayout {
         RowLayout {
             id: audioRow
             anchors.right: parent.right
-            spacing: 8
+            spacing: 6
 
             // devices
             AudioDevices {
