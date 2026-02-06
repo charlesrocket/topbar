@@ -20,6 +20,7 @@ import qs.topbar
 
 ShellRoot {
     TopBar {}
+    Wallpaper {}
 }
 
 ```
