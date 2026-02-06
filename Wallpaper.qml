@@ -45,7 +45,7 @@ Variants {
                     from: 0
                     to: 1.0
                     duration: 65
-                    easing.type: Easing.InOutSine
+                    easing.type: Easing.InExpo
                 }
             }
         }
