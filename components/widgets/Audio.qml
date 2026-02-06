@@ -161,7 +161,7 @@ Item {
         boxParent: iconText
 
         Rectangle {
-            color: Config.colBg
+            color: States.ecoMode ? Config.colBgE : Config.colBg
             radius: Config.cornerRadius
             border.color: Config.colMuted
             border.width: 1

@@ -96,7 +96,7 @@ Item {
 
         Rectangle {
             id: devices
-            color: root.colBg
+            color: States.ecoMode ? Config.colBgE : root.colBg
             radius: root.cornerRadius
             border.color: root.colWinBorder
             border.width: 1
