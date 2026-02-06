@@ -37,37 +37,64 @@ RowLayout {
     }
 
     // audio
-    RowLayout {
-        spacing: 6
+    Item {
+        Layout.preferredWidth: audioRow.implicitWidth
+        implicitHeight: audioRow.implicitHeight
 
-        // devices
-        AudioDevices {
-            colBg: Config.colBg
-            colMain: Config.colFg
-            colButtonHover: Config.colPurple
-            colDecor: Config.colMuted
-            colActive: Config.colRed
-            colCheck: Config.colGreen
-            colWinBorder: Config.colMuted
-            fontFamily: Config.fontFamily
-            fontSize: Config.fontSize
+        Behavior on Layout.preferredWidth {
+            NumberAnimation {
+                duration: Config.animDuration
+                easing.type: Easing.OutCubic
+            }
         }
 
-        // mic
-        Audio {
-            id: mic
-            mic: true
-            slideDuration: Config.animDuration
-            visible: mic.control
-            colMuted: Config.colRed
-        }
+        RowLayout {
+            id: audioRow
+            anchors.right: parent.right
+            spacing: 8
 
-        // speaker
-        Audio {
-            id: speaker
-            slideDuration: Config.animDuration
-            visible: speaker.control
-            colMuted: Config.colRed
+            // devices
+            AudioDevices {
+                colBg: Config.colBg
+                colMain: Config.colFg
+                colDecor: Config.colMuted
+                colActive: Config.colRed
+                colCheck: Config.colGreen
+                colWinBorder: Config.colMuted
+                fontFamily: Config.fontFamily
+                fontSize: Config.fontSize
+            }
+
+            // mic
+            Audio {
+                id: mic
+                mic: true
+                colMuted: Config.colRed
+                opacity: mic.control ? 1 : 0
+                visible: opacity > 0
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: Config.animDuration
+                        easing.type: Easing.OutCubic
+                    }
+                }
+            }
+
+            // speaker
+            Audio {
+                id: speaker
+                colMuted: Config.colRed
+                opacity: speaker.control ? 1 : 0
+                visible: opacity > 0
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: Config.animDuration
+                        easing.type: Easing.OutCubic
+                    }
+                }
+            }
         }
     }
 

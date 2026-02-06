@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import Quickshell
 import Quickshell.Services.OSS
 
@@ -13,7 +15,6 @@ Item {
     property bool show: false
 
     required property var boxParent
-    required property var boxSurface
 
     default property alias content: contentArea.data
 
@@ -39,16 +40,17 @@ Item {
         height: contentArea.implicitHeight
 
         x: {
-            const mapped = root.boxParent.mapToItem(root.parent, 0, 0);
+            const mapped = root.boxParent.mapToItem(root.boxParent, 0, 0);
             return mapped.x + (root.boxParent.width / 2) - (dropdown.width / 2);
         }
+
         y: {
             const mapped = root.boxParent.mapToItem(root.parent, 0, 0);
-            return mapped.y + root.boxParent.height + 7;
+            return mapped.y + root.boxParent.height + 14;
         }
 
         opacity: 0
-        scale: 0.65
+        scale: 0
         transformOrigin: Item.Top
 
         states: [

@@ -16,14 +16,13 @@ Item {
     required property color colActive
     required property color colCheck
     required property color colWinBorder
-    required property color colButtonHover
 
     property int cornerRadius: 8
     property string fontFamily: "JetBrainsMono Nerd Font"
     property int fontSize: 14
 
-    implicitWidth: buttonText.implicitWidth
-    implicitHeight: buttonText.implicitHeight
+    implicitWidth: icon.implicitWidth
+    implicitHeight: icon.implicitHeight
 
     function getActiveDeviceIcon() {
         for (var i = 0; i < OSS.devices.length; i++) {
@@ -43,9 +42,10 @@ Item {
     }
 
     Text {
-        id: buttonText
+        id: icon
         text: OSS.headphonesConnected ? "󰋋" : root.getActiveDeviceIcon()
         color: root.colMain
+        anchors.centerIn: parent
 
         font {
             family: "Symbols Nerd Font"
@@ -62,17 +62,14 @@ Item {
     }
 
     MouseArea {
-        id: buttonMouseArea
         anchors.fill: parent
         hoverEnabled: true
 
         onEntered: {
-            buttonText.color = root.colButtonHover;
             menu.show = true;
         }
 
         onExited: {
-            buttonText.color = root.colMain;
             menu.timer.start();
         }
     }
@@ -81,7 +78,7 @@ Item {
         target: OSS
 
         function onHeadphonesChanged(state) {
-            buttonText.text = state ? "󰋋" : root.getActiveDeviceIcon();
+            icon.text = state ? "󰋋" : root.getActiveDeviceIcon();
         }
     }
 
@@ -89,13 +86,13 @@ Item {
         target: OSS
 
         function onDevicesChanged() {
-            buttonText.text = root.getActiveDeviceIcon();
+            icon.text = root.getActiveDeviceIcon();
         }
     }
 
     Dropdown {
         id: menu
-        boxParent: buttonText
+        boxParent: icon
 
         Rectangle {
             id: devices
@@ -105,7 +102,7 @@ Item {
             border.width: 1
             topLeftRadius: 0
             topRightRadius: 0
-            implicitWidth: layout.implicitWidth + 24
+            implicitWidth: layout.implicitWidth + 26
             implicitHeight: layout.implicitHeight + 24
 
             ColumnLayout {
