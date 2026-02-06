@@ -24,4 +24,4 @@ ShellRoot {
 
 ```
 
-Use `Settings.qml` in the Quickshell's root to override TopBar settings ([example](https://github.com/charlesrocket/dotfiles/blob/8758ed0c44b8e59ab683001378f6a1a09721afc4/.config/quickshell/Settings.qml)).
+Use `Settings.qml` in the Quickshell's root to override the TopBar's configuration ([example](https://github.com/charlesrocket/dotfiles/blob/cac89b66e82bc8d9c55359f9024bd5faf80a29dd/.config/quickshell/Settings.qml)).
