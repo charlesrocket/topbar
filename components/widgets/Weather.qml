@@ -22,7 +22,7 @@ Item {
     function getWeatherIcon(code, isDay) {
         switch (code) {
         case 0:
-            return isDay ? "" : "󰖔";
+            return isDay ? "󰖙" : "󰖔";
         case 1:
         case 2:
         case 3:
@@ -210,7 +210,7 @@ Item {
 
             font {
                 family: "Symbols Nerd Font"
-                pixelSize: root.fontSize + 1
+                pixelSize: root.fontSize
                 bold: true
             }
         }
