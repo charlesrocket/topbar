@@ -4,20 +4,21 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Networking
 
+import "../.."
+
 Item {
     id: root
 
     property int fontSize: 14
-    property color colFg: "#ffffff"
-    property color colYellow: "#ffd700"
-    property color colCyan: "#0db9d7"
-    property color colOffline: "#cc0000"
-    property color colMuted: "#aa4e4e4e"
+    property color colFg: Config.colFg
+    property color colAction: Config.colAction
+    property color colOffline: Config.colPassive
+    property color colPassive: Config.colPassive
 
     property bool isOnline: false
     property bool ecoMode: false
 
-    property color colOnline: root.ecoMode ? root.colMuted : root.isOnline ? root.colFg : root.colOffline
+    property color colOnline: root.ecoMode ? root.colPassive : root.isOnline ? root.colFg : root.colOffline
 
     readonly property var devicesList: Networking.devices.values
     readonly property string uplinkIcon: hasActiveVpn ? "" : ""
@@ -128,7 +129,7 @@ Item {
 
             property bool isHovered: false
 
-            color: isHovered ? root.colCyan : root.colOnline
+            color: isHovered ? root.colAction : root.colOnline
             font.family: "Symbols Nerd Font"
             font.pixelSize: root.fontSize
             visible: !root.ecoMode

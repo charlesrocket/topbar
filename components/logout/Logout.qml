@@ -108,7 +108,7 @@ Loader {
 
                                     Text {
                                         id: icon
-                                        color: mouseArea.containsMouse ? Config.colRed : Config.colFg
+                                        color: mouseArea.containsMouse ? Config.colAccent : Config.colFg
                                         font.pixelSize: 105
                                         font.family: "Symbols Nerd Font"
                                         text: `${buttonRect.modelData.icon}`
@@ -129,7 +129,7 @@ Loader {
                                     Text {
                                         id: textLabel
                                         text: buttonRect.modelData.text
-                                        color: mouseArea.containsMouse ? Config.colRed : Config.colFg
+                                        color: mouseArea.containsMouse ? Config.colAccent : Config.colFg
                                         font.pointSize: 14
                                         font.bold: true
                                         font.family: Config.fontFamily

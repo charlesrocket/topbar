@@ -35,7 +35,7 @@ PanelWindow {
         implicitWidth: root.screen.width - Config.extraPadding * 2
         implicitHeight: Config.barHeight
         border.width: 1
-        border.color: Config.colMuted
+        border.color: Config.colPassive
         height: Config.barHeight
         color: States.ecoMode ? Config.colBgE : Config.colBg
         radius: Config.cornerRadius

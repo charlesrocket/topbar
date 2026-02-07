@@ -15,7 +15,7 @@ Item {
     property int barLen: 80
     property int iconSize: 16
     property var colNormal: "#b0b4bc"
-    property var colMuted: "#4e4e4e"
+    property var colPassive: "#4e4e4e"
 
     implicitWidth: iconText.width
     implicitHeight: iconText.height
@@ -85,7 +85,7 @@ Item {
         id: iconText
         anchors.centerIn: parent
         text: root.getVolumeIcon(root.volume, root.muted)
-        color: root.muted ? root.colMuted : root.colNormal
+        color: root.muted ? root.colPassive : root.colNormal
         font.family: "Symbols Nerd Font"
         font.pixelSize: root.iconSize
         font.bold: true
@@ -163,7 +163,7 @@ Item {
         Rectangle {
             color: States.ecoMode ? Config.colBgE : Config.colBg
             radius: Config.cornerRadius
-            border.color: Config.colMuted
+            border.color: Config.colPassive
             border.width: 1
             topLeftRadius: 0
             topRightRadius: 0
@@ -181,7 +181,7 @@ Item {
                     Layout.preferredWidth: 26
                     horizontalAlignment: Text.AlignHCenter
                     text: root.volume
-                    color: root.muted ? root.colMuted : root.colNormal
+                    color: root.muted ? root.colPassive : root.colNormal
                     font.pixelSize: Config.fontSize
                     font.family: Config.fontFamily
                     font.bold: true
@@ -208,7 +208,7 @@ Item {
                         height: root.barLen
                         width: 4
                         radius: 6
-                        color: Config.colMuted
+                        color: Config.colPassive
 
                         Rectangle {
                             anchors.bottom: parent.bottom
@@ -216,7 +216,7 @@ Item {
                             height: parent.height * (root.volume / 100)
                             width: parent.width
                             radius: parent.radius
-                            color: root.muted ? root.colMuted : root.colNormal
+                            color: root.muted ? root.colPassive : root.colNormal
 
                             Behavior on height {
                                 NumberAnimation {
@@ -233,7 +233,7 @@ Item {
                         width: 12
                         height: 12
                         radius: 6
-                        color: root.muted ? root.colMuted : root.colNormal
+                        color: root.muted ? root.colPassive : root.colNormal
                         border.width: 2
                         border.color: root.colNormal
                         y: (sliderTrack.height - height) * (1 - root.volume / 100)

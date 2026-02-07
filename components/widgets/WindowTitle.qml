@@ -18,7 +18,7 @@ Item {
     property string fontFamily: "JetBrainsMono Nerd Font"
     property color colBg: "#aa000000"
     property color colFg: "#b0b4bc"
-    property color colMuted: "#aa4e4e4e"
+    property color colPassive: "#aa4e4e4e"
     property int animDuration: 250
     property string emptyTitle: "X"
     property string fullTitle: {
@@ -86,7 +86,7 @@ Item {
     HoverFrame {
         id: hoverActiveWindow
         anchors.fill: parent
-        frameColor: root.colMuted
+        frameColor: root.colPassive
         animDuration: root.animDuration
     }
 

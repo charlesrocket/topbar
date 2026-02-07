@@ -17,7 +17,7 @@ Repeater {
     property color colNormal: "#b0b4bc"
     property color colActive: "#cc0000"
     property color colPassive: "#aa4e4e4e"
-    property color colCyan: "#0db9d7"
+    property color colAction: "#0db9d7"
 
     Text {
         id: button
@@ -28,7 +28,7 @@ Repeater {
         property bool isActive: Hyprland.focusedWorkspace?.id === (index + 1)
 
         text: root.names[index]
-        color: isHovered ? root.colCyan : isActive ? root.colActive : (ws ? root.colNormal : root.colPassive)
+        color: isHovered ? root.colAction : isActive ? root.colActive : (ws ? root.colNormal : root.colPassive)
 
         leftPadding: 4
         rightPadding: 4

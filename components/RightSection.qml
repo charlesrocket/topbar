@@ -33,7 +33,7 @@ RowLayout {
 
     BarSeparator {
         visible: !States.ecoMode
-        colMain: Config.colMuted
+        colMain: Config.colPassive
     }
 
     // audio
@@ -57,10 +57,10 @@ RowLayout {
             AudioDevices {
                 colBg: Config.colBg
                 colMain: Config.colFg
-                colDecor: Config.colMuted
-                colActive: Config.colRed
+                colDecor: Config.colPassive
+                colActive: Config.colAccent
                 colCheck: Config.colGreen
-                colWinBorder: Config.colMuted
+                colWinBorder: Config.colPassive
                 fontFamily: Config.fontFamily
                 fontSize: Config.fontSize
             }
@@ -69,7 +69,7 @@ RowLayout {
             Audio {
                 id: mic
                 mic: true
-                colMuted: Config.colRed
+                colPassive: Config.colAccent
                 opacity: mic.control ? 1 : 0
                 visible: opacity > 0
 
@@ -84,7 +84,7 @@ RowLayout {
             // speaker
             Audio {
                 id: speaker
-                colMuted: Config.colRed
+                colPassive: Config.colAccent
                 opacity: speaker.control ? 1 : 0
                 visible: opacity > 0
 
@@ -99,7 +99,7 @@ RowLayout {
     }
 
     BarSeparator {
-        colMain: Config.colMuted
+        colMain: Config.colPassive
     }
 
     // bt
@@ -111,12 +111,11 @@ RowLayout {
     // comms
     Network {
         ecoMode: States.ecoMode
-        colFg: Config.colFg
         fontSize: Config.fontSize
     }
 
     BarSeparator {
-        colMain: Config.colMuted
+        colMain: Config.colPassive
     }
 
     // system tray
@@ -145,15 +144,13 @@ RowLayout {
             fontSize: Config.fontSize
             colMain: Config.colFg
             colBg: "transparent"
-            colBorder: Config.colCyan
+            colBorder: Config.colAction
         }
     }
 
     // language
     HyprLang {
-        colMain: Config.colFg
-        colBorder: Qt.darker(Config.colRed, 1.5)
-        colBackground: "transparent"
+        colBorder: Qt.darker(Config.colAccent, 1.5)
         fontFamily: "SpaceMono Nerd Font"
     }
 
@@ -163,7 +160,7 @@ RowLayout {
         fontFamily: "FiraCode Nerd Font"
         fontSize: Config.fontSize + 1
         colMain: Config.colFg
-        colButton: Config.colRed
+        colButton: Config.colAccent
         Layout.topMargin: 2
         Layout.leftMargin: -1
         Layout.rightMargin: 2
@@ -189,7 +186,7 @@ RowLayout {
             slideDuration: Config.animDuration
             colMain: Config.colFg
             colGood: Config.colGreen
-            colBad: Config.colRed
+            colBad: Config.colAccent
             colCharging: Config.colYellow
             colBg: Config.colDark
         }

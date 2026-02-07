@@ -16,7 +16,7 @@ RowLayout {
         emptyTitle: "" // idle
         colBg: Config.colBg
         colFg: Config.colFg
-        colMuted: Config.colMuted
+        colPassive: Config.colPassive
         fontFamily: Config.fontFamily
         fontSize: Config.fontSize
         animDuration: Config.animDuration

@@ -3,13 +3,15 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
 
+import "../.."
+
 Rectangle {
     id: root
 
     property string currentLayout: ""
     property string fontFamily: "Fira Code Nerd Font"
-    property color colMain: "#b0b4bc"
-    property color colBorder: "#aa4e4e4e"
+    property color colMain: Config.colFg
+    property color colBorder: Config.colPassive
     property color colBackground: "transparent"
 
     width: layoutText.width + 8
