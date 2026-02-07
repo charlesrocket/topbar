@@ -164,7 +164,7 @@ Item {
         Rectangle {
             color: States.ecoMode ? Config.colBgE : Config.colBg
             radius: Config.cornerRadius
-            border.color: Config.colPassive
+            border.color: Config.colBorder
             border.width: 1
             topLeftRadius: 0
             topRightRadius: 0

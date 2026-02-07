@@ -15,7 +15,6 @@ Item {
     property color colDecor: Config.colPassive
     property color colActive: Config.colAccent
     property color colCheck: Config.colGreen
-    property color colWinBorder: Config.colPassive
     property int cornerRadius: 8
     property string fontFamily: Config.fontFamily
     property int fontSize: Config.fontSize
@@ -97,7 +96,7 @@ Item {
             id: devices
             color: States.ecoMode ? Config.colBgE : root.colBg
             radius: root.cornerRadius
-            border.color: root.colWinBorder
+            border.color: Config.colBorder
             border.width: 1
             topLeftRadius: 0
             topRightRadius: 0
