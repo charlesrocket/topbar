@@ -14,12 +14,6 @@ RowLayout {
     // active window title
     WindowTitle {
         emptyTitle: "" // idle
-        colBg: Config.colBg
-        colFg: Config.colFg
-        colPassive: Config.colPassive
-        fontFamily: Config.fontFamily
-        fontSize: Config.fontSize
-        animDuration: Config.animDuration
     }
 
     Item {

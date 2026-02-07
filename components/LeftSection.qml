@@ -11,8 +11,6 @@ RowLayout {
     // workspaces
     HyprWorkspaces {
         names: [Config.ws01, Config.ws02, Config.ws03, Config.ws04, Config.ws05, Config.ws06, Config.ws07, Config.ws08, Config.ws09, Config.ws10]
-        fontSize: Config.fontSize
-        fontFamily: "Symbols Nerd Font"
     }
 
     Item {

@@ -13,10 +13,11 @@ Singleton {
     readonly property color colBg: getSetting("colors.bg", "#aa000000")
     readonly property color colBgE: getSetting("colors.bgE", "#000000")
     readonly property color colFg: getSetting("colors.fg", "#b0b4bc")
-    readonly property color colPassive: getSetting("colors.passive", "#aa4e4e4e")
+    readonly property color colPassive: getSetting("colors.passive", "#4e4e4e")
     readonly property color colDark: getSetting("colors.dark", Qt.darker(colPassive, 1.5))
     readonly property color colAction: getSetting("colors.action", "#0db9d7")
     readonly property color colAccent: getSetting("colors.accent", "#cc0000")
+    readonly property color colRed: getSetting("colors.red", "#cc0000")
     readonly property color colYellow: getSetting("colors.yellow", "#ffd700")
     readonly property color colGreen: getSetting("colors.green", "#9ece6a")
 

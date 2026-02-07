@@ -6,11 +6,13 @@ import Quickshell.Services.SystemTray
 import QtQuick
 import QtQuick.Effects
 
+import "../.."
+
 Item {
     id: root
 
-    property color iconColor: "#b0b4bc"
-    property int iconSize: 14
+    property color iconColor: Config.colFg
+    property int iconSize: Config.fontSize
 
     implicitWidth: row.width
     implicitHeight: iconSize

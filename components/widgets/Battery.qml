@@ -3,16 +3,18 @@ import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
 
+import "../.."
+
 Item {
     id: root
 
-    property color colMain: "#b0b4bc"
-    property color colCharging: "#ffd700"
-    property color colGood: "#9ece6a"
-    property color colBad: "#cc0000"
-    property color colBg: "#aa4e4e4e"
-    property int slideDuration: 250
-    property int fontSize: 14
+    property color colMain: Config.colFg
+    property color colCharging: Config.colYellow
+    property color colGood: Config.colGreen
+    property color colBad: Config.colRed
+    property color colBg: Config.colDark
+    property int slideDuration: Config.animDuration
+    property int fontSize: Config.fontSize
     property var fontFamily: "Hack Nerd Font"
 
     readonly property var battery: UPower.displayDevice

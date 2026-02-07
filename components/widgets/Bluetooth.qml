@@ -3,23 +3,24 @@ import Quickshell.Bluetooth
 import QtQuick
 import QtQuick.Layouts
 
+import "../.."
+
 Text {
     id: root
 
-    property color colMain: "#b0b4bc"
+    property color colMain: Config.colFg
     property string fontFamily: "Symbols Nerd Font"
-    property int fontSize: 14
+    property int fontSize: Config.fontSize
 
     readonly property bool hasAdapter: Bluetooth && Bluetooth.adapters && Bluetooth.adapters.length > 0
     readonly property var adapter: hasAdapter ? Bluetooth.adapters[0] : null
-
     readonly property bool powered: adapter ? adapter.powered : false
     readonly property bool connected: adapter && adapter.connectedDevices && adapter.connectedDevices.length > 0
 
     readonly property string connectedDeviceName: {
         if (connected && adapter && adapter.connectedDevices && adapter.connectedDevices.length > 0) {
             var device = adapter.connectedDevices[0];
-            return device && device.name ? device.name : "Connected Device";
+            return device && device.name ? device.name : "Connected device";
         }
 
         return "";

@@ -3,6 +3,7 @@ import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 
+import "../.."
 import ".."
 
 Item {
@@ -16,11 +17,10 @@ Item {
     property int fontSize: 14
     property int length: 80
     property string fontFamily: "JetBrainsMono Nerd Font"
-    property color colBg: "#aa000000"
-    property color colFg: "#b0b4bc"
-    property color colPassive: "#aa4e4e4e"
-    property int animDuration: 250
-    property string emptyTitle: "X"
+    property color colFg: Config.colFg
+    property color colPassive: Qt.darker(Config.colPassive, 1.5)
+    property int animDuration: Config.animDuration
+    property string emptyTitle: ""
     property string fullTitle: {
         var win = Hyprland.activeToplevel;
 

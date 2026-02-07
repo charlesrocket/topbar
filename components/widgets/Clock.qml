@@ -9,10 +9,10 @@ import "../.."
 Item {
     id: root
 
-    property int slideDuration: 250
-    property color colMain: "#b0b4bc"
-    property color colButton: "#cc0000"
-    property color colGreen: "#9ece6a"
+    property int slideDuration: Config.animDuration
+    property color colMain: Config.colFg
+    property color colButton: Config.colAccent
+    property color colGreen: Config.colGreen
     property string fontFamily: "FiraCode Nerd Font"
     property int fontSize: 14
     property bool ecoMode: false

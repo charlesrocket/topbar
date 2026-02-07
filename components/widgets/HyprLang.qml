@@ -9,9 +9,9 @@ Rectangle {
     id: root
 
     property string currentLayout: ""
-    property string fontFamily: "Fira Code Nerd Font"
+    property string fontFamily: "SpaceMono Nerd Font"
     property color colMain: Config.colFg
-    property color colBorder: Config.colPassive
+    property color colBorder: Qt.darker(Config.colAccent, 1.5)
     property color colBackground: "transparent"
 
     width: layoutText.width + 8

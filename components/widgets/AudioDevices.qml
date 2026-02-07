@@ -10,16 +10,15 @@ import ".."
 Item {
     id: root
 
-    required property color colBg
-    required property color colMain
-    required property color colDecor
-    required property color colActive
-    required property color colCheck
-    required property color colWinBorder
-
+    property color colBg: Config.colBg
+    property color colMain: Config.colFg
+    property color colDecor: Config.colPassive
+    property color colActive: Config.colAccent
+    property color colCheck: Config.colGreen
+    property color colWinBorder: Config.colPassive
     property int cornerRadius: 8
-    property string fontFamily: "JetBrainsMono Nerd Font"
-    property int fontSize: 14
+    property string fontFamily: Config.fontFamily
+    property int fontSize: Config.fontSize
 
     implicitWidth: icon.implicitWidth
     implicitHeight: icon.implicitHeight

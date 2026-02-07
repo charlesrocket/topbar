@@ -5,6 +5,8 @@ import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 
+import "../.."
+
 Repeater {
     id: root
     model: 10
@@ -12,12 +14,12 @@ Repeater {
     required property var names
 
     property int animDuration: 250
-    property int fontSize: 14
+    property int fontSize: Config.fontSize
     property string fontFamily: "Symbols Nerd Font"
-    property color colNormal: "#b0b4bc"
-    property color colActive: "#cc0000"
-    property color colPassive: "#aa4e4e4e"
-    property color colAction: "#0db9d7"
+    property color colNormal: Config.colFg
+    property color colActive: Config.colAccent
+    property color colPassive: Config.colPassive
+    property color colAction: Config.colAction
 
     Text {
         id: button

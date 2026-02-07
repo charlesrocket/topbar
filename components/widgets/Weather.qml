@@ -6,14 +6,16 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
 
+import "../.."
+
 Item {
     id: root
 
-    property color colBg: null
-    property color colMain: null
-    property color colBorder: null
-    property int slideDuration: 250
-    property int fontSize: 14
+    property color colMain: Config.colFg
+    property color colBg: "transparent"
+    property color colBorder: Config.colAction
+    property int slideDuration: Config.animDuration
+    property int fontSize: Config.fontSize
     property string fontFamily: "FiraCode Nerd Font"
     property string icon: "󱣶"
     property real temperature: 0

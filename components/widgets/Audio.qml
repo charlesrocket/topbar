@@ -14,8 +14,9 @@ Item {
     property int deviceId: -1
     property int barLen: 80
     property int iconSize: 16
-    property var colNormal: "#b0b4bc"
-    property var colPassive: "#4e4e4e"
+    property color colNormal: Config.colFg
+    property color colPassive: Config.colPassive
+    property color colMuted: Config.colRed
 
     implicitWidth: iconText.width
     implicitHeight: iconText.height
@@ -85,7 +86,7 @@ Item {
         id: iconText
         anchors.centerIn: parent
         text: root.getVolumeIcon(root.volume, root.muted)
-        color: root.muted ? root.colPassive : root.colNormal
+        color: root.muted ? root.colMuted : root.colNormal
         font.family: "Symbols Nerd Font"
         font.pixelSize: root.iconSize
         font.bold: true
@@ -233,7 +234,7 @@ Item {
                         width: 12
                         height: 12
                         radius: 6
-                        color: root.muted ? root.colPassive : root.colNormal
+                        color: root.muted ? root.colMuted : root.colNormal
                         border.width: 2
                         border.color: root.colNormal
                         y: (sliderTrack.height - height) * (1 - root.volume / 100)

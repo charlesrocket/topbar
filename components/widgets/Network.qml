@@ -9,10 +9,10 @@ import "../.."
 Item {
     id: root
 
-    property int fontSize: 14
+    property int fontSize: Config.fontSize
     property color colFg: Config.colFg
     property color colAction: Config.colAction
-    property color colOffline: Config.colPassive
+    property color colOffline: Config.colRed
     property color colPassive: Config.colPassive
 
     property bool isOnline: false

@@ -21,19 +21,11 @@ RowLayout {
         active: !States.ecoMode && Config.systemStats
         visible: stats.active
         asynchronous: true
-
-        sourceComponent: Stats {
-            fontSize: Config.fontSize
-            colBar: Config.colDark
-            colCpu: Config.colFg
-            colMem: Config.colFg
-            colDisk: Config.colFg
-        }
+        sourceComponent: Stats {}
     }
 
     BarSeparator {
         visible: !States.ecoMode
-        colMain: Config.colPassive
     }
 
     // audio
@@ -54,22 +46,12 @@ RowLayout {
             spacing: 6
 
             // devices
-            AudioDevices {
-                colBg: Config.colBg
-                colMain: Config.colFg
-                colDecor: Config.colPassive
-                colActive: Config.colAccent
-                colCheck: Config.colGreen
-                colWinBorder: Config.colPassive
-                fontFamily: Config.fontFamily
-                fontSize: Config.fontSize
-            }
+            AudioDevices {}
 
             // mic
             Audio {
                 id: mic
                 mic: true
-                colPassive: Config.colAccent
                 opacity: mic.control ? 1 : 0
                 visible: opacity > 0
 
@@ -84,7 +66,6 @@ RowLayout {
             // speaker
             Audio {
                 id: speaker
-                colPassive: Config.colAccent
                 opacity: speaker.control ? 1 : 0
                 visible: opacity > 0
 
@@ -98,25 +79,17 @@ RowLayout {
         }
     }
 
-    BarSeparator {
-        colMain: Config.colPassive
-    }
+    BarSeparator {}
 
     // bt
-    Bluetooth {
-        colMain: Config.colFg
-        fontSize: Config.fontSize
-    }
+    Bluetooth {}
 
     // comms
     Network {
         ecoMode: States.ecoMode
-        fontSize: Config.fontSize
     }
 
-    BarSeparator {
-        colMain: Config.colPassive
-    }
+    BarSeparator {}
 
     // system tray
     Loader {
@@ -124,11 +97,7 @@ RowLayout {
         active: !States.ecoMode && Config.systemTray
         visible: sysTray.active && SystemTray.items && SystemTray.items.values.length > 0
         asynchronous: true
-
-        sourceComponent: Tray {
-            iconSize: Config.fontSize
-            iconColor: Config.colFg
-        }
+        sourceComponent: Tray {}
     }
 
     // weather
@@ -138,33 +107,19 @@ RowLayout {
         visible: localWeather.active
         asynchronous: true
         Layout.rightMargin: 2
-
-        sourceComponent: Weather {
-            fontFamily: "FiraCode Nerd Font"
-            fontSize: Config.fontSize
-            colMain: Config.colFg
-            colBg: "transparent"
-            colBorder: Config.colAction
-        }
+        sourceComponent: Weather {}
     }
 
     // language
-    HyprLang {
-        colBorder: Qt.darker(Config.colAccent, 1.5)
-        fontFamily: "SpaceMono Nerd Font"
-    }
+    HyprLang {}
 
     // time
     Clock {
-        slideDuration: Config.animDuration
-        fontFamily: "FiraCode Nerd Font"
         fontSize: Config.fontSize + 1
-        colMain: Config.colFg
-        colButton: Config.colAccent
+        ecoMode: States.ecoMode
         Layout.topMargin: 2
         Layout.leftMargin: -1
         Layout.rightMargin: 2
-        ecoMode: States.ecoMode
 
         onEcoModeChanged: {
             if (States.ecoMode !== ecoMode) {
@@ -182,13 +137,6 @@ RowLayout {
 
         sourceComponent: Battery {
             fontSize: Config.fontSize + 2
-            fontFamily: Config.fontFamily
-            slideDuration: Config.animDuration
-            colMain: Config.colFg
-            colGood: Config.colGreen
-            colBad: Config.colAccent
-            colCharging: Config.colYellow
-            colBg: Config.colDark
         }
     }
 }

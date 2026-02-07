@@ -1,9 +1,11 @@
 import QtQuick
 
+import ".."
+
 Rectangle {
     id: root
 
-    property int animDuration: 250
+    property int animDuration: Config.animDuration
     property int frameRadius: 6
     property color frameColor: "white"
 
