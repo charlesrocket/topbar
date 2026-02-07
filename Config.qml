@@ -49,6 +49,7 @@ Singleton {
 
     // logout commands
     readonly property var logout: QtObject {
+        readonly property color background: getSetting("logout.color", "#aa202020")
         readonly property var commands: QtObject {
             readonly property string lock: getSetting("logout.commands.lock", "hyprlock &")
             readonly property string logout: getSetting("logout.commands.logout", "hyprctl dispatch exit | pkill mango")

@@ -13,8 +13,7 @@ Loader {
     id: root
     active: States.logoutPresent
 
-    property color backgroundColor: "#aa202020"
-    property color buttonColor: Config.colRed
+    property color backgroundColor: Config.logout.background
 
     default property list<LogoutButton> buttons
 
@@ -137,7 +136,7 @@ Loader {
 
                                         anchors {
                                             top: icon.bottom
-                                            topMargin: 24
+                                            topMargin: 22
                                             horizontalCenter: parent.horizontalCenter
                                         }
 
