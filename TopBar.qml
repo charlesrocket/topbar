@@ -39,6 +39,13 @@ PanelWindow {
         color: States.ecoMode ? Config.colBgE : Config.colBg
         radius: Config.cornerRadius
 
+        Behavior on y {
+            NumberAnimation {
+                duration: Config.animDuration * 2
+                easing.type: Easing.OutQuint
+            }
+        }
+
         // startup animation
         transform: Translate {
             id: launchSequence
@@ -67,6 +74,22 @@ PanelWindow {
             CenterSection {}
 
             RightSection {}
+        }
+
+        Timer {
+            id: hideTimer
+            interval: Config.animDuration * 2
+            onTriggered: bar.visible = false
+        }
+
+        function hidden(val) {
+            if (val) {
+                bar.y = -(Config.barHeight);
+                hideTimer.start();
+            } else {
+                bar.y = Config.extraPadding;
+                bar.visible = true;
+            }
         }
     }
 
