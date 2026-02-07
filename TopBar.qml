@@ -9,6 +9,7 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
+import "components/logout"
 import "components"
 
 PanelWindow {
@@ -122,6 +123,58 @@ PanelWindow {
         // post-start region refresh
         function onYChanged() {
             itemsRegions.changed();
+        }
+    }
+
+    IpcHandler {
+        target: "topbar"
+
+        function logout(): void {
+            States.logoutPresent = true;
+        }
+    }
+
+    Logout {
+        LogoutButton {
+            command: Config.logout.commands.lock
+            keybind: Qt.Key_K
+            text: "Lock"
+            icon: ""
+        }
+
+        LogoutButton {
+            command: Config.logout.commands.logout
+            keybind: Qt.Key_E
+            text: "Logout"
+            icon: "󰗽"
+        }
+
+        LogoutButton {
+            command: Config.logout.commands.suspend
+            keybind: Qt.Key_S
+            text: "Suspend"
+            icon: ""
+        }
+
+        LogoutButton {
+            command: Config.logout.commands.hibernate
+            keybind: Qt.Key_H
+            text: "Hibernate"
+            icon: "󰅐"
+        }
+
+        LogoutButton {
+            command: Config.logout.commands.shutdown
+            keybind: Qt.Key_P
+            text: "Shutdown"
+            icon: "󰤆"
+        }
+
+        LogoutButton {
+            command: Config.logout.commands.reboot
+            keybind: Qt.Key_R
+            text: "Reboot"
+            icon: "󰑐"
         }
     }
 

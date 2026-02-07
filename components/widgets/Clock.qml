@@ -4,6 +4,8 @@ import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 
+import "../.."
+
 Item {
     id: root
 
@@ -29,12 +31,6 @@ Item {
     SystemClock {
         id: clock
         precision: SystemClock.Minutes
-    }
-
-    Process {
-        id: wlogout
-        command: ["wlogout"]
-        Component.onCompleted: running = false
     }
 
     Process {
@@ -153,7 +149,7 @@ Item {
                 anchors.fill: parent
 
                 onClicked: {
-                    wlogout.running = true;
+                    States.logoutPresent = true;
                 }
             }
         }

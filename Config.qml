@@ -1,45 +1,78 @@
 pragma Singleton
 
-import QtQuick
 import Quickshell
+import QtQuick
 
 import qs
 
 Singleton {
-    readonly property color colBg: Settings.colors.bg ?? "#aa000000" // background
-    readonly property color colBgE: Settings.colors.bgE ?? "#000000" // eco mode background
-    readonly property color colFg: Settings.colors.fg ?? "#b0b4bc" // main color
-    readonly property color colMuted: Settings.colors.muted ?? "#aa4e4e4e" // passive color
-    readonly property color colDark: Settings.colors.dark ?? Qt.darker(colMuted, 1.5) // dark stuff
-    readonly property color colCyan: Settings.colors.cyan ?? "#0db9d7" // action color
-    readonly property color colRed: Settings.colors.red ?? "#cc0000" // evil color
-    readonly property color colBlue: Settings.colors.blue ?? "#7aa2f7" // some stuff
-    readonly property color colYellow: Settings.colors.yellow ?? "#ffd700" // danger zone
-    readonly property color colGreen: Settings.colors.green ?? "#9ece6a" // zoot zone
-    readonly property color colPurple: Settings.colors.purple ?? "#bf00ff" // more stuff
+    // check
+    readonly property bool settingsAvailable: typeof Settings !== 'undefined'
 
-    readonly property string ws01: Settings.workspaces.one ?? "" // 01
-    readonly property string ws02: Settings.workspaces.two ?? "" // 02
-    readonly property string ws03: Settings.workspaces.three ?? "" // 03
-    readonly property string ws04: Settings.workspaces.four ?? "" // 04
-    readonly property string ws05: Settings.workspaces.five ?? "" // 05
-    readonly property string ws06: Settings.workspaces.six ?? "󰉕" // 06
-    readonly property string ws07: Settings.workspaces.seven ?? "" // 07
-    readonly property string ws08: Settings.workspaces.eight ?? "" // 08
-    readonly property string ws09: Settings.workspaces.tine ?? "" // 09
-    readonly property string ws10: Settings.workspaces.ten ?? "" // 10
+    // colors
+    readonly property color colBg: getSetting("colors.bg", "#aa000000")
+    readonly property color colBgE: getSetting("colors.bgE", "#000000")
+    readonly property color colFg: getSetting("colors.fg", "#b0b4bc")
+    readonly property color colMuted: getSetting("colors.muted", "#aa4e4e4e")
+    readonly property color colDark: getSetting("colors.dark", Qt.darker(colMuted, 1.5))
+    readonly property color colCyan: getSetting("colors.cyan", "#0db9d7")
+    readonly property color colRed: getSetting("colors.red", "#cc0000")
+    readonly property color colBlue: getSetting("colors.blue", "#7aa2f7")
+    readonly property color colYellow: getSetting("colors.yellow", "#ffd700")
+    readonly property color colGreen: getSetting("colors.green", "#9ece6a")
+    readonly property color colPurple: getSetting("colors.purple", "#bf00ff")
 
-    readonly property string fontFamily: Settings.font ?? "Hack Nerd Font" // main font
-    readonly property int fontSize: Settings.fontSize ?? 14 // base size
+    // workspaces
+    readonly property string ws01: getSetting("workspaces.one", "")
+    readonly property string ws02: getSetting("workspaces.two", "")
+    readonly property string ws03: getSetting("workspaces.three", "")
+    readonly property string ws04: getSetting("workspaces.four", "")
+    readonly property string ws05: getSetting("workspaces.five", "")
+    readonly property string ws06: getSetting("workspaces.six", "󰉕")
+    readonly property string ws07: getSetting("workspaces.seven", "")
+    readonly property string ws08: getSetting("workspaces.eight", "")
+    readonly property string ws09: getSetting("workspaces.nine", "")
+    readonly property string ws10: getSetting("workspaces.ten", "")
 
-    readonly property int cornerRadius: Settings.radius ?? 8 // base radius
-    readonly property int animDuration: Settings.duration ?? 250 // base animations
-    readonly property int barHeight: Settings.barHeight ?? 30
-    readonly property int extraPadding: Settings.barExtraPadding ?? 8
-
-    readonly property string wallpaper: Settings.wallpaper ?? States.defaultWallpaper
+    // general
+    readonly property string fontFamily: getSetting("font", "Hack Nerd Font")
+    readonly property int fontSize: getSetting("fontSize", 14)
+    readonly property int cornerRadius: getSetting("radius", 8)
+    readonly property int animDuration: getSetting("duration", 250)
+    readonly property int barHeight: getSetting("barHeight", 30)
+    readonly property int extraPadding: getSetting("barExtraPadding", 8)
+    readonly property string wallpaper: getSetting("wallpaper", States.defaultWallpaper)
 
     // widgets
-    readonly property bool systemTray: Settings.systemTray ?? false
-    readonly property bool systemStats: Settings.systemStats ?? false
+    readonly property bool systemTray: getSetting("systemTray", false)
+    readonly property bool systemStats: getSetting("systemStats", false)
+
+    // logout commands
+    readonly property var logout: QtObject {
+        readonly property var commands: QtObject {
+            readonly property string lock: getSetting("logout.commands.lock", "hyprlock &")
+            readonly property string logout: getSetting("logout.commands.logout", "hyprctl dispatch exit | pkill mango")
+            readonly property string suspend: getSetting("logout.commands.suspend", "zzz")
+            readonly property string hibernate: getSetting("logout.commands.hibernate", "acpiconf -s 4")
+            readonly property string shutdown: getSetting("logout.commands.shutdown", "shutdown -p now")
+            readonly property string reboot: getSetting("logout.commands.reboot", "shutdown -r now")
+        }
+    }
+
+    function getSetting(path, defaultValue) {
+        if (!settingsAvailable)
+            return defaultValue;
+
+        var obj = Settings;
+        var parts = path.split('.');
+
+        for (var i = 0; i < parts.length; i++) {
+            if (obj === undefined || obj === null)
+                return defaultValue;
+
+            obj = obj[parts[i]];
+        }
+
+        return obj ?? defaultValue;
+    }
 }
