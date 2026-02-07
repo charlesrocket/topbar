@@ -2,7 +2,6 @@ import Quickshell
 import Quickshell.Wayland
 
 import QtQuick
-import QtCore
 
 import "components"
 
@@ -32,7 +31,7 @@ Variants {
             id: wallpaperImage
             anchors.fill: parent
             cache: false
-            source: root.expandPath(Config.wallpaper)
+            source: Utils.expandPath(Config.wallpaper)
             fillMode: root.defaultWallpaper ? Image.Pad : Image.PreserveAspectCrop
             opacity: 0
 
@@ -49,13 +48,5 @@ Variants {
                 }
             }
         }
-    }
-
-    function expandPath(path) {
-        if (path.startsWith("~/")) {
-            return StandardPaths.writableLocation(StandardPaths.HomeLocation) + path.substring(1);
-        }
-
-        return path;
     }
 }
