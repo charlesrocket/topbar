@@ -13,9 +13,9 @@ Item {
     property color colMain: Config.colFg
     property color colButton: Config.colAccent
     property color colGreen: Config.colGreen
+    property color colPurple: Config.colPurple
     property string fontFamily: "FiraCode Nerd Font"
     property int fontSize: 14
-    property bool ecoMode: false
 
     Layout.alignment: Qt.AlignVCenter
     implicitWidth: (hoverDetector.containsMouse ? dateContainer.width + 8 : 0) + clockText.width
@@ -51,9 +51,9 @@ Item {
     }
 
     function toggleEcoMode() {
-        root.ecoMode = !root.ecoMode;
+        States.ecoMode = !States.ecoMode;
 
-        if (root.ecoMode) {
+        if (States.ecoMode) {
             hyprctlBatch.running = true;
             notify.command = ["notify-send", "-u", "low", "ECO MODE", "ON", "--icon=dialog-information-symbolic"];
         } else {
@@ -110,8 +110,8 @@ Item {
 
         Text {
             id: ecoBtn
-            text: root.ecoMode ? "󰌪" : "󱋙"
-            color: root.ecoMode ? root.colGreen : root.colMain
+            text: States.ecoMode ? "󰌪" : "󱋙"
+            color: States.ecoMode ? root.colGreen : root.colMain
             Layout.bottomMargin: 2
 
             font {
@@ -122,7 +122,7 @@ Item {
 
             Behavior on color {
                 ColorAnimation {
-                    duration: 250
+                    duration: Config.animDuration
                     easing.type: Easing.OutCubic
                 }
             }

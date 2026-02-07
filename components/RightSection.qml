@@ -85,9 +85,7 @@ RowLayout {
     Bluetooth {}
 
     // comms
-    Network {
-        ecoMode: States.ecoMode
-    }
+    Network {}
 
     BarSeparator {}
 
@@ -116,16 +114,9 @@ RowLayout {
     // time
     Clock {
         fontSize: Config.fontSize + 1
-        ecoMode: States.ecoMode
         Layout.topMargin: 2
         Layout.leftMargin: -1
         Layout.rightMargin: 2
-
-        onEcoModeChanged: {
-            if (States.ecoMode !== ecoMode) {
-                States.ecoMode = ecoMode;
-            }
-        }
     }
 
     // battery

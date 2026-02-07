@@ -16,9 +16,8 @@ Item {
     property color colPassive: Config.colPassive
 
     property bool isOnline: false
-    property bool ecoMode: false
 
-    property color colOnline: root.ecoMode ? root.colPassive : root.isOnline ? root.colFg : root.colOffline
+    property color colOnline: States.ecoMode ? root.colPassive : root.isOnline ? root.colFg : root.colOffline
 
     readonly property var devicesList: Networking.devices.values
     readonly property string uplinkIcon: hasActiveVpn ? "" : ""
@@ -99,7 +98,7 @@ Item {
     Process {
         id: onlineCheck
         command: ["host", "-W", "1", "8.8.8.8"]
-        running: !root.ecoMode
+        running: !States.ecoMode
 
         onExited: (exitCode, exitStatus) => {
             var randomValue = Math.floor(Math.random() * (5000 - 1000) + 1000);
@@ -111,7 +110,7 @@ Item {
 
     Timer {
         id: tmr
-        running: !root.ecoMode
+        running: !States.ecoMode
 
         onTriggered: {
             onlineCheck.running = true;
@@ -132,7 +131,7 @@ Item {
             color: isHovered ? root.colAction : root.colOnline
             font.family: "Symbols Nerd Font"
             font.pixelSize: root.fontSize
-            visible: !root.ecoMode
+            visible: !States.ecoMode
 
             Behavior on color {
                 ColorAnimation {
