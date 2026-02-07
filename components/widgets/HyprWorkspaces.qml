@@ -18,7 +18,7 @@ Repeater {
     property string fontFamily: "Symbols Nerd Font"
     property color colNormal: Config.colFg
     property color colActive: Config.colAccent
-    property color colPassive: Config.colPassive
+    property color colPassive: Qt.darker(Config.colPassive, 1.5)
     property color colAction: Config.colAction
 
     Text {
