@@ -12,9 +12,7 @@ RowLayout {
     }
 
     // active window title
-    WindowTitle {
-        emptyTitle: "" // idle
-    }
+    WindowTitle {}
 
     Item {
         Layout.fillWidth: true

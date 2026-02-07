@@ -41,6 +41,7 @@ Singleton {
     readonly property int barHeight: getSetting("barHeight", 30)
     readonly property int extraPadding: getSetting("barExtraPadding", 8)
     readonly property string wallpaper: getSetting("wallpaper", States.defaultWallpaper)
+    readonly property string emptyWindowTitle: getSetting("emptyWindowTitle", "")
 
     // widgets
     readonly property bool systemTray: getSetting("systemTray", false)
