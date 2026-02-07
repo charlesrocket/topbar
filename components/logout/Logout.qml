@@ -111,6 +111,7 @@ Loader {
                                         color: mouseArea.containsMouse ? Config.colAccent : Config.colFg
                                         font.pixelSize: 105
                                         font.family: "Symbols Nerd Font"
+                                        renderType: Text.NativeRendering
                                         text: `${buttonRect.modelData.icon}`
 
                                         anchors {
@@ -133,6 +134,7 @@ Loader {
                                         font.pointSize: 14
                                         font.bold: true
                                         font.family: Config.fontFamily
+                                        renderType: Text.NativeRendering
 
                                         anchors {
                                             top: icon.bottom
