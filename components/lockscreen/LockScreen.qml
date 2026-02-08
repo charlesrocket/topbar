@@ -79,6 +79,21 @@ Item {
             Layout.preferredHeight: 160
 
             sourceComponent: Item {
+                Loader {
+                    active: Config.lockscreen.shadows
+                    visible: Config.lockscreen.shadows
+                    anchors.fill: parent
+
+                    sourceComponent: RectangularShadow {
+                        offset.x: 0
+                        offset.y: 0
+                        radius: width / 2
+                        blur: 30
+                        spread: 10
+                        color: Qt.rgba(0, 0, 0, 0.5)
+                    }
+                }
+
                 Image {
                     id: userImage
                     source: Utils.expandPath("~/.face.icon")
@@ -120,11 +135,45 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 18
 
-            sourceComponent: Text {
-                text: root.fullName || root.userName
-                color: Config.colFg
-                font.family: Config.fontFamily
-                font.pixelSize: 18
+            sourceComponent: Item {
+                implicitWidth: usernameRect.implicitWidth
+                implicitHeight: usernameRect.implicitHeight
+
+                Loader {
+                    active: Config.lockscreen.shadows
+                    visible: Config.lockscreen.shadows
+                    anchors.fill: usernameRect
+                    anchors.margins: -10
+
+                    sourceComponent: RectangularShadow {
+                        offset.x: 0
+                        offset.y: 0
+                        radius: 8
+                        blur: 30
+                        spread: 10
+                        color: Qt.rgba(0, 0, 0, 0.5)
+                    }
+                }
+
+                Rectangle {
+                    id: usernameRect
+                    implicitWidth: usernameText.implicitWidth + 20
+                    implicitHeight: usernameText.implicitHeight + 12
+                    color: Config.colBg
+                    radius: 8
+                    //border.width: 1
+                    //border.color: Config.colPassive
+
+                    Text {
+                        id: usernameText
+                        anchors.centerIn: parent
+                        text: root.fullName || root.userName
+                        color: Config.colFg
+                        font.family: Config.fontFamily
+                        font.pixelSize: 18
+                        font.bold: false
+                    }
+                }
             }
         }
 
@@ -133,6 +182,22 @@ Item {
                 implicitWidth: 400
                 implicitHeight: passwordBox.implicitHeight
                 Layout.topMargin: 18
+
+                Loader {
+                    active: Config.lockscreen.shadows
+                    visible: Config.lockscreen.shadows
+                    anchors.fill: passwordBox
+                    anchors.margins: -10
+
+                    sourceComponent: RectangularShadow {
+                        offset.x: 0
+                        offset.y: 0
+                        radius: 8
+                        blur: 30
+                        spread: 10
+                        color: Qt.rgba(0, 0, 0, 0.5)
+                    }
+                }
 
                 TextField {
                     id: passwordBox
@@ -149,7 +214,7 @@ Item {
                         id: blinkBorder
                         color: Config.colBg
                         radius: 8
-                        border.width: 3
+                        border.width: 2
                         border.color: Qt.rgba(Config.colAccent.r, Config.colAccent.g, Config.colAccent.b, blinkBorder.borderOpacity)
 
                         property real borderOpacity: 0
@@ -175,7 +240,7 @@ Item {
 
                     onTextChanged: {
                         root.context.currentText = this.text;
-                        // trigger blink on each character change
+
                         if (this.text.length > 0) {
                             blinkAnimation.restart();
                         }
@@ -183,6 +248,7 @@ Item {
 
                     Connections {
                         target: root.context
+
                         function onCurrentTextChanged() {
                             passwordBox.text = root.context.currentText;
                         }
@@ -190,22 +256,16 @@ Item {
 
                     Text {
                         anchors.centerIn: parent
-                        text: "PASSWORD"
-                        color: Config.colFg
-                        opacity: 0.5
+                        text: root.context.showFailure ? "INCORRECT PASSWORD" : "PASSWORD"
+                        color: root.context.showFailure ? Config.colRed : Config.colFg
+                        opacity: root.context.showFailure ? 1 : 0.5
                         font.family: Config.fontFamily
+                        font.bold: false
                         font.pixelSize: passwordBox.font.pixelSize
                         visible: passwordBox.text.length === 0
                     }
                 }
             }
-        }
-
-        Label {
-            visible: root.context.showFailure
-            text: "Incorrect password!"
-            color: Config.colYellow
-            font.family: Config.fontFamily
         }
     }
 }

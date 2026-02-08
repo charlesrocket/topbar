@@ -52,6 +52,7 @@ Singleton {
     // lockscreen
     readonly property var lockscreen: QtObject {
         readonly property string wallpaper: getSetting("lockscreen.wallpaper", States.defaultWallpaper)
+        readonly property bool shadows: getSetting("lockscreen.shadows", true)
         readonly property bool username: getSetting("lockscreen.username", true) // full name
         readonly property bool icon: getSetting("lockscreen.icon", true) // user icon
     }
