@@ -2,6 +2,13 @@
 
 An interactive bar for [Quickshell](https://quickshell.org/).
 
+## Features
+
+* responsive widgets
+* logout panel
+* lock screen
+* wallpapers
+
 ## Installation
 
 Add a submodule to the configuration repository:
