@@ -1,3 +1,5 @@
+import Quickshell
+import Quickshell.Io
 import Quickshell.Wayland
 
 import QtQuick
@@ -9,6 +11,10 @@ import "../.."
 
 Item {
     id: root
+
+    property string userName: Quickshell.env("USER")
+    property string fullName: ""
+
     required property LockContext context
     readonly property bool defaultWallpaper: Config.wallpaper === States.defaultWallpaper
 
@@ -22,6 +28,19 @@ Item {
         NumberAnimation {
             duration: Config.animDuration * 2
             easing.type: Easing.OutQuint
+        }
+    }
+
+    Process {
+        running: true
+        command: [ "sh", "-c", "getent passwd " + root.userName ]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                var parts = this.text.split(":");
+                if (parts.length >= 5) {
+                    root.fullName = parts[4].trim();
+                }
+            }
         }
     }
 
@@ -39,40 +58,59 @@ Item {
         }
     }
 
-    Label {
-        id: clock
-        property var date: new Date()
-
-        renderType: Text.NativeRendering
-        font.pointSize: 80
-        font.family: "FiraCode Nerd Font"
-        font.bold: true
-        color: Config.colFg
-
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: parent.top
-            topMargin: 180
-        }
-
-        text: {
-            const hours = this.date.getHours().toString().padStart(2, '0');
-            const minutes = this.date.getMinutes().toString().padStart(2, '0');
-            return `${hours}:${minutes}`;
-        }
-
-        Timer {
-            running: true
-            repeat: true
-            interval: 1000
-            onTriggered: clock.date = new Date()
-        }
-    }
-
     ColumnLayout {
         anchors {
             horizontalCenter: parent.horizontalCenter
-            top: parent.verticalCenter
+            verticalCenter: parent.verticalCenter
+            bottomMargin: 200
+        }
+
+        Item {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: 160
+            Layout.preferredHeight: 160
+
+            Image {
+                id: userImage
+                source: Utils.expandPath("~/.face.icon")
+                anchors.fill: parent
+                visible: false
+            }
+
+            MultiEffect {
+                id: maskedImage
+                source: userImage
+                anchors.fill: parent
+                maskEnabled: true
+                maskSource: mask
+                // smooth image
+                maskThresholdMin: 0.5
+                maskSpreadAtMin: 1.0
+            }
+
+            Item {
+                id: mask
+                anchors.fill: parent
+                layer.enabled: true
+                //layer.smooth: true
+                visible: false
+
+                Rectangle {
+                    anchors.fill: parent
+                    radius: width / 2
+                    color: "black"
+                }
+            }
+        }
+
+        Text {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 20
+            Layout.bottomMargin: 20
+            text: root.fullName || root.userName
+            color: Config.colFg
+            font.family: Config.fontFamily
+            font.pixelSize: 18
         }
 
         RowLayout {
@@ -89,6 +127,7 @@ Item {
                     echoMode: TextInput.NoEcho
                     inputMethodHints: Qt.ImhSensitiveData
                     placeholderText: "PASSWORD"
+                    font.family: Config.fontFamily
                     cursorVisible: false
                     color: "transparent"
                     onAccepted: root.context.tryUnlock()
@@ -135,34 +174,6 @@ Item {
                             passwordBox.text = root.context.currentText;
                         }
                     }
-                }
-            }
-
-            Button {
-                id: unlockBtn
-                text: "UNLOCK"
-                font.family: Config.fontFamily
-                padding: 10
-                focusPolicy: Qt.NoFocus
-                enabled: !root.context.unlockInProgress && root.context.currentText !== ""
-                onReleased: root.context.tryUnlock()
-
-                contentItem: Text {
-                    text: unlockBtn.text
-                    font: unlockBtn.font
-                    opacity: enabled ? 1.0 : 0.3
-                    color: unlockBtn.down ? Config.colPurple : Config.colFg
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
-                }
-
-                background: Rectangle {
-                    implicitWidth: 100
-                    implicitHeight: 40
-                    color: Config.colBg
-                    opacity: enabled ? 1 : 0.3
-                    radius: 8
                 }
             }
         }
