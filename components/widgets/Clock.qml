@@ -64,6 +64,18 @@ Item {
         notify.running = true;
     }
 
+    function toggleAwakeMode() {
+        States.keepAwake = !States.keepAwake;
+
+        if (States.keepAwake) {
+            notify.command = ["notify-send", "-u", "low", "AWAKE MODE", "ON", "--icon=dialog-information-symbolic"];
+        } else {
+            notify.command = ["notify-send", "-u", "low", "AWAKE MODE", "OFF", "--icon=dialog-information-symbolic"];
+        }
+
+        notify.running = true;
+    }
+
     RowLayout {
         id: dateContainer
         anchors.right: clockContainer.left
@@ -130,6 +142,31 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: root.toggleEcoMode()
+            }
+        }
+
+        Text {
+            id: coffeeBtn
+            text: States.keepAwake ? "󰅶" : "󰾪"
+            color: States.keepAwake ? root.colPurple : root.colMain
+            Layout.bottomMargin: 2
+
+            font {
+                family: "Symbols Nerd Font"
+                pixelSize: root.fontSize + 1
+                bold: true
+            }
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: Config.animDuration
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: root.toggleAwakeMode()
             }
         }
 

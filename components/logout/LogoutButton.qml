@@ -1,5 +1,6 @@
-import QtQuick
 import Quickshell.Io
+
+import QtQuick
 
 QtObject {
     id: button

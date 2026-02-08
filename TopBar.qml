@@ -9,6 +9,7 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
+import "components/lockscreen"
 import "components/logout"
 import "components"
 
@@ -35,7 +36,7 @@ PanelWindow {
         implicitWidth: root.screen.width - Config.extraPadding * 2
         implicitHeight: Config.barHeight
         border.width: 1
-        border.color: Config.colPassive
+        border.color: Config.colBorder
         height: Config.barHeight
         color: States.ecoMode ? Config.colBgE : Config.colBg
         radius: Config.cornerRadius
@@ -132,6 +133,10 @@ PanelWindow {
         function logout(): void {
             States.logoutPresent = true;
         }
+
+        function lock(): void {
+            lock.locked = true;
+        }
     }
 
     Logout {
@@ -207,6 +212,76 @@ PanelWindow {
         id: refreshOSS
         interval: 50
         onTriggered: OSS.refresh()
+    }
+
+    Process {
+        id: dpmsOff
+        command: ["hyprctl", "dispatch", "dpms", "off"]
+    }
+
+    Process {
+        id: dpmsOn
+        command: ["hyprctl", "dispatch", "dpms", "on"]
+    }
+
+    Process {
+        id: suspendProcess
+        command: Config.logout.commands.suspend
+    }
+
+    IdleMonitor {
+        timeout: 600
+        enabled: !States.keepAwake
+
+        onIsIdleChanged: {
+            if (isIdle) {
+                lock.locked = true;
+            }
+        }
+    }
+
+    IdleMonitor {
+        timeout: 690
+        enabled: !States.keepAwake
+
+        onIsIdleChanged: {
+            if (isIdle) {
+                dpmsOff.running = true;
+            } else {
+                dpmsOn.running = true;
+            }
+        }
+    }
+
+    IdleMonitor {
+        timeout: 3600
+        enabled: !States.keepAwake
+
+        onIsIdleChanged: {
+            if (isIdle) {
+                suspendProcess.running = true;
+            }
+        }
+    }
+
+    LockContext {
+        id: lockContext
+
+        onUnlocked: {
+            lock.locked = false;
+        }
+    }
+
+    WlSessionLock {
+        id: lock
+
+        WlSessionLockSurface {
+            color: Config.colBg
+            LockScreen {
+                anchors.fill: parent
+                context: lockContext
+            }
+        }
     }
 
     Component.onCompleted: {
