@@ -11,7 +11,7 @@ Singleton {
 
     // colors
     readonly property color colBg: getSetting("colors.bg", "#aa000000")
-    readonly property color colBgE: getSetting("colors.bgE", "#000000")
+    readonly property color colBgE: getSetting("colors.bgE", "#000000") // eco mode
     readonly property color colFg: getSetting("colors.fg", "#b0b4bc")
     readonly property color colBorder: getSetting("colors.border", "#aa4e4e4e")
     readonly property color colPassive: getSetting("colors.passive", "#4e4e4e")
