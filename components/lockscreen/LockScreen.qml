@@ -26,7 +26,7 @@ Item {
     }
 
     Image {
-        source: Utils.expandPath(Config.wallpaper)
+        source: Utils.expandPath(Config.lockWallpaper)
         cache: false
         anchors.fill: parent
         fillMode: root.defaultWallpaper ? Image.Pad : Image.PreserveAspectCrop
