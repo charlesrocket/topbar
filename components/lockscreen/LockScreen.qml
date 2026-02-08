@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
@@ -12,11 +14,12 @@ import "../.."
 Item {
     id: root
 
-    property string userName: Quickshell.env("USER")
     property string fullName: ""
 
+    readonly property string userName: Quickshell.env("USER")
+    readonly property bool defaultWallpaper: Config.lockscreen.wallpaper === States.defaultWallpaper
+
     required property LockContext context
-    readonly property bool defaultWallpaper: Config.wallpaper === States.defaultWallpaper
 
     opacity: 0
 
@@ -33,10 +36,11 @@ Item {
 
     Process {
         running: true
-        command: [ "sh", "-c", "getent passwd " + root.userName ]
+        command: ["sh", "-c", "getent passwd " + root.userName]
         stdout: StdioCollector {
             onStreamFinished: {
                 var parts = this.text.split(":");
+
                 if (parts.length >= 5) {
                     root.fullName = parts[4].trim();
                 }
@@ -45,11 +49,12 @@ Item {
     }
 
     Image {
-        source: Utils.expandPath(Config.lockWallpaper)
+        source: Utils.expandPath(Config.lockscreen.wallpaper)
         cache: false
         anchors.fill: parent
         fillMode: root.defaultWallpaper ? Image.Pad : Image.PreserveAspectCrop
         layer.enabled: true
+
         layer.effect: MultiEffect {
             blurEnabled: true
             blur: 0.65
@@ -65,58 +70,69 @@ Item {
             bottomMargin: 200
         }
 
-        Item {
+        Loader {
+            active: Config.lockscreen.icon
+            visible: Config.lockscreen.icon
+            asynchronous: true
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: 160
             Layout.preferredHeight: 160
 
-            Image {
-                id: userImage
-                source: Utils.expandPath("~/.face.icon")
-                anchors.fill: parent
-                visible: false
-            }
-
-            MultiEffect {
-                id: maskedImage
-                source: userImage
-                anchors.fill: parent
-                maskEnabled: true
-                maskSource: mask
-                // smooth image
-                maskThresholdMin: 0.5
-                maskSpreadAtMin: 1.0
-            }
-
-            Item {
-                id: mask
-                anchors.fill: parent
-                layer.enabled: true
-                //layer.smooth: true
-                visible: false
-
-                Rectangle {
+            sourceComponent: Item {
+                Image {
+                    id: userImage
+                    source: Utils.expandPath("~/.face.icon")
                     anchors.fill: parent
-                    radius: width / 2
-                    color: "black"
+                    visible: false
+                }
+
+                MultiEffect {
+                    id: maskedImage
+                    source: userImage
+                    anchors.fill: parent
+                    maskEnabled: true
+                    maskSource: mask
+                    // smooth image
+                    maskThresholdMin: 0.5
+                    maskSpreadAtMin: 1.0
+                }
+
+                Item {
+                    id: mask
+                    anchors.fill: parent
+                    layer.enabled: true
+                    //layer.smooth: true
+                    visible: false
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: width / 2
+                        color: "black"
+                    }
                 }
             }
         }
 
-        Text {
+        Loader {
+            active: Config.lockscreen.username
+            visible: Config.lockscreen.username
+            asynchronous: true
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 20
-            Layout.bottomMargin: 20
-            text: root.fullName || root.userName
-            color: Config.colFg
-            font.family: Config.fontFamily
-            font.pixelSize: 18
+            Layout.topMargin: 18
+
+            sourceComponent: Text {
+                text: root.fullName || root.userName
+                color: Config.colFg
+                font.family: Config.fontFamily
+                font.pixelSize: 18
+            }
         }
 
         RowLayout {
             Item {
                 implicitWidth: 400
                 implicitHeight: passwordBox.implicitHeight
+                Layout.topMargin: 18
 
                 TextField {
                     id: passwordBox
@@ -126,9 +142,6 @@ Item {
                     enabled: !root.context.unlockInProgress
                     echoMode: TextInput.NoEcho
                     inputMethodHints: Qt.ImhSensitiveData
-                    placeholderText: "PASSWORD"
-                    font.family: Config.fontFamily
-                    cursorVisible: false
                     color: "transparent"
                     onAccepted: root.context.tryUnlock()
 
@@ -173,6 +186,16 @@ Item {
                         function onCurrentTextChanged() {
                             passwordBox.text = root.context.currentText;
                         }
+                    }
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: "PASSWORD"
+                        color: Config.colFg
+                        opacity: 0.5
+                        font.family: Config.fontFamily
+                        font.pixelSize: passwordBox.font.pixelSize
+                        visible: passwordBox.text.length === 0
                     }
                 }
             }

@@ -43,12 +43,18 @@ Singleton {
     readonly property int barHeight: getSetting("barHeight", 30)
     readonly property int extraPadding: getSetting("barExtraPadding", 8)
     readonly property string wallpaper: getSetting("wallpaper", States.defaultWallpaper)
-    readonly property string lockWallpaper: getSetting("lockWallpaper", wallpaper)
-    readonly property string emptyWindowTitle: getSetting("emptyWindowTitle", "")
+    readonly property string emptyWindowTitle: getSetting("emptyWindowTitle", "")
 
     // widgets
     readonly property bool systemTray: getSetting("systemTray", false)
     readonly property bool systemStats: getSetting("systemStats", false)
+
+    // lockscreen
+    readonly property var lockscreen: QtObject {
+        readonly property string wallpaper: getSetting("lockscreen.wallpaper", States.defaultWallpaper)
+        readonly property bool username: getSetting("lockscreen.username", true) // full name
+        readonly property bool icon: getSetting("lockscreen.icon", true) // user icon
+    }
 
     // logout commands
     readonly property var logout: QtObject {
