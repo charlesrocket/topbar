@@ -277,6 +277,7 @@ PanelWindow {
 
         WlSessionLockSurface {
             color: Config.colBg
+
             LockScreen {
                 anchors.fill: parent
                 context: lockContext

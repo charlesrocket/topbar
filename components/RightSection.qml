@@ -18,20 +18,24 @@ RowLayout {
     // system stats
     Loader {
         id: stats
-        active: !States.ecoMode && Config.systemStats
+        active: !States.ecoMode && Config.widgets.stats
         visible: stats.active
         asynchronous: true
         sourceComponent: Stats {}
     }
 
     BarSeparator {
-        visible: !States.ecoMode
+        visible: !States.ecoMode && Config.widgets.stats
     }
 
     // audio
-    Item {
-        Layout.preferredWidth: audioRow.implicitWidth
-        implicitHeight: audioRow.implicitHeight
+    Loader {
+        id: audio
+        active: Config.widgets.audio
+        visible: audio.active
+        asynchronous: true
+        Layout.preferredWidth: item ? item.implicitWidth : 0
+        Layout.preferredHeight: item ? item.implicitHeight : 0
 
         Behavior on Layout.preferredWidth {
             NumberAnimation {
@@ -40,7 +44,7 @@ RowLayout {
             }
         }
 
-        RowLayout {
+        sourceComponent: RowLayout {
             id: audioRow
             anchors.right: parent.right
             spacing: 6
@@ -92,7 +96,7 @@ RowLayout {
     // system tray
     Loader {
         id: sysTray
-        active: !States.ecoMode && Config.systemTray
+        active: !States.ecoMode && Config.widgets.tray
         visible: sysTray.active && SystemTray.items && SystemTray.items.values.length > 0
         asynchronous: true
         sourceComponent: Tray {}
@@ -101,28 +105,51 @@ RowLayout {
     // weather
     Loader {
         id: localWeather
-        active: !States.ecoMode
+        active: !States.ecoMode && Config.widgets.weather
         visible: localWeather.active
         asynchronous: true
         Layout.rightMargin: 2
-        sourceComponent: Weather {}
+
+        sourceComponent: Item {
+            implicitWidth: childrenRect.width
+            implicitHeight: childrenRect.height
+            Weather {}
+        }
     }
 
     // language
-    HyprLang {}
+    Loader {
+        id: lang
+        active: Config.widgets.language
+        visible: lang.active
+        asynchronous: true
 
-    // time
-    Clock {
-        fontSize: Config.fontSize + 1
+        sourceComponent: Item {
+            implicitWidth: childrenRect.width
+            implicitHeight: childrenRect.height
+            HyprLang {}
+        }
+    }
+
+    // clock
+    Loader {
+        id: time
+        active: Config.widgets.clock
+        visible: time.active
+        asynchronous: true
         Layout.topMargin: 2
         Layout.leftMargin: -1
         Layout.rightMargin: 2
+
+        sourceComponent: Clock {
+            fontSize: Config.fontSize + 1
+        }
     }
 
     // battery
     Loader {
         id: batt
-        active: UPower.displayDevice.ready
+        active: UPower.displayDevice.ready || false
         visible: batt.active
         asynchronous: true
 

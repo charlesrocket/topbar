@@ -8,11 +8,7 @@ import ".."
 
 Item {
     id: root
-    Layout.fillWidth: true
-    Layout.minimumWidth: 400
     implicitHeight: activeWindowTitle.implicitHeight
-
-    clip: true
 
     property int fontSize: 14
     property int length: 80

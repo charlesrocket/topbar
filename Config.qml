@@ -46,8 +46,15 @@ Singleton {
     readonly property string emptyWindowTitle: getSetting("emptyWindowTitle", "")
 
     // widgets
-    readonly property bool systemTray: getSetting("systemTray", false)
-    readonly property bool systemStats: getSetting("systemStats", false)
+    readonly property var widgets: QtObject {
+        readonly property bool audio: getSetting("widgets.audio", true)
+        readonly property bool title: getSetting("widgets.title", true)
+        readonly property bool language: getSetting("widgets.language", false)
+        readonly property bool weather: getSetting("widgets.weather", true)
+        readonly property bool clock: getSetting("widgets.clock", true)
+        readonly property bool stats: getSetting("widgets.stats", false)
+        readonly property bool tray: getSetting("widgets.tray", false)
+    }
 
     // lockscreen
     readonly property var lockscreen: QtObject {

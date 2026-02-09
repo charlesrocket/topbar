@@ -12,7 +12,16 @@ RowLayout {
     }
 
     // active window title
-    WindowTitle {}
+    Loader {
+        id: title
+        active: Config.widgets.title
+        visible: title.active
+        asynchronous: true
+        Layout.fillWidth: true
+        Layout.minimumWidth: 400
+        Layout.preferredHeight: item ? item.implicitHeight : 0
+        sourceComponent: HyprWindowTitle {}
+    }
 
     Item {
         Layout.fillWidth: true
