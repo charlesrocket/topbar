@@ -53,7 +53,7 @@ Item {
 
         Behavior on color {
             ColorAnimation {
-                duration: Config.animDuration
+                duration: Config.general.animDuration
                 easing.type: Easing.OutCubic
             }
         }
@@ -125,7 +125,7 @@ Item {
 
                         Behavior on color {
                             ColorAnimation {
-                                duration: Config.animDuration
+                                duration: Config.general.animDuration
                                 easing.type: Easing.OutCubic
                             }
                         }
