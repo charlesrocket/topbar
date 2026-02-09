@@ -88,10 +88,22 @@ RowLayout {
     }
 
     // bt
-    Bluetooth {}
+    Loader {
+        id: bt
+        active: !States.ecoMode && Config.widgets.bluetooth
+        visible: bt.active
+        asynchronous: true
+        sourceComponent: Bluetooth {}
+    }
 
     // comms
-    Network {}
+    Loader {
+        id: netwrk
+        active: Config.widgets.network
+        visible: netwrk.active
+        asynchronous: true
+        sourceComponent: Network {}
+    }
 
     BarSeparator {
         visible: (bt.visible || netwrk.visible) && (sysTray.visible || localWeather.visible || lang.visible || time.visible || batt.visible)
