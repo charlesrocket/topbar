@@ -8,9 +8,9 @@ import ".."
 
 Item {
     id: root
-    Layout.alignment: Qt.AlignVCenter
 
     property bool mic: false
+    property bool osd: false
     property int deviceId: -1
     property int barLen: 80
     property int iconSize: 16
@@ -18,6 +18,7 @@ Item {
     property color colPassive: Config.colors.passive
     property color colMuted: Config.colors.red
 
+    Layout.alignment: Qt.AlignVCenter
     implicitWidth: iconText.width
     implicitHeight: iconText.height
 
@@ -143,6 +144,7 @@ Item {
         hoverEnabled: true
 
         onEntered: {
+            OSS.refresh();
             volumeMenu.show = true;
         }
 
@@ -281,5 +283,36 @@ Item {
         onTriggered: OSS.refresh()
 
         running: OSS.devices ? (hoverDetector.containsMouse || volumeMenu.show) : false
+    }
+
+    Connections {
+        target: root.control
+
+        function onMutedChanged() {
+            OSS.refresh();
+
+            if (!volumeMenu.show && root.osd && Config.desktop.osd)
+                audioOSD.item.trigger();
+        }
+
+        // should be enough for now
+        function onLeftChanged() {
+            OSS.refresh();
+
+            if (!volumeMenu.show && root.osd && Config.desktop.osd)
+                audioOSD.item.trigger();
+        }
+    }
+
+    Loader {
+        id: audioOSD
+        active: Config.desktop.osd && root.osd
+        visible: audioOSD.active
+        asynchronous: true
+
+        sourceComponent: Osd {
+            icon: iconText.text
+            value: root.volume
+        }
     }
 }

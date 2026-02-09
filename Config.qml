@@ -38,10 +38,15 @@ Singleton {
     property var bar: QtObject {
         property int height: getSetting("bar.height", 30)
         property int extraPadding: getSetting("bar.extraPadding", 8)
+
         property var title: QtObject {
             property int width: getSetting("bar.title.width", 400)
             property string empty: getSetting("bar.title.empty", "")
         }
+    }
+
+    property var desktop: QtObject {
+        property bool osd: getSetting("desktop.osd", false)
     }
 
     // widgets
@@ -70,6 +75,7 @@ Singleton {
     // logout commands
     property var logout: QtObject {
         property color background: getSetting("logout.color", "#aa202020")
+
         property var commands: QtObject {
             property string lock: getSetting("logout.commands.lock", "quickshell ipc call topbar lock")
             property string logout: getSetting("logout.commands.logout", "hyprctl dispatch exit | pkill mango")

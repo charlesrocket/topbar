@@ -70,6 +70,7 @@ RowLayout {
             // speaker
             Audio {
                 id: speaker
+                osd: true
                 opacity: speaker.control ? 1 : 0
                 visible: opacity > 0
 
