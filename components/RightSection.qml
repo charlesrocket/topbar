@@ -25,7 +25,7 @@ RowLayout {
     }
 
     BarSeparator {
-        visible: !States.ecoMode && Config.widgets.stats
+        visible: stats.visible
     }
 
     // audio
@@ -83,7 +83,9 @@ RowLayout {
         }
     }
 
-    BarSeparator {}
+    BarSeparator {
+        visible: audio.visible
+    }
 
     // bt
     Bluetooth {}
@@ -91,7 +93,9 @@ RowLayout {
     // comms
     Network {}
 
-    BarSeparator {}
+    BarSeparator {
+        visible: (bt.visible || netwrk.visible) && (sysTray.visible || localWeather.visible || lang.visible || time.visible || batt.visible)
+    }
 
     // system tray
     Loader {
