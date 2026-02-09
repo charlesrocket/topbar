@@ -9,6 +9,7 @@ import ".."
 Item {
     id: root
     implicitHeight: activeWindowTitle.implicitHeight
+    clip: true
 
     property int fontSize: 14
     property int length: 80
