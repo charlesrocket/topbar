@@ -71,11 +71,23 @@ PanelWindow {
             anchors.leftMargin: 13
             anchors.rightMargin: 12
 
-            LeftSection {}
+            LeftSection {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                Layout.alignment: Qt.AlignLeft
+            }
 
-            CenterSection {}
+            CenterSection {
+                Layout.fillWidth: false
+                Layout.preferredWidth: 400
+                Layout.alignment: Qt.AlignHCenter
+            }
 
-            RightSection {}
+            RightSection {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                Layout.alignment: Qt.AlignRight
+            }
         }
 
         Timer {

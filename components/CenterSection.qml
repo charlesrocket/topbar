@@ -5,10 +5,9 @@ import ".."
 import "widgets"
 
 RowLayout {
-    Layout.preferredWidth: parent.width / 3
-
     Item {
         Layout.fillWidth: true
+        Layout.minimumWidth: 0
     }
 
     // active window title
@@ -17,13 +16,14 @@ RowLayout {
         active: Config.widgets.title
         visible: title.active
         asynchronous: true
-        Layout.fillWidth: true
-        Layout.minimumWidth: 400
+        Layout.fillWidth: false
+        Layout.preferredWidth: 400
         Layout.preferredHeight: item ? item.implicitHeight : 0
         sourceComponent: HyprWindowTitle {}
     }
 
     Item {
         Layout.fillWidth: true
+        Layout.minimumWidth: 0
     }
 }
