@@ -47,13 +47,16 @@ Singleton {
 
     // widgets
     readonly property var widgets: QtObject {
-        readonly property bool audio: getSetting("widgets.audio", true)
+        readonly property bool workspaces: getSetting("widgets.workspaces", true)
         readonly property bool title: getSetting("widgets.title", true)
-        readonly property bool language: getSetting("widgets.language", false)
-        readonly property bool weather: getSetting("widgets.weather", true)
-        readonly property bool clock: getSetting("widgets.clock", true)
         readonly property bool stats: getSetting("widgets.stats", false)
+        readonly property bool audio: getSetting("widgets.audio", true)
+        readonly property bool bluetooth: getSetting("widgets.bluetooth", false)
+        readonly property bool network: getSetting("widgets.network", false)
         readonly property bool tray: getSetting("widgets.tray", false)
+        readonly property bool weather: getSetting("widgets.weather", true)
+        readonly property bool language: getSetting("widgets.language", false)
+        readonly property bool clock: getSetting("widgets.clock", true)
         readonly property bool battery: getSetting("widgets.battery", true)
     }
 
