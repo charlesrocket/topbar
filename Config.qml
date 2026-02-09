@@ -10,76 +10,84 @@ Singleton {
     readonly property bool settingsAvailable: typeof Settings !== 'undefined'
 
     // colors
-    readonly property color colBg: getSetting("colors.bg", "#aa000000")
-    readonly property color colBgE: getSetting("colors.bgE", "#000000") // eco mode
-    readonly property color colFg: getSetting("colors.fg", "#b0b4bc")
-    readonly property color colBorder: getSetting("colors.border", "#aa4e4e4e")
-    readonly property color colPassive: getSetting("colors.passive", "#4e4e4e")
-    readonly property color colDark: getSetting("colors.dark", Qt.darker(colPassive, 1.5))
-    readonly property color colAction: getSetting("colors.action", "#0db9d7")
-    readonly property color colAccent: getSetting("colors.accent", "#cc0000")
-    readonly property color colRed: getSetting("colors.red", "#cc0000")
-    readonly property color colYellow: getSetting("colors.yellow", "#ffd700")
-    readonly property color colPurple: getSetting("colors.purple", "#bf00ff")
-    readonly property color colGreen: getSetting("colors.green", "#9ece6a")
-
-    // workspaces
-    readonly property string ws01: getSetting("workspaces.one", "")
-    readonly property string ws02: getSetting("workspaces.two", "")
-    readonly property string ws03: getSetting("workspaces.three", "")
-    readonly property string ws04: getSetting("workspaces.four", "")
-    readonly property string ws05: getSetting("workspaces.five", "")
-    readonly property string ws06: getSetting("workspaces.six", "󰉕")
-    readonly property string ws07: getSetting("workspaces.seven", "")
-    readonly property string ws08: getSetting("workspaces.eight", "")
-    readonly property string ws09: getSetting("workspaces.nine", "")
-    readonly property string ws10: getSetting("workspaces.ten", "")
+    property var colors: QtObject {
+        property color bg: getSetting("colors.bg", "#aa000000")
+        property color bge: getSetting("colors.bge", "#000000") // eco mode
+        property color fg: getSetting("colors.fg", "#b0b4bc")
+        property color border: getSetting("colors.border", "#aa4e4e4e")
+        property color passive: getSetting("colors.passive", "#4e4e4e")
+        property color dark: getSetting("colors.dark", Qt.darker(passive, 1.5))
+        property color action: getSetting("colors.action", "#0db9d7")
+        property color accent: getSetting("colors.accent", "#cc0000")
+        property color red: getSetting("colors.red", "#cc0000")
+        property color yellow: getSetting("colors.yellow", "#ffd700")
+        property color purple: getSetting("colors.purple", "#bf00ff")
+        property color green: getSetting("colors.green", "#9ece6a")
+    }
 
     // general
-    readonly property string fontFamily: getSetting("font", "Hack Nerd Font")
-    readonly property int fontSize: getSetting("fontSize", 14)
-    readonly property int cornerRadius: getSetting("radius", 8)
-    readonly property int animDuration: getSetting("duration", 250)
-    readonly property int barHeight: getSetting("barHeight", 30)
-    readonly property int extraPadding: getSetting("barExtraPadding", 8)
-    readonly property string wallpaper: getSetting("wallpaper", States.defaultWallpaper)
-    readonly property string emptyWindowTitle: getSetting("emptyWindowTitle", "")
+    property var general: QtObject {
+        property string fontFamily: getSetting("general.font", "Hack Nerd Font")
+        property int fontSize: getSetting("general.fontSize", 14)
+        property int cornerRadius: getSetting("general.radius", 8)
+        property int animDuration: getSetting("general.animDuration", 250)
+        property string wallpaper: getSetting("general.wallpaper", States.defaultWallpaper)
+    }
+
+    // bar
+    property var bar: QtObject {
+        property int height: getSetting("bar.height", 30)
+        property int extraPadding: getSetting("bar.extraPadding", 8)
+        property string emptyWindowTitle: getSetting("bar.emptyWindowTitle", "")
+    }
 
     // widgets
-    readonly property var widgets: QtObject {
-        readonly property bool workspaces: getSetting("widgets.workspaces", true)
-        readonly property bool title: getSetting("widgets.title", true)
-        readonly property bool stats: getSetting("widgets.stats", false)
-        readonly property bool audio: getSetting("widgets.audio", true)
-        readonly property bool bluetooth: getSetting("widgets.bluetooth", false)
-        readonly property bool network: getSetting("widgets.network", false)
-        readonly property bool tray: getSetting("widgets.tray", false)
-        readonly property bool weather: getSetting("widgets.weather", true)
-        readonly property bool language: getSetting("widgets.language", false)
-        readonly property bool clock: getSetting("widgets.clock", true)
-        readonly property bool battery: getSetting("widgets.battery", true)
+    property var widgets: QtObject {
+        property bool workspaces: getSetting("widgets.workspaces", true)
+        property bool title: getSetting("widgets.title", true)
+        property bool stats: getSetting("widgets.stats", false)
+        property bool audio: getSetting("widgets.audio", true)
+        property bool bluetooth: getSetting("widgets.bluetooth", false)
+        property bool network: getSetting("widgets.network", false)
+        property bool tray: getSetting("widgets.tray", false)
+        property bool weather: getSetting("widgets.weather", true)
+        property bool language: getSetting("widgets.language", false)
+        property bool clock: getSetting("widgets.clock", true)
+        property bool battery: getSetting("widgets.battery", true)
     }
 
     // lockscreen
-    readonly property var lockscreen: QtObject {
-        readonly property string wallpaper: getSetting("lockscreen.wallpaper", States.defaultWallpaper)
-        readonly property bool shadows: getSetting("lockscreen.shadows", true)
-        readonly property bool username: getSetting("lockscreen.username", true) // full name
-        readonly property bool icon: getSetting("lockscreen.icon", true) // user icon
+    property var lockscreen: QtObject {
+        property string wallpaper: getSetting("lockscreen.wallpaper", States.defaultWallpaper)
+        property bool shadows: getSetting("lockscreen.shadows", true)
+        property bool username: getSetting("lockscreen.username", true) // full name
+        property bool icon: getSetting("lockscreen.icon", true) // user icon
     }
 
     // logout commands
-    readonly property var logout: QtObject {
-        readonly property color background: getSetting("logout.color", "#aa202020")
-        readonly property var commands: QtObject {
-            readonly property string lock: getSetting("logout.commands.lock", "quickshell ipc call topbar lock")
-            readonly property string logout: getSetting("logout.commands.logout", "hyprctl dispatch exit | pkill mango")
-            readonly property string suspend: getSetting("logout.commands.suspend", "zzz")
-            readonly property string hibernate: getSetting("logout.commands.hibernate", "acpiconf -s 4")
-            readonly property string shutdown: getSetting("logout.commands.shutdown", "shutdown -p now")
-            readonly property string reboot: getSetting("logout.commands.reboot", "shutdown -r now")
+    property var logout: QtObject {
+        property color background: getSetting("logout.color", "#aa202020")
+        property var commands: QtObject {
+            property string lock: getSetting("logout.commands.lock", "quickshell ipc call topbar lock")
+            property string logout: getSetting("logout.commands.logout", "hyprctl dispatch exit | pkill mango")
+            property string suspend: getSetting("logout.commands.suspend", "zzz")
+            property string hibernate: getSetting("logout.commands.hibernate", "acpiconf -s 4")
+            property string shutdown: getSetting("logout.commands.shutdown", "shutdown -p now")
+            property string reboot: getSetting("logout.commands.reboot", "shutdown -r now")
         }
     }
+
+    // workspaces
+    property string ws01: getSetting("workspaces.one", "")
+    property string ws02: getSetting("workspaces.two", "")
+    property string ws03: getSetting("workspaces.three", "")
+    property string ws04: getSetting("workspaces.four", "")
+    property string ws05: getSetting("workspaces.five", "")
+    property string ws06: getSetting("workspaces.six", "󰉕")
+    property string ws07: getSetting("workspaces.seven", "")
+    property string ws08: getSetting("workspaces.eight", "")
+    property string ws09: getSetting("workspaces.nine", "")
+    property string ws10: getSetting("workspaces.ten", "")
 
     function getSetting(path, defaultValue) {
         if (!settingsAvailable)

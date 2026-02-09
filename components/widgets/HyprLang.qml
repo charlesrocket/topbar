@@ -10,8 +10,8 @@ Rectangle {
 
     property string currentLayout: ""
     property string fontFamily: "SpaceMono Nerd Font"
-    property color colMain: Config.colFg
-    property color colBorder: Qt.darker(Config.colAccent, 1.5)
+    property color colMain: Config.colors.fg
+    property color colBorder: Qt.darker(Config.colors.accent, 1.5)
     property color colBackground: "transparent"
 
     width: layoutText.width + 8

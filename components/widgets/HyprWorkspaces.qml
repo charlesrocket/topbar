@@ -14,12 +14,12 @@ Repeater {
     required property var names
 
     property int animDuration: 250
-    property int fontSize: Config.fontSize
+    property int fontSize: Config.general.fontSize
     property string fontFamily: "Symbols Nerd Font"
-    property color colNormal: Config.colFg
-    property color colActive: Config.colAccent
-    property color colPassive: Qt.darker(Config.colPassive, 1.5)
-    property color colAction: Config.colAction
+    property color colNormal: Config.colors.fg
+    property color colActive: Config.colors.accent
+    property color colPassive: Qt.darker(Config.colors.passive, 1.5)
+    property color colAction: Config.colors.action
 
     Text {
         id: button

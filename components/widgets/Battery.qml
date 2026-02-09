@@ -8,13 +8,13 @@ import "../.."
 Item {
     id: root
 
-    property color colMain: Config.colFg
-    property color colCharging: Config.colYellow
-    property color colGood: Config.colGreen
-    property color colBad: Config.colRed
-    property color colBg: Config.colDark
-    property int slideDuration: Config.animDuration
-    property int fontSize: Config.fontSize
+    property color colMain: Config.colors.fg
+    property color colCharging: Config.colors.yellow
+    property color colGood: Config.colors.green
+    property color colBad: Config.colors.red
+    property color colBg: Config.colors.dark
+    property int slideDuration: Config.general.animDuration
+    property int fontSize: Config.general.fontSize
     property var fontFamily: "Hack Nerd Font"
 
     readonly property var battery: UPower.displayDevice

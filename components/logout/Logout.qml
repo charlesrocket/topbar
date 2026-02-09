@@ -84,7 +84,7 @@ Loader {
 
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
-                                color: Config.colBg
+                                color: Config.colors.bg
                                 topLeftRadius: (row === 0 && col === 0) ? cornerRadius : 0
                                 topRightRadius: (row === 0 && col === 2) ? cornerRadius : 0
                                 bottomLeftRadius: (row === totalRows - 1 && col === 0) ? cornerRadius : 0
@@ -108,7 +108,7 @@ Loader {
 
                                     Text {
                                         id: icon
-                                        color: mouseArea.containsMouse ? Config.colAccent : Config.colFg
+                                        color: mouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
                                         font.pixelSize: 105
                                         font.family: "Symbols Nerd Font"
                                         renderType: Text.NativeRendering
@@ -121,7 +121,7 @@ Loader {
 
                                         Behavior on color {
                                             ColorAnimation {
-                                                duration: Config.animDuration
+                                                duration: Config.general.animDuration
                                                 easing.type: Easing.OutCubic
                                             }
                                         }
@@ -130,10 +130,10 @@ Loader {
                                     Text {
                                         id: textLabel
                                         text: buttonRect.modelData.text
-                                        color: mouseArea.containsMouse ? Config.colAccent : Config.colFg
+                                        color: mouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
                                         font.pointSize: 14
                                         font.bold: true
-                                        font.family: Config.fontFamily
+                                        font.family: Config.general.fontFamily
                                         renderType: Text.NativeRendering
 
                                         anchors {
@@ -144,7 +144,7 @@ Loader {
 
                                         Behavior on color {
                                             ColorAnimation {
-                                                duration: Config.animDuration
+                                                duration: Config.general.animDuration
                                                 easing.type: Easing.OutCubic
                                             }
                                         }

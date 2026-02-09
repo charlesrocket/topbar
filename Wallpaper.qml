@@ -9,7 +9,7 @@ Variants {
     id: root
     model: Quickshell.screens
 
-    readonly property bool defaultWallpaper: Config.wallpaper === States.defaultWallpaper
+    readonly property bool defaultWallpaper: Config.general.wallpaper === States.defaultWallpaper
 
     PanelWindow {
         required property ShellScreen modelData
@@ -31,7 +31,7 @@ Variants {
             id: wallpaperImage
             anchors.fill: parent
             cache: false
-            source: Utils.expandPath(Config.wallpaper)
+            source: Utils.expandPath(Config.general.wallpaper)
             fillMode: root.defaultWallpaper ? Image.Pad : Image.PreserveAspectCrop
             opacity: 0
 

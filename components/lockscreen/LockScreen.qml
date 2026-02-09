@@ -29,7 +29,7 @@ Item {
 
     Behavior on opacity {
         NumberAnimation {
-            duration: Config.animDuration * 2
+            duration: Config.general.animDuration * 2
             easing.type: Easing.OutQuint
         }
     }
@@ -159,7 +159,7 @@ Item {
                     id: usernameRect
                     implicitWidth: usernameText.implicitWidth + 20
                     implicitHeight: usernameText.implicitHeight + 12
-                    color: Config.colBg
+                    color: Config.colors.bg
                     radius: 8
                     //border.width: 1
                     //border.color: Config.colPassive
@@ -168,8 +168,8 @@ Item {
                         id: usernameText
                         anchors.centerIn: parent
                         text: root.fullName || root.userName
-                        color: Config.colFg
-                        font.family: Config.fontFamily
+                        color: Config.colors.fg
+                        font.family: Config.general.fontFamily
                         font.pixelSize: 18
                         font.bold: false
                     }
@@ -212,10 +212,10 @@ Item {
 
                     background: Rectangle {
                         id: blinkBorder
-                        color: Config.colBg
+                        color: Config.colors.bg
                         radius: 8
                         border.width: 2
-                        border.color: Qt.rgba(Config.colAccent.r, Config.colAccent.g, Config.colAccent.b, blinkBorder.borderOpacity)
+                        border.color: Qt.rgba(Config.colors.accent.r, Config.colors.accent.g, Config.colors.accent.b, blinkBorder.borderOpacity)
 
                         property real borderOpacity: 0
 
@@ -257,9 +257,9 @@ Item {
                     Text {
                         anchors.centerIn: parent
                         text: root.context.showFailure ? "INCORRECT PASSWORD" : "PASSWORD"
-                        color: root.context.showFailure ? Config.colRed : Config.colFg
+                        color: root.context.showFailure ? Config.colors.red : Config.colors.fg
                         opacity: root.context.showFailure ? 1 : 0.5
-                        font.family: Config.fontFamily
+                        font.family: Config.general.fontFamily
                         font.bold: false
                         font.pixelSize: passwordBox.font.pixelSize
                         visible: passwordBox.text.length === 0

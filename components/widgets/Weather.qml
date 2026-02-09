@@ -11,11 +11,11 @@ import "../.."
 Item {
     id: root
 
-    property color colMain: Config.colFg
+    property color colMain: Config.colors.fg
     property color colBg: "transparent"
-    property color colBorder: Config.colAction
-    property int slideDuration: Config.animDuration
-    property int fontSize: Config.fontSize
+    property color colBorder: Config.colors.action
+    property int slideDuration: Config.general.animDuration
+    property int fontSize: Config.general.fontSize
     property string fontFamily: "FiraCode Nerd Font"
     property string icon: "󱣶"
     property real temperature: 0

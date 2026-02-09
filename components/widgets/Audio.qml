@@ -14,9 +14,9 @@ Item {
     property int deviceId: -1
     property int barLen: 80
     property int iconSize: 16
-    property color colNormal: Config.colFg
-    property color colPassive: Config.colPassive
-    property color colMuted: Config.colRed
+    property color colNormal: Config.colors.fg
+    property color colPassive: Config.colors.passive
+    property color colMuted: Config.colors.red
 
     implicitWidth: iconText.width
     implicitHeight: iconText.height
@@ -93,21 +93,21 @@ Item {
 
         Behavior on color {
             ColorAnimation {
-                duration: Config.animDuration
+                duration: Config.general.animDuration
                 easing.type: Easing.OutCubic
             }
         }
 
         Behavior on opacity {
             NumberAnimation {
-                duration: Config.animDuration
+                duration: Config.general.animDuration
                 easing.type: Easing.InOutQuad
             }
         }
 
         Behavior on scale {
             NumberAnimation {
-                duration: Config.animDuration
+                duration: Config.general.animDuration
                 easing.type: Easing.InOutQuad
             }
         }
@@ -162,9 +162,9 @@ Item {
         boxParent: iconText
 
         Rectangle {
-            color: States.ecoMode ? Config.colBgE : Config.colBg
-            radius: Config.cornerRadius
-            border.color: Config.colBorder
+            color: States.ecoMode ? Config.colors.bge : Config.colors.bg
+            radius: Config.general.cornerRadius
+            border.color: Config.colors.border
             border.width: 1
             topLeftRadius: 0
             topRightRadius: 0
@@ -183,13 +183,13 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     text: root.volume
                     color: root.muted ? root.colPassive : root.colNormal
-                    font.pixelSize: Config.fontSize
-                    font.family: Config.fontFamily
+                    font.pixelSize: Config.general.fontSize
+                    font.family: Config.general.fontFamily
                     font.bold: true
 
                     Behavior on color {
                         ColorAnimation {
-                            duration: Config.animDuration
+                            duration: Config.general.animDuration
                             easing.type: Easing.OutCubic
                         }
                     }
@@ -209,7 +209,7 @@ Item {
                         height: root.barLen
                         width: 4
                         radius: 6
-                        color: Config.colPassive
+                        color: Config.colors.passive
 
                         Rectangle {
                             anchors.bottom: parent.bottom

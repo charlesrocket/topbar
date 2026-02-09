@@ -13,10 +13,10 @@ Item {
     property int fontSize: 14
     property int length: 80
     property string fontFamily: "JetBrainsMono Nerd Font"
-    property color colFg: Config.colFg
-    property color colPassive: Qt.darker(Config.colPassive, 1.5)
-    property int animDuration: Config.animDuration
-    property string emptyTitle: Config.emptyWindowTitle
+    property color colFg: Config.colors.fg
+    property color colPassive: Qt.darker(Config.colors.passive, 1.5)
+    property int animDuration: Config.general.animDuration
+    property string emptyTitle: Config.bar.emptyWindowTitle
     property string fullTitle: {
         var win = Hyprland.activeToplevel;
 

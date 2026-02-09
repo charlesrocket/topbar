@@ -10,14 +10,14 @@ import ".."
 Item {
     id: root
 
-    property color colBg: Config.colBg
-    property color colMain: Config.colFg
-    property color colDecor: Config.colPassive
-    property color colActive: Config.colAccent
-    property color colCheck: Config.colGreen
+    property color colBg: Config.colors.bg
+    property color colMain: Config.colors.fg
+    property color colDecor: Config.colors.passive
+    property color colActive: Config.colors.accent
+    property color colCheck: Config.colors.green
     property int cornerRadius: 8
-    property string fontFamily: Config.fontFamily
-    property int fontSize: Config.fontSize
+    property string fontFamily: Config.general.fontFamily
+    property int fontSize: Config.general.fontSize
 
     implicitWidth: icon.implicitWidth
     implicitHeight: icon.implicitHeight
@@ -94,9 +94,9 @@ Item {
 
         Rectangle {
             id: devices
-            color: States.ecoMode ? Config.colBgE : root.colBg
+            color: States.ecoMode ? Config.colors.bge : root.colBg
             radius: root.cornerRadius
-            border.color: Config.colBorder
+            border.color: Config.colors.border
             border.width: 1
             topLeftRadius: 0
             topRightRadius: 0

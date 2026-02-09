@@ -27,23 +27,23 @@ PanelWindow {
     mask: itemsRegions
     color: "transparent"
     implicitHeight: screen.height
-    exclusiveZone: bar.visible ? bar.height + Config.extraPadding : 0
+    exclusiveZone: bar.visible ? bar.height + Config.bar.extraPadding : 0
 
     Rectangle {
         id: bar
-        y: Config.extraPadding
+        y: Config.bar.extraPadding
         anchors.horizontalCenter: parent.horizontalCenter
-        implicitWidth: root.screen.width - Config.extraPadding * 2
-        implicitHeight: Config.barHeight
+        implicitWidth: root.screen.width - Config.bar.extraPadding * 2
+        implicitHeight: Config.bar.height
         border.width: 1
-        border.color: Config.colBorder
-        height: Config.barHeight
-        color: States.ecoMode ? Config.colBgE : Config.colBg
-        radius: Config.cornerRadius
+        border.color: Config.colors.border
+        height: Config.bar.height
+        color: States.ecoMode ? Config.colors.bge : Config.colors.bg
+        radius: Config.general.cornerRadius
 
         Behavior on y {
             NumberAnimation {
-                duration: Config.animDuration * 2
+                duration: Config.general.animDuration * 2
                 easing.type: Easing.OutQuint
             }
         }
@@ -55,7 +55,7 @@ PanelWindow {
 
             Behavior on y {
                 NumberAnimation {
-                    duration: Config.animDuration * 5
+                    duration: Config.general.animDuration * 5
                     // OutBounce is alright too
                     easing.type: Easing.OutQuint
                 }
@@ -80,7 +80,7 @@ PanelWindow {
 
         Timer {
             id: hideTimer
-            interval: Config.animDuration * 2
+            interval: Config.general.animDuration * 2
             onTriggered: bar.visible = false
         }
 
@@ -276,7 +276,7 @@ PanelWindow {
         id: lock
 
         WlSessionLockSurface {
-            color: Config.colBg
+            color: "transparent"
 
             LockScreen {
                 anchors.fill: parent

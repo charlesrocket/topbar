@@ -9,10 +9,11 @@ RowLayout {
     id: root
     spacing: 6
 
-    property int fontSize: Config.fontSize
-    property color colBar: Config.colDark
-    property color colWarning: Config.colYellow
-    property color colCritical: Config.colRed
+    property int fontSize: Config.general.fontSize
+    property color colBar: Config.colors.dark
+    property color colWarning: Config.colors.yellow
+    property color colCritical: Config.colors.red
+    property color colFg: Config.colors.fg
     property string mountPoint: "/"
     property int barWidth: 8
     property int barHeight: 14
@@ -108,7 +109,7 @@ RowLayout {
 
         Text {
             text: ""
-            color: Config.colFg
+            color: root.colFg
             font.family: "Symbols Nerd Font"
             font.pixelSize: root.fontSize
             font.bold: true
@@ -119,7 +120,7 @@ RowLayout {
             Layout.preferredHeight: root.barHeight
             color: root.colBar
             border.width: 1
-            border.color: Qt.darker(Config.colFg, 1.5)
+            border.color: Qt.darker(root.colFg, 1.5)
             radius: 2
 
             Rectangle {
@@ -135,7 +136,7 @@ RowLayout {
                         return root.colCritical;
                     if (root.cpuPercent > 75)
                         return root.colWarning;
-                    return Config.colFg;
+                    return root.colFg;
                 }
 
                 Behavior on height {
@@ -152,7 +153,7 @@ RowLayout {
 
         Text {
             text: "󰚗"
-            color: Config.colFg
+            color: root.colFg
             font.family: "Symbols Nerd Font"
             font.pixelSize: root.fontSize
             font.bold: true
@@ -163,7 +164,7 @@ RowLayout {
             Layout.preferredHeight: root.barHeight
             color: root.colBar
             border.width: 1
-            border.color: Qt.darker(Config.colFg, 1.5)
+            border.color: Qt.darker(root.colFg, 1.5)
             radius: 2
 
             Rectangle {
@@ -178,7 +179,7 @@ RowLayout {
                         return root.colCritical;
                     if (root.memPercent > 75)
                         return root.colWarning;
-                    return Config.colFg;
+                    return root.colFg;
                 }
 
                 Behavior on height {
@@ -195,7 +196,7 @@ RowLayout {
 
         Text {
             text: ""
-            color: Config.colFg
+            color: root.colFg
             font.family: "Symbols Nerd Font"
             font.pixelSize: root.fontSize
             font.bold: true
@@ -206,7 +207,7 @@ RowLayout {
             Layout.preferredHeight: root.barHeight
             color: root.colBar
             border.width: 1
-            border.color: Qt.darker(Config.colFg, 1.5)
+            border.color: Qt.darker(Config.colors.fg, 1.5)
             radius: 2
 
             Rectangle {
@@ -222,7 +223,7 @@ RowLayout {
                         return root.colCritical;
                     if (root.diskPercent > 80)
                         return root.colWarning;
-                    return Config.colFg;
+                    return root.colFg;
                 }
 
                 Behavior on height {

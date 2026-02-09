@@ -39,7 +39,7 @@ RowLayout {
 
         Behavior on Layout.preferredWidth {
             NumberAnimation {
-                duration: Config.animDuration
+                duration: Config.general.animDuration
                 easing.type: Easing.OutCubic
             }
         }
@@ -61,7 +61,7 @@ RowLayout {
 
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: Config.animDuration
+                        duration: Config.general.animDuration
                         easing.type: Easing.OutCubic
                     }
                 }
@@ -75,7 +75,7 @@ RowLayout {
 
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: Config.animDuration
+                        duration: Config.general.animDuration
                         easing.type: Easing.OutCubic
                     }
                 }
@@ -158,7 +158,7 @@ RowLayout {
         Layout.rightMargin: 2
 
         sourceComponent: Clock {
-            fontSize: Config.fontSize + 1
+            fontSize: Config.general.fontSize + 1
         }
     }
 
@@ -170,7 +170,7 @@ RowLayout {
         asynchronous: true
 
         sourceComponent: Battery {
-            fontSize: Config.fontSize + 2
+            fontSize: Config.general.fontSize + 2
         }
     }
 }

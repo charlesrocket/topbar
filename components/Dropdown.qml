@@ -90,13 +90,13 @@ Item {
                     ParallelAnimation {
                         NumberAnimation {
                             property: "opacity"
-                            duration: Config.animDuration / 2
+                            duration: Config.general.animDuration / 2
                             easing.type: Easing.OutCubic
                         }
 
                         NumberAnimation {
                             property: "scale"
-                            duration: Config.animDuration / 2
+                            duration: Config.general.animDuration / 2
                             easing.type: Easing.OutCubic
                         }
                     }
@@ -116,13 +116,13 @@ Item {
                     ParallelAnimation {
                         NumberAnimation {
                             property: "opacity"
-                            duration: Config.animDuration / 2
+                            duration: Config.general.animDuration / 2
                             easing.type: Easing.InCubic
                         }
 
                         NumberAnimation {
                             property: "scale"
-                            duration: Config.animDuration / 2
+                            duration: Config.general.animDuration / 2
                             easing.type: Easing.InCubic
                         }
                     }

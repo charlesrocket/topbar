@@ -8,9 +8,9 @@ import "../.."
 Text {
     id: root
 
-    property color colMain: Config.colFg
+    property color colMain: Config.colors.fg
     property string fontFamily: "Symbols Nerd Font"
-    property int fontSize: Config.fontSize
+    property int fontSize: Config.general.fontSize
 
     readonly property bool hasAdapter: Bluetooth && Bluetooth.adapters && Bluetooth.adapters.length > 0
     readonly property var adapter: hasAdapter ? Bluetooth.adapters[0] : null

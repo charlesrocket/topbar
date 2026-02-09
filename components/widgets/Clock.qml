@@ -9,13 +9,13 @@ import "../.."
 Item {
     id: root
 
-    property int slideDuration: Config.animDuration
-    property color colMain: Config.colFg
-    property color colButton: Config.colAccent
-    property color colGreen: Config.colGreen
-    property color colPurple: Config.colPurple
+    property int slideDuration: Config.general.animDuration
+    property color colMain: Config.colors.fg
+    property color colButton: Config.colors.accent
+    property color colGreen: Config.colors.green
+    property color colPurple: Config.colors.purple
     property string fontFamily: "FiraCode Nerd Font"
-    property int fontSize: 14
+    property int fontSize: Config.general.fontSize
 
     Layout.alignment: Qt.AlignVCenter
     implicitWidth: (hoverDetector.containsMouse ? dateContainer.width + 8 : 0) + clockText.width
@@ -134,7 +134,7 @@ Item {
 
             Behavior on color {
                 ColorAnimation {
-                    duration: Config.animDuration
+                    duration: Config.general.animDuration
                     easing.type: Easing.OutCubic
                 }
             }
@@ -159,7 +159,7 @@ Item {
 
             Behavior on color {
                 ColorAnimation {
-                    duration: Config.animDuration
+                    duration: Config.general.animDuration
                     easing.type: Easing.OutCubic
                 }
             }
