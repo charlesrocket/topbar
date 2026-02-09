@@ -38,7 +38,10 @@ Singleton {
     property var bar: QtObject {
         property int height: getSetting("bar.height", 30)
         property int extraPadding: getSetting("bar.extraPadding", 8)
-        property string emptyWindowTitle: getSetting("bar.emptyWindowTitle", "")
+        property var title: QtObject {
+            property int width: getSetting("bar.title.width", 400)
+            property string empty: getSetting("bar.title.empty", "")
+        }
     }
 
     // widgets

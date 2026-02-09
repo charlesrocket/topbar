@@ -16,7 +16,7 @@ Item {
     property color colFg: Config.colors.fg
     property color colPassive: Qt.darker(Config.colors.passive, 1.5)
     property int animDuration: Config.general.animDuration
-    property string emptyTitle: Config.bar.emptyWindowTitle
+    property string emptyTitle: Config.bar.title.empty
     property string fullTitle: {
         var win = Hyprland.activeToplevel;
 
