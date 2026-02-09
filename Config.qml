@@ -54,6 +54,7 @@ Singleton {
         readonly property bool clock: getSetting("widgets.clock", true)
         readonly property bool stats: getSetting("widgets.stats", false)
         readonly property bool tray: getSetting("widgets.tray", false)
+        readonly property bool battery: getSetting("widgets.battery", true)
     }
 
     // lockscreen

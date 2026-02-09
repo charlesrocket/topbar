@@ -165,7 +165,7 @@ RowLayout {
     // battery
     Loader {
         id: batt
-        active: UPower.displayDevice.ready || false
+        active: (UPower.displayDevice.ready && Config.widgets.battery) || false
         visible: batt.active
         asynchronous: true
 
