@@ -5,7 +5,7 @@ import ".."
 Rectangle {
     id: root
 
-    property int animDuration: Config.animDuration
+    property int animDuration: Config.general.animDuration
     property int frameRadius: 6
     property color frameColor: "white"
 

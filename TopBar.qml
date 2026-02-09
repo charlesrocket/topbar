@@ -98,10 +98,10 @@ PanelWindow {
 
         function hidden(val) {
             if (val) {
-                bar.y = -(Config.barHeight);
+                bar.y = -(Config.bar.height);
                 hideTimer.start();
             } else {
-                bar.y = Config.extraPadding;
+                bar.y = Config.bar.extraPadding;
                 bar.visible = true;
             }
         }
