@@ -34,4 +34,8 @@ ShellRoot {
 
 ```
 
-Use `Settings.qml` in the Quickshell's root to override the TopBar's configuration ([example](https://github.com/charlesrocket/dotfiles/blob/7873d1918971c4db578fb655b6a840a80c6a88ec/.config/quickshell/Settings.qml)).
+Use `Settings.qml` in the Quickshell's root to override the TopBar's configuration ([example](https://github.com/charlesrocket/dotfiles/blob/3392fd9fba04580e1139b0ec84a9c63502659220/.config/quickshell/Settings.qml)).
+
+### IPC
+
+See `quickshell ipc call show` for all availale commands.
