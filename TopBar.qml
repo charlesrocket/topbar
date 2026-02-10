@@ -9,9 +9,9 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
+import "components/bar"
 import "components/lockscreen"
 import "components/logout"
-import "components"
 
 PanelWindow {
     id: root
@@ -66,24 +66,25 @@ PanelWindow {
             launchSequence.y = 0;
         }
 
+        // sections
         RowLayout {
             anchors.fill: parent
             anchors.leftMargin: 13
             anchors.rightMargin: 12
 
-            LeftSection {
+            Left {
                 Layout.fillWidth: true
                 Layout.minimumWidth: 0
                 Layout.alignment: Qt.AlignLeft
             }
 
-            CenterSection {
+            Center {
                 Layout.fillWidth: false
                 Layout.preferredWidth: 400
                 Layout.alignment: Qt.AlignHCenter
             }
 
-            RightSection {
+            Right {
                 Layout.fillWidth: true
                 Layout.minimumWidth: 0
                 Layout.alignment: Qt.AlignRight

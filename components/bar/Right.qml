@@ -4,8 +4,8 @@ import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
 
-import ".."
-import "widgets"
+import "../widgets"
+import "../.."
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3
@@ -24,7 +24,7 @@ RowLayout {
         sourceComponent: Stats {}
     }
 
-    BarSeparator {
+    Separator {
         visible: stats.visible
     }
 
@@ -84,7 +84,7 @@ RowLayout {
         }
     }
 
-    BarSeparator {
+    Separator {
         visible: audio.visible
     }
 
@@ -106,7 +106,7 @@ RowLayout {
         sourceComponent: Network {}
     }
 
-    BarSeparator {
+    Separator {
         visible: (bt.visible || netwrk.visible) && (sysTray.visible || localWeather.visible || lang.visible || time.visible || batt.visible)
     }
 

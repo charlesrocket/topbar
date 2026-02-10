@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import ".."
-import "widgets"
+import "../widgets"
+import "../.."
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3
