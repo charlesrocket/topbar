@@ -90,7 +90,7 @@ Item {
                         radius: width / 2
                         blur: 30
                         spread: 10
-                        color: Qt.rgba(0, 0, 0, 0.5)
+                        color: Qt.rgba(0, 0, 0, 0.3)
                     }
                 }
 
@@ -151,7 +151,7 @@ Item {
                         radius: 8
                         blur: 30
                         spread: 10
-                        color: Qt.rgba(0, 0, 0, 0.5)
+                        color: Qt.rgba(0, 0, 0, 0.3)
                     }
                 }
 
@@ -195,7 +195,7 @@ Item {
                         radius: 8
                         blur: 30
                         spread: 10
-                        color: Qt.rgba(0, 0, 0, 0.4)
+                        color: Qt.rgba(0, 0, 0, 0.3)
                     }
                 }
 
