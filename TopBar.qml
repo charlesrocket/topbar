@@ -27,13 +27,13 @@ PanelWindow {
     mask: itemsRegions
     color: "transparent"
     implicitHeight: screen.height
-    exclusiveZone: bar.visible ? bar.height + Config.bar.extraPadding : 0
+    exclusiveZone: bar.visible ? bar.height + Config.bar.padding : 0
 
     Rectangle {
         id: bar
-        y: Config.bar.extraPadding
+        y: Config.bar.padding
         anchors.horizontalCenter: parent.horizontalCenter
-        implicitWidth: root.screen.width - Config.bar.extraPadding * 2
+        implicitWidth: root.screen.width - Config.bar.padding * 2
         implicitHeight: Config.bar.height
         border.width: 1
         border.color: Config.colors.border
@@ -102,7 +102,7 @@ PanelWindow {
                 bar.y = -(Config.bar.height);
                 hideTimer.start();
             } else {
-                bar.y = Config.bar.extraPadding;
+                bar.y = Config.bar.padding;
                 bar.visible = true;
             }
         }

@@ -37,7 +37,7 @@ Singleton {
     // bar
     property var bar: QtObject {
         property int height: getSetting("bar.height", 30)
-        property int extraPadding: getSetting("bar.extraPadding", 8)
+        property int padding: getSetting("bar.padding", 8)
 
         property var title: QtObject {
             property int width: getSetting("bar.title.width", 400)
