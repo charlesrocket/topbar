@@ -70,6 +70,7 @@ Loader {
                         rowSpacing: 0
 
                         Repeater {
+                            id: buttonRepeater
                             model: root.buttons
                             delegate: Rectangle {
                                 id: buttonRect
@@ -85,15 +86,38 @@ Loader {
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
                                 color: Config.colors.bg
+                                focus: true
                                 topLeftRadius: (row === 0 && col === 0) ? cornerRadius : 0
                                 topRightRadius: (row === 0 && col === 2) ? cornerRadius : 0
                                 bottomLeftRadius: (row === totalRows - 1 && col === 0) ? cornerRadius : 0
                                 bottomRightRadius: (row === totalRows - 1 && col === 2) ? cornerRadius : 0
 
+                                KeyNavigation.right: buttonRepeater.itemAt(index + 1)
+                                KeyNavigation.left: buttonRepeater.itemAt(index - 1)
+                                KeyNavigation.down: buttonRepeater.itemAt(index + 3)
+                                KeyNavigation.up: buttonRepeater.itemAt(index - 3)
+
+                                Keys.onReturnPressed: {
+                                    States.logoutPresent = false;
+                                    modelData.exec();
+                                }
+
+                                Keys.onEnterPressed: {
+                                    States.logoutPresent = false;
+                                    modelData.exec();
+                                }
+
+                                Component.onCompleted: {
+                                    if (index === 0) {
+                                        forceActiveFocus();
+                                    }
+                                }
+
                                 MouseArea {
                                     id: mouseArea
                                     anchors.fill: parent
                                     hoverEnabled: true
+                                    onEntered: buttonRect.forceActiveFocus()
 
                                     onClicked: {
                                         States.logoutPresent = false;
@@ -101,51 +125,55 @@ Loader {
                                     }
                                 }
 
-                                Item {
-                                    anchors.centerIn: parent
+                                FocusScope {
                                     width: parent.width
                                     height: 105 + 24 + textLabel.height
 
-                                    Text {
-                                        id: icon
-                                        color: mouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
-                                        font.pixelSize: 105
-                                        font.family: "Symbols Nerd Font"
-                                        renderType: Text.NativeRendering
-                                        text: `${buttonRect.modelData.icon}`
+                                    Item {
+                                        anchors.centerIn: parent
 
-                                        anchors {
-                                            horizontalCenter: parent.horizontalCenter
-                                            top: parent.top
-                                        }
+                                        Text {
+                                            id: icon
+                                            color: (mouseArea.containsMouse || buttonRect.activeFocus) ? Config.colors.accent : Config.colors.fg
+                                            font.pixelSize: 105
+                                            font.family: "Symbols Nerd Font"
+                                            renderType: Text.NativeRendering
+                                            text: `${buttonRect.modelData.icon}`
+                                            focus: true
 
-                                        Behavior on color {
-                                            ColorAnimation {
-                                                duration: Config.general.animDuration
-                                                easing.type: Easing.OutCubic
+                                            anchors {
+                                                horizontalCenter: parent.horizontalCenter
+                                                top: parent.top
+                                            }
+
+                                            Behavior on color {
+                                                ColorAnimation {
+                                                    duration: Config.general.animDuration
+                                                    easing.type: Easing.OutCubic
+                                                }
                                             }
                                         }
-                                    }
 
-                                    Text {
-                                        id: textLabel
-                                        text: buttonRect.modelData.text
-                                        color: mouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
-                                        font.pointSize: 14
-                                        font.bold: true
-                                        font.family: Config.general.fontFamily
-                                        renderType: Text.NativeRendering
+                                        Text {
+                                            id: textLabel
+                                            text: buttonRect.modelData.text
+                                            color: (mouseArea.containsMouse || buttonRect.activeFocus) ? Config.colors.accent : Config.colors.fg
+                                            font.pointSize: 14
+                                            font.bold: true
+                                            font.family: Config.general.fontFamily
+                                            renderType: Text.NativeRendering
 
-                                        anchors {
-                                            top: icon.bottom
-                                            topMargin: 22
-                                            horizontalCenter: parent.horizontalCenter
-                                        }
+                                            anchors {
+                                                top: icon.bottom
+                                                topMargin: 22
+                                                horizontalCenter: parent.horizontalCenter
+                                            }
 
-                                        Behavior on color {
-                                            ColorAnimation {
-                                                duration: Config.general.animDuration
-                                                easing.type: Easing.OutCubic
+                                            Behavior on color {
+                                                ColorAnimation {
+                                                    duration: Config.general.animDuration
+                                                    easing.type: Easing.OutCubic
+                                                }
                                             }
                                         }
                                     }
