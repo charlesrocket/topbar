@@ -8,6 +8,8 @@ An interactive bar for [Quickshell](https://quickshell.org/).
 * logout panel
 * lock screen
 * wallpapers
+* osd
+* power modes
 
 ## Installation
 
