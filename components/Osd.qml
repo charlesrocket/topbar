@@ -28,7 +28,7 @@ Scope {
             anchors.bottom: true
             margins.bottom: screen.height / 5
             exclusiveZone: 0
-            implicitWidth: 400
+            implicitWidth: 300
             implicitHeight: 50
             color: "transparent"
             mask: Region {}
