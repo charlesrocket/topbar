@@ -1,6 +1,6 @@
 # TopBar
 
-An interactive bar for [Quickshell](https://quickshell.org/).
+An interactive bar and desktop environment for [Quickshell](https://quickshell.org/).
 
 ## Features
 
