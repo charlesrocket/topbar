@@ -38,4 +38,4 @@ Use `Settings.qml` in the Quickshell's root to override the TopBar's configurati
 
 ### IPC
 
-See `quickshell ipc call show` for all availale commands.
+See `quickshell ipc call show` for all available commands.
