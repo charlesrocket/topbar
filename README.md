@@ -2,7 +2,7 @@
 
 An interactive bar and desktop environment for [Quickshell](https://quickshell.org/).
 
-## Features
+Features:
 
 * responsive widgets
 * logout panel
@@ -10,6 +10,11 @@ An interactive bar and desktop environment for [Quickshell](https://quickshell.o
 * wallpapers
 * osd
 * power modes
+
+## Requirements
+
+1. Wayland compositor
+2. Quickshell
 
 ## Installation
 
