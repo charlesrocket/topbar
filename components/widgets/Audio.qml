@@ -1,3 +1,4 @@
+import Quickshell.Io
 import Quickshell.Services.OSS
 
 import QtQuick
@@ -314,6 +315,32 @@ Item {
         sourceComponent: Osd {
             icon: iconText.text
             value: root.volume
+        }
+    }
+
+    IpcHandler {
+        target: "audio"
+
+        function toggleMute(): void {
+            if (root.control) {
+                root.control.muted = !root.control.muted;
+            }
+        }
+
+        function volumeUp(): void {
+            if (root.control) {
+                root.control.left = root.control.left + 5;
+                root.control.right = root.control.right + 5;
+                audioOSD.item.trigger();
+            }
+        }
+
+        function volumeDown(): void {
+            if (root.control) {
+                root.control.left = root.control.left - 5;
+                root.control.right = root.control.right - 5;
+                audioOSD.item.trigger();
+            }
         }
     }
 }

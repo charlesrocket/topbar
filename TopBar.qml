@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 
 import Quickshell
 import Quickshell.Io
-import Quickshell.Hyprland
 import Quickshell.Services.OSS
 import Quickshell.Wayland
 
@@ -194,37 +193,6 @@ PanelWindow {
             text: "Reboot"
             icon: "󰑐"
         }
-    }
-
-    // Global shortcuts depend on Hyprland bindings:
-    // bind = , XF86AudioMute, global, quickshell:volume-mute
-
-    GlobalShortcut {
-        name: "volume-up"
-        onPressed: {
-            refreshOSS.start();
-        }
-    }
-
-    GlobalShortcut {
-        name: "volume-down"
-        onPressed: {
-            refreshOSS.start();
-        }
-    }
-
-    GlobalShortcut {
-        name: "volume-mute"
-        onPressed: {
-            refreshOSS.start();
-        }
-    }
-
-    // update audio
-    Timer {
-        id: refreshOSS
-        interval: 50
-        onTriggered: OSS.refresh()
     }
 
     Process {
