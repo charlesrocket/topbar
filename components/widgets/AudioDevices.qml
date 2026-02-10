@@ -4,8 +4,8 @@ import Quickshell.Services.OSS
 import QtQuick
 import QtQuick.Layouts
 
+import "../bar"
 import "../.."
-import ".."
 
 Item {
     id: root

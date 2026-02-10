@@ -3,8 +3,8 @@ import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 
+import "../bar"
 import "../.."
-import ".."
 
 Item {
     id: root
