@@ -44,44 +44,7 @@ RowLayout {
             }
         }
 
-        sourceComponent: RowLayout {
-            id: audioRow
-            anchors.right: parent.right
-            spacing: 6
-
-            // devices
-            AudioDevices {}
-
-            // mic
-            Audio {
-                id: mic
-                mic: true
-                opacity: mic.control ? 1 : 0
-                visible: opacity > 0
-
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: Config.general.animDuration
-                        easing.type: Easing.OutCubic
-                    }
-                }
-            }
-
-            // speaker
-            Audio {
-                id: speaker
-                osd: true
-                opacity: speaker.control ? 1 : 0
-                visible: opacity > 0
-
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: Config.general.animDuration
-                        easing.type: Easing.OutCubic
-                    }
-                }
-            }
-        }
+        sourceComponent: Audio {}
     }
 
     Separator {
