@@ -162,7 +162,7 @@ PanelWindow {
             bar.hidden(true);
         }
 
-        function unhide(): void {
+        function reveal(): void {
             bar.hidden(false);
         }
     }
