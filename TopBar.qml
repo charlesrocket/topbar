@@ -150,6 +150,10 @@ PanelWindow {
                 console.warn("Launcher disabled");
         }
 
+        function config(): void {
+            States.preferencesWindowPresent = true;
+        }
+
         function logout(): void {
             States.logoutPresent = true;
         }
@@ -165,6 +169,13 @@ PanelWindow {
         function reveal(): void {
             bar.hidden(false);
         }
+    }
+
+    Loader {
+        id: preferencesWindow
+        active: States.preferencesWindowPresent
+        visible: preferencesWindow.active
+        sourceComponent: Preferences {}
     }
 
     Loader {
