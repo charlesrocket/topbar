@@ -17,6 +17,7 @@ Singleton {
         property color border: getSetting("colors.border", "#aa4e4e4e")
         property color passive: getSetting("colors.passive", "#4e4e4e")
         property color dark: getSetting("colors.dark", Qt.darker(passive, 1.5))
+        property color extraDark: getSetting("colors.extraDark", Qt.darker(dark, 1.2))
         property color action: getSetting("colors.action", "#0db9d7")
         property color accent: getSetting("colors.accent", "#cc0000")
         property color red: getSetting("colors.red", "#cc0000")
@@ -46,6 +47,7 @@ Singleton {
     }
 
     property var desktop: QtObject {
+        property bool launcher: getSetting("desktop.launcher", true)
         property bool osd: getSetting("desktop.osd", false)
     }
 

@@ -6,6 +6,7 @@ import Quickshell
 Singleton {
     property bool ecoMode: false
     property bool dropdownRevealed: false
+    property bool launcherPresent: false
     property bool logoutPresent: false
     property bool keepAwake: false
     // TODO add local

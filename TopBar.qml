@@ -11,6 +11,7 @@ import QtQuick.Layouts
 import "components/bar"
 import "components/lockscreen"
 import "components/logout"
+import "components"
 
 PanelWindow {
     id: root
@@ -142,6 +143,13 @@ PanelWindow {
     IpcHandler {
         target: "topbar"
 
+        function launcher(): void {
+            if (Config.desktop.launcher)
+                States.launcherPresent = true;
+            else
+                console.warn("Launcher disabled");
+        }
+
         function logout(): void {
             States.logoutPresent = true;
         }
@@ -149,6 +157,13 @@ PanelWindow {
         function lock(): void {
             lock.locked = true;
         }
+    }
+
+    Loader {
+        id: launcher
+        active: States.launcherPresent && Config.desktop.launcher
+        visible: launcher.active
+        sourceComponent: Launcher {}
     }
 
     Logout {
