@@ -157,6 +157,14 @@ PanelWindow {
         function lock(): void {
             lock.locked = true;
         }
+
+        function hide(): void {
+            bar.hidden(true);
+        }
+
+        function unhide(): void {
+            bar.hidden(false);
+        }
     }
 
     Loader {
