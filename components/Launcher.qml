@@ -51,11 +51,6 @@ Loader {
                     width: Math.min(parent.width * 0.5, 600)
                     height: container.height
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {}
-                    }
-
                     Rectangle {
                         id: container
                         anchors.left: parent.left
@@ -143,6 +138,7 @@ Loader {
                                             anchors.centerIn: parent
                                             text: "󱎘"
                                             font.pixelSize: 14
+                                            font.bold: true
                                             font.family: "Symbols Nerd Font"
                                             color: Config.colors.fg
                                         }
