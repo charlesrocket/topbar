@@ -12,6 +12,7 @@ Singleton {
     // colors
     property var colors: QtObject {
         property color bg: getSetting("colors.bg", "#aa000000")
+        property color bgl: getSetting("colors.bgl", "#80404040")
         property color bge: getSetting("colors.bge", "#000000") // eco mode
         property color fg: getSetting("colors.fg", "#b0b4bc")
         property color border: getSetting("colors.border", "#aa4e4e4e")

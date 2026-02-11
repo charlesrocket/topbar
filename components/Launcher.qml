@@ -63,7 +63,7 @@ Loader {
                         anchors.top: parent.top
                         height: contentColumn.implicitHeight + 32
                         radius: Config.general.cornerRadius * 2
-                        color: Config.colors.bg
+                        color: States.ecoMode ? Config.colors.bge : Config.colors.bg
 
                         ColumnLayout {
                             id: contentColumn
@@ -76,7 +76,7 @@ Loader {
                                 Layout.fillWidth: true
                                 Layout.preferredHeight: 44
                                 radius: Config.general.cornerRadius
-                                color: Config.colors.extraDark
+                                color: States.ecoMode ? Config.colors.bge : Config.colors.bgl
                                 border.color: Config.colors.accent
                                 border.width: 1
 
@@ -193,7 +193,7 @@ Loader {
                             Rectangle {
                                 id: listContainer
                                 visible: appList.count > 0
-                                color: Config.colors.extraDark
+                                color: States.ecoMode ? Config.colors.bge : Config.colors.bgl
                                 radius: Config.general.cornerRadius
                                 clip: true
                                 Layout.fillWidth: true
