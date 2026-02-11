@@ -100,6 +100,7 @@ Loader {
                                         placeholderText: "Search applications"
                                         font.family: Config.general.fontFamily
                                         font.pixelSize: Config.general.fontSize
+                                        font.bold: false
                                         color: Config.colors.fg
                                         background: Item {}
 
@@ -348,6 +349,7 @@ Loader {
                                                     Layout.fillWidth: true
                                                     text: appDelegate.modelData.description || appDelegate.modelData.comment || appDelegate.modelData.genericName || ""
                                                     font.pixelSize: 12
+                                                    font.bold: true
                                                     font.family: Config.general.fontFamily
                                                     color: Config.colors.fg
                                                     elide: Text.ElideRight
