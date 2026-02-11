@@ -15,6 +15,7 @@ Features:
 
 1. Wayland compositor
 2. Quickshell
+3. Nerd fonts
 
 ## Installation
 
