@@ -24,7 +24,7 @@ RowLayout {
                 spacing: 6
 
                 HyprWorkspaces {
-                    names: [Config.ws01, Config.ws02, Config.ws03, Config.ws04, Config.ws05, Config.ws06, Config.ws07, Config.ws08, Config.ws09, Config.ws10]
+                    names: [Config.workspaces.one, Config.workspaces.two, Config.workspaces.three, Config.workspaces.four, Config.workspaces.five, Config.workspaces.six, Config.workspaces.seven, Config.workspaces.eight, Config.workspaces.nine, Config.workspaces.ten]
                 }
             }
         }

@@ -400,71 +400,71 @@ PanelWindow {
 
                         SettingRow {
                             label: "Workspace 1"
-                            targetObject: Config
-                            targetProperty: "ws01"
+                            targetObject: Config.workspaces
+                            targetProperty: "one"
                             valueType: "string"
                         }
 
                         SettingRow {
                             label: "Workspace 2"
-                            targetObject: Config
-                            targetProperty: "ws02"
+                            targetObject: Config.workspaces
+                            targetProperty: "two"
                             valueType: "string"
                         }
 
                         SettingRow {
                             label: "Workspace 3"
-                            targetObject: Config
-                            targetProperty: "ws03"
+                            targetObject: Config.workspaces
+                            targetProperty: "three"
                             valueType: "string"
                         }
 
                         SettingRow {
                             label: "Workspace 4"
-                            targetObject: Config
-                            targetProperty: "ws04"
+                            targetObject: Config.workspaces
+                            targetProperty: "four"
                             valueType: "string"
                         }
 
                         SettingRow {
                             label: "Workspace 5"
-                            targetObject: Config
-                            targetProperty: "ws05"
+                            targetObject: Config.workspaces
+                            targetProperty: "five"
                             valueType: "string"
                         }
 
                         SettingRow {
                             label: "Workspace 6"
-                            targetObject: Config
-                            targetProperty: "ws06"
+                            targetObject: Config.workspaces
+                            targetProperty: "six"
                             valueType: "string"
                         }
 
                         SettingRow {
                             label: "Workspace 7"
-                            targetObject: Config
-                            targetProperty: "ws07"
+                            targetObject: Config.workspaces
+                            targetProperty: "seven"
                             valueType: "string"
                         }
 
                         SettingRow {
                             label: "Workspace 8"
-                            targetObject: Config
-                            targetProperty: "ws08"
+                            targetObject: Config.workspaces
+                            targetProperty: "eight"
                             valueType: "string"
                         }
 
                         SettingRow {
                             label: "Workspace 9"
-                            targetObject: Config
-                            targetProperty: "ws09"
+                            targetObject: Config.workspaces
+                            targetProperty: "nine"
                             valueType: "string"
                         }
 
                         SettingRow {
                             label: "Workspace 10"
-                            targetObject: Config
-                            targetProperty: "ws10"
+                            targetObject: Config.workspaces
+                            targetProperty: "ten"
                             valueType: "string"
                         }
                     }
