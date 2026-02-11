@@ -2,9 +2,10 @@
 
 An interactive bar and desktop environment for [Quickshell](https://quickshell.org/).
 
-Features:
+**Features**:
 
 * responsive widgets
+* app launcher
 * logout panel
 * lock screen
 * wallpapers
