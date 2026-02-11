@@ -99,7 +99,7 @@ Loader {
                                         Layout.fillHeight: true
                                         placeholderText: "Search applications"
                                         font.family: Config.general.fontFamily
-                                        font.pixelSize: Config.general.fontSize
+                                        font.pixelSize: Config.general.fontSize + 2
                                         font.bold: false
                                         color: Config.colors.fg
                                         background: Item {}
@@ -161,16 +161,31 @@ Loader {
                                 }
                             }
 
-                            // results count
-                            Text {
-                                Layout.fillWidth: true
+                            RowLayout {
                                 visible: appList.count > 0
-                                font.pixelSize: 12
-                                font.family: Config.general.fontFamily
-                                color: Config.colors.fg
-                                text: {
-                                    var count = appList.count;
-                                    return count === 1 ? "1 application found" : count + " applications found";
+
+                                // results count
+                                Text {
+                                    Layout.fillWidth: true
+                                    visible: appList.count > 0
+                                    font.pixelSize: 14
+                                    font.family: Config.general.fontFamily
+                                    font.bold: false
+                                    color: Config.colors.fg
+                                    text: {
+                                        var count = appList.count;
+                                        return count === 1 ? "1 application found" : count + " applications found";
+                                    }
+                                }
+
+                                Text {
+                                    Layout.alignment: Qt.AlignRight
+                                    visible: appList.count > 0
+                                    font.pixelSize: 14
+                                    font.family: "Symbols Nerd Font"
+                                    font.bold: false
+                                    color: Config.colors.fg
+                                    text: ""
                                 }
                             }
 
