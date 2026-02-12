@@ -312,8 +312,8 @@ PanelWindow {
     }
 
     function lockScreen() {
-        States.barEnabled = false;
         lock.locked = true;
+        States.barEnabled = false;
     }
 
     function getAllVisibleItems() {
