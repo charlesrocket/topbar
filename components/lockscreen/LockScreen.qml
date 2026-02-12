@@ -93,37 +93,80 @@ Item {
             leftMargin: 40
         }
 
-        sourceComponent: Rectangle {
-            width: clockRow.implicitWidth + 22
-            height: clockRow.implicitHeight + 12
-            color: Config.colors.bg
-            radius: Config.general.cornerRadius
-
+        sourceComponent: Item {
             RowLayout {
-                id: clockRow
-                anchors.centerIn: parent
                 spacing: 12
 
-                Item {
-                    implicitWidth: 70
-                    implicitHeight: 30
+                Rectangle {
+                    width: clockRow.implicitWidth + 22
+                    height: clockRow.implicitHeight + 12
+                    color: Config.colors.bg
+                    radius: Config.general.cornerRadius
 
-                    Rectangle {
-                        id: clockRect
-                        anchors.fill: parent
-                        radius: Config.general.cornerRadius
-                        color: "transparent"
-                        anchors.topMargin: 2
+                    RowLayout {
+                        id: clockRow
+                        anchors.centerIn: parent
+                        spacing: 0
 
-                        property var currentTime: new Date()
+                        Item {
+                            implicitWidth: 70
+                            implicitHeight: 30
 
-                        Text {
-                            text: Qt.formatDateTime(clockRect.currentTime, "HH:mm")
-                            font.pixelSize: 22
-                            color: Config.colors.fg
-                            font.family: "FiraCode Nerd Font"
-                            font.bold: true
-                            anchors.centerIn: parent
+                            Rectangle {
+                                id: clockRect
+                                anchors.fill: parent
+                                radius: Config.general.cornerRadius
+                                color: "transparent"
+                                anchors.topMargin: 4
+
+                                property var currentTime: new Date()
+
+                                Text {
+                                    text: Qt.formatDateTime(clockRect.currentTime, "HH:mm")
+                                    font.pixelSize: 22
+                                    color: Config.colors.fg
+                                    font.family: "FiraCode Nerd Font"
+                                    font.bold: true
+                                    anchors.centerIn: parent
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Rectangle {
+                    width: battRow.implicitWidth + 22
+                    height: battRow.implicitHeight + 12
+                    color: Config.colors.bg
+                    radius: Config.general.cornerRadius
+
+                    RowLayout {
+                        id: battRow
+                        anchors.centerIn: parent
+                        spacing: 0
+
+                        Item {
+                            implicitWidth: battIcon.implicitWidth
+                            implicitHeight: 30
+
+                            Rectangle {
+                                id: battRect
+                                anchors.fill: parent
+                                radius: Config.general.cornerRadius
+                                color: "transparent"
+
+                                Text {
+                                    id: battIcon
+                                    text: States.battery.getIcon()
+                                    font.pixelSize: 22
+                                    color: Config.colors.fg
+                                    font.family: "FiraCode Nerd Font"
+                                    font.bold: true
+                                    anchors.fill: parent
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                }
+                            }
                         }
                     }
                 }
