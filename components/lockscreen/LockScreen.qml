@@ -10,6 +10,7 @@ import QtQuick.Effects
 import QtQuick.Controls.Fusion
 
 import "../.."
+import ".."
 
 Item {
     id: root
@@ -48,6 +49,21 @@ Item {
         }
     }
 
+    Process {
+        id: reboot
+        command: ["sh", "-c", Config.logout.commands.reboot]
+    }
+
+    Process {
+        id: suspend
+        command: ["sh", "-c", Config.logout.commands.suspend]
+    }
+
+    Process {
+        id: shutdown
+        command: ["sh", "-c", Config.logout.commands.shutdown]
+    }
+
     Image {
         source: Utils.expandPath(Config.lockscreen.wallpaper)
         cache: false
@@ -60,6 +76,142 @@ Item {
             blur: 0.65
             blurMax: 64
             autoPaddingEnabled: false
+        }
+    }
+
+    Loader {
+        id: buttons
+        active: Config.lockscreen.buttons
+        visible: buttons.active
+        asynchronous: true
+
+        anchors {
+            top: parent.top
+            right: parent.right
+            margins: 40
+        }
+
+        sourceComponent: Rectangle {
+            width: buttonsRow.implicitWidth + 12
+            height: buttonsRow.implicitHeight + 12
+            color: Config.colors.bg
+            radius: Config.general.cornerRadius
+
+            RowLayout {
+                id: buttonsRow
+                anchors.centerIn: parent
+                spacing: 12
+
+                Item {
+                    implicitWidth: 30
+                    implicitHeight: 30
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: Config.general.cornerRadius
+                        color: powerMouseArea.containsMouse ? Config.colors.fg : "transparent"
+
+                        Text {
+                            text: "󰤆"
+                            font.family: "Symbols Nerd Font"
+                            font.pixelSize: 22
+                            font.bold: true
+                            anchors.centerIn: parent
+                            color: powerMouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
+
+                            Behavior on color {
+                                ColAnim {}
+                            }
+                        }
+
+                        Behavior on color {
+                            ColAnim {}
+                        }
+                    }
+
+                    MouseArea {
+                        id: powerMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: shutdown.running = true
+                    }
+                }
+
+                // sleep
+                Item {
+                    implicitWidth: 30
+                    implicitHeight: 30
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: Config.general.cornerRadius
+                        color: sleepMouseArea.containsMouse ? Config.colors.fg : "transparent"
+
+                        Text {
+                            text: ""
+                            font.family: "Symbols Nerd Font"
+                            font.pixelSize: 22
+                            font.bold: true
+                            anchors.centerIn: parent
+                            color: sleepMouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
+
+                            Behavior on color {
+                                ColAnim {}
+                            }
+                        }
+
+                        Behavior on color {
+                            ColAnim {}
+                        }
+                    }
+
+                    MouseArea {
+                        id: sleepMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: suspend.running = true
+                    }
+                }
+
+                // reboot
+                Item {
+                    implicitWidth: 30
+                    implicitHeight: 30
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: Config.general.cornerRadius
+                        color: rebootMouseArea.containsMouse ? Config.colors.fg : "transparent"
+
+                        Text {
+                            text: "󰑐"
+                            font.family: "Symbols Nerd Font"
+                            font.pixelSize: 22
+                            font.bold: true
+                            anchors.centerIn: parent
+                            color: rebootMouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
+
+                            Behavior on color {
+                                ColAnim {}
+                            }
+                        }
+
+                        Behavior on color {
+                            ColAnim {}
+                        }
+                    }
+
+                    MouseArea {
+                        id: rebootMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: reboot.running = true
+                    }
+                }
+            }
         }
     }
 
@@ -142,6 +294,7 @@ Item {
                 Loader {
                     active: Config.lockscreen.shadows
                     visible: Config.lockscreen.shadows
+                    asynchronous: true
                     anchors.fill: usernameRect
                     anchors.margins: -10
 
@@ -162,7 +315,7 @@ Item {
                     color: Config.colors.bg
                     radius: 8
                     //border.width: 1
-                    //border.color: Config.colPassive
+                    //border.color: Config.colors.passive
 
                     Text {
                         id: usernameText
@@ -186,6 +339,7 @@ Item {
                 Loader {
                     active: Config.lockscreen.shadows
                     visible: Config.lockscreen.shadows
+                    asynchronous: true
                     anchors.fill: passwordBox
                     anchors.margins: -10
 
