@@ -6,6 +6,7 @@ import QtQuick.Layouts
 
 import "../../bar"
 import "../../.."
+import "../.."
 
 Item {
     id: root
@@ -52,10 +53,7 @@ Item {
         }
 
         Behavior on color {
-            ColorAnimation {
-                duration: Config.general.animDuration
-                easing.type: Easing.OutCubic
-            }
+            ColAnim {}
         }
     }
 
@@ -124,10 +122,7 @@ Item {
                         radius: 6
 
                         Behavior on color {
-                            ColorAnimation {
-                                duration: Config.general.animDuration
-                                easing.type: Easing.OutCubic
-                            }
+                            ColAnim {}
                         }
 
                         RowLayout {

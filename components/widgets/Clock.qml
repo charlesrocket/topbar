@@ -5,6 +5,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../.."
+import ".."
 
 Item {
     id: root
@@ -133,10 +134,7 @@ Item {
             }
 
             Behavior on color {
-                ColorAnimation {
-                    duration: Config.general.animDuration
-                    easing.type: Easing.OutCubic
-                }
+                ColAnim {}
             }
 
             MouseArea {
@@ -158,10 +156,7 @@ Item {
             }
 
             Behavior on color {
-                ColorAnimation {
-                    duration: Config.general.animDuration
-                    easing.type: Easing.OutCubic
-                }
+                ColAnim {}
             }
 
             MouseArea {

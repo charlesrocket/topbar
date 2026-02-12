@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../.."
+import ".."
 
 Repeater {
     id: root
@@ -42,10 +43,7 @@ Repeater {
         }
 
         Behavior on color {
-            ColorAnimation {
-                duration: root.animDuration
-                easing.type: Easing.OutCubic
-            }
+            ColAnim {}
         }
 
         MouseArea {

@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../.."
+import ".."
 
 Item {
     id: root
@@ -119,10 +120,7 @@ Item {
             }
 
             Behavior on color {
-                ColorAnimation {
-                    duration: 2000
-                    easing.type: Easing.InOutExpo
-                }
+                ColAnim {}
             }
         }
     }

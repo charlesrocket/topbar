@@ -8,6 +8,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../.."
+import ".."
 
 Loader {
     id: root
@@ -148,10 +149,7 @@ Loader {
                                             }
 
                                             Behavior on color {
-                                                ColorAnimation {
-                                                    duration: Config.general.animDuration
-                                                    easing.type: Easing.OutCubic
-                                                }
+                                                ColAnim {}
                                             }
                                         }
 
@@ -171,10 +169,7 @@ Loader {
                                             }
 
                                             Behavior on color {
-                                                ColorAnimation {
-                                                    duration: Config.general.animDuration
-                                                    easing.type: Easing.OutCubic
-                                                }
+                                                ColAnim {}
                                             }
                                         }
                                     }

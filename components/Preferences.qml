@@ -73,9 +73,7 @@ PanelWindow {
                             radius: Config.general.cornerRadius
 
                             Behavior on color {
-                                ColorAnimation {
-                                    duration: Config.general.animDuration
-                                }
+                                ColAnim {}
                             }
                         }
 
@@ -678,9 +676,7 @@ PanelWindow {
                         radius: Config.general.cornerRadius
 
                         Behavior on color {
-                            ColorAnimation {
-                                duration: Config.general.animDuration
-                            }
+                            ColAnim {}
                         }
                     }
 
@@ -757,9 +753,7 @@ PanelWindow {
                 radius: 4
 
                 Behavior on border.color {
-                    ColorAnimation {
-                        duration: Config.general.animDuration
-                    }
+                    ColAnim {}
                 }
             }
 
@@ -794,9 +788,7 @@ PanelWindow {
                 border.width: 1
 
                 Behavior on color {
-                    ColorAnimation {
-                        duration: Config.general.animDuration / 2
-                    }
+                    ColAnim {}
                 }
 
                 Rectangle {

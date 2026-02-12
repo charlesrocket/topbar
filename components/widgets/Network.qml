@@ -5,6 +5,7 @@ import Quickshell.Io
 import Quickshell.Networking
 
 import "../.."
+import ".."
 
 Item {
     id: root
@@ -134,10 +135,7 @@ Item {
             visible: !States.ecoMode
 
             Behavior on color {
-                ColorAnimation {
-                    duration: 250
-                    easing.type: Easing.OutCubic
-                }
+                ColAnim {}
             }
 
             MouseArea {

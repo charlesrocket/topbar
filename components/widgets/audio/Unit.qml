@@ -96,10 +96,7 @@ Item {
         font.bold: true
 
         Behavior on color {
-            ColorAnimation {
-                duration: Config.general.animDuration
-                easing.type: Easing.OutCubic
-            }
+            ColAnim {}
         }
 
         Behavior on opacity {
@@ -193,10 +190,7 @@ Item {
                     font.bold: true
 
                     Behavior on color {
-                        ColorAnimation {
-                            duration: Config.general.animDuration
-                            easing.type: Easing.OutCubic
-                        }
+                        ColAnim {}
                     }
                 }
 
