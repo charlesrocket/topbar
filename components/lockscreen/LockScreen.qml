@@ -9,6 +9,7 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import QtQuick.Controls.Fusion
 
+import "../widgets"
 import "../.."
 import ".."
 
@@ -88,7 +89,8 @@ Item {
         anchors {
             top: parent.top
             left: parent.left
-            margins: 40
+            topMargin: 40
+            leftMargin: 40
         }
 
         sourceComponent: Rectangle {
@@ -97,21 +99,33 @@ Item {
             color: Config.colors.bg
             radius: Config.general.cornerRadius
 
-            property var currentTime: new Date()
-
             RowLayout {
                 id: clockRow
                 anchors.centerIn: parent
                 spacing: 12
 
-                Text {
-                    text: Qt.formatDateTime(parent.parent.currentTime, "HH:mm")
-                    font.pixelSize: 22
-                    color: Config.colors.fg
-                    font.family: "FiraCode Nerd Font"
-                    font.bold: true
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.topMargin: 4
+                Item {
+                    implicitWidth: 70
+                    implicitHeight: 30
+
+                    Rectangle {
+                        id: clockRect
+                        anchors.fill: parent
+                        radius: Config.general.cornerRadius
+                        color: "transparent"
+                        anchors.topMargin: 2
+
+                        property var currentTime: new Date()
+
+                        Text {
+                            text: Qt.formatDateTime(clockRect.currentTime, "HH:mm")
+                            font.pixelSize: 22
+                            color: Config.colors.fg
+                            font.family: "FiraCode Nerd Font"
+                            font.bold: true
+                            anchors.centerIn: parent
+                        }
+                    }
                 }
             }
         }
@@ -126,11 +140,12 @@ Item {
         anchors {
             top: parent.top
             right: parent.right
-            margins: 40
+            topMargin: 40
+            rightMargin: 40
         }
 
         sourceComponent: Rectangle {
-            width: buttonsRow.implicitWidth + 12
+            width: buttonsRow.implicitWidth + 18
             height: buttonsRow.implicitHeight + 12
             color: Config.colors.bg
             radius: Config.general.cornerRadius
