@@ -69,9 +69,10 @@ Singleton {
 
     // lockscreen
     property var lockscreen: QtObject {
+        property string wallpaper: getSetting("lockscreen.wallpaper", States.defaultWallpaper)
         property bool buttons: getSetting("lockscreen.buttons", true)
         property bool clock: getSetting("lockscreen.clock", true)
-        property string wallpaper: getSetting("lockscreen.wallpaper", States.defaultWallpaper)
+        property bool battery: getSetting("lockscreen.battery", true)
         property bool shadows: getSetting("lockscreen.shadows", true)
         property bool username: getSetting("lockscreen.username", true) // full name
         property bool icon: getSetting("lockscreen.icon", true) // user icon

@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
+import Quickshell.Services.UPower
 
 import QtQuick
 import QtQuick.Layouts
@@ -81,9 +82,9 @@ Item {
     }
 
     Loader {
-        id: clock
-        active: Config.lockscreen.clock
-        visible: clock.active
+        id: widgets
+        active: Config.lockscreen.clock || Config.lockscreen.battery
+        visible: widgets.active
         asynchronous: true
 
         anchors {
@@ -97,74 +98,88 @@ Item {
             RowLayout {
                 spacing: 12
 
-                Rectangle {
-                    width: clockRow.implicitWidth + 22
-                    height: clockRow.implicitHeight + 12
-                    color: Config.colors.bg
-                    radius: Config.general.cornerRadius
+                Loader {
+                    id: clock
+                    active: Config.lockscreen.clock
+                    visible: clock.active
+                    asynchronous: true
 
-                    RowLayout {
-                        id: clockRow
-                        anchors.centerIn: parent
-                        spacing: 0
+                    sourceComponent: Rectangle {
+                        width: clockRow.implicitWidth + 22
+                        height: clockRow.implicitHeight + 12
+                        color: Config.colors.bg
+                        radius: Config.general.cornerRadius
 
-                        Item {
-                            implicitWidth: 70
-                            implicitHeight: 30
+                        RowLayout {
+                            id: clockRow
+                            anchors.centerIn: parent
+                            spacing: 0
 
-                            Rectangle {
-                                id: clockRect
-                                anchors.fill: parent
-                                radius: Config.general.cornerRadius
-                                color: "transparent"
-                                anchors.topMargin: 4
+                            Item {
+                                implicitWidth: 70
+                                implicitHeight: 30
 
-                                property var currentTime: new Date()
+                                Rectangle {
+                                    id: clockRect
+                                    anchors.fill: parent
+                                    radius: Config.general.cornerRadius
+                                    color: "transparent"
+                                    anchors.topMargin: 4
 
-                                Text {
-                                    text: Qt.formatDateTime(clockRect.currentTime, "HH:mm")
-                                    font.pixelSize: 22
-                                    color: Config.colors.fg
-                                    font.family: "FiraCode Nerd Font"
-                                    font.bold: true
-                                    anchors.centerIn: parent
+                                    property var currentTime: new Date()
+
+                                    Text {
+                                        text: Qt.formatDateTime(clockRect.currentTime, "HH:mm")
+                                        font.pixelSize: 22
+                                        color: Config.colors.fg
+                                        font.family: "FiraCode Nerd Font"
+                                        font.bold: true
+                                        anchors.centerIn: parent
+                                    }
                                 }
                             }
                         }
                     }
                 }
 
-                Rectangle {
-                    width: battRow.implicitWidth + 22
-                    height: battRow.implicitHeight + 12
-                    color: Config.colors.bg
-                    radius: Config.general.cornerRadius
+                Loader {
+                    id: battery
+                    active: Config.lockscreen.battery && UPower.displayDevice.ready
+                    visible: battery.active
+                    asynchronous: true
 
-                    RowLayout {
-                        id: battRow
-                        anchors.centerIn: parent
-                        spacing: 0
+                    sourceComponent: Rectangle {
+                        width: battRow.implicitWidth + 22
+                        height: battRow.implicitHeight + 12
+                        color: Config.colors.bg
+                        radius: Config.general.cornerRadius
 
-                        Item {
-                            implicitWidth: battIcon.implicitWidth
-                            implicitHeight: 30
+                        RowLayout {
+                            id: battRow
+                            anchors.centerIn: parent
+                            spacing: 0
 
-                            Rectangle {
-                                id: battRect
-                                anchors.fill: parent
-                                radius: Config.general.cornerRadius
-                                color: "transparent"
+                            Item {
+                                implicitWidth: battIcon.implicitWidth
+                                implicitHeight: 30
 
-                                Text {
-                                    id: battIcon
-                                    text: States.battery.getIcon()
-                                    font.pixelSize: 22
-                                    color: Config.colors.fg
-                                    font.family: "FiraCode Nerd Font"
-                                    font.bold: true
+                                Rectangle {
+                                    id: battRect
                                     anchors.fill: parent
-                                    horizontalAlignment: Text.AlignHCenter
-                                    verticalAlignment: Text.AlignVCenter
+                                    radius: Config.general.cornerRadius
+                                    color: "transparent"
+
+                                    Text {
+                                        id: battIcon
+                                        text: States.battery.getIcon()
+                                        font.pixelSize: 22
+                                        color: Config.colors.fg
+                                        font.family: "FiraCode Nerd Font"
+                                        font.bold: true
+                                        anchors.fill: parent
+                                        horizontalAlignment: Text.AlignHCenter
+                                        verticalAlignment: Text.AlignVCenter
+                                    }
                                 }
                             }
                         }
