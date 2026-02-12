@@ -6,6 +6,7 @@ import QtQuick
 import Quickshell
 
 Singleton {
+    property bool barEnabled: true
     property bool ecoMode: false
     property bool dropdownRevealed: false
     property bool preferencesWindowPresent: false

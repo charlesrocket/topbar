@@ -67,27 +67,31 @@ PanelWindow {
         }
 
         // sections
-        RowLayout {
+        Loader {
+            active: States.barEnabled
+            visible: States.barEnabled
             anchors.fill: parent
             anchors.leftMargin: 13
             anchors.rightMargin: 12
 
-            Left {
-                Layout.fillWidth: true
-                Layout.minimumWidth: 0
-                Layout.alignment: Qt.AlignLeft
-            }
+            sourceComponent: RowLayout {
+                Left {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    Layout.alignment: Qt.AlignLeft
+                }
 
-            Center {
-                Layout.fillWidth: false
-                Layout.preferredWidth: 400
-                Layout.alignment: Qt.AlignHCenter
-            }
+                Center {
+                    Layout.fillWidth: false
+                    Layout.preferredWidth: 400
+                    Layout.alignment: Qt.AlignHCenter
+                }
 
-            Right {
-                Layout.fillWidth: true
-                Layout.minimumWidth: 0
-                Layout.alignment: Qt.AlignRight
+                Right {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    Layout.alignment: Qt.AlignRight
+                }
             }
         }
 
@@ -159,7 +163,7 @@ PanelWindow {
         }
 
         function lock(): void {
-            lock.locked = true;
+            root.lockScreen();
         }
 
         function hide(): void {
@@ -283,6 +287,7 @@ PanelWindow {
         id: lockContext
 
         onUnlocked: {
+            States.barEnabled = true;
             lock.locked = false;
         }
     }
@@ -304,6 +309,11 @@ PanelWindow {
         if (this.WlrLayershell != null) {
             this.WlrLayershell.layer = WlrLayer.Top;
         }
+    }
+
+    function lockScreen() {
+        States.barEnabled = false;
+        lock.locked = true;
     }
 
     function getAllVisibleItems() {
