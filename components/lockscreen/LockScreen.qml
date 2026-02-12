@@ -80,6 +80,44 @@ Item {
     }
 
     Loader {
+        id: clock
+        active: Config.lockscreen.clock
+        visible: clock.active
+        asynchronous: true
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            margins: 40
+        }
+
+        sourceComponent: Rectangle {
+            width: clockRow.implicitWidth + 22
+            height: clockRow.implicitHeight + 12
+            color: Config.colors.bg
+            radius: Config.general.cornerRadius
+
+            property var currentTime: new Date()
+
+            RowLayout {
+                id: clockRow
+                anchors.centerIn: parent
+                spacing: 12
+
+                Text {
+                    text: Qt.formatDateTime(parent.parent.currentTime, "HH:mm")
+                    font.pixelSize: 22
+                    color: Config.colors.fg
+                    font.family: "FiraCode Nerd Font"
+                    font.bold: true
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.topMargin: 4
+                }
+            }
+        }
+    }
+
+    Loader {
         id: buttons
         active: Config.lockscreen.buttons
         visible: buttons.active

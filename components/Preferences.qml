@@ -530,6 +530,20 @@ PanelWindow {
                         }
 
                         SettingRow {
+                            label: "Buttons"
+                            targetObject: Config.lockscreen
+                            targetProperty: "buttons"
+                            valueType: "bool"
+                        }
+
+                        SettingRow {
+                            label: "Clock"
+                            targetObject: Config.lockscreen
+                            targetProperty: "clock"
+                            valueType: "bool"
+                        }
+
+                        SettingRow {
                             label: "Shadows"
                             targetObject: Config.lockscreen
                             targetProperty: "shadows"
