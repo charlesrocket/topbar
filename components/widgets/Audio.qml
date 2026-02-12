@@ -73,6 +73,7 @@ RowLayout {
             sourceComponent: Osd {
                 icon: speaker.iconAlias.text
                 value: speaker.volume
+                muted: speaker.muted
             }
         }
 

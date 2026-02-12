@@ -11,6 +11,7 @@ Scope {
     id: root
 
     required property string icon
+    required property bool muted
     required property int value
 
     property bool osdPresent: false
@@ -49,7 +50,7 @@ Scope {
 
                     Text {
                         text: root.icon
-                        color: Config.colors.fg
+                        color: root.muted ? Config.colors.red : Config.colors.fg
                         font.family: "Symbols Nerd Font"
                         font.pixelSize: 24
                         font.bold: true
