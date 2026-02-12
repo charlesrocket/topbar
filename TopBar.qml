@@ -8,7 +8,7 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
-import "components/bar"
+import "components/bar" as Bar
 import "components/lockscreen"
 import "components/logout"
 import "components"
@@ -75,19 +75,19 @@ PanelWindow {
             anchors.rightMargin: 12
 
             sourceComponent: RowLayout {
-                Left {
+                Bar.Left {
                     Layout.fillWidth: true
                     Layout.minimumWidth: 0
                     Layout.alignment: Qt.AlignLeft
                 }
 
-                Center {
+                Bar.Center {
                     Layout.fillWidth: false
                     Layout.preferredWidth: 400
                     Layout.alignment: Qt.AlignHCenter
                 }
 
-                Right {
+                Bar.Right {
                     Layout.fillWidth: true
                     Layout.minimumWidth: 0
                     Layout.alignment: Qt.AlignRight
