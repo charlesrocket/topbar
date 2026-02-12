@@ -10,7 +10,6 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import QtQuick.Controls.Fusion
 
-import "../widgets"
 import "../.."
 import ".."
 
