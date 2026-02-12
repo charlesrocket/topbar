@@ -8,7 +8,7 @@ import QtQuick.Layouts
 import ".."
 
 PanelWindow {
-    id: configPanel
+    id: root
 
     implicitWidth: 800
     implicitHeight: 600
@@ -105,6 +105,7 @@ PanelWindow {
                     clip: true
 
                     ColumnLayout {
+                        id: generalSection
                         width: parent.width
                         spacing: 12
 
@@ -142,6 +143,10 @@ PanelWindow {
                             targetProperty: "wallpaper"
                             valueType: "string"
                         }
+
+                        Component.onCompleted: {
+                            root.validateSection(Config.general, generalSection, "Config.general", null);
+                        }
                     }
                 }
 
@@ -152,6 +157,7 @@ PanelWindow {
                     clip: true
 
                     GridLayout {
+                        id: colorsSection
                         width: parent.width
                         columns: 2
                         columnSpacing: 16
@@ -254,6 +260,10 @@ PanelWindow {
                             targetProperty: "green"
                             valueType: "color"
                         }
+
+                        Component.onCompleted: {
+                            root.validateSection(Config.colors, colorsSection, "Config.colors", null);
+                        }
                     }
                 }
 
@@ -264,6 +274,7 @@ PanelWindow {
                     clip: true
 
                     GridLayout {
+                        id: widgetsSection
                         width: parent.width
                         columns: 2
                         columnSpacing: 16
@@ -345,6 +356,10 @@ PanelWindow {
                             targetProperty: "battery"
                             valueType: "bool"
                         }
+
+                        Component.onCompleted: {
+                            root.validateSection(Config.widgets, widgetsSection, "Config.widgets", null);
+                        }
                     }
                 }
 
@@ -358,32 +373,53 @@ PanelWindow {
                         width: parent.width
                         spacing: 12
 
-                        SettingRow {
-                            label: "Height"
-                            targetObject: Config.bar
-                            targetProperty: "height"
-                            valueType: "int"
+                        ColumnLayout {
+                            id: barSection
+                            width: parent.width
+                            spacing: 12
+
+                            SettingRow {
+                                label: "Height"
+                                targetObject: Config.bar
+                                targetProperty: "height"
+                                valueType: "int"
+                            }
+
+                            SettingRow {
+                                label: "Padding"
+                                targetObject: Config.bar
+                                targetProperty: "padding"
+                                valueType: "int"
+                            }
+
+                            Component.onCompleted: {
+                                // skipping Config.bar.title property
+                                root.validateSection(Config.bar, barSection, "Config.bar", 1);
+                            }
                         }
 
-                        SettingRow {
-                            label: "Padding"
-                            targetObject: Config.bar
-                            targetProperty: "padding"
-                            valueType: "int"
-                        }
+                        ColumnLayout {
+                            id: barTitleSection
+                            width: parent.width
+                            spacing: 12
 
-                        SettingRow {
-                            label: "Title Width"
-                            targetObject: Config.bar.title
-                            targetProperty: "width"
-                            valueType: "int"
-                        }
+                            SettingRow {
+                                label: "Width"
+                                targetObject: Config.bar.title
+                                targetProperty: "width"
+                                valueType: "int"
+                            }
 
-                        SettingRow {
-                            label: "Empty Title Text"
-                            targetObject: Config.bar.title
-                            targetProperty: "empty"
-                            valueType: "string"
+                            SettingRow {
+                                label: "Empty text"
+                                targetObject: Config.bar.title
+                                targetProperty: "empty"
+                                valueType: "string"
+                            }
+
+                            Component.onCompleted: {
+                                root.validateSection(Config.bar.title, barTitleSection, "Config.bar.title", null);
+                            }
                         }
                     }
                 }
@@ -395,6 +431,7 @@ PanelWindow {
                     clip: true
 
                     ColumnLayout {
+                        id: workspaceSection
                         width: parent.width
                         spacing: 12
 
@@ -467,6 +504,10 @@ PanelWindow {
                             targetProperty: "ten"
                             valueType: "string"
                         }
+
+                        Component.onCompleted: {
+                            root.validateSection(Config.workspaces, workspaceSection, "Config.workspaces", null);
+                        }
                     }
                 }
 
@@ -481,6 +522,7 @@ PanelWindow {
                         spacing: 12
 
                         SettingRow {
+                            id: lockscreenSection
                             label: "Wallpaper"
                             targetObject: Config.lockscreen
                             targetProperty: "wallpaper"
@@ -507,6 +549,10 @@ PanelWindow {
                             targetProperty: "icon"
                             valueType: "bool"
                         }
+
+                        Component.onCompleted: {
+                            root.validateSection(Config.lockscreen, lockscreenSection, "Config.lockscreen", null);
+                        }
                     }
                 }
 
@@ -520,11 +566,16 @@ PanelWindow {
                         width: parent.width
                         spacing: 12
 
-                        SettingRow {
-                            label: "Background Color"
-                            targetObject: Config.logout
-                            targetProperty: "background"
-                            valueType: "color"
+                        ColumnLayout {
+                            width: parent.width
+                            spacing: 12
+
+                            SettingRow {
+                                label: "Background Color"
+                                targetObject: Config.logout
+                                targetProperty: "background"
+                                valueType: "color"
+                            }
                         }
 
                         Text {
@@ -536,46 +587,56 @@ PanelWindow {
                             Layout.topMargin: 16
                         }
 
-                        SettingRow {
-                            label: "Lock"
-                            targetObject: Config.logout.commands
-                            targetProperty: "lock"
-                            valueType: "string"
-                        }
+                        ColumnLayout {
+                            id: logoutCommandsSection
+                            width: parent.width
+                            spacing: 12
 
-                        SettingRow {
-                            label: "Logout"
-                            targetObject: Config.logout.commands
-                            targetProperty: "logout"
-                            valueType: "string"
-                        }
+                            SettingRow {
+                                label: "Lock"
+                                targetObject: Config.logout.commands
+                                targetProperty: "lock"
+                                valueType: "string"
+                            }
 
-                        SettingRow {
-                            label: "Suspend"
-                            targetObject: Config.logout.commands
-                            targetProperty: "suspend"
-                            valueType: "string"
-                        }
+                            SettingRow {
+                                label: "Logout"
+                                targetObject: Config.logout.commands
+                                targetProperty: "logout"
+                                valueType: "string"
+                            }
 
-                        SettingRow {
-                            label: "Hibernate"
-                            targetObject: Config.logout.commands
-                            targetProperty: "hibernate"
-                            valueType: "string"
-                        }
+                            SettingRow {
+                                label: "Suspend"
+                                targetObject: Config.logout.commands
+                                targetProperty: "suspend"
+                                valueType: "string"
+                            }
 
-                        SettingRow {
-                            label: "Shutdown"
-                            targetObject: Config.logout.commands
-                            targetProperty: "shutdown"
-                            valueType: "string"
-                        }
+                            SettingRow {
+                                label: "Hibernate"
+                                targetObject: Config.logout.commands
+                                targetProperty: "hibernate"
+                                valueType: "string"
+                            }
 
-                        SettingRow {
-                            label: "Reboot"
-                            targetObject: Config.logout.commands
-                            targetProperty: "reboot"
-                            valueType: "string"
+                            SettingRow {
+                                label: "Shutdown"
+                                targetObject: Config.logout.commands
+                                targetProperty: "shutdown"
+                                valueType: "string"
+                            }
+
+                            SettingRow {
+                                label: "Reboot"
+                                targetObject: Config.logout.commands
+                                targetProperty: "reboot"
+                                valueType: "string"
+                            }
+
+                            Component.onCompleted: {
+                                root.validateSection(Config.logout.commands, logoutCommandsSection, "Config.logout.commands", null);
+                            }
                         }
                     }
                 }
@@ -748,5 +809,15 @@ PanelWindow {
                 delayed: true
             }
         }
+    }
+
+    function validateSection(obj, section, key, offset) {
+        var configCount = Utils.getPropertyCount(obj);
+
+        if (offset != null)
+            configCount -= offset;
+
+        if (configCount != section.children.length)
+            console.warn("Validation failed for " + key + " " + configCount + " != " + section.children.length);
     }
 }

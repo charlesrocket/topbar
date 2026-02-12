@@ -8,13 +8,15 @@ import qs
 
 Singleton {
     function getPropertyCount(obj) {
-        var keys = Object.keys(obj);
+        if (!obj || typeof obj !== "object")
+            return 0;
+
         var count = 0;
 
-        for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
-            // skip functions and signal handlers
-            if (obj.hasOwnProperty(key) && typeof obj[key] !== "function" && !key.startsWith("on") && key !== "objectName") {
+        for (var key in obj) {
+            var isEventHandler = key.startsWith("on") && key.length > 2 && key[2] === key[2].toUpperCase();
+
+            if (obj.hasOwnProperty(key) && typeof obj[key] !== "function" && !isEventHandler && key !== "objectName" && key !== "objectNameChanged") {
                 count++;
             }
         }
