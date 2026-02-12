@@ -172,12 +172,20 @@ Item {
                                         id: battIcon
                                         text: States.battery.getIcon()
                                         font.pixelSize: 22
-                                        color: Config.colors.fg
                                         font.family: "FiraCode Nerd Font"
                                         font.bold: true
                                         anchors.fill: parent
                                         horizontalAlignment: Text.AlignHCenter
                                         verticalAlignment: Text.AlignVCenter
+
+                                        color: {
+                                            if (States.battery.isCharging)
+                                                return Config.colors.yellow;
+                                            if (States.battery.percentage <= 34)
+                                                return Config.colors.red;
+
+                                            return Config.colors.fg;
+                                        }
                                     }
                                 }
                             }
