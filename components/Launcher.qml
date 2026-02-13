@@ -214,34 +214,33 @@ Loader {
                                     populate: null
                                     move: null
 
-                                    model: ScriptModel {
-                                        id: filteredModel
-                                        values: {
-                                            var apps = DesktopEntries.applications.values;
-                                            var searchText = searchField.text.toLowerCase().trim();
+                                    model: {
+                                        var apps = DesktopEntries.applications.values;
+                                        var searchText = searchField.text.toLowerCase().trim();
 
-                                            if (searchText.length === 0) {
-                                                // idle state
-                                                return [];
-                                            }
-
-                                            // filter based on search
-                                            var filtered = apps.filter(function (app) {
-                                                var name = (app.name || "").toLowerCase();
-                                                var description = (app.description || "").toLowerCase();
-                                                var comment = (app.comment || "").toLowerCase();
-                                                var genericName = (app.genericName || "").toLowerCase();
-
-                                                return name.indexOf(searchText) !== -1 || description.indexOf(searchText) !== -1 || comment.indexOf(searchText) !== -1 || genericName.indexOf(searchText) !== -1;
-                                            });
-
-                                            // sort filtered results
-                                            return [...filtered].sort(function (a, b) {
-                                                var nameA = (a.name || "").toLowerCase();
-                                                var nameB = (b.name || "").toLowerCase();
-                                                return nameA.localeCompare(nameB);
-                                            });
+                                        if (searchText.length === 0) {
+                                            // idle state
+                                            return [];
                                         }
+
+                                        var filtered = apps.filter(function (app) {
+                                            var name = (app.name || "").toLowerCase();
+                                            var description = (app.description || "").toLowerCase();
+                                            var comment = (app.comment || "").toLowerCase();
+                                            var genericName = (app.genericName || "").toLowerCase();
+                                            var exec = (app.exec || "").toLowerCase();
+
+                                            return name.includes(searchText) || description.includes(searchText) || comment.includes(searchText) || genericName.includes(searchText) || exec.includes(searchText);
+                                        });
+
+                                        filtered.sort(function (a, b) {
+                                            var nameA = (a.name || "").toLowerCase();
+                                            var nameB = (b.name || "").toLowerCase();
+
+                                            return nameA.localeCompare(nameB);
+                                        });
+
+                                        return filtered;
                                     }
 
                                     boundsBehavior: Flickable.StopAtBounds
