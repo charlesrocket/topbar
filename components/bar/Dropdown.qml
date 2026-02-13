@@ -151,7 +151,7 @@ Item {
             ShapePath {
                 strokeColor: Config.colors.border
                 strokeWidth: Config.general.borderWidth > 0 ? Config.general.borderWidth : -1
-                fillColor: Config.colors.bg
+                fillColor: States.ecoMode ? Config.colors.bge : Config.colors.bg
 
                 startX: -15
                 startY: 0
