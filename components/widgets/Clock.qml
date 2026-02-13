@@ -181,7 +181,7 @@ Item {
                 anchors.fill: parent
 
                 onClicked: {
-                    States.logoutPresent = true;
+                    States.sessionPresent = true;
                 }
             }
         }

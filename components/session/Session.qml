@@ -12,11 +12,11 @@ import ".."
 
 Loader {
     id: root
-    active: States.logoutPresent
+    active: States.sessionPresent
 
-    property color backgroundColor: Config.logout.background
+    property color backgroundColor: Config.session.background
 
-    default property list<LogoutButton> buttons
+    default property list<SessionButton> buttons
 
     sourceComponent: Variants {
         model: Quickshell.screens
@@ -35,7 +35,7 @@ Loader {
                 focus: true
                 Keys.onPressed: event => {
                     if (event.key == Qt.Key_Escape) {
-                        States.logoutPresent = false;
+                        States.sessionPresent = false;
                     } else {
                         for (let i = 0; i < root.buttons.length; i++) {
                             let button = root.buttons[i];
@@ -60,7 +60,7 @@ Loader {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: States.logoutPresent = false
+                    onClicked: States.sessionPresent = false
 
                     GridLayout {
                         anchors.centerIn: parent
@@ -76,7 +76,7 @@ Loader {
                             delegate: Rectangle {
                                 id: buttonRect
 
-                                required property LogoutButton modelData
+                                required property SessionButton modelData
                                 required property int index
 
                                 readonly property int row: Math.floor(index / 3)
@@ -99,12 +99,12 @@ Loader {
                                 KeyNavigation.up: buttonRepeater.itemAt(index - 3)
 
                                 Keys.onReturnPressed: {
-                                    States.logoutPresent = false;
+                                    States.sessionPresent = false;
                                     modelData.exec();
                                 }
 
                                 Keys.onEnterPressed: {
-                                    States.logoutPresent = false;
+                                    States.sessionPresent = false;
                                     modelData.exec();
                                 }
 
@@ -122,7 +122,7 @@ Loader {
                                     onEntered: buttonRect.forceActiveFocus()
 
                                     onClicked: {
-                                        States.logoutPresent = false;
+                                        States.sessionPresent = false;
                                         buttonRect.modelData.exec();
                                     }
                                 }

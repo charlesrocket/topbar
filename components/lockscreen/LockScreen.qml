@@ -52,17 +52,17 @@ Item {
 
     Process {
         id: reboot
-        command: ["sh", "-c", Config.logout.commands.reboot]
+        command: ["sh", "-c", Config.session.commands.reboot]
     }
 
     Process {
         id: suspend
-        command: ["sh", "-c", Config.logout.commands.suspend]
+        command: ["sh", "-c", Config.session.commands.suspend]
     }
 
     Process {
         id: shutdown
-        command: ["sh", "-c", Config.logout.commands.shutdown]
+        command: ["sh", "-c", Config.session.commands.shutdown]
     }
 
     Image {

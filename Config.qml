@@ -79,7 +79,7 @@ Singleton {
     }
 
     // logout commands
-    property var logout: QtObject {
+    property var session: QtObject {
         property color background: getSetting("logout.color", "#aa202020")
 
         property var commands: QtObject {

@@ -11,7 +11,7 @@ Singleton {
     property bool dropdownRevealed: false
     property bool preferencesWindowPresent: false
     property bool launcherPresent: false
-    property bool logoutPresent: false
+    property bool sessionPresent: false
     property bool keepAwake: false
     // TODO add local
     property string defaultWallpaper: "https://raw.githubusercontent.com/charlesrocket/misc-files/trunk/puffy-red.png"

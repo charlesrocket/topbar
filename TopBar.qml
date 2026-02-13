@@ -10,7 +10,7 @@ import QtQuick.Layouts
 
 import "components/bar" as Bar
 import "components/lockscreen"
-import "components/logout"
+import "components/session"
 import "components"
 
 PanelWindow {
@@ -159,7 +159,7 @@ PanelWindow {
         }
 
         function logout(): void {
-            States.logoutPresent = true;
+            States.sessionPresent = true;
         }
 
         function lock(): void {
@@ -189,44 +189,44 @@ PanelWindow {
         sourceComponent: Launcher {}
     }
 
-    Logout {
-        LogoutButton {
-            command: Config.logout.commands.lock
+    Session {
+        SessionButton {
+            command: Config.session.commands.lock
             keybind: Qt.Key_K
             text: "Lock"
             icon: ""
         }
 
-        LogoutButton {
-            command: Config.logout.commands.logout
+        SessionButton {
+            command: Config.session.commands.logout
             keybind: Qt.Key_E
             text: "Logout"
             icon: "󰗽"
         }
 
-        LogoutButton {
-            command: Config.logout.commands.suspend
+        SessionButton {
+            command: Config.session.commands.suspend
             keybind: Qt.Key_S
             text: "Suspend"
             icon: ""
         }
 
-        LogoutButton {
-            command: Config.logout.commands.hibernate
+        SessionButton {
+            command: Config.session.commands.hibernate
             keybind: Qt.Key_H
             text: "Hibernate"
             icon: "󰅐"
         }
 
-        LogoutButton {
-            command: Config.logout.commands.shutdown
+        SessionButton {
+            command: Config.session.commands.shutdown
             keybind: Qt.Key_P
             text: "Shutdown"
             icon: "󰤆"
         }
 
-        LogoutButton {
-            command: Config.logout.commands.reboot
+        SessionButton {
+            command: Config.session.commands.reboot
             keybind: Qt.Key_R
             text: "Reboot"
             icon: "󰑐"
@@ -245,7 +245,7 @@ PanelWindow {
 
     Process {
         id: suspendProcess
-        command: Config.logout.commands.suspend
+        command: Config.session.commands.suspend
     }
 
     IdleMonitor {
