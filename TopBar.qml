@@ -35,7 +35,7 @@ PanelWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         implicitWidth: root.screen.width - Config.bar.padding * 2
         implicitHeight: Config.bar.height
-        border.width: 1
+        border.width: Config.general.borderWidth
         border.color: Config.colors.border
         height: Config.bar.height
         color: States.ecoMode ? Config.colors.bge : Config.colors.bg

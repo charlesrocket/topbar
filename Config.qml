@@ -31,6 +31,7 @@ Singleton {
     property var general: QtObject {
         property string fontFamily: getSetting("general.font", "Hack Nerd Font")
         property int fontSize: getSetting("general.fontSize", 14)
+        property int borderWidth: getSetting("general.borderWidth", 1)
         property int cornerRadius: getSetting("general.radius", 8)
         property int animDuration: getSetting("general.animDuration", 250)
         property string wallpaper: getSetting("general.wallpaper", States.defaultWallpaper)
@@ -40,10 +41,6 @@ Singleton {
     property var bar: QtObject {
         property int height: getSetting("bar.height", 30)
         property int padding: getSetting("bar.padding", 8)
-        property var border: QtObject {
-            property bool enabled: getSetting("bar.border.enabled", true)
-            property int width: getSetting("bar.border.width", 1)
-        }
 
         property var title: QtObject {
             property int width: getSetting("bar.title.width", 400)

@@ -150,7 +150,7 @@ Item {
 
             ShapePath {
                 strokeColor: Config.colors.border
-                strokeWidth: Config.bar.border.enabled ? Config.bar.border.width : -1
+                strokeWidth: Config.general.borderWidth > 0 ? Config.general.borderWidth : -1
                 fillColor: Config.colors.bg
 
                 startX: -15
