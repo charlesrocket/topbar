@@ -31,7 +31,7 @@ Singleton {
     property var general: QtObject {
         property string fontFamily: getSetting("general.font", "Hack Nerd Font")
         property int fontSize: getSetting("general.fontSize", 14)
-        property int borderWidth: getSetting("general.borderWidth", 1)
+        property int borderWidth: getSetting("general.borderWidth", 0)
         property int cornerRadius: getSetting("general.radius", 8)
         property int animDuration: getSetting("general.animDuration", 250)
         property string wallpaper: getSetting("general.wallpaper", States.defaultWallpaper)
