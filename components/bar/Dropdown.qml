@@ -153,12 +153,12 @@ Item {
                 strokeWidth: Config.general.borderWidth > 0 ? Config.general.borderWidth : -1
                 fillColor: States.ecoMode ? Config.colors.bge : Config.colors.bg
 
-                startX: -15
+                startX: -Config.general.cornerRadius * 2
                 startY: 0
 
                 PathArc {
                     x: 0
-                    y: 15
+                    y: Config.general.cornerRadius * 2
                     radiusX: Config.general.cornerRadius * 2
                     radiusY: Config.general.cornerRadius * 2
                 }
@@ -191,11 +191,11 @@ Item {
 
                 PathLine {
                     x: dropdown.width
-                    y: 15
+                    y: Config.general.cornerRadius * 2
                 }
 
                 PathArc {
-                    x: dropdown.width + 15
+                    x: dropdown.width + Config.general.cornerRadius * 2
                     y: 0
                     radiusX: Config.general.cornerRadius * 2
                     radiusY: Config.general.cornerRadius * 2
