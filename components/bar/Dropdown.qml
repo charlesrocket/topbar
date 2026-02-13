@@ -154,7 +154,7 @@ Item {
                 fillColor: States.ecoMode ? Config.colors.bge : Config.colors.bg
 
                 startX: -(Config.general.cornerRadius * 2)
-                startY: 0
+                startY: Config.general.borderWidth > 0 ? 0 : 1
 
                 PathArc {
                     x: 0
@@ -196,7 +196,7 @@ Item {
 
                 PathArc {
                     x: dropdown.width + Config.general.cornerRadius * 2
-                    y: 0
+                    y: Config.general.borderWidth > 0 ? 0 : 1
                     radiusX: Config.general.cornerRadius * 2
                     radiusY: Config.general.cornerRadius * 2
                 }
