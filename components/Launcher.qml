@@ -120,7 +120,7 @@ Loader {
 
                                         Keys.onDownPressed: {
                                             if (appList.count > 0) {
-                                                appList.currentIndex = 0;
+                                                appList.incrementCurrentIndex();
                                                 appList.forceActiveFocus();
                                             }
                                         }
@@ -168,6 +168,7 @@ Loader {
                                     font.family: Config.general.fontFamily
                                     font.bold: false
                                     color: Config.colors.fg
+
                                     text: {
                                         var count = appList.count;
                                         return count === 1 ? "1 application found" : count + " applications found";
@@ -381,7 +382,8 @@ Loader {
             if (index < 0 || index >= appList.count)
                 return;
 
-            var app = appList.model.values[index];
+            var app = appList.model[index];
+
             if (app) {
                 app.execute();
                 States.launcherPresent = false;
