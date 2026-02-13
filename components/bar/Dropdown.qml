@@ -145,7 +145,7 @@ Item {
 
         Shape {
             id: ramp
-
+            preferredRendererType: Shape.CurveRenderer
             anchors.fill: parent
 
             ShapePath {
@@ -153,7 +153,7 @@ Item {
                 strokeWidth: Config.general.borderWidth > 0 ? Config.general.borderWidth : -1
                 fillColor: States.ecoMode ? Config.colors.bge : Config.colors.bg
 
-                startX: -Config.general.cornerRadius * 2
+                startX: -(Config.general.cornerRadius * 2)
                 startY: 0
 
                 PathArc {
