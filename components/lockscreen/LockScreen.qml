@@ -104,10 +104,27 @@ Item {
                     asynchronous: true
 
                     sourceComponent: Rectangle {
+                        id: clockContainer
                         width: clockRow.implicitWidth + 22
                         height: clockRow.implicitHeight + 12
                         color: Config.colors.bg
                         radius: Config.general.cornerRadius
+
+                        Loader {
+                            active: Config.lockscreen.shadows
+                            visible: Config.lockscreen.shadows
+                            asynchronous: true
+                            anchors.fill: clockContainer
+
+                            sourceComponent: RectangularShadow {
+                                offset.x: 0
+                                offset.y: 0
+                                radius: Config.general.cornerRadius
+                                blur: 30
+                                spread: 10
+                                color: Qt.rgba(0, 0, 0, 0.3)
+                            }
+                        }
 
                         RowLayout {
                             id: clockRow
@@ -148,10 +165,27 @@ Item {
                     asynchronous: true
 
                     sourceComponent: Rectangle {
+                        id: battContainer
                         width: battRow.implicitWidth + 22
                         height: battRow.implicitHeight + 12
                         color: Config.colors.bg
                         radius: Config.general.cornerRadius
+
+                        Loader {
+                            active: Config.lockscreen.shadows
+                            visible: Config.lockscreen.shadows
+                            asynchronous: true
+                            anchors.fill: battContainer
+
+                            sourceComponent: RectangularShadow {
+                                offset.x: 0
+                                offset.y: 0
+                                radius: Config.general.cornerRadius
+                                blur: 30
+                                spread: 10
+                                color: Qt.rgba(0, 0, 0, 0.3)
+                            }
+                        }
 
                         RowLayout {
                             id: battRow
@@ -210,10 +244,27 @@ Item {
         }
 
         sourceComponent: Rectangle {
+            id: buttonsContainer
             width: buttonsRow.implicitWidth + 18
             height: buttonsRow.implicitHeight + 12
             color: Config.colors.bg
             radius: Config.general.cornerRadius
+
+            Loader {
+                active: Config.lockscreen.shadows
+                visible: Config.lockscreen.shadows
+                asynchronous: true
+                anchors.fill: buttonsContainer
+
+                sourceComponent: RectangularShadow {
+                    offset.x: 0
+                    offset.y: 0
+                    radius: Config.general.cornerRadius
+                    blur: 30
+                    spread: 10
+                    color: Qt.rgba(0, 0, 0, 0.3)
+                }
+            }
 
             RowLayout {
                 id: buttonsRow
@@ -419,7 +470,7 @@ Item {
                     sourceComponent: RectangularShadow {
                         offset.x: 0
                         offset.y: 0
-                        radius: 8
+                        radius: Config.general.cornerRadius
                         blur: 30
                         spread: 10
                         color: Qt.rgba(0, 0, 0, 0.3)
@@ -431,7 +482,7 @@ Item {
                     implicitWidth: usernameText.implicitWidth + 20
                     implicitHeight: usernameText.implicitHeight + 12
                     color: Config.colors.bg
-                    radius: 8
+                    radius: Config.general.cornerRadius
                     //border.width: 1
                     //border.color: Config.colors.passive
 
@@ -464,7 +515,7 @@ Item {
                     sourceComponent: RectangularShadow {
                         offset.x: 0
                         offset.y: 0
-                        radius: 8
+                        radius: Config.general.cornerRadius
                         blur: 30
                         spread: 10
                         color: Qt.rgba(0, 0, 0, 0.3)
@@ -485,7 +536,7 @@ Item {
                     background: Rectangle {
                         id: blinkBorder
                         color: Config.colors.bg
-                        radius: 8
+                        radius: Config.general.cornerRadius
                         border.width: 2
                         border.color: Qt.rgba(Config.colors.accent.r, Config.colors.accent.g, Config.colors.accent.b, blinkBorder.borderOpacity)
 
