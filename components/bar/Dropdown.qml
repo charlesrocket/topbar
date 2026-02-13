@@ -5,6 +5,7 @@ import Quickshell.Services.OSS
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Shapes
 
 import "../.."
 
@@ -141,6 +142,66 @@ Item {
                 }
             }
         ]
+
+        Shape {
+            id: ramp
+
+            anchors.fill: parent
+
+            ShapePath {
+                strokeColor: Config.colors.border
+                strokeWidth: Config.bar.border.enabled ? Config.bar.border.width : -1
+                fillColor: Config.colors.bg
+
+                startX: -15
+                startY: 0
+
+                PathArc {
+                    x: 0
+                    y: 15
+                    radiusX: Config.general.cornerRadius * 2
+                    radiusY: Config.general.cornerRadius * 2
+                }
+
+                PathLine {
+                    x: 0
+                    y: dropdown.height - Config.general.cornerRadius
+                }
+
+                PathArc {
+                    x: Config.general.cornerRadius
+                    y: dropdown.height
+                    direction: PathArc.Counterclockwise
+                    radiusX: Config.general.cornerRadius
+                    radiusY: Config.general.cornerRadius
+                }
+
+                PathLine {
+                    x: dropdown.width - Config.general.cornerRadius
+                    y: dropdown.height
+                }
+
+                PathArc {
+                    x: dropdown.width
+                    y: dropdown.height - Config.general.cornerRadius
+                    direction: PathArc.Counterclockwise
+                    radiusX: Config.general.cornerRadius
+                    radiusY: Config.general.cornerRadius
+                }
+
+                PathLine {
+                    x: dropdown.width
+                    y: 15
+                }
+
+                PathArc {
+                    x: dropdown.width + 15
+                    y: 0
+                    radiusX: Config.general.cornerRadius * 2
+                    radiusY: Config.general.cornerRadius * 2
+                }
+            }
+        }
 
         Item {
             id: contentArea

@@ -164,10 +164,8 @@ Item {
         boxParent: iconText
 
         Rectangle {
-            color: States.ecoMode ? Config.colors.bge : Config.colors.bg
+            color: "transparent"
             radius: Config.general.cornerRadius
-            border.color: Config.colors.border
-            border.width: 1
             topLeftRadius: 0
             topRightRadius: 0
             implicitWidth: layout.implicitWidth + 24

@@ -92,10 +92,8 @@ Item {
 
         Rectangle {
             id: devices
-            color: States.ecoMode ? Config.colors.bge : root.colBg
+            color: "transparent"
             radius: root.cornerRadius
-            border.color: Config.colors.border
-            border.width: 1
             topLeftRadius: 0
             topRightRadius: 0
             implicitWidth: layout.implicitWidth + 26

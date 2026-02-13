@@ -40,6 +40,10 @@ Singleton {
     property var bar: QtObject {
         property int height: getSetting("bar.height", 30)
         property int padding: getSetting("bar.padding", 8)
+        property var border: QtObject {
+            property bool enabled: getSetting("bar.border.enabled", true)
+            property int width: getSetting("bar.border.width", 1)
+        }
 
         property var title: QtObject {
             property int width: getSetting("bar.title.width", 400)
