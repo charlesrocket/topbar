@@ -399,53 +399,9 @@ Item {
             Layout.preferredWidth: 160
             Layout.preferredHeight: 160
 
-            sourceComponent: Item {
-                Loader {
-                    active: Config.lockscreen.shadows
-                    visible: Config.lockscreen.shadows
-                    anchors.fill: parent
-
-                    sourceComponent: RectangularShadow {
-                        offset.x: 0
-                        offset.y: 0
-                        radius: width / 2
-                        blur: 30
-                        spread: 10
-                        color: Qt.rgba(0, 0, 0, 0.3)
-                    }
-                }
-
-                Image {
-                    id: userImage
-                    source: Utils.expandPath("~/.face.icon")
-                    anchors.fill: parent
-                    visible: false
-                }
-
-                MultiEffect {
-                    id: maskedImage
-                    source: userImage
-                    anchors.fill: parent
-                    maskEnabled: true
-                    maskSource: mask
-                    // smooth image
-                    maskThresholdMin: 0.5
-                    maskSpreadAtMin: 1.0
-                }
-
-                Item {
-                    id: mask
-                    anchors.fill: parent
-                    layer.enabled: true
-                    //layer.smooth: true
-                    visible: false
-
-                    Rectangle {
-                        anchors.fill: parent
-                        radius: width / 2
-                        color: "black"
-                    }
-                }
+            // forced for userpic
+            sourceComponent: UserImage {
+                shadow: true
             }
         }
 
