@@ -343,7 +343,7 @@ Rectangle {
 
     function getTempColor(temp) {
         if (temp > 80) return Config.colors.red;
-        if (temp > 50) return Config.colors.yellow;
+        if (temp > 65) return Config.colors.yellow;
 
         return Config.colors.fg;
     }
