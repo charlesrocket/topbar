@@ -15,17 +15,28 @@ Rectangle {
     anchors.margins: 8
 
     property real cpuTemp
+    property real pchTemp
     property int fontSize: Config.general.fontSize
     property string mail: ""
     property string mailErr: ""
 
     Process {
-        id: sensors
-
-        command: ["sensors"]
+        id: sysctl
+        command: ["sysctl", "hw.acpi.thermal.tz0.temperature", "dev.pchtherm.0.temperature"]
         stdout: StdioCollector {
             onStreamFinished: {
-                // TODO
+                const lines = this.text.split("\n");
+
+                lines.forEach(line => {
+                    const match = line.match(/^(\S+):\s*([\d.]+)C/);
+                    if (!match) return;
+
+                    const [, key, val] = match;
+                    if (key === "hw.acpi.thermal.tz0.temperature")
+                        root.cpuTemp = parseFloat(val);
+                    else if (key === "dev.pchtherm.0.temperature")
+                        root.pchTemp = parseFloat(val);
+                });
             }
         }
     }
@@ -58,7 +69,7 @@ Rectangle {
             spacing: 8
             // info
             Rectangle {
-                Layout.preferredWidth: sysinfo.implicitWidth + 20
+                Layout.preferredWidth: 352
                 Layout.preferredHeight: sysinfo.implicitHeight + 20
                 color: "transparent"
                 border.width: 1
@@ -178,6 +189,7 @@ Rectangle {
                     height: 280
                 }
 
+                // temperatures
                 Rectangle {
                     width: 65
                     height: 280
@@ -186,12 +198,72 @@ Rectangle {
                     border.color: Config.colors.passive
                     radius: Config.general.cornerRadius
 
-                    Text {
-                        anchors.centerIn: parent
-                        text: root.cpuTemp ? root.cpuTemp + "°C" : "N/A"
-                        color: Config.colors.fg
-                        font.pixelSize: root.fontSize
-                        font.family: Config.general.fontFamily
+                    ColumnLayout {
+                        anchors.fill: parent
+                        anchors.margins: 8
+                        spacing: 4
+
+                        RowLayout {
+                            Layout.alignment: Qt.AlignHCenter
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            spacing: 14
+
+                            // cpu temp
+                            Rectangle {
+                                Layout.fillHeight: true
+                                Layout.fillWidth: false
+                                Layout.preferredWidth: 10
+
+                                radius: Config.general.cornerRadius
+                                color: Config.colors.extraDark
+                                clip: true
+
+                                Rectangle {
+                                    anchors.bottom: parent.bottom
+                                    width: parent.width
+                                    height: parent.height * fraction
+                                    radius: Config.general.cornerRadius
+                                    color: getTempColor(root.cpuTemp)
+
+                                    readonly property real fraction: root.cpuTemp > 0
+                                        ? Math.min(root.cpuTemp / 100.0, 1.0)
+                                        : 0.0
+
+
+                                    Behavior on height {
+                                        NumberAnimation { duration: 400; easing.type: Easing.InOutQuad }
+                                    }
+                                }
+                            }
+
+                            // pch temp
+                            Rectangle {
+                                Layout.fillHeight: true
+                                Layout.fillWidth: false
+                                Layout.preferredWidth: 10
+                                radius: Config.general.cornerRadius
+                                color: Config.colors.extraDark
+                                clip: true
+
+                                Rectangle {
+                                    anchors.bottom: parent.bottom
+                                    width: parent.width
+                                    height: parent.height * fraction
+                                    radius: Config.general.cornerRadius
+                                    color: getTempColor(root.pchTemp)
+
+                                    readonly property real fraction: root.pchTemp > 0
+                                        ? Math.min(root.pchTemp / 100.0, 1.0)
+                                        : 0.0
+
+
+                                    Behavior on height {
+                                        NumberAnimation { duration: 400; easing.type: Easing.InOutQuad }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -264,9 +336,16 @@ Rectangle {
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            sensors.running = true;
+            sysctl.running = true;
             checkMail.running = true;
         }
+    }
+
+    function getTempColor(temp) {
+        if (temp > 80) return Config.colors.red;
+        if (temp > 50) return Config.colors.yellow;
+
+        return Config.colors.fg;
     }
 
     function getOsIcon() {
