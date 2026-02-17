@@ -33,9 +33,24 @@ Item {
         onTriggered: root.player?.positionChanged()
     }
 
+    Item {
+        anchors.fill: parent
+        visible: root.player === null
+
+        Text {
+            anchors.centerIn: parent
+            text: "󰥠"
+            color: Config.colors.fg
+            font.pixelSize: Config.general.fontSize * 6
+            font.family: "Symbols Nerd Font"
+            renderType: Text.NativeRendering
+        }
+    }
+
     Column {
         anchors.fill: parent
         spacing: 12
+        visible: root.player !== null
 
         // player switcher
         RowLayout {
