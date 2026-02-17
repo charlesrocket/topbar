@@ -162,29 +162,37 @@ Item {
                     }
                 }
             }
+
             // album cover
-            Image {
-                id: cover
-                width: 120
-                height: 120
-                retainWhileLoading: false
-                source: root.artUrl
-                fillMode: Image.PreserveAspectCrop
-                mipmap: true
+            Loader {
+                id: coverWrapper
+                active: root.player !== null
+                visible: coverWrapper.active
+                anchors.verticalCenter: parent.verticalCenter
 
-                Rectangle {
-                    anchors.fill: parent
-                    color: Config.colors.extraDark
-                    visible: cover.status !== Image.Ready
+                sourceComponent: Image {
+                    id: cover
+                    width: 120
+                    height: 120
+                    retainWhileLoading: false
+                    source: root.artUrl
+                    fillMode: Image.PreserveAspectCrop
+                    mipmap: true
 
-                    Text {
-                        anchors.centerIn: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        text: ""
-                        font.family: "Symbols Nerd Font"
-                        font.pixelSize: 80
-                        color: Config.colors.fg
+                    Rectangle {
+                        anchors.fill: parent
+                        color: Config.colors.extraDark
+                        visible: cover.status !== Image.Ready
+
+                        Text {
+                            anchors.centerIn: parent
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            text: ""
+                            font.family: "Symbols Nerd Font"
+                            font.pixelSize: 80
+                            color: Config.colors.fg
+                        }
                     }
                 }
             }
@@ -233,6 +241,7 @@ Item {
                                 player.loopState = MprisLoopState.None;
                             }
                         }
+
                         cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
                     }
                 }
@@ -300,6 +309,7 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: (root.player?.canSeek && root.player?.lengthSupported) || false
+
                     onClicked: function (mouse) {
                         if (root.player?.lengthSupported) {
                             var newPos = (mouse.x / width) * root.player.length;
