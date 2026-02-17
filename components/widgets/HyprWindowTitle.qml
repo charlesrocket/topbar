@@ -128,13 +128,11 @@ Item {
         Rectangle {
             color: "transparent"
             radius: Config.general.cornerRadius
-            implicitWidth: layout.implicitWidth + 646
-            implicitHeight: layout.implicitHeight + 426
+            implicitWidth: layout.implicitWidth + 651
+            implicitHeight: layout.implicitHeight + (Config.general.borderWidth > 0 ? 424 : 420)
 
             ColumnLayout {
                 id: layout
-                anchors.margins: 12
-                spacing: 8
 
                 Item {
                     Layout.fillHeight: true

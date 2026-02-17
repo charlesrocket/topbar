@@ -12,7 +12,10 @@ import ".."
 Rectangle {
     id: root
     anchors.fill: parent
-    anchors.margins: 8
+    anchors.topMargin: Config.general.borderWidth > 0 ? 8 : 2
+    anchors.bottomMargin: 8
+    anchors.leftMargin: 8
+    anchors.rightMargin: 8
 
     property real cpuTemp
     property real pchTemp
@@ -29,7 +32,8 @@ Rectangle {
 
                 lines.forEach(line => {
                     const match = line.match(/^(\S+):\s*([\d.]+)C/);
-                    if (!match) return;
+                    if (!match)
+                        return;
 
                     const [, key, val] = match;
                     if (key === "hw.acpi.thermal.tz0.temperature")
@@ -69,7 +73,7 @@ Rectangle {
             spacing: 8
             // info
             Rectangle {
-                Layout.preferredWidth: 352
+                Layout.preferredWidth: 357
                 Layout.preferredHeight: sysinfo.implicitHeight + 20
                 color: "transparent"
                 border.width: 1
@@ -185,7 +189,7 @@ Rectangle {
                 spacing: 8
 
                 Cal {
-                    width: 280
+                    width: 284
                     height: 280
                 }
 
@@ -226,13 +230,13 @@ Rectangle {
                                     radius: Config.general.cornerRadius
                                     color: getTempColor(root.cpuTemp)
 
-                                    readonly property real fraction: root.cpuTemp > 0
-                                        ? Math.min(root.cpuTemp / 100.0, 1.0)
-                                        : 0.0
-
+                                    readonly property real fraction: root.cpuTemp > 0 ? Math.min(root.cpuTemp / 100.0, 1.0) : 0.0
 
                                     Behavior on height {
-                                        NumberAnimation { duration: 400; easing.type: Easing.InOutQuad }
+                                        NumberAnimation {
+                                            duration: 400
+                                            easing.type: Easing.InOutQuad
+                                        }
                                     }
                                 }
                             }
@@ -253,13 +257,13 @@ Rectangle {
                                     radius: Config.general.cornerRadius
                                     color: getTempColor(root.pchTemp)
 
-                                    readonly property real fraction: root.pchTemp > 0
-                                        ? Math.min(root.pchTemp / 100.0, 1.0)
-                                        : 0.0
-
+                                    readonly property real fraction: root.pchTemp > 0 ? Math.min(root.pchTemp / 100.0, 1.0) : 0.0
 
                                     Behavior on height {
-                                        NumberAnimation { duration: 400; easing.type: Easing.InOutQuad }
+                                        NumberAnimation {
+                                            duration: 400
+                                            easing.type: Easing.InOutQuad
+                                        }
                                     }
                                 }
                             }
@@ -342,8 +346,10 @@ Rectangle {
     }
 
     function getTempColor(temp) {
-        if (temp > 80) return Config.colors.red;
-        if (temp > 65) return Config.colors.yellow;
+        if (temp > 80)
+            return Config.colors.red;
+        if (temp > 65)
+            return Config.colors.yellow;
 
         return Config.colors.fg;
     }

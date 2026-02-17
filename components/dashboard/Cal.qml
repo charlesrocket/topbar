@@ -13,7 +13,7 @@ Item {
     property int year: currentDate.getFullYear()
 
     Rectangle {
-        width: 280
+        width: 284
         height: 280
         color: "transparent"
         anchors.centerIn: parent
