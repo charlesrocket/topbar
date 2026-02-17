@@ -316,7 +316,7 @@ Rectangle {
 
                     // status
                     Text {
-                        text: root.mail || root.mailErr.slice(root.mailErr - (System.user.length + 4))
+                        text: root.mail || root.mailErr.replace(/\s+for\s+\S+[\s\S]*$/, "")
                         color: Config.colors.fg
                         font.pixelSize: root.fontSize
                         font.family: Config.general.fontFamily
