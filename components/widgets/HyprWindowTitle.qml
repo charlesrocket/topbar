@@ -4,42 +4,40 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../bar"
+import "../dashboard"
 import "../.."
+import ".."
 
 Item {
     id: root
-    implicitHeight: activeWindowTitle.implicitHeight
-    clip: true
+    Layout.alignment: Qt.AlignVCenter
+    implicitWidth: activeWindowTitle.implicitWidth
+    implicitHeight: Config.general.fontSize + 2
 
-    property int fontSize: 14
+    property int fontSize: Config.general.fontSize
     property int length: 80
     property string fontFamily: "JetBrainsMono Nerd Font"
     property color colFg: Config.colors.fg
     property color colPassive: Qt.darker(Config.colors.passive, 1.5)
     property int animDuration: Config.general.animDuration
     property string emptyTitle: Config.bar.title.empty
+
     property string fullTitle: {
         var win = Hyprland.activeToplevel;
-
         if (!win || !win.title || win.title.trim() === "") {
             return root.emptyTitle;
         }
-
         // check if the workspace has any windows
         var focusedWorkspace = Hyprland.focusedWorkspace;
-
         if (focusedWorkspace) {
             var currentWorkspace = Hyprland.workspaces.values.find(w => w.id === focusedWorkspace.id);
-
             if (currentWorkspace && currentWorkspace.toplevels && currentWorkspace.toplevels.values) {
                 var windowCount = currentWorkspace.toplevels.values.length;
-
                 if (windowCount === 0) {
                     return root.emptyTitle;
                 }
             }
         }
-
         return win.title.trim();
     }
 
@@ -47,35 +45,34 @@ Item {
 
     onDisplayTextChanged: {
         newTitle.text = displayText;
-        newTitle.y = height;
-        slideAnimation.restart();
+        fadeAnimation.restart();
     }
 
     SequentialAnimation {
-        id: slideAnimation
+        id: fadeAnimation
 
         ParallelAnimation {
             NumberAnimation {
                 target: activeWindowTitle
-                property: "y"
-                to: -activeWindowTitle.height
-                duration: 50
-                easing.type: Easing.InOutCubic
+                property: "opacity"
+                to: 0
+                duration: 180
+                easing.type: Easing.InOutQuad
             }
-
             NumberAnimation {
                 target: newTitle
-                property: "y"
-                to: 0
-                duration: 50
-                easing.type: Easing.InOutCubic
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 180
+                easing.type: Easing.InOutQuad
             }
         }
-
         ScriptAction {
             script: {
                 activeWindowTitle.text = newTitle.text;
-                activeWindowTitle.y = 0;
+                activeWindowTitle.opacity = 1;
+                newTitle.opacity = 0;
             }
         }
     }
@@ -89,12 +86,8 @@ Item {
 
     Text {
         id: activeWindowTitle
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: parent.height
+        anchors.centerIn: parent
         width: parent.width
-        y: 0
-
         text: parent.displayText
         color: root.colFg
         elide: Text.ElideRight
@@ -106,19 +99,16 @@ Item {
             pixelSize: root.fontSize
             bold: true
         }
+
+        opacity: 1
     }
 
     Text {
         id: newTitle
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: parent.height
+        anchors.centerIn: parent
         width: parent.width
-        y: parent.height
-
         color: root.colFg
         elide: Text.ElideRight
-
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
@@ -127,6 +117,33 @@ Item {
             pixelSize: root.fontSize
             bold: true
         }
+
+        opacity: 0
+    }
+
+    Dropdown {
+        id: dashboard
+        boxParent: root
+
+        Rectangle {
+            color: "transparent"
+            radius: Config.general.cornerRadius
+            implicitWidth: layout.implicitWidth + 646
+            implicitHeight: layout.implicitHeight + 426
+
+            ColumnLayout {
+                id: layout
+                anchors.margins: 12
+                spacing: 8
+
+                Item {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    Dashboard {}
+                }
+            }
+        }
     }
 
     MouseArea {
@@ -134,7 +151,16 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
 
-        onEntered: hoverActiveWindow.opacity = 1
-        onExited: hoverActiveWindow.opacity = 0
+        onEntered: {
+            hoverActiveWindow.opacity = 1;
+            dashboard.show = true;
+            States.dashboardPresent = true;
+        }
+
+        onExited: {
+            dashboard.timer.start;
+            hoverActiveWindow.opacity = 0;
+            States.dashboardPresent = false;
+        }
     }
 }

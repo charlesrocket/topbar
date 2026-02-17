@@ -1,0 +1,31 @@
+pragma Singleton
+
+import Quickshell
+import Quickshell.Io
+import QtQuick
+
+Singleton {
+    id: root
+
+    property string id
+    property string name
+    property string prettyName
+
+    readonly property string desktop: Quickshell.env("XDG_CURRENT_DESKTOP") || Quickshell.env("XDG_SESSION_DESKTOP")
+    readonly property string user: Quickshell.env("USER")
+    readonly property string shell: Quickshell.env("SHELL").split("/").pop()
+
+    FileView {
+        id: os
+        path: "/etc/os-release"
+
+        onLoaded: {
+            const lines = text().split("\n");
+            const fd = key => lines.find(l => l.startsWith(`${key}=`))?.split("=")[1].replace(/"/g, "") ?? "";
+
+            root.name = fd("NAME");
+            root.prettyName = fd("PRETTY_NAME");
+            root.id = fd("ID");
+        }
+    }
+}

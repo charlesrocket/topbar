@@ -14,6 +14,7 @@ RowLayout {
         active: Config.widgets.workspaces
         visible: wrkspc.active
         asynchronous: true
+        Layout.alignment: Qt.AlignVCenter
 
         sourceComponent: Item {
             implicitWidth: workspaceRow.implicitWidth

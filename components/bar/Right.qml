@@ -9,6 +9,8 @@ import "../.."
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3
+    Layout.alignment: Qt.AlignVCenter
+
     spacing: 6
 
     Item {
@@ -34,6 +36,7 @@ RowLayout {
         active: Config.widgets.audio
         visible: audio.active
         asynchronous: true
+        Layout.alignment: Qt.AlignVCenter
         Layout.preferredWidth: item ? item.implicitWidth : 0
         Layout.preferredHeight: item ? item.implicitHeight : 0
 
@@ -56,6 +59,7 @@ RowLayout {
         id: bt
         active: !States.ecoMode && Config.widgets.bluetooth
         visible: bt.active
+        Layout.alignment: Qt.AlignVCenter
         asynchronous: true
         sourceComponent: Bluetooth {}
     }
@@ -65,6 +69,7 @@ RowLayout {
         id: netwrk
         active: Config.widgets.network
         visible: netwrk.active
+        Layout.alignment: Qt.AlignVCenter
         asynchronous: true
         sourceComponent: Network {}
     }
@@ -78,6 +83,7 @@ RowLayout {
         id: sysTray
         active: !States.ecoMode && Config.widgets.tray
         visible: sysTray.active && SystemTray.items && SystemTray.items.values.length > 0
+        Layout.alignment: Qt.AlignVCenter
         asynchronous: true
         sourceComponent: Tray {}
     }
@@ -102,6 +108,7 @@ RowLayout {
         id: lang
         active: Config.widgets.language
         visible: lang.active
+        Layout.alignment: Qt.AlignVCenter
         asynchronous: true
 
         sourceComponent: Item {
@@ -117,6 +124,7 @@ RowLayout {
         active: Config.widgets.clock
         visible: time.active
         asynchronous: true
+        Layout.alignment: Qt.AlignVCenter
         Layout.topMargin: 2
         Layout.leftMargin: -1
         Layout.rightMargin: 2

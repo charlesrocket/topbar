@@ -29,6 +29,8 @@ Singleton {
 
     // general
     property var general: QtObject {
+        // see https://doc.qt.io/qt-6/qlocale.html
+        property string locale: getSetting("general.locale", "AnyTerritory")
         property string fontFamily: getSetting("general.font", "Hack Nerd Font")
         property int fontSize: getSetting("general.fontSize", 14)
         property int borderWidth: getSetting("general.borderWidth", 0)
@@ -40,6 +42,7 @@ Singleton {
     // bar
     property var bar: QtObject {
         property int height: getSetting("bar.height", 30)
+        // should be in sync with the compositor's (outer) gaps
         property int padding: getSetting("bar.padding", 8)
 
         property var title: QtObject {
@@ -51,6 +54,12 @@ Singleton {
     property var desktop: QtObject {
         property bool launcher: getSetting("desktop.launcher", true)
         property bool osd: getSetting("desktop.osd", false)
+    }
+
+    property var dashboard: QtObject {
+        property var player: QtObject {
+            property bool queueButtons: getSetting("dashboard.player.queueButtons", false)
+        }
     }
 
     // widgets

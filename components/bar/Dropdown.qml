@@ -14,6 +14,7 @@ Item {
 
     property alias timer: hideTimer
     property bool show: false
+    property int offset: 0
 
     required property var boxParent
 
@@ -34,7 +35,6 @@ Item {
 
     Item {
         id: dropdown
-        parent: root.parent
 
         visible: false
         width: contentArea.implicitWidth
@@ -44,10 +44,26 @@ Item {
             const mapped = root.boxParent.mapToItem(root.boxParent, 0, 0);
             return mapped.x + (root.boxParent.width / 2) - (dropdown.width / 2);
         }
-
         y: {
+            if (root.offset > 0) {
+                return root.offset;
+            }
+
+            let topItem = root.parent;
+            while (topItem && topItem.parent) {
+                topItem = topItem.parent;
+            }
+
+            if (topItem) {
+                const boxToTop = root.boxParent.mapToItem(topItem, 0, 0);
+                const parentToTop = root.parent.mapToItem(topItem, 0, 0);
+                const result = boxToTop.y - parentToTop.y + root.boxParent.height + (Config.bar.padding) - 1;
+                return result;
+            }
+
             const mapped = root.boxParent.mapToItem(root.parent, 0, 0);
-            return mapped.y + root.boxParent.height + 14;
+            const result = mapped.y + root.boxParent.height + (Config.bar.padding) - 1;
+            return result;
         }
 
         opacity: 0
@@ -154,7 +170,7 @@ Item {
                 fillColor: States.ecoMode ? Config.colors.bge : Config.colors.bg
 
                 startX: -(Config.general.cornerRadius * 2)
-                startY: 1
+                startY: 0
 
                 PathArc {
                     x: 0
@@ -196,7 +212,7 @@ Item {
 
                 PathArc {
                     x: dropdown.width + Config.general.cornerRadius * 2
-                    y: 1
+                    y: 0
                     radiusX: Config.general.cornerRadius * 2
                     radiusY: Config.general.cornerRadius * 2
                 }

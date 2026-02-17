@@ -21,7 +21,8 @@ Item {
     property int fontSize: Config.general.fontSize
 
     implicitWidth: icon.implicitWidth
-    implicitHeight: icon.implicitHeight
+    implicitHeight: Config.general.fontSize + 2
+    Layout.alignment: Qt.AlignVCenter
 
     function getActiveDeviceIcon() {
         for (var i = 0; i < OSS.devices.length; i++) {
@@ -45,10 +46,11 @@ Item {
         text: OSS.headphonesConnected ? "󰋋" : root.getActiveDeviceIcon()
         color: root.colMain
         anchors.centerIn: parent
+        Layout.alignment: Qt.AlignVCenter
 
         font {
             family: "Symbols Nerd Font"
-            pixelSize: root.fontSize
+            pixelSize: Config.general.fontSize + 2
             bold: true
         }
 
@@ -94,8 +96,6 @@ Item {
             id: devices
             color: "transparent"
             radius: root.cornerRadius
-            topLeftRadius: 0
-            topRightRadius: 0
             implicitWidth: layout.implicitWidth + 26
             implicitHeight: layout.implicitHeight + 24
 
@@ -142,7 +142,7 @@ Item {
                                 Layout.preferredWidth: 24
                                 color: root.colMain
                                 font.family: "Symbols Nerd Font"
-                                font.pixelSize: root.fontSize + 8
+                                font.pixelSize: Config.general.fontSize + 8
                                 font.bold: true
                             }
 
@@ -154,7 +154,7 @@ Item {
                                     text: modelData.description || modelData.name
                                     color: root.colMain
                                     font.family: root.fontFamily
-                                    font.pixelSize: root.fontSize
+                                    font.pixelSize: Config.general.fontSize
                                     elide: Text.ElideRight
                                     Layout.fillWidth: true
                                     font.bold: true
@@ -164,7 +164,7 @@ Item {
                                     text: modelData.name
                                     color: root.colMain
                                     font.family: root.fontFamily
-                                    font.pixelSize: root.fontSize - 2
+                                    font.pixelSize: Config.general.fontSize - 2
                                     visible: modelData.description && modelData.description !== modelData.name
                                 }
                             }

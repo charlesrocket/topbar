@@ -16,14 +16,13 @@ Item {
     property bool mic: false
     property int deviceId: -1
     property int barLen: 80
-    property int iconSize: 16
     property color colNormal: Config.colors.fg
     property color colPassive: Config.colors.passive
     property color colMuted: Config.colors.red
 
-    Layout.alignment: Qt.AlignVCenter
     implicitWidth: iconText.width
-    implicitHeight: iconText.height
+    implicitHeight: Config.general.fontSize + 2
+    Layout.alignment: Qt.AlignVCenter
 
     readonly property var device: {
         if (!OSS.devices)
@@ -89,10 +88,11 @@ Item {
     Text {
         id: iconText
         anchors.centerIn: parent
+        Layout.alignment: Qt.AlignVCenter
         text: root.getVolumeIcon(root.volume, root.muted)
         color: root.muted ? root.colMuted : root.colNormal
         font.family: "Symbols Nerd Font"
-        font.pixelSize: root.iconSize
+        font.pixelSize: Config.general.fontSize + 2
         font.bold: true
 
         Behavior on color {

@@ -10,7 +10,7 @@ import "../.."
 import ".."
 
 RowLayout {
-    id: audioRow
+    Layout.alignment: Qt.AlignVCenter
     anchors.right: parent.right
     spacing: 6
 
@@ -70,7 +70,7 @@ RowLayout {
             visible: audioOSD.active
             asynchronous: true
 
-            sourceComponent: Osd {
+            sourceComponent: OSD {
                 icon: speaker.iconAlias.text
                 value: speaker.volume
                 muted: speaker.muted

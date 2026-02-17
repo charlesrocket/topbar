@@ -6,9 +6,11 @@ import QtQuick
 import Quickshell
 
 Singleton {
+    property var locale: Qt.locale(Config.general.locale)
     property bool barEnabled: true
     property bool ecoMode: false
     property bool dropdownRevealed: false
+    property bool dashboardPresent: false
     property bool preferencesWindowPresent: false
     property bool launcherPresent: false
     property bool sessionPresent: false
