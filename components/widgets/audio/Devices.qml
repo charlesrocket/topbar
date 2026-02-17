@@ -174,6 +174,7 @@ Item {
                             id: mouseArea
                             anchors.fill: parent
                             hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
 
                             onClicked: {
                                 OSS.setDefaultDevice(modelData.deviceId);

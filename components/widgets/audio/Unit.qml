@@ -142,6 +142,7 @@ Item {
         id: hoverDetector
         anchors.fill: parent
         hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
 
         onEntered: {
             OSS.refresh();
@@ -248,6 +249,7 @@ Item {
                         id: sliderMouseArea
                         anchors.fill: parent
                         hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
 
                         function updateVolume(mouseY) {
                             if (root.control) {

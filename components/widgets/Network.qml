@@ -129,7 +129,7 @@ Item {
 
             property bool isHovered: false
 
-            color: isHovered ? root.colAction : root.colOnline
+            color: root.colOnline
             font.family: "Symbols Nerd Font"
             font.pixelSize: root.fontSize
             visible: !States.ecoMode
@@ -141,6 +141,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
 
                 onEntered: {
                     onlineIcon.isHovered = true;

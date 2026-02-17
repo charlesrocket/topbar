@@ -19,7 +19,7 @@ Item {
     property int fontSize: Config.general.fontSize
 
     Layout.alignment: Qt.AlignVCenter
-    implicitWidth: (hoverDetector.containsMouse ? dateContainer.width + 8 : 0) + clockText.width
+    implicitWidth: (hoverDetector.hovered ? dateContainer.width + 8 : 0) + clockText.width
     implicitHeight: clockText.height
 
     Behavior on implicitWidth {
@@ -80,11 +80,11 @@ Item {
     RowLayout {
         id: dateContainer
         anchors.right: clockContainer.left
-        anchors.rightMargin: hoverDetector.containsMouse ? 8 : 0
+        anchors.rightMargin: hoverDetector.hovered ? 8 : 0
         anchors.verticalCenter: parent.verticalCenter
         spacing: 10
-        opacity: hoverDetector.containsMouse ? 1 : 0
-        scale: hoverDetector.containsMouse ? 1 : 0
+        opacity: hoverDetector.hovered ? 1 : 0
+        scale: hoverDetector.hovered ? 1 : 0
         transformOrigin: Item.Right
         visible: opacity > 0
 
@@ -137,9 +137,12 @@ Item {
                 ColAnim {}
             }
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: root.toggleEcoMode()
+            HoverHandler {
+                cursorShape: Qt.PointingHandCursor
+            }
+
+            TapHandler {
+                onTapped: root.toggleEcoMode()
             }
         }
 
@@ -159,9 +162,12 @@ Item {
                 ColAnim {}
             }
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: root.toggleAwakeMode()
+            HoverHandler {
+                cursorShape: Qt.PointingHandCursor
+            }
+
+            TapHandler {
+                onTapped: root.toggleAwakeMode()
             }
         }
 
@@ -177,12 +183,12 @@ Item {
                 bold: true
             }
 
-            MouseArea {
-                anchors.fill: parent
+            HoverHandler {
+                cursorShape: Qt.PointingHandCursor
+            }
 
-                onClicked: {
-                    States.sessionPresent = true;
-                }
+            TapHandler {
+                onTapped: States.sessionPresent = true
             }
         }
     }
@@ -211,21 +217,14 @@ Item {
     Connections {
         target: hoverDetector
 
-        function onContainsMouseChanged() {
-            if (hoverDetector.containsMouse) {
+        function onHoveredChanged() {
+            if (hoverDetector.hovered) {
                 dateText.text = Qt.formatDateTime(clock.date, "ddd dd MMMM yyyy");
             }
         }
     }
 
-    MouseArea {
+    HoverHandler {
         id: hoverDetector
-        anchors.fill: parent
-        hoverEnabled: true
-        propagateComposedEvents: true
-
-        onPressed: function (mouse) {
-            mouse.accepted = false;
-        }
     }
 }
