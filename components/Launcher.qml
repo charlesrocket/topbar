@@ -60,6 +60,13 @@ Loader {
                         radius: Config.general.cornerRadius * 2
                         color: States.ecoMode ? Config.colors.bge : Config.colors.bg
 
+                        Behavior on height {
+                            NumberAnimation {
+                                duration: Config.general.animDuration / 2
+                                easing.type: Easing.OutCubic
+                            }
+                        }
+
                         ColumnLayout {
                             id: contentColumn
                             anchors.fill: parent
@@ -200,6 +207,13 @@ Loader {
 
                                     var visibleItems = Math.min(appList.count, 5);
                                     return (visibleItems * 64) + (visibleItems - 1) * 4 + 12;
+                                }
+
+                                Behavior on Layout.preferredHeight {
+                                    NumberAnimation {
+                                        duration: Config.general.animDuration / 2
+                                        easing.type: Easing.OutCubic
+                                    }
                                 }
 
                                 ListView {
