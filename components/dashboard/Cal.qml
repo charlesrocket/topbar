@@ -16,6 +16,7 @@ Item {
         width: 280
         height: 280
         color: "transparent"
+        anchors.centerIn: parent
         radius: Config.general.cornerRadius
         border.color: Config.colors.passive
         border.width: 1
@@ -26,13 +27,14 @@ Item {
             spacing: 8
 
             DayOfWeekRow {
+                Layout.fillWidth: true
                 Layout.preferredHeight: 20
                 Layout.preferredWidth: 20
+                Layout.alignment: Qt.AlignHCenter
                 locale: States.locale
-                spacing: 4
 
                 delegate: Rectangle {
-                    implicitWidth: Config.general.fontSize + 2
+                    implicitWidth: 32
                     implicitHeight: Config.general.fontSize + 2
                     color: "transparent"
 
@@ -57,14 +59,14 @@ Item {
             MonthGrid {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.alignment: Qt.AlignHCenter
                 month: root.month
                 year: root.year
                 locale: States.locale
-                spacing: 4
 
                 delegate: Rectangle {
-                    implicitWidth: 30
-                    implicitHeight: 30
+                    implicitWidth: 32
+                    implicitHeight: 32
 
                     required property var model
 
