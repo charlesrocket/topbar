@@ -69,7 +69,9 @@ Loader {
 
                         ColumnLayout {
                             id: contentColumn
-                            anchors.fill: parent
+                            anchors.top: parent.top
+                            anchors.left: parent.left
+                            anchors.right: parent.right
                             anchors.margins: 16
                             spacing: 12
 
