@@ -20,19 +20,6 @@ Item {
 
     default property alias content: contentArea.data
 
-    Timer {
-        id: hideTimer
-        interval: 120
-        repeat: false
-
-        onTriggered: {
-            if (!dropdownHover.hovered) {
-                root.show = false;
-                States.dropdownRevealed = false;
-            }
-        }
-    }
-
     Item {
         id: dropdown
 
@@ -237,6 +224,22 @@ Item {
                     hideTimer.start();
                 }
             }
+        }
+    }
+
+    Timer {
+        id: hideTimer
+        interval: 120
+        repeat: false
+
+        onTriggered: {
+            if (!dropdownHover.hovered) {
+                root.show = false;
+                States.dropdownRevealed = false;
+            }
+
+            if (States.dashboardPresent)
+                States.dashboardPresent = false;
         }
     }
 }

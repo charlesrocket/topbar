@@ -156,9 +156,8 @@ Item {
         }
 
         onExited: {
-            dashboard.timer.start;
+            dashboard.timer.start();
             hoverActiveWindow.opacity = 0;
-            States.dashboardPresent = false;
         }
     }
 }
