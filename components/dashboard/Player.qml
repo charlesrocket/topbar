@@ -14,10 +14,12 @@ Item {
     property int playerIndex: 0
     property var player: {
         var playerList = Mpris.players.values;
+
         if (playerList.length === 0)
             return null;
         if (playerIndex >= playerList.length)
             playerIndex = 0;
+
         return playerList[playerIndex] ?? null;
     }
 
@@ -33,9 +35,18 @@ Item {
         onTriggered: root.player?.positionChanged()
     }
 
+    // placeholder
     Item {
         anchors.fill: parent
-        visible: root.player === null
+        opacity: root.player === null ? 1.0 : 0.0
+        visible: opacity > 0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Config.general.animDuration
+                easing.type: Easing.OutSine
+            }
+        }
 
         Text {
             anchors.centerIn: parent
@@ -50,7 +61,15 @@ Item {
     Column {
         anchors.fill: parent
         spacing: 12
-        visible: root.player !== null
+        opacity: root.player !== null ? 1.0 : 0.0
+        visible: opacity > 0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Config.general.animDuration
+                easing.type: Easing.OutSine
+            }
+        }
 
         // player switcher
         RowLayout {
@@ -166,7 +185,7 @@ Item {
             // album cover
             Loader {
                 id: coverWrapper
-                active: root.player !== null
+                active: opacity > 0
                 visible: coverWrapper.active
                 anchors.verticalCenter: parent.verticalCenter
 
