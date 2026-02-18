@@ -90,9 +90,8 @@ Item {
 
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: {
-                            root.selectedDate = model.date;
-                        }
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: root.selectedDate = model.date
                     }
                 }
             }
