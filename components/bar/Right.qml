@@ -4,6 +4,7 @@ import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
 
+import "../widgets/audio"
 import "../widgets"
 import "../.."
 

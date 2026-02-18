@@ -6,8 +6,8 @@ import QtQuick
 import QtQuick.Layouts
 
 import "audio"
+import "../../.."
 import "../.."
-import ".."
 
 RowLayout {
     Layout.alignment: Qt.AlignVCenter
