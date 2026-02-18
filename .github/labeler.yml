@@ -1,0 +1,51 @@
+---
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: "README.md"
+
+ops:
+  - changed-files:
+      - any-glob-to-any-file: ".github/**/*"
+
+components:
+  - changed-files:
+      - any-glob-to-any-file: "components/*"
+
+widgets:
+  - changed-files:
+      - any-glob-to-any-file: "components/widgets/**/*"
+
+bar:
+  - changed-files:
+      - any-glob-to-any-file: "components/bar/**/*"
+
+dashboard:
+  - changed-files:
+      - any-glob-to-any-file: "components/dashboard/**/*"
+
+lockscreen:
+  - changed-files:
+      - any-glob-to-any-file: "components/lockscreen/**/*"
+
+launcher:
+  - changed-files:
+      - any-glob-to-any-file: "components/lockscreen/Launcher.qml"
+
+session:
+  - changed-files:
+      - any-glob-to-any-file: "components/session/**/*"
+
+config:
+  - changed-files:
+      - any-glob-to-any-file: "Config.qml"
+
+state:
+  - changed-files:
+      - any-glob-to-any-file: "States.qml"
+
+util:
+  - changed-files:
+      - any-glob-to-any-file: "Utils.qml"
+
+feature:
+  - head-branch: ["^feature", "feature"]
