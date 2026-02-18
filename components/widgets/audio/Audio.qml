@@ -5,7 +5,6 @@ import Quickshell.Services.OSS
 import QtQuick
 import QtQuick.Layouts
 
-import "audio"
 import "../../.."
 import "../.."
 

@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 
-import "../widgets"
+import "../widgets/hypr"
 import "../.."
 
 RowLayout {

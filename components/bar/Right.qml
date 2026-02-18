@@ -5,6 +5,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../widgets/audio"
+import "../widgets/hypr"
 import "../widgets"
 import "../.."
 

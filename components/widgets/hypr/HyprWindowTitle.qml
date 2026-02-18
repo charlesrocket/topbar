@@ -3,10 +3,9 @@ import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 
-import "../bar"
-import "../dashboard"
-import "../.."
-import ".."
+import "../../bar"
+import "../../dashboard"
+import "../../.."
 
 Item {
     id: root

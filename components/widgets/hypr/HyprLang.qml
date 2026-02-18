@@ -3,7 +3,7 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
 
-import "../.."
+import "../../.."
 
 Rectangle {
     id: root
