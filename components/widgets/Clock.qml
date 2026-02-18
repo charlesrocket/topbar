@@ -137,10 +137,6 @@ Item {
                 ColAnim {}
             }
 
-            HoverHandler {
-                cursorShape: Qt.PointingHandCursor
-            }
-
             TapHandler {
                 onTapped: root.toggleEcoMode()
             }
@@ -162,10 +158,6 @@ Item {
                 ColAnim {}
             }
 
-            HoverHandler {
-                cursorShape: Qt.PointingHandCursor
-            }
-
             TapHandler {
                 onTapped: root.toggleAwakeMode()
             }
@@ -181,10 +173,6 @@ Item {
                 family: "Symbols Nerd Font"
                 pixelSize: root.fontSize + 1
                 bold: true
-            }
-
-            HoverHandler {
-                cursorShape: Qt.PointingHandCursor
             }
 
             TapHandler {
