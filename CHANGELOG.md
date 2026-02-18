@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.1.0] - 2026-02-18
 
 ### Bug Fixes
 
@@ -78,6 +78,7 @@ All notable changes to this project will be documented in this file.
 - Add placeholder animation
 - Drop cursor shapes
 - Fix dropdown timer
+- Resolve container pushdown
 
 ### Documentation
 
@@ -99,6 +100,7 @@ All notable changes to this project will be documented in this file.
 - Add `nerd-fonts`
 - Add launcher
 - Add Preferences
+- Add changelog
 
 ### Features
 
