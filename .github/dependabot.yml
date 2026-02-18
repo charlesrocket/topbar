@@ -1,0 +1,13 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    open-pull-requests-limit: 4
+    schedule:
+      interval: "monthly"
+      day: "tuesday"
+
+    commit-message:
+      prefix: "ops"
+      include: "scope"
