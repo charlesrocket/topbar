@@ -180,7 +180,7 @@ Rectangle {
 
                     text: modelData.text
                     color: Config.colors.fg
-                    font.pixelSize: 11
+                    font.pixelSize: 12
                     font.family: root.fontFamily
                     leftPadding: 8
                     rightPadding: 8
