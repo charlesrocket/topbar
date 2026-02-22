@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import Quickshell
 import Quickshell.Services.Notifications
+import Quickshell.Widgets
 
 import QtQuick
 import QtQuick.Layouts
@@ -18,6 +19,9 @@ Rectangle {
     signal expired
 
     readonly property bool ready: notification !== null
+    readonly property bool hasImage: ready && notification.image !== ""
+    readonly property bool hasAppIcon: ready && notification.appIcon !== ""
+    readonly property bool showIcon: hasImage || hasAppIcon
     readonly property int timeoutMs: ready && notification.expireTimeout > 0 ? notification.expireTimeout : 5000
 
     readonly property color urgencyColor: {
@@ -35,24 +39,23 @@ Rectangle {
     }
 
     implicitWidth: Config.notifications.width
-    implicitHeight: contentLayout.implicitHeight + 24
+    implicitHeight: bodyRow.implicitHeight + 24
 
     radius: Config.general.cornerRadius
     color: Config.colors.bg
     border.width: Config.general.borderWidth
     border.color: urgencyColor
 
-    // slide-in from the right
     transform: Translate {
-        id: slideIn
-        x: 400
+        id: slide
+        x: Config.notifications.width
     }
 
     Component.onCompleted: slideInAnim.start()
 
     NumberAnimation {
         id: slideInAnim
-        target: slideIn
+        target: slide
         property: "x"
         from: Config.notifications.width
         to: 0
@@ -60,16 +63,40 @@ Rectangle {
         easing.type: Easing.OutQuint
     }
 
+    NumberAnimation {
+        id: slideOutAnim
+        target: slide
+        property: "x"
+        from: 0
+        to: Config.notifications.width
+        duration: Config.general.animDuration
+        easing.type: Easing.InQuint
+
+        onStopped: {
+            if (slideOutAnim.pendingDismiss)
+                root.dismissed();
+            else
+                root.expired();
+        }
+
+        property bool pendingDismiss: false
+    }
+
+    property real remainingMs: root.timeoutMs
+    property real hoverPauseStart: 0
+
     // auto-expire timer
     Timer {
         id: expireTimer
-        interval: root.timeoutMs
+        interval: root.remainingMs
         running: root.ready
-        onTriggered: root.expired()
+        onTriggered: root.expire()
     }
 
     // progress bar
     Rectangle {
+        id: progressBar
+
         anchors {
             bottom: parent.bottom
             right: parent.right
@@ -80,10 +107,13 @@ Rectangle {
         color: root.urgencyColor
         opacity: 0.8
 
-        NumberAnimation on width {
-            from: root.implicitWidth - 2
+        NumberAnimation {
+            id: progressAnim
+            target: progressBar
+            property: "width"
+            from: root.remainingMs / root.timeoutMs * (root.implicitWidth - 2)
             to: 0
-            duration: root.timeoutMs
+            duration: root.remainingMs
             running: expireTimer.running
             easing.type: Easing.Linear
         }
@@ -107,12 +137,14 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
-            onClicked: root.dismissed()
+            onClicked: root.dismiss()
         }
     }
 
-    ColumnLayout {
-        id: contentLayout
+    // outer row: icon + content
+    RowLayout {
+        id: bodyRow
+        spacing: 10
 
         anchors {
             left: parent.left
@@ -123,76 +155,112 @@ Rectangle {
             leftMargin: 12
         }
 
-        // app name
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 8
+        // icon area
+        Item {
+            id: iconContainer
+            visible: root.showIcon
+            Layout.preferredWidth: 16
+            Layout.preferredHeight: 16
+            Layout.alignment: Qt.AlignTop
 
-            Text {
-                text: root.ready ? root.notification.appName === "notify-send" ? "" : root.notification.appName : ""
-                color: Qt.darker(Config.colors.fg, 1.3)
-                font.pixelSize: 14
-                font.family: root.fontFamily
-                font.weight: Font.Medium
-                elide: Text.ElideRight
-                Layout.fillWidth: true
-                visible: text.length > 0
+            // image
+            Image {
+                id: notifImage
+                anchors.fill: parent
+                source: root.hasImage ? root.notification.image : ""
+                visible: root.hasImage
+                fillMode: Image.PreserveAspectFit
+                smooth: true
+                layer.enabled: true
+                layer.effect: null
+            }
+
+            // app icon
+            IconImage {
+                id: appIconImage
+                anchors.fill: parent
+                source: (!root.hasImage && root.hasAppIcon) ? root.notification.appIcon : ""
+                visible: !root.hasImage && root.hasAppIcon
+                implicitSize: 16
             }
         }
 
-        // summary / title
-        Text {
-            text: root.ready ? root.notification.summary : ""
-            color: Config.colors.fg
-            font.pixelSize: 14
-            font.family: root.fontFamily
-            font.weight: Font.Medium
-            wrapMode: Text.WordWrap
-            textFormat: Text.PlainText
+        // text content
+        ColumnLayout {
+            id: contentLayout
             Layout.fillWidth: true
-            visible: text.length > 0
-        }
+            spacing: 2
 
-        // body
+            // app name
+            RowLayout {
+                Layout.fillWidth: true
+                spacing: 8
 
-        Text {
-            text: root.ready ? root.notification.body : ""
-            color: Config.colors.fg
-            font.pixelSize: 13
-            font.family: root.fontFamily
-            wrapMode: Text.WordWrap
-            textFormat: Text.PlainText
-            Layout.fillWidth: true
-            visible: text.length > 0
-        }
-
-        // action buttons
-        Flow {
-            Layout.fillWidth: true
-            spacing: 6
-            visible: root.ready && root.notification.actions.length > 0
-
-            Repeater {
-                model: root.ready ? root.notification.actions : []
-
-                delegate: Text {
-                    required property var modelData
-
-                    text: modelData.text
-                    color: Config.colors.fg
-                    font.pixelSize: 12
+                Text {
+                    text: root.ready ? (root.notification.appName === "notify-send" ? "" : root.notification.appName) : ""
+                    color: Qt.darker(Config.colors.fg, 1.3)
+                    font.pixelSize: 14
                     font.family: root.fontFamily
-                    leftPadding: 8
-                    rightPadding: 8
-                    topPadding: 4
-                    bottomPadding: 4
+                    font.weight: Font.Medium
+                    elide: Text.ElideRight
+                    Layout.fillWidth: true
+                    visible: text.length > 0
+                }
+            }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            parent.modelData.invoke();
-                            root.dismissed();
+            // summary / title
+            Text {
+                text: root.ready ? root.notification.summary : ""
+                color: Config.colors.fg
+                font.pixelSize: 14
+                font.family: root.fontFamily
+                font.weight: Font.Medium
+                wrapMode: Text.WordWrap
+                textFormat: Text.PlainText
+                Layout.fillWidth: true
+                visible: text.length > 0
+            }
+
+            // body
+            Text {
+                text: root.ready ? root.notification.body : ""
+                color: Config.colors.fg
+                font.pixelSize: 13
+                font.family: root.fontFamily
+                wrapMode: Text.WordWrap
+                textFormat: Text.PlainText
+                Layout.fillWidth: true
+                visible: text.length > 0
+            }
+
+            // action buttons
+            Flow {
+                Layout.fillWidth: true
+                spacing: 6
+                visible: root.ready && root.notification.actions.length > 0
+
+                Repeater {
+                    model: root.ready ? root.notification.actions : []
+
+                    delegate: Text {
+                        required property var modelData
+
+                        text: modelData.text
+                        color: Config.colors.fg
+                        font.pixelSize: 12
+                        font.family: root.fontFamily
+                        leftPadding: 8
+                        rightPadding: 8
+                        topPadding: 4
+                        bottomPadding: 4
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: {
+                                parent.modelData.invoke();
+                                root.dismiss();
+                            }
                         }
                     }
                 }
@@ -201,6 +269,30 @@ Rectangle {
     }
 
     HoverHandler {
-        onHoveredChanged: expireTimer.running = !hovered
+        onHoveredChanged: {
+            if (hovered) {
+                root.hoverPauseStart = Date.now();
+                root.remainingMs = progressBar.width / (root.implicitWidth - 2) * root.timeoutMs;
+                progressAnim.stop();
+                expireTimer.stop();
+            } else {
+                expireTimer.interval = root.remainingMs;
+                progressAnim.from = progressBar.width;
+                progressAnim.duration = root.remainingMs;
+                expireTimer.restart();
+                progressAnim.restart();
+            }
+        }
+    }
+
+    function dismiss() {
+        expireTimer.stop();
+        slideOutAnim.pendingDismiss = true;
+        slideOutAnim.start();
+    }
+
+    function expire() {
+        slideOutAnim.pendingDismiss = false;
+        slideOutAnim.start();
     }
 }
