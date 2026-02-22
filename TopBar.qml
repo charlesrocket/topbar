@@ -9,6 +9,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "components/bar" as Bar
+import "components/notifications"
 import "components/lockscreen"
 import "components/session"
 import "components"
@@ -174,6 +175,21 @@ PanelWindow {
         function reveal(): void {
             bar.hidden(false);
         }
+    }
+
+    Loader {
+        id: notif
+        active: Config.notifications.enabled
+        visible: notif.active
+
+        anchors {
+            top: parent.top
+            right: parent.right
+            topMargin: Config.bar.height + (Config.bar.padding * 2)
+            rightMargin: Config.bar.padding
+        }
+
+        sourceComponent: Notifications {}
     }
 
     Loader {

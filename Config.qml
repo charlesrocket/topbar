@@ -62,6 +62,11 @@ Singleton {
         }
     }
 
+    property var notifications: QtObject {
+        property bool enabled: getSetting("notifications.enabled", true)
+        property int width: getSetting("notifications.width", 300)
+    }
+
     // widgets
     property var widgets: QtObject {
         property bool workspaces: getSetting("widgets.workspaces", true)
