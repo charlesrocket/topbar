@@ -5,7 +5,9 @@ An interactive bar and desktop environment for [Quickshell](https://quickshell.o
 **Features**:
 
 * responsive widgets
+* dashboard
 * app launcher
+* notifications
 * preferences
 * logout panel
 * lock screen
