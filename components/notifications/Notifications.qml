@@ -8,12 +8,10 @@ import QtQuick.Layouts
 
 import "../.."
 
-// Drop this directly inside the PanelWindow (root), after the bar Rectangle.
-// It floats in the top-right corner of the screen, below the bar.
 Item {
     id: root
 
-    implicitWidth: 360
+    implicitWidth: Config.notifications.width
     implicitHeight: stack.implicitHeight
 
     property var notifications: []
@@ -45,7 +43,7 @@ Item {
 
     ColumnLayout {
         id: stack
-        spacing: 8
+        spacing: 6
 
         anchors {
             top: parent.top
