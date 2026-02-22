@@ -159,9 +159,9 @@ Rectangle {
         Item {
             id: iconContainer
             visible: root.showIcon
-            Layout.preferredWidth: 16
-            Layout.preferredHeight: 16
-            Layout.alignment: Qt.AlignTop
+            Layout.preferredWidth: 24
+            Layout.preferredHeight: 24
+            Layout.alignment: Qt.AlignCenter
 
             // image
             Image {
@@ -181,7 +181,7 @@ Rectangle {
                 anchors.fill: parent
                 source: (!root.hasImage && root.hasAppIcon) ? root.notification.appIcon : ""
                 visible: !root.hasImage && root.hasAppIcon
-                implicitSize: 16
+                implicitSize: 24
             }
         }
 

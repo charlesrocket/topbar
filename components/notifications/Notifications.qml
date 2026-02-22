@@ -22,7 +22,7 @@ Item {
         actionsSupported: true
         bodySupported: true
         bodyMarkupSupported: false
-        imageSupported: false
+        imageSupported: true
         keepOnReload: false
 
         onNotification: notif => {
