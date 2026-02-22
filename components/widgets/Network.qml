@@ -85,7 +85,7 @@ Item {
 
     Process {
         id: netifRestart
-        command: ["netif-restart"]
+        command: ["sh", "-c", "notify-send -u normal 'Reloading the network' && doas service netif restart"]
         Component.onCompleted: running = false
     }
 
