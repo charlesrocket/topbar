@@ -8,12 +8,7 @@ import "../.."
 
 RowLayout {
     id: rowLayout
-    Layout.alignment: Qt.AlignVCenter
-
-    Item {
-        Layout.fillWidth: true
-        Layout.minimumWidth: 0
-    }
+    Layout.alignment: Qt.AlignCenter
 
     // active window title
     Loader {
@@ -26,10 +21,5 @@ RowLayout {
         Layout.preferredWidth: 400
         Layout.preferredHeight: item ? item.implicitHeight : 0
         sourceComponent: HyprWindowTitle {}
-    }
-
-    Item {
-        Layout.fillWidth: true
-        Layout.minimumWidth: 0
     }
 }

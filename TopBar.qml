@@ -71,9 +71,9 @@ PanelWindow {
         Loader {
             active: States.barEnabled
             visible: States.barEnabled
-            Layout.alignment: Qt.AlignVCenter
+            Layout.alignment: Qt.AlignCenter
             anchors.fill: parent
-            anchors.leftMargin: 13
+            anchors.leftMargin: 12
             anchors.rightMargin: 12
 
             sourceComponent: RowLayout {

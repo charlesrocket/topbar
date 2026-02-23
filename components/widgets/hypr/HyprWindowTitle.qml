@@ -10,7 +10,6 @@ import "../../.."
 Item {
     id: root
     Layout.alignment: Qt.AlignVCenter
-    implicitWidth: activeWindowTitle.implicitWidth
     implicitHeight: Config.general.fontSize + 2
 
     property int fontSize: Config.general.fontSize
@@ -37,6 +36,7 @@ Item {
                 }
             }
         }
+
         return win.title.trim();
     }
 
@@ -88,13 +88,14 @@ Item {
         anchors.centerIn: parent
         width: parent.width
         text: parent.displayText
+        renderType: Text.NativeRendering
         color: root.colFg
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
         font {
-            family: root.fontFamily
+            family: root.displayText === root.emptyTitle ? "Symbols Nerd Font" : root.fontFamily
             pixelSize: root.fontSize
             bold: true
         }
@@ -106,13 +107,14 @@ Item {
         id: newTitle
         anchors.centerIn: parent
         width: parent.width
+        renderType: Text.NativeRendering
         color: root.colFg
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
         font {
-            family: root.fontFamily
+            family: root.displayText === root.emptyTitle ? "Symbols Nerd Font" : root.fontFamily
             pixelSize: root.fontSize
             bold: true
         }
