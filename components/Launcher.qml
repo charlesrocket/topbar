@@ -198,15 +198,16 @@ Loader {
                             // application list
                             Rectangle {
                                 id: listContainer
-                                visible: appList.count > 0
+                                visible: Layout.preferredHeight > 0
                                 color: States.ecoMode ? Config.colors.bge : Config.colors.bgl
                                 radius: Config.general.cornerRadius
                                 clip: true
                                 Layout.fillWidth: true
-                                Layout.preferredHeight: {
+                                Layout.preferredHeight: targetHeight
+
+                                readonly property real targetHeight: {
                                     if (appList.count === 0)
                                         return 0;
-
                                     var visibleItems = Math.min(appList.count, 5);
                                     return (visibleItems * 64) + (visibleItems - 1) * 4 + 12;
                                 }
@@ -225,11 +226,6 @@ Loader {
                                     spacing: 4
                                     clip: true
                                     reuseItems: true
-                                    add: null
-                                    remove: null
-                                    displaced: null
-                                    populate: null
-                                    move: null
 
                                     model: {
                                         var apps = DesktopEntries.applications.values;
