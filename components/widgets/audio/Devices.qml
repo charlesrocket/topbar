@@ -19,31 +19,14 @@ Item {
     property int cornerRadius: 8
     property string fontFamily: Config.general.fontFamily
     property int fontSize: Config.general.fontSize
+    property bool hpConnected: OSS.headphonesConnected
 
     implicitWidth: icon.implicitWidth
     implicitHeight: Config.general.fontSize + 2
     Layout.alignment: Qt.AlignVCenter
 
-    function getActiveDeviceIcon() {
-        for (var i = 0; i < OSS.devices.length; i++) {
-            const device = OSS.devices[i];
-
-            if (device.isDefault) {
-                const mode = device.mode;
-
-                if (mode === 1 || mode === 3)
-                    return "󰓃";
-                if (mode === 2)
-                    return "󰍰";
-            }
-        }
-
-        return "󰤽";
-    }
-
     Text {
         id: icon
-        text: OSS.headphonesConnected ? "󰋋" : root.getActiveDeviceIcon()
         color: root.colMain
         anchors.centerIn: parent
         Layout.alignment: Qt.AlignVCenter
@@ -54,8 +37,33 @@ Item {
             bold: true
         }
 
+        text: {
+            if (root.hpConnected)
+                return "󰋋";
+
+            for (var i = 0; i < OSS.devices.length; i++) {
+                const device = OSS.devices[i];
+                if (device.isDefault) {
+                    if (device.mode === 1 || device.mode === 3)
+                        return "󰓃";
+                    if (device.mode === 2)
+                        return "󰍰";
+                }
+            }
+
+            return "󰤽";
+        }
+
         Behavior on color {
             ColAnim {}
+        }
+
+        Connections {
+            target: OSS
+
+            function onHeadphonesChanged(state) {
+                root.hpConnected = state;
+            }
         }
     }
 
@@ -69,22 +77,6 @@ Item {
 
         onExited: {
             menu.timer.start();
-        }
-    }
-
-    Connections {
-        target: OSS
-
-        function onHeadphonesChanged(state) {
-            icon.text = state ? "󰋋" : root.getActiveDeviceIcon();
-        }
-    }
-
-    Connections {
-        target: OSS
-
-        function onDevicesChanged() {
-            icon.text = root.getActiveDeviceIcon();
         }
     }
 
@@ -184,5 +176,26 @@ Item {
                 }
             }
         }
+    }
+
+    function getActiveDeviceIcon() {
+        for (var i = 0; i < OSS.devices.length; i++) {
+            const device = OSS.devices[i];
+
+            if (device.isDefault) {
+                const mode = device.mode;
+
+                if (mode === 1 || mode === 3)
+                    return "󰓃";
+                if (mode === 2)
+                    return "󰍰";
+            }
+        }
+
+        return "󰤽";
+    }
+
+    function getCurrentIcon() {
+        return OSS.headphonesConnected ? "󰋋" : root.getActiveDeviceIcon();
     }
 }
