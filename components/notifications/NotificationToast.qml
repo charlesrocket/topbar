@@ -93,32 +93,6 @@ Rectangle {
         onTriggered: root.expire()
     }
 
-    // progress bar
-    Rectangle {
-        id: progressBar
-
-        anchors {
-            bottom: parent.bottom
-            right: parent.right
-        }
-
-        height: 3
-        radius: root.radius
-        color: root.urgencyColor
-        opacity: 0.8
-
-        NumberAnimation {
-            id: progressAnim
-            target: progressBar
-            property: "width"
-            from: root.remainingMs / root.timeoutMs * (root.implicitWidth - 2)
-            to: 0
-            duration: root.remainingMs
-            running: expireTimer.running
-            easing.type: Easing.Linear
-        }
-    }
-
     // close button
     Text {
         id: closeButton
@@ -272,15 +246,10 @@ Rectangle {
         onHoveredChanged: {
             if (hovered) {
                 root.hoverPauseStart = Date.now();
-                root.remainingMs = progressBar.width / (root.implicitWidth - 2) * root.timeoutMs;
-                progressAnim.stop();
                 expireTimer.stop();
             } else {
                 expireTimer.interval = root.remainingMs;
-                progressAnim.from = progressBar.width;
-                progressAnim.duration = root.remainingMs;
                 expireTimer.restart();
-                progressAnim.restart();
             }
         }
     }
