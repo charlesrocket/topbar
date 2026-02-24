@@ -137,10 +137,17 @@ Item {
                         value: false
                     }
 
-                    PropertyAction {
-                        target: States
-                        property: "dropdownRevealed"
-                        value: false
+                    ScriptAction {
+                        script: {
+                            if (States.dropdownOwner === root) {
+                                States.dropdownRevealed = false;
+                                States.dropdownX = 0;
+                                States.dropdownWidth = 0;
+                                States.dropdownHeight = 0;
+                                States.dropdownY = 0;
+                                States.dropdownOwner = null;
+                            }
+                        }
                     }
                 }
             }
@@ -235,7 +242,6 @@ Item {
         onTriggered: {
             if (!dropdownHover.hovered) {
                 root.show = false;
-                States.dropdownRevealed = false;
             }
 
             if (States.dashboardPresent)
@@ -245,6 +251,9 @@ Item {
 
     onShowChanged: {
         if (show) {
+            States.dropdownOwner = root;
+            States.dropdownRevealed = true;
+
             let barItem = root.parent;
 
             while (barItem && barItem.parent && barItem.parent.parent) {
@@ -258,11 +267,6 @@ Item {
             States.dropdownWidth = dropdown.width + (Config.general.borderWidth * 2);
             States.dropdownHeight = dropdown.height + (Config.general.borderWidth * 2);
             States.dropdownY = dropdown.y;
-        } else {
-            States.dropdownX = 0;
-            States.dropdownWidth = 0;
-            States.dropdownHeight = 0;
-            States.dropdownY = 0;
         }
     }
 }
