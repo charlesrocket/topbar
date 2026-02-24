@@ -35,6 +35,10 @@ launcher:
   - changed-files:
       - any-glob-to-any-file: "components/Launcher.qml"
 
+preferences:
+  - changed-files:
+      - any-glob-to-any-file: "components/Preferences.qml"
+
 config:
   - changed-files:
       - any-glob-to-any-file: "Config.qml"
