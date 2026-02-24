@@ -7,11 +7,11 @@ ops:
   - changed-files:
       - any-glob-to-any-file: ".github/**/*"
 
-components:
+component:
   - changed-files:
       - any-glob-to-any-file: "components/*"
 
-widgets:
+widget:
   - changed-files:
       - any-glob-to-any-file: "components/widgets/**/*"
 
@@ -27,13 +27,13 @@ lockscreen:
   - changed-files:
       - any-glob-to-any-file: "components/lockscreen/**/*"
 
-launcher:
-  - changed-files:
-      - any-glob-to-any-file: "components/lockscreen/Launcher.qml"
-
 session:
   - changed-files:
       - any-glob-to-any-file: "components/session/**/*"
+
+launcher:
+  - changed-files:
+      - any-glob-to-any-file: "components/Launcher.qml"
 
 config:
   - changed-files:
@@ -42,6 +42,10 @@ config:
 state:
   - changed-files:
       - any-glob-to-any-file: "States.qml"
+
+wallpaper:
+  - changed-files:
+      - any-glob-to-any-file: "Wallpaper.qml"
 
 util:
   - changed-files:
