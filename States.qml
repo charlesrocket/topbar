@@ -11,6 +11,10 @@ Singleton {
     property bool ecoMode: false
     property bool dropdownRevealed: false
     property bool dashboardPresent: false
+    property int dropdownX: 0
+    property int dropdownY: 0
+    property int dropdownHeight: 0
+    property int dropdownWidth: 0
     property bool preferencesWindowPresent: false
     property bool launcherPresent: false
     property bool sessionPresent: false

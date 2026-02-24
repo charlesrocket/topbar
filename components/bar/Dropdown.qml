@@ -152,7 +152,7 @@ Item {
             anchors.fill: parent
 
             ShapePath {
-                strokeColor: Config.colors.border
+                strokeColor: "transparent"
                 strokeWidth: Config.general.borderWidth > 0 ? Config.general.borderWidth : -1
                 fillColor: States.ecoMode ? Config.colors.bge : Config.colors.bg
 
@@ -240,6 +240,29 @@ Item {
 
             if (States.dashboardPresent)
                 States.dashboardPresent = false;
+        }
+    }
+
+    onShowChanged: {
+        if (show) {
+            let barItem = root.parent;
+
+            while (barItem && barItem.parent && barItem.parent.parent) {
+                barItem = barItem.parent;
+            }
+
+            const mapped = root.boxParent.mapToItem(barItem, 0, 0);
+            const centerX = mapped.x - (dropdown.width / 2) + (root.boxParent.width / 2) - Config.bar.padding;
+
+            States.dropdownX = centerX;
+            States.dropdownWidth = dropdown.width + (Config.general.borderWidth * 2);
+            States.dropdownHeight = dropdown.height + (Config.general.borderWidth * 2);
+            States.dropdownY = dropdown.y;
+        } else {
+            States.dropdownX = 0;
+            States.dropdownWidth = 0;
+            States.dropdownHeight = 0;
+            States.dropdownY = 0;
         }
     }
 }

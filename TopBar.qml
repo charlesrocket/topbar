@@ -36,11 +36,14 @@ PanelWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         implicitWidth: root.screen.width - Config.bar.padding * 2
         implicitHeight: Config.bar.height
-        border.width: Config.general.borderWidth
-        border.color: Config.colors.border
         height: Config.bar.height
         color: States.ecoMode ? Config.colors.bge : Config.colors.bg
         radius: Config.general.cornerRadius
+
+        Bar.DynamicFrame {
+            barWidth: bar.width
+            barHeight: bar.height
+        }
 
         Behavior on y {
             NumberAnimation {
@@ -57,7 +60,6 @@ PanelWindow {
             Behavior on y {
                 NumberAnimation {
                     duration: Config.general.animDuration * 5
-                    // OutBounce is alright too
                     easing.type: Easing.OutQuint
                 }
             }
