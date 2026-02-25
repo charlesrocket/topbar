@@ -14,6 +14,8 @@ Rectangle {
 
     property string fontFamily: Config.general.fontFamily
     property var notification: null
+    property real hoverPauseStart: 0
+    property int timeoutMs: ready && notification.expireTimeout > 0 ? notification.expireTimeout : 5000
 
     signal dismissed
     signal expired
@@ -22,7 +24,6 @@ Rectangle {
     readonly property bool hasImage: ready && notification.image !== ""
     readonly property bool hasAppIcon: ready && notification.appIcon !== ""
     readonly property bool showIcon: hasImage || hasAppIcon
-    readonly property int timeoutMs: ready && notification.expireTimeout > 0 ? notification.expireTimeout : 5000
 
     readonly property color urgencyColor: {
         if (!ready)
@@ -32,7 +33,7 @@ Rectangle {
         case NotificationUrgency.Critical:
             return Config.colors.red;
         case NotificationUrgency.Low:
-            return Config.colors.action;
+            return Config.colors.passive;
         default:
             return Config.colors.fg;
         }
@@ -44,14 +45,13 @@ Rectangle {
     radius: Config.general.cornerRadius
     color: Config.colors.bg
     border.width: Config.general.borderWidth
-    border.color: urgencyColor
+    border.color: Config.colors.border
+    Component.onCompleted: slideInAnim.start()
 
     transform: Translate {
         id: slide
         x: Config.notifications.width
     }
-
-    Component.onCompleted: slideInAnim.start()
 
     NumberAnimation {
         id: slideInAnim
@@ -82,13 +82,10 @@ Rectangle {
         property bool pendingDismiss: false
     }
 
-    property real remainingMs: root.timeoutMs
-    property real hoverPauseStart: 0
-
     // auto-expire timer
     Timer {
         id: expireTimer
-        interval: root.remainingMs
+        interval: root.timeoutMs
         running: root.ready
         onTriggered: root.expire()
     }
@@ -242,14 +239,48 @@ Rectangle {
         }
     }
 
+    // timeout progress bar
+    Rectangle {
+        id: progressBar
+        height: 2
+        radius: 2
+        color: root.urgencyColor
+        opacity: 0.9
+        width: root.implicitWidth - Config.general.cornerRadius * 2
+
+        anchors {
+            bottom: parent.bottom
+            right: parent.right
+            leftMargin: 5
+            rightMargin: 5
+            bottomMargin: 3
+        }
+
+        NumberAnimation on width {
+            id: progressAnim
+            target: progressBar
+            property: "width"
+            from: root.timeoutMs / root.timeoutMs * (root.implicitWidth - 2)
+            to: 0
+            duration: root.timeoutMs
+            running: expireTimer.running
+            easing.type: Easing.Linear
+        }
+    }
+
     HoverHandler {
         onHoveredChanged: {
             if (hovered) {
                 root.hoverPauseStart = Date.now();
+                root.timeoutMs = progressBar.width / (root.implicitWidth - 2) * root.timeoutMs;
+                progressAnim.stop();
                 expireTimer.stop();
             } else {
-                expireTimer.interval = root.remainingMs;
+                expireTimer.interval = root.timeoutMs;
+                progressAnim.from = progressBar.width;
+                progressAnim.duration = root.timeoutMs;
                 expireTimer.restart();
+                progressAnim.restart();
             }
         }
     }
