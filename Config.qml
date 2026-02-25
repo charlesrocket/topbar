@@ -9,6 +9,18 @@ Singleton {
     // check
     readonly property bool settingsAvailable: typeof Settings !== 'undefined'
 
+    // general
+    property var general: QtObject {
+        // see https://doc.qt.io/qt-6/qlocale.html
+        property string locale: getSetting("general.locale", "AnyTerritory")
+        property string fontFamily: getSetting("general.font", "Hack Nerd Font")
+        property int fontSize: getSetting("general.fontSize", 14)
+        property int borderWidth: getSetting("general.borderWidth", 0)
+        property int cornerRadius: getSetting("general.radius", 8)
+        property int animDuration: getSetting("general.animDuration", 250)
+        property string wallpaper: getSetting("general.wallpaper", States.defaultWallpaper)
+    }
+
     // colors
     property var colors: QtObject {
         property color bg: getSetting("colors.bg", "#aa000000")
@@ -25,18 +37,6 @@ Singleton {
         property color yellow: getSetting("colors.yellow", "#ffd700")
         property color purple: getSetting("colors.purple", "#bf00ff")
         property color green: getSetting("colors.green", "#9ece6a")
-    }
-
-    // general
-    property var general: QtObject {
-        // see https://doc.qt.io/qt-6/qlocale.html
-        property string locale: getSetting("general.locale", "AnyTerritory")
-        property string fontFamily: getSetting("general.font", "Hack Nerd Font")
-        property int fontSize: getSetting("general.fontSize", 14)
-        property int borderWidth: getSetting("general.borderWidth", 0)
-        property int cornerRadius: getSetting("general.radius", 8)
-        property int animDuration: getSetting("general.animDuration", 250)
-        property string wallpaper: getSetting("general.wallpaper", States.defaultWallpaper)
     }
 
     // bar
@@ -93,7 +93,7 @@ Singleton {
         property bool icon: getSetting("lockscreen.icon", true) // user icon
     }
 
-    // logout commands
+    // session
     property var session: QtObject {
         property color background: getSetting("logout.color", "#aa202020")
 
