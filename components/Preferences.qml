@@ -348,9 +348,10 @@ PanelWindow {
                             GridLayout {
                                 id: widgetsSection
                                 width: parent.width
+                                height: parent.height
                                 columns: 2
-                                columnSpacing: 8
-                                rowSpacing: 8
+                                columnSpacing: 16
+                                rowSpacing: 14
 
                                 SettingRow {
                                     label: "Workspaces"
@@ -781,6 +782,7 @@ PanelWindow {
         required property string targetProperty
         required property string valueType
 
+        height: 32
         Layout.fillWidth: true
         spacing: 8
 
@@ -789,6 +791,7 @@ PanelWindow {
             font.family: Config.general.fontFamily
             font.pixelSize: Config.general.fontSize
             color: Config.colors.fg
+            verticalAlignment: Text.AlignVCenter
             Layout.preferredWidth: valueType === "bool" ? -1 : 150
             Layout.fillWidth: valueType === "bool"
         }
@@ -851,6 +854,8 @@ PanelWindow {
         Switch {
             id: boolSwitch
             visible: valueType === "bool"
+            Layout.alignment: Qt.AlignVCenter
+            implicitHeight: 24
 
             Component.onCompleted: {
                 checked = targetObject[targetProperty];
