@@ -10,8 +10,6 @@ import ".."
 PanelWindow {
     id: root
 
-    implicitWidth: 800
-    implicitHeight: 600
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     exclusionMode: ExclusionMode.Ignore
@@ -26,12 +24,32 @@ PanelWindow {
         }
     }
 
+    anchors {
+        top: true
+        left: true
+        right: true
+        bottom: true
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: States.preferencesWindowPresent = false
+    }
+
     Rectangle {
+        anchors.topMargin: parent.height / 3.5
+        anchors.bottomMargin: parent.height / 3.5
+        anchors.leftMargin: parent.width / 3.5
+        anchors.rightMargin: parent.width / 3.5
         anchors.fill: parent
         color: Config.colors.bg
         radius: Config.general.cornerRadius
         border.color: Config.colors.border
         border.width: 1
+
+        MouseArea {
+            anchors.fill: parent
+        }
 
         ColumnLayout {
             anchors.fill: parent
@@ -67,7 +85,7 @@ PanelWindow {
                         spacing: 8
 
                         Repeater {
-                            model: ["General", "Colors", "Widgets", "Bar", "Workspaces", "Lockscreen", "Session"]
+                            model: ["General", "Colors", "Widgets", "Bar", "Spaces", "Lockscreen", "Session"]
 
                             delegate: Button {
                                 required property var modelData
@@ -173,7 +191,7 @@ PanelWindow {
                                 SettingRow {
                                     label: "Border width"
                                     targetObject: Config.general
-                                    targetProperty: "cornerRadius"
+                                    targetProperty: "borderWidth"
                                     valueType: "int"
                                 }
 
@@ -331,8 +349,8 @@ PanelWindow {
                                 id: widgetsSection
                                 width: parent.width
                                 columns: 2
-                                columnSpacing: 16
-                                rowSpacing: 12
+                                columnSpacing: 8
+                                rowSpacing: 8
 
                                 SettingRow {
                                     label: "Workspaces"
@@ -775,7 +793,7 @@ PanelWindow {
             Layout.fillWidth: valueType === "bool"
         }
 
-        // color preview rectangle
+        // color preview box
         Rectangle {
             visible: valueType === "color"
             width: 40
@@ -783,7 +801,7 @@ PanelWindow {
             color: visible ? targetObject[targetProperty] : "transparent"
             border.color: Config.colors.border
             border.width: 1
-            radius: 4
+            radius: Config.general.cornerRadius
         }
 
         // string box
@@ -813,7 +831,7 @@ PanelWindow {
                 color: Config.colors.dark
                 border.color: parent.activeFocus ? Config.colors.action : Config.colors.border
                 border.width: 1
-                radius: 4
+                radius: Config.general.cornerRadius
 
                 Behavior on border.color {
                     ColAnim {}
@@ -846,7 +864,7 @@ PanelWindow {
                 implicitWidth: 48
                 implicitHeight: 24
                 radius: 12
-                color: parent.checked ? Config.colors.action : Config.colors.passive
+                color: parent.checked ? Config.colors.accent : Config.colors.passive
                 border.color: Config.colors.border
                 border.width: 1
 
