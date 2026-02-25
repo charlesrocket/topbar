@@ -95,7 +95,7 @@ PanelWindow {
                                     text: parent.text
                                     font: parent.font
                                     color: parent.checked ? Config.colors.fg : Config.colors.fg
-                                    horizontalAlignment: Text.AlignLeft
+                                    horizontalAlignment: Text.AlignHCenter
                                     verticalAlignment: Text.AlignVCenter
                                     leftPadding: 8
                                 }
