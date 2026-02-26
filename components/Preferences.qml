@@ -138,9 +138,11 @@ PanelWindow {
                     }
                 }
 
+                // separator
                 Rectangle {
                     Layout.fillWidth: false
                     Layout.fillHeight: true
+                    radius: 1
                     width: 1
                     color: Config.colors.passive
                 }
