@@ -63,6 +63,7 @@ PanelWindow {
                 font.pixelSize: Config.general.fontSize + 6
                 font.bold: true
                 color: Config.colors.fg
+                horizontalAlignment: Text.AlignHCenter
                 Layout.fillWidth: true
                 Layout.bottomMargin: 16
             }
@@ -744,28 +745,32 @@ PanelWindow {
                             Layout.fillWidth: true
                         }
 
-                        Button {
-                            text: "Accept"
-                            font.family: Config.general.fontFamily
-                            font.pixelSize: Config.general.fontSize
+                        Rectangle {
+                            id: button
+                            color: Config.colors.passive
+                            width: 60
+                            height: 32
+                            radius: Config.general.cornerRadius
 
-                            onClicked: States.preferencesWindowPresent = false
-
-                            background: Rectangle {
-                                color: Config.colors.passive
-                                radius: Config.general.cornerRadius
-
-                                Behavior on color {
-                                    ColAnim {}
-                                }
+                            Text {
+                                anchors.centerIn: parent
+                                color: Config.colors.fg
+                                font.family: Config.general.fontFamily
+                                font.pixelSize: Config.general.fontSize
+                                text: "OK"
                             }
 
-                            contentItem: Text {
-                                text: parent.text
-                                font: parent.font
-                                color: Config.colors.fg
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
+                            MouseArea {
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                onClicked: States.preferencesWindowPresent = false
+                                onEntered: button.color = Config.colors.accent
+                                onExited: button.color = Config.colors.passive
+
+                            }
+
+                            Behavior on color {
+                                ColAnim {}
                             }
                         }
                     }
