@@ -23,6 +23,10 @@ dashboard:
   - changed-files:
       - any-glob-to-any-file: "components/dashboard/**/*"
 
+notifications:
+  - changed-files:
+      - any-glob-to-any-file: "components/notifications/**/*"
+
 lockscreen:
   - changed-files:
       - any-glob-to-any-file: "components/lockscreen/**/*"
