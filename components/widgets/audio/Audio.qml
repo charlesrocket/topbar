@@ -89,7 +89,9 @@ RowLayout {
                 if (speaker.control) {
                     speaker.control.left = speaker.control.left + 5;
                     speaker.control.right = speaker.control.right + 5;
-                    audioOSD.item.trigger();
+
+                    if (Config.desktop.osd)
+                        audioOSD.item.trigger();
                 }
             }
 
@@ -97,7 +99,9 @@ RowLayout {
                 if (speaker.control) {
                     speaker.control.left = speaker.control.left - 5;
                     speaker.control.right = speaker.control.right - 5;
-                    audioOSD.item.trigger();
+
+                    if (Config.desktop.osd)
+                        audioOSD.item.trigger();
                 }
             }
         }
