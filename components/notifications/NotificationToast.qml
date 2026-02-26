@@ -142,6 +142,7 @@ Rectangle {
                 visible: root.hasImage
                 fillMode: Image.PreserveAspectFit
                 smooth: true
+                mipmap: true
                 layer.enabled: true
                 layer.effect: null
             }
