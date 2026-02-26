@@ -98,11 +98,19 @@ Rectangle {
         font.pixelSize: 16
         font.bold: false
         font.family: "Symbols Nerd Font"
+        opacity: 0
 
         anchors {
             top: parent.top
             right: parent.right
             margins: 12
+        }
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Config.general.animDuration
+                easing.type: Easing.InOutQuad
+            }
         }
 
         MouseArea {
@@ -272,11 +280,13 @@ Rectangle {
     HoverHandler {
         onHoveredChanged: {
             if (hovered) {
+                closeButton.opacity = 1;
                 root.hoverPauseStart = Date.now();
                 root.timeoutMs = progressBar.width / (root.implicitWidth - 2) * root.timeoutMs;
                 progressAnim.stop();
                 expireTimer.stop();
             } else {
+                closeButton.opacity = 0;
                 expireTimer.interval = root.timeoutMs;
                 progressAnim.from = progressBar.width;
                 progressAnim.duration = root.timeoutMs;
