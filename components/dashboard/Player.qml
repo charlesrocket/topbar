@@ -10,6 +10,7 @@ Item {
     id: root
     anchors.fill: parent
 
+    property real displayPosition: 0
     property bool playing: root.player?.playbackState == MprisPlaybackState.Playing
     property int playerIndex: 0
     property var player: {
@@ -27,6 +28,22 @@ Item {
     readonly property string artist: player?.trackArtist || "Unknown artist"
     readonly property string title: player?.trackTitle || "No track"
     readonly property string artUrl: player?.trackArtUrl || ""
+
+    Connections {
+        target: root.player
+
+        function onPositionChanged() {
+            var p = root.player.position;
+            if (p > 0 || root.player.playbackState === MprisPlaybackState.Stopped) {
+                root.displayPosition = p;
+            }
+        }
+    }
+
+    onPlayerChanged: {
+        if (player)
+            root.displayPosition = player.position;
+    }
 
     Timer {
         running: root.playing
@@ -309,17 +326,22 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
 
+            onVisibleChanged: {
+                if (root.player)
+                    displayPosition = root.player.position;
+            }
+
             Rectangle {
                 width: parent.width / 1.1
                 height: 6
                 border.width: 1
-                border.color: (root.player !== null && player.positionSupported) ? Config.colors.fg : "transparent"
+                border.color: (root.player !== null && root.player.positionSupported) ? Config.colors.fg : "transparent"
                 color: Config.colors.extraDark
                 radius: 3
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 Rectangle {
-                    width: root.player?.lengthSupported ? (root.player.position / root.player.length) * parent.width : 0
+                    width: root.player?.lengthSupported ? (root.displayPosition / root.player.length) * parent.width : 0
                     height: parent.height
                     color: Config.colors.fg
                     radius: 3
