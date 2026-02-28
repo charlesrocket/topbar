@@ -8,12 +8,9 @@ import QtQuick.Layouts
 
 import ".."
 
-PanelWindow {
+FloatingWindow {
     id: root
-
-    WlrLayershell.layer: WlrLayer.Overlay
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
-    exclusionMode: ExclusionMode.Ignore
+    title: "Configuration"
     color: "transparent"
 
     contentItem {
@@ -23,13 +20,6 @@ PanelWindow {
                 States.preferencesWindowPresent = false;
             }
         }
-    }
-
-    anchors {
-        top: true
-        left: true
-        right: true
-        bottom: true
     }
 
     MouseArea {
@@ -43,15 +33,10 @@ PanelWindow {
     }
 
     Rectangle {
-        anchors.topMargin: parent.height / 3.5
-        anchors.bottomMargin: parent.height / 3.5
-        anchors.leftMargin: parent.width / 3.5
-        anchors.rightMargin: parent.width / 3.5
+
         anchors.fill: parent
         color: Config.colors.bg
         radius: Config.general.cornerRadius
-        border.color: Config.colors.border
-        border.width: 1
 
         MouseArea {
             anchors.fill: parent
@@ -121,6 +106,7 @@ PanelWindow {
                                     font: parent.font
                                     color: parent.checked ? Config.colors.fg : Config.colors.fg
                                     verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: Text.AlignRight
                                     leftPadding: 8
                                 }
                             }
