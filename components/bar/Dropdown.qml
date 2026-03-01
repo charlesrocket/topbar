@@ -140,7 +140,6 @@ Item {
                     ScriptAction {
                         script: {
                             if (States.dropdownOwner === root) {
-                                States.dropdownRevealed = false;
                                 States.dropdownX = 0;
                                 States.dropdownWidth = 0;
                                 States.dropdownHeight = 0;
@@ -242,6 +241,7 @@ Item {
         onTriggered: {
             if (!dropdownHover.hovered) {
                 root.show = false;
+                States.dropdownRevealed = false;
             }
 
             if (States.dashboardPresent)
@@ -252,7 +252,6 @@ Item {
     onShowChanged: {
         if (show) {
             States.dropdownOwner = root;
-            States.dropdownRevealed = true;
 
             let barItem = root.parent;
 

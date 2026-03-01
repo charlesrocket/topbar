@@ -70,7 +70,7 @@ Shape {
             y: bar.height + Config.general.borderWidth
         }
 
-        // concave ramp arc into dropdown right side (curves down and left)
+        // ramp into dropdown right side (curves down and left)
         PathArc {
             x: States.dropdownRevealed ? States.dropdownX + States.dropdownWidth : root.cr
             y: States.dropdownRevealed ? bar.height + root.ramp : bar.height
@@ -115,7 +115,7 @@ Shape {
             y: States.dropdownRevealed ? bar.height + root.ramp : bar.height
         }
 
-        // concave ramp arc back to bar bottom (curves up and left)
+        // ramp back to bar bottom (curves up and left)
         PathArc {
             x: States.dropdownRevealed ? States.dropdownX - root.ramp : root.cr
             y: bar.height + Config.general.borderWidth
