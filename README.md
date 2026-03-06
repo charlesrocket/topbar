@@ -17,7 +17,7 @@ An interactive bar and desktop environment for [Quickshell](https://quickshell.o
 
 ## Requirements
 
-1. Wayland compositor
+1. Wayland compositor (Mango/Hyprland)
 2. Quickshell
 3. Nerd fonts
 
