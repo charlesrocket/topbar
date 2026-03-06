@@ -1,9 +1,9 @@
 pragma Singleton
 
+import Quickshell
 import Quickshell.Services.UPower
 
 import QtQuick
-import Quickshell
 
 Singleton {
     property var locale: Qt.locale(Config.general.locale)
