@@ -11,9 +11,9 @@ Singleton {
     property string name
     property string prettyName
 
-    readonly property string desktop: Quickshell.env("XDG_CURRENT_DESKTOP") || Quickshell.env("XDG_SESSION_DESKTOP")
-    readonly property string user: Quickshell.env("USER")
-    readonly property string shell: Quickshell.env("SHELL").split("/").pop()
+    readonly property string desktop: Quickshell.env("XDG_CURRENT_DESKTOP").toLowerCase() || Quickshell.env("XDG_SESSION_DESKTOP").toLowerCase()
+    readonly property string user: Quickshell.env("USER").toLowerCase()
+    readonly property string shell: Quickshell.env("SHELL").split("/").pop().toLowerCase()
 
     FileView {
         id: os
