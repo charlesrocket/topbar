@@ -5,9 +5,11 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../widgets/audio"
-import "../widgets/hypr"
+import "../widgets/dwl" as DWL
+import "../widgets/hypr" as Hypr
 import "../widgets"
 import "../.."
+import ".."
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3
@@ -113,10 +115,29 @@ RowLayout {
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
 
-        sourceComponent: Item {
-            implicitWidth: childrenRect.width
-            implicitHeight: childrenRect.height
-            HyprLang {}
+        sourceComponent: switch (System.desktop) {
+        case "mango":
+            return dwlLang;
+        case "hyprland":
+            return hyprLang;
+        }
+
+        Component {
+            id: dwlLang
+            Item {
+                implicitWidth: childrenRect.width
+                implicitHeight: childrenRect.height
+                DWL.Lang {}
+            }
+        }
+
+        Component {
+            id: hyprLang
+            Item {
+                implicitWidth: childrenRect.width
+                implicitHeight: childrenRect.height
+                Hypr.Lang {}
+            }
         }
     }
 

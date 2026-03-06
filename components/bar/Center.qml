@@ -3,7 +3,7 @@ import Quickshell
 import QtQuick
 import QtQuick.Layouts
 
-import "../widgets/hypr"
+import "../widgets"
 import "../.."
 
 RowLayout {
@@ -20,6 +20,6 @@ RowLayout {
         Layout.fillWidth: false
         Layout.preferredWidth: 400
         Layout.preferredHeight: item ? item.implicitHeight : 0
-        sourceComponent: HyprWindowTitle {}
+        sourceComponent: ActiveWindowTitle {}
     }
 }

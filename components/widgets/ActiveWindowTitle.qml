@@ -1,11 +1,12 @@
-import Quickshell.Hyprland
-
 import QtQuick
 import QtQuick.Layouts
 
-import "../../bar"
-import "../../dashboard"
-import "../../.."
+import "dwl" as DWL
+import "hypr" as Hypr
+import "../bar"
+import "../dashboard"
+import "../.."
+import ".."
 
 Item {
     id: root
@@ -20,26 +21,30 @@ Item {
     property int animDuration: Config.general.animDuration
     property string emptyTitle: Config.bar.title.empty
 
-    property string fullTitle: {
-        var win = Hyprland.activeToplevel;
-        if (!win || !win.title || win.title.trim() === "") {
-            return root.emptyTitle;
-        }
-        // check if the workspace has any windows
-        var focusedWorkspace = Hyprland.focusedWorkspace;
-        if (focusedWorkspace) {
-            var currentWorkspace = Hyprland.workspaces.values.find(w => w.id === focusedWorkspace.id);
-            if (currentWorkspace && currentWorkspace.toplevels && currentWorkspace.toplevels.values) {
-                var windowCount = currentWorkspace.toplevels.values.length;
-                if (windowCount === 0) {
-                    return root.emptyTitle;
-                }
-            }
+    Loader {
+        id: title
+        active: Config.widgets.title
+        asynchronous: true
+
+        sourceComponent: switch (System.desktop) {
+        case "mango":
+            return dwlLang;
+        case "hyprland":
+            return hyprLang;
         }
 
-        return win.title.trim();
+        Component {
+            id: dwlLang
+            DWL.WindowTitle {}
+        }
+
+        Component {
+            id: hyprLang
+            Hypr.WindowTitle {}
+        }
     }
 
+    property string fullTitle: title.item.fullTitle
     property string displayText: fullTitle === root.emptyTitle ? fullTitle : (fullTitle.length > root.length ? fullTitle.substring(0, root.length - 3) + "..." : fullTitle)
 
     onDisplayTextChanged: {
@@ -95,7 +100,7 @@ Item {
         verticalAlignment: Text.AlignVCenter
 
         font {
-            family: root.displayText === root.emptyTitle ? "Symbols Nerd Font" : root.fontFamily
+            family: activeWindowTitle.text === root.emptyTitle ? "Symbols Nerd Font" : root.fontFamily
             pixelSize: root.fontSize
             bold: true
         }
@@ -114,7 +119,7 @@ Item {
         verticalAlignment: Text.AlignVCenter
 
         font {
-            family: root.displayText === root.emptyTitle ? "Symbols Nerd Font" : root.fontFamily
+            family: newTitle.text === root.emptyTitle ? "Symbols Nerd Font" : root.fontFamily
             pixelSize: root.fontSize
             bold: true
         }
