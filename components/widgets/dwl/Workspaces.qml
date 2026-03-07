@@ -36,7 +36,8 @@ RowLayout {
 
             text: root.names[index]
             color: isHovered ? root.colAction : button.modelData.active ? root.colActive : (button.modelData.clientCount > 0 ? root.colNormal : root.colPassive)
-
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
             leftPadding: 4
             rightPadding: 4
 

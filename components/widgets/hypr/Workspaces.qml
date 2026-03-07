@@ -34,7 +34,8 @@ RowLayout {
 
             text: root.names[index]
             color: isHovered ? root.colAction : isActive ? root.colActive : (ws ? root.colNormal : root.colPassive)
-
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
             leftPadding: 4
             rightPadding: 4
 
