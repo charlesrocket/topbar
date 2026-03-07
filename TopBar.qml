@@ -40,6 +40,11 @@ PanelWindow {
         color: States.ecoMode ? Config.colors.bge : Config.colors.bg
         radius: Config.general.cornerRadius
 
+        //Bar.DynamicFrame {
+        //    barWidth: bar.width
+        //    barHeight: bar.height
+        //}
+
         Behavior on y {
             NumberAnimation {
                 duration: Config.general.animDuration * 2
