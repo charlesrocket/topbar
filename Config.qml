@@ -109,16 +109,16 @@ Singleton {
 
     // workspaces
     property var workspaces: QtObject {
-        property string one: getSetting("workspaces.one", "")
-        property string two: getSetting("workspaces.two", "")
-        property string three: getSetting("workspaces.three", "")
-        property string four: getSetting("workspaces.four", "")
-        property string five: getSetting("workspaces.five", "")
-        property string six: getSetting("workspaces.six", "󰉕")
-        property string seven: getSetting("workspaces.seven", "")
-        property string eight: getSetting("workspaces.eight", "")
-        property string nine: getSetting("workspaces.nine", "")
-        property string ten: getSetting("workspaces.ten", "")
+        property string one: getSetting("workspaces.one", "1")
+        property string two: getSetting("workspaces.two", "2")
+        property string three: getSetting("workspaces.three", "3")
+        property string four: getSetting("workspaces.four", "4")
+        property string five: getSetting("workspaces.five", "5")
+        property string six: getSetting("workspaces.six", "6")
+        property string seven: getSetting("workspaces.seven", "7")
+        property string eight: getSetting("workspaces.eight", "8")
+        property string nine: getSetting("workspaces.nine", "9")
+        property string ten: getSetting("workspaces.ten", "0")
     }
 
     function getSetting(path, defaultValue) {
