@@ -249,12 +249,24 @@ PanelWindow {
 
     Process {
         id: dpmsOff
-        command: ["hyprctl", "dispatch", "dpms", "off"]
+
+        command: switch (System.desktop) {
+        case "mango":
+            return ["mmsg", "-d", "disable_monitor"];
+        case "hyprland":
+            return ["hyprctl", "dispatch", "dpms", "off"];
+        }
     }
 
     Process {
         id: dpmsOn
-        command: ["hyprctl", "dispatch", "dpms", "on"]
+
+        command: switch (System.desktop) {
+        case "mango":
+            return ["mmsg", "-d", "enable_monitor"];
+        case "hyprland":
+            return ["hyprctl", "dispatch", "dpms", "on"];
+        }
     }
 
     Process {
