@@ -99,7 +99,7 @@ Singleton {
 
         property var commands: QtObject {
             property string lock: getSetting("logout.commands.lock", "quickshell ipc call topbar lock")
-            property string logout: getSetting("logout.commands.logout", "hyprctl dispatch exit | pkill mango")
+            property string logout: getSetting("logout.commands.logout", "pkill mango | hyprctl dispatch exit")
             property string suspend: getSetting("logout.commands.suspend", "zzz")
             property string hibernate: getSetting("logout.commands.hibernate", "acpiconf -s 4")
             property string shutdown: getSetting("logout.commands.shutdown", "shutdown -p now")
