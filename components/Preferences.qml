@@ -22,6 +22,10 @@ FloatingWindow {
         }
     }
 
+    onClosed: {
+        States.preferencesWindowPresent = false;
+    }
+
     MouseArea {
         anchors.fill: parent
         onClicked: States.preferencesWindowPresent = false
