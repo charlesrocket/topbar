@@ -20,6 +20,6 @@ RowLayout {
         Layout.fillWidth: false
         Layout.preferredWidth: 400
         Layout.preferredHeight: item ? item.implicitHeight : 0
-        sourceComponent: ActiveWindowTitle {}
+        sourceComponent: WindowTitle {}
     }
 }

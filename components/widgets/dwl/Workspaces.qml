@@ -55,7 +55,7 @@ RowLayout {
                 anchors.fill: parent
                 hoverEnabled: true
 
-                onClicked: root.dwlOutput.setTags(button.modelData.index)
+                onClicked: root.dwlOutput.setTags(1 << button.modelData.index)
                 onEntered: button.isHovered = true
                 onExited: button.isHovered = false
             }

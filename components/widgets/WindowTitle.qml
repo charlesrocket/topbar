@@ -1,8 +1,8 @@
+import Quickshell.Wayland
+
 import QtQuick
 import QtQuick.Layouts
 
-import "dwl" as DWL
-import "hypr" as Hypr
 import "../bar"
 import "../dashboard"
 import "../.."
@@ -21,30 +21,7 @@ Item {
     property int animDuration: Config.general.animDuration
     property string emptyTitle: Config.bar.title.empty
 
-    Loader {
-        id: title
-        active: Config.widgets.title
-        asynchronous: true
-
-        sourceComponent: switch (System.desktop) {
-        case "mango":
-            return dwlLang;
-        case "hyprland":
-            return hyprLang;
-        }
-
-        Component {
-            id: dwlLang
-            DWL.WindowTitle {}
-        }
-
-        Component {
-            id: hyprLang
-            Hypr.WindowTitle {}
-        }
-    }
-
-    property string fullTitle: title.item.fullTitle
+    property string fullTitle: ToplevelManager.activeToplevel ? ToplevelManager.activeToplevel.title : emptyTitle
     property string displayText: fullTitle === root.emptyTitle ? fullTitle : (fullTitle.length > root.length ? fullTitle.substring(0, root.length - 3) + "..." : fullTitle)
 
     onDisplayTextChanged: {
