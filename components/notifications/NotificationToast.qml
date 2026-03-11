@@ -120,7 +120,38 @@ Rectangle {
         }
     }
 
-    // outer row: icon + content
+    // icon (absolute position)
+    Item {
+        id: iconContainer
+        visible: root.showIcon
+        width: 24
+        height: 24
+
+        anchors {
+            left: parent.left
+            leftMargin: 10
+            top: parent.top
+            topMargin: 10
+        }
+
+        IconImage {
+            id: notifImage
+            anchors.fill: parent
+            source: (root.hasImage && !root.hasAppIcon) ? root.notification.image : ""
+            visible: root.hasImage && !root.hasAppIcon
+            mipmap: true
+        }
+
+        IconImage {
+            id: appIconImage
+            anchors.fill: parent
+            source: (!root.hasImage && root.hasAppIcon) ? "image://icon/" + root.notification.appIcon : ""
+            visible: !root.hasImage && root.hasAppIcon
+            mipmap: true
+        }
+    }
+
+    // content row (left margin shifts right to make room for icon when present)
     RowLayout {
         id: bodyRow
         spacing: 10
@@ -131,38 +162,7 @@ Rectangle {
             rightMargin: 8
             top: parent.top
             topMargin: 12
-            leftMargin: 12
-        }
-
-        // icon area
-        Item {
-            id: iconContainer
-            visible: root.showIcon
-            Layout.preferredWidth: 24
-            Layout.preferredHeight: 24
-            Layout.alignment: Qt.AlignCenter
-
-            // image
-            Image {
-                id: notifImage
-                anchors.fill: parent
-                source: root.hasImage ? root.notification.image : ""
-                visible: root.hasImage
-                fillMode: Image.PreserveAspectFit
-                smooth: true
-                mipmap: true
-                layer.enabled: true
-                layer.effect: null
-            }
-
-            // app icon
-            IconImage {
-                id: appIconImage
-                anchors.fill: parent
-                source: (!root.hasImage && root.hasAppIcon) ? root.notification.appIcon : ""
-                visible: !root.hasImage && root.hasAppIcon
-                implicitSize: 24
-            }
+            leftMargin: root.showIcon ? 40 : 12
         }
 
         // text content
