@@ -144,6 +144,14 @@ Item {
 
                                     property var currentTime: new Date()
 
+                                    Timer {
+                                        interval: 60000
+                                        running: true
+                                        repeat: true
+                                        triggeredOnStart: true
+                                        onTriggered: clockRect.currentTime = new Date()
+                                    }
+
                                     Text {
                                         text: Qt.formatDateTime(clockRect.currentTime, "HH:mm")
                                         font.pixelSize: 22
