@@ -11,7 +11,7 @@ import "../.."
 Item {
     id: root
     implicitWidth: row.width + 10
-    implicitHeight: iconSize + 6
+    implicitHeight: iconSize + 4
 
     property color iconColor: Config.colors.fg
     property int iconSize: Config.general.fontSize
