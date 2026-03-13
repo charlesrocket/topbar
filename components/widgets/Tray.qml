@@ -10,51 +10,59 @@ import "../.."
 
 Item {
     id: root
+    implicitWidth: row.width + 10
+    implicitHeight: iconSize + 6
 
     property color iconColor: Config.colors.fg
     property int iconSize: Config.general.fontSize
 
-    implicitWidth: row.width
-    implicitHeight: iconSize
+    Rectangle {
+        color: Config.colors.extraDark
+        anchors.centerIn: parent
+        width: parent.width
+        height: parent.height
+        radius: Config.general.cornerRadius / 2
 
-    Row {
-        id: row
-        spacing: 4
+        Row {
+            id: row
+            anchors.centerIn: parent
+            spacing: 4
 
-        Repeater {
-            model: SystemTray.items
+            Repeater {
+                model: SystemTray.items
 
-            MouseArea {
-                id: trayElement
-                width: root.iconSize
-                height: root.iconSize
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                MouseArea {
+                    id: trayElement
+                    width: root.iconSize
+                    height: root.iconSize
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-                required property SystemTrayItem modelData
+                    required property SystemTrayItem modelData
 
-                onClicked: event => {
-                    // cannot find a way to call context menu under wayland
-                    if (event.button === Qt.LeftButton)
-                        trayElement.modelData.activate();
-                    else
-                        trayElement.modelData.secondaryActivate();
-                }
+                    onClicked: event => {
+                        // cannot find a way to call context menu under wayland
+                        if (event.button === Qt.LeftButton)
+                            trayElement.modelData.activate();
+                        else
+                            trayElement.modelData.secondaryActivate();
+                    }
 
-                Image {
-                    id: icon
-                    anchors.fill: parent
-                    source: trayElement.modelData.icon
-                    sourceSize: Qt.size(root.iconSize, root.iconSize)
-                    smooth: true
+                    Image {
+                        id: icon
+                        anchors.fill: parent
+                        source: trayElement.modelData.icon
+                        sourceSize: Qt.size(root.iconSize, root.iconSize)
+                        smooth: true
 
-                    // render as a texture (svg cases)
-                    layer.enabled: true
-                    layer.smooth: true
-                    layer.textureSize: Qt.size(root.iconSize * 2, root.iconSize * 2)
-                    layer.effect: MultiEffect {
-                        saturation: -1.0
-                        colorization: 1.0
-                        colorizationColor: root.iconColor
+                        // render as a texture (svg cases)
+                        layer.enabled: true
+                        layer.smooth: true
+                        layer.textureSize: Qt.size(root.iconSize * 2, root.iconSize * 2)
+                        layer.effect: MultiEffect {
+                            saturation: -1.0
+                            colorization: 1.0
+                            colorizationColor: root.iconColor
+                        }
                     }
                 }
             }
