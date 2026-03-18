@@ -29,6 +29,7 @@ PanelWindow {
     color: "transparent"
     implicitHeight: screen.height
     exclusiveZone: bar.visible ? bar.height + Config.bar.padding : 0
+    WlrLayershell.layer: WlrLayer.Top
 
     Rectangle {
         id: bar
@@ -67,6 +68,7 @@ PanelWindow {
 
         Component.onCompleted: {
             launchSequence.y = 0;
+            States.barPanel = root;
         }
 
         // sections
@@ -333,12 +335,6 @@ PanelWindow {
                 anchors.fill: parent
                 context: lockContext
             }
-        }
-    }
-
-    Component.onCompleted: {
-        if (this.WlrLayershell != null) {
-            this.WlrLayershell.layer = WlrLayer.Top;
         }
     }
 

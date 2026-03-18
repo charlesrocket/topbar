@@ -40,10 +40,12 @@ Item {
                     required property SystemTrayItem modelData
 
                     onClicked: event => {
-                        // cannot find a way to call context menu under wayland
                         if (event.button === Qt.LeftButton)
                             trayElement.modelData.activate();
-                        else
+                        else if (event.button === Qt.RightButton) {
+                            const pos = trayElement.mapToItem(States.barPanel.contentItem, 0, 0);
+                            trayElement.modelData.display(States.barPanel, pos.x, pos.y);
+                        } else
                             trayElement.modelData.secondaryActivate();
                     }
 

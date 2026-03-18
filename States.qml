@@ -6,6 +6,7 @@ import Quickshell.Services.UPower
 import QtQuick
 
 Singleton {
+    property PanelWindow barPanel: null
     property var locale: Qt.locale(Config.general.locale)
     property bool barEnabled: true
     property bool ecoMode: false
