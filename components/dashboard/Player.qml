@@ -214,6 +214,7 @@ Item {
                     source: root.artUrl
                     fillMode: Image.PreserveAspectCrop
                     mipmap: true
+                    smooth: false
 
                     Rectangle {
                         anchors.fill: parent
