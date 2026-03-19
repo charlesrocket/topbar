@@ -54,7 +54,8 @@ Item {
                         anchors.fill: parent
                         source: trayElement.modelData.icon
                         sourceSize: Qt.size(root.iconSize, root.iconSize)
-                        smooth: true
+                        mipmap: true
+                        smooth: false
 
                         // render as a texture (svg cases)
                         layer.enabled: true
