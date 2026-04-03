@@ -57,7 +57,7 @@ Item {
             if (!firstDev)
                 firstDev = dev;
 
-            if (dev.state === DeviceConnectionState.Connected) {
+            if (dev.state === ConnectionState.Connected) {
                 connectedDev = dev;
                 return dev;
             }
