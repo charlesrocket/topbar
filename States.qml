@@ -17,7 +17,7 @@ Singleton {
     property bool keepAwake: false
     property bool dashboardPresent: false
     property bool dropdownRevealed: false
-    property bool blurredBackground: ToplevelManager.activeToplevel ? true : false
+    property bool blurredBackground: ToplevelManager.activeToplevel && !ecoMode ? true : false
     property var dropdownOwner: null
     property int dropdownX: 0
     property int dropdownY: 0

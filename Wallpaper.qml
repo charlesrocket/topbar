@@ -1,8 +1,12 @@
+pragma ComponentBehavior: Bound
+
 import Quickshell
 import Quickshell.Wayland
 
 import QtQuick
+import QtQuick.Effects
 
+import ".."
 import "components"
 
 Variants {
@@ -10,6 +14,7 @@ Variants {
     model: Quickshell.screens
 
     readonly property bool defaultWallpaper: Config.general.wallpaper === States.defaultWallpaper
+    property bool blurred: States.blurredBackground && Settings.desktop.blur
 
     PanelWindow {
         required property ShellScreen modelData
@@ -34,6 +39,14 @@ Variants {
             source: Utils.expandPath(Config.general.wallpaper)
             fillMode: root.defaultWallpaper ? Image.Pad : Image.PreserveAspectCrop
             opacity: 0
+
+            layer.enabled: root.blurred
+            layer.effect: MultiEffect {
+                blurEnabled: root.blurred
+                blur: 0.65
+                blurMax: 64
+                autoPaddingEnabled: false
+            }
 
             SequentialAnimation {
                 running: wallpaperImage.status === Image.Ready
