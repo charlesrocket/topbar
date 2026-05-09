@@ -19,7 +19,7 @@ RowLayout {
     property color colActive: Config.colors.accent
     property color colPassive: Qt.darker(Config.colors.passive, 1.5)
     property color colAction: Config.colors.action
-    property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0 ? DwlIpc.outputs[0] : null
+    property DwlIpcOutput dwlOutput: States.dwlOutput
 
     required property var names
 

@@ -11,7 +11,7 @@ Rectangle {
     property color colBorder: Qt.darker(Config.colors.accent, 1.5)
     property color colBackground: "transparent"
 
-    property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0 ? DwlIpc.outputs[0] : null
+    property DwlIpcOutput dwlOutput: States.dwlOutput
     property string currentLayout: dwlOutput ? dwlOutput.kbLayout : ""
 
     width: layoutText.width + 8
