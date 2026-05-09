@@ -214,6 +214,13 @@ FloatingWindow {
                                     valueType: "string"
                                 }
 
+                                SettingRow {
+                                    label: "Blur"
+                                    targetObject: Config.general
+                                    targetProperty: "blur"
+                                    valueType: "bool"
+                                }
+
                                 Component.onCompleted: {
                                     root.validateSection(Config.general, generalSection, "Config.general", null);
                                 }
@@ -1017,10 +1024,7 @@ FloatingWindow {
             visible: valueType === "bool"
             Layout.alignment: Qt.AlignVCenter
             implicitHeight: 24
-
-            Component.onCompleted: {
-                checked = targetObject[targetProperty];
-            }
+            checked: targetObject[targetProperty]
 
             onToggled: {
                 targetObject[targetProperty] = checked;
@@ -1104,6 +1108,7 @@ FloatingWindow {
         lines.push('        readonly property int borderWidth: ' + general.borderWidth);
         lines.push('        readonly property int animDuration: ' + general.animDuration);
         lines.push('        readonly property string wallpaper: ' + q(general.wallpaper));
+        lines.push('        readonly property bool blur: ' + general.blur);
         lines.push('    }');
         lines.push('');
 

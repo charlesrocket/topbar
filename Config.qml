@@ -19,6 +19,7 @@ Singleton {
         property int cornerRadius: getSetting("general.radius", 8)
         property int animDuration: getSetting("general.animDuration", 250)
         property string wallpaper: getSetting("general.wallpaper", States.defaultWallpaper)
+        property bool blur: getSetting("general.blur", true)
     }
 
     // colors

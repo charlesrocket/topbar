@@ -14,7 +14,7 @@ Variants {
     model: Quickshell.screens
 
     readonly property bool defaultWallpaper: Config.general.wallpaper === States.defaultWallpaper
-    property bool blurred: States.blurredBackground && Settings.desktop.blur
+    property bool blurred: States.blurredBackground && Config.general.blur
 
     PanelWindow {
         required property ShellScreen modelData
