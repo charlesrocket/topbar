@@ -23,7 +23,7 @@ An interactive bar and desktop environment for [Quickshell](https://quickshell.o
 
 ## Installation
 
-Add a submodule to the configuration repository:
+Add a submodule to the configuration repository (that mirrors `$HOME`):
 
 ```
 git submodule add https://github.com/charlesrocket/topbar .config/quickshell/topbar
@@ -41,7 +41,6 @@ ShellRoot {
     TopBar {}
     Wallpaper {}
 }
-
 ```
 
 Use `Settings.qml` in the Quickshell's root to override the TopBar's configuration ([example](https://github.com/charlesrocket/dotfiles/blob/3392fd9fba04580e1139b0ec84a9c63502659220/.config/quickshell/Settings.qml)).
