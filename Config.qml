@@ -96,15 +96,15 @@ Singleton {
 
     // session
     property var session: QtObject {
-        property color background: getSetting("logout.color", "#aa202020")
+        property color background: getSetting("session.background", "#aa202020")
 
         property var commands: QtObject {
-            property string lock: getSetting("logout.commands.lock", "quickshell ipc call topbar lock")
-            property string logout: getSetting("logout.commands.logout", "pkill mango | hyprctl dispatch exit")
-            property string suspend: getSetting("logout.commands.suspend", "zzz")
-            property string hibernate: getSetting("logout.commands.hibernate", "acpiconf -s 4")
-            property string shutdown: getSetting("logout.commands.shutdown", "shutdown -p now")
-            property string reboot: getSetting("logout.commands.reboot", "shutdown -r now")
+            property string lock: getSetting("session.commands.lock", "quickshell ipc call topbar lock")
+            property string logout: getSetting("session.commands.logout", "pkill mango | hyprctl dispatch exit")
+            property string suspend: getSetting("session.commands.suspend", "zzz")
+            property string hibernate: getSetting("session.commands.hibernate", "acpiconf -s 4")
+            property string shutdown: getSetting("session.commands.shutdown", "shutdown -p now")
+            property string reboot: getSetting("session.commands.reboot", "shutdown -r now")
         }
     }
 

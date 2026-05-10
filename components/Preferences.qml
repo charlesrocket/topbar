@@ -1008,14 +1008,6 @@ FloatingWindow {
                     ColAnim {}
                 }
             }
-
-            Binding {
-                target: settingRow.targetObject
-                property: settingRow.targetProperty
-                value: valueType === "int" ? parseInt(textField.text) : textField.text
-                when: textField.activeFocus
-                delayed: true
-            }
         }
 
         // boolean switch
