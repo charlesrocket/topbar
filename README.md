@@ -23,10 +23,20 @@ An interactive bar and desktop environment for [Quickshell](https://quickshell.o
 
 ## Installation
 
-Add a submodule to the configuration repository (that mirrors `$HOME`):
+1. Add a submodule to the configuration repository (that mirrors `$HOME`):
 
 ```
 git submodule add https://github.com/charlesrocket/topbar .config/quickshell/topbar
+```
+
+2. Install the library
+
+```
+cd .config/quickshell/topbar
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+doas cmake --install build
+rm -rf build
 ```
 
 ## Usage
