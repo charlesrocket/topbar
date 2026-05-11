@@ -1,9 +1,10 @@
 pragma Singleton
 
 import Quickshell
-import Quickshell.DWL
 import Quickshell.Wayland
 import Quickshell.Services.UPower
+
+import TopBar.DWL
 
 import QtQuick
 

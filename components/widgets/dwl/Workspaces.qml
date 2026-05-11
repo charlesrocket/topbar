@@ -1,9 +1,9 @@
 pragma ComponentBehavior: Bound
 
-import Quickshell.DWL
-
 import QtQuick
 import QtQuick.Layouts
+
+import TopBar.DWL
 
 import "../../.."
 import "../.."

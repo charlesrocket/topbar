@@ -1,6 +1,8 @@
 import QtQuick
 import Quickshell
-import Quickshell.DWL
+
+import TopBar.DWL
+
 import "../../.."
 
 Rectangle {
