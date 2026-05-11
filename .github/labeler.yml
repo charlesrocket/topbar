@@ -7,6 +7,10 @@ ops:
   - changed-files:
       - any-glob-to-any-file: ".github/**/*"
 
+plugin:
+  - changed-files:
+      - any-glob-to-any-file: "plugin/**/*"
+
 component:
   - changed-files:
       - any-glob-to-any-file: "components/*"
