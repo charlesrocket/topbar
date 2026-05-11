@@ -146,6 +146,7 @@ qml_module(topbar
 )
 
 add_subdirectory(dwl)
+add_subdirectory(oss)
 
 target_include_directories(topbar PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/..

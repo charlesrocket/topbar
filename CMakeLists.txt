@@ -1,10 +1,4 @@
 cmake_minimum_required(VERSION 3.30)
-include(${CMAKE_SOURCE_DIR}/plugin/version.cmake)
-include_directories(/usr/local/include)
-link_directories(/usr/local/lib)
-
-project(topbar VERSION 0.2.0 LANGUAGES CXX C)
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -16,6 +10,13 @@ set(DISTRIBUTOR "Unset" CACHE STRING "Distributor")
 set(ENABLE_MODULES "plugin" CACHE STRING "Modules to build/install")
 set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install dir")
 set(INSTALL_QMLDIR "lib/qt6/qml" CACHE STRING "QML install dir")
+
+include(${CMAKE_SOURCE_DIR}/plugin/version.cmake)
+include(${CMAKE_SOURCE_DIR}/plugin/install-qml-module.cmake)
+include_directories(/usr/local/include)
+link_directories(/usr/local/lib)
+
+project(topbar VERSION 0.2.0 LANGUAGES CXX C)
 
 add_compile_options(
     -Wall -Wextra -Wpedantic -Wshadow -Wconversion

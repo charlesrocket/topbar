@@ -1,9 +1,10 @@
 import Quickshell
 import Quickshell.Io
-import Quickshell.Services.OSS
 
 import QtQuick
 import QtQuick.Layouts
+
+import TopBar.OSS
 
 import "../../.."
 import "../.."

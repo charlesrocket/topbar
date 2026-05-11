@@ -1,5 +1,4 @@
 import Quickshell
-import Quickshell.Services.OSS
 import Quickshell.Widgets
 
 import QtQuick
