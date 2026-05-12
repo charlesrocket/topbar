@@ -52,16 +52,12 @@ target_precompile_headers(topbar-dwl PRIVATE
     <qtypes.h>
     <qwaylandclientextension.h>
     <qscreen.h>
-    <qpa/qplatformscreen.h>
-    <qpa/qplatformnativeinterface.h>
 )
 
 target_link_libraries(topbar-dwl PRIVATE
     Qt6::Core
     Qt6::Gui
     Qt6::Widgets
-    Qt6::WaylandClient
-    Qt6::WaylandClientPrivate
     Wayland::Client
     wlp-dwl-ipc
 )

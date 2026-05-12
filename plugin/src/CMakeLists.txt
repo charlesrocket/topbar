@@ -5,7 +5,6 @@ find_package(Qt6 REQUIRED COMPONENTS
     Gui
     Widgets
     WaylandClient
-    WaylandClientPrivate
     Quick
     QuickControls2
     Concurrent

@@ -3,7 +3,6 @@
 #include "output.hpp"
 
 #include <cstdint>
-#include <private/qwaylandscreen_p.h>
 #include <qapplication.h>
 #include <qbytearray.h>
 #include <qcontainerfwd.h>
@@ -57,14 +56,14 @@ QList<DwlIpcOutput *> DwlIpcManager::outputs() const { return this->mOutputs; }
 
 void DwlIpcManager::onScreenAdded(QScreen *screen) {
     auto *waylandScreen =
-        dynamic_cast<QtWaylandClient::QWaylandScreen *>(screen->handle());
+        screen->nativeInterface<QNativeInterface::QWaylandScreen>();
     if (!waylandScreen) return;
     this->bindOutput(waylandScreen->output(), screen->name());
 }
 
 void DwlIpcManager::onScreenRemoved(QScreen *screen) {
     auto *waylandScreen =
-        dynamic_cast<QtWaylandClient::QWaylandScreen *>(screen->handle());
+        screen->nativeInterface<QNativeInterface::QWaylandScreen>();
     if (!waylandScreen) return;
     this->removeOutput(waylandScreen->output());
 }

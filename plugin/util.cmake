@@ -163,7 +163,6 @@ function(wl_proto target name dir)
     target_include_directories(${target} PUBLIC ${PROTO_BUILD_PATH})
     target_compile_options(${target} PRIVATE ${wayland_CFLAGS})
     target_link_libraries(${target} PUBLIC
-        Qt6::WaylandClientPrivate
         Qt6::WaylandClient
     )
 endfunction()
