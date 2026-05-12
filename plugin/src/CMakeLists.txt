@@ -116,9 +116,36 @@ function(wl_proto target name dir)
     target_include_directories(${target} PUBLIC ${PROTO_BUILD_PATH})
     target_compile_options(${target} PRIVATE ${wayland_CFLAGS})
     target_link_libraries(${target} PUBLIC
-        Qt6::WaylandClient
         Qt6::WaylandClientPrivate
+        Qt6::WaylandClient
     )
+endfunction()
+
+function (tb_add_link_dependencies target)
+    set_property(
+        TARGET ${target}
+        APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+        ${ARGN}
+    )
+endfunction()
+
+function (tb_append_qmldir target text)
+    get_property(qmldir_content TARGET ${target} PROPERTY _qt_internal_qmldir_content)
+
+    if ("${qmldir_content}" STREQUAL "")
+        message(WARNING "qs_append_qmldir depends on private Qt cmake code, which has broken.")
+        return()
+    endif()
+
+    set_property(TARGET ${target} APPEND_STRING PROPERTY _qt_internal_qmldir_content ${text})
+endfunction()
+
+function (tb_add_module_deps_light target)
+    foreach (dep IN LISTS ARGN)
+        string(APPEND qmldir_extra "depends ${dep}\n")
+    endforeach()
+
+    tb_append_qmldir(${target} "${qmldir_extra}")
 endfunction()
 
 target_precompile_headers(topbar-pch INTERFACE
@@ -145,8 +172,9 @@ qml_module(topbar
         Qt::Concurrent
 )
 
-add_subdirectory(dwl)
+add_subdirectory(network)
 add_subdirectory(oss)
+add_subdirectory(dwl)
 
 target_include_directories(topbar PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/..

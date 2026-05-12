@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -30,6 +31,4 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wunused-lambda-capture)
 endif()
 
-if("plugin" IN_LIST ENABLE_MODULES)
-    add_subdirectory(plugin)
-endif()
+add_subdirectory(plugin)
