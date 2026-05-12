@@ -13,7 +13,7 @@ set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install dir")
 set(INSTALL_QMLDIR "lib/qt6/qml" CACHE STRING "QML install dir")
 
 include(${CMAKE_SOURCE_DIR}/plugin/version.cmake)
-include(${CMAKE_SOURCE_DIR}/plugin/install-qml-module.cmake)
+include(${CMAKE_SOURCE_DIR}/plugin/util.cmake)
 include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 
