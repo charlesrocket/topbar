@@ -59,7 +59,6 @@ target_precompile_headers(topbar-dwl PRIVATE
 target_link_libraries(topbar-dwl PRIVATE
     Qt6::Core
     Qt6::Gui
-    Qt6::GuiPrivate
     Qt6::Widgets
     Qt6::WaylandClient
     Qt6::WaylandClientPrivate
