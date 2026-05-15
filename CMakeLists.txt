@@ -8,15 +8,19 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(DISTRIBUTOR "Unset" CACHE STRING "Distributor")
 set(ENABLE_MODULES "plugin" CACHE STRING "Modules to build/install")
-set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install dir")
-set(INSTALL_QMLDIR "lib/qt6/qml" CACHE STRING "QML install dir")
+set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install directory")
+set(INSTALL_QMLDIR "lib/qt6/qml" CACHE STRING "QML install directory")
 
 include(${CMAKE_SOURCE_DIR}/plugin/version.cmake)
 include(${CMAKE_SOURCE_DIR}/plugin/util.cmake)
 include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 
-project(topbar VERSION 0.2.0 LANGUAGES CXX C)
+project(topbar VERSION 0.2.0)
+
+boption(NETWORK "Network" ON)
+boption(OSS "Open sound system" ON)
+boption(DWL "Mango" ON)
 
 add_compile_options(
     -Wall -Wextra -Wpedantic -Wshadow -Wconversion

@@ -64,9 +64,17 @@ qml_module(topbar
         Qt::Concurrent
 )
 
-add_subdirectory(network)
-add_subdirectory(oss)
-add_subdirectory(dwl)
+if (NETWORK)
+    add_subdirectory(network)
+endif()
+
+if (OSS)
+    add_subdirectory(oss)
+endif()
+
+if (DWL)
+    add_subdirectory(dwl)
+endif()
 
 target_include_directories(topbar PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/..

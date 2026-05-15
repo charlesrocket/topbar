@@ -193,3 +193,26 @@ function (tb_add_module_deps_light target)
 
     tb_append_qmldir(${target} "${qmldir_extra}")
 endfunction()
+
+function(boption VAR NAME DEFAULT)
+    cmake_parse_arguments(PARSE_ARGV 3 arg "" "REQUIRES" "")
+
+    option(${VAR} ${NAME} ${DEFAULT})
+
+    set(STATUS "${VAR}_status")
+    set(EFFECTIVE "${VAR}_effective")
+    set(${STATUS} ${${VAR}})
+    set(${EFFECTIVE} ${${VAR}})
+
+    if (${${VAR}} AND DEFINED arg_REQUIRES)
+        set(REQUIRED_EFFECTIVE "${arg_REQUIRES}_effective")
+
+        if (NOT ${${REQUIRED_EFFECTIVE}})
+            set(${STATUS} "OFF (Requires ${arg_REQUIRES})")
+            set(${EFFECTIVE} OFF)
+        endif()
+    endif()
+
+    set(${EFFECTIVE} "${${EFFECTIVE}}" PARENT_SCOPE)
+    message(STATUS "${NAME}: ${${STATUS}}")
+endfunction()
