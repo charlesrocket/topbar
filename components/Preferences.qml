@@ -221,6 +221,13 @@ FloatingWindow {
                                     valueType: "bool"
                                 }
 
+                                SettingRow {
+                                    label: "Shadows"
+                                    targetObject: Config.general
+                                    targetProperty: "shadows"
+                                    valueType: "bool"
+                                }
+
                                 Component.onCompleted: {
                                     root.validateSection(Config.general, generalSection, "Config.general", null);
                                 }
@@ -1101,6 +1108,7 @@ FloatingWindow {
         lines.push('        readonly property int animDuration: ' + general.animDuration);
         lines.push('        readonly property string wallpaper: ' + q(general.wallpaper));
         lines.push('        readonly property bool blur: ' + general.blur);
+        lines.push('        readonly property bool shadows: ' + general.shadows);
         lines.push('    }');
         lines.push('');
 
