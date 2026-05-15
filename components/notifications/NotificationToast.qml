@@ -43,7 +43,7 @@ Rectangle {
     implicitHeight: bodyRow.implicitHeight + 24
 
     radius: Config.general.cornerRadius
-    color: Config.colors.bg
+    color: Config.colors.bge
     border.width: Config.general.borderWidth
     border.color: Config.colors.border
     Component.onCompleted: slideInAnim.start()

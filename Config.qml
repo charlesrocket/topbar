@@ -20,6 +20,7 @@ Singleton {
         property int animDuration: getSetting("general.animDuration", 250)
         property string wallpaper: getSetting("general.wallpaper", States.defaultWallpaper)
         property bool blur: getSetting("general.blur", true)
+        property bool shadows: getSetting("general.shadows", true)
     }
 
     // colors

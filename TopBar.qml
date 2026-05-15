@@ -18,6 +18,8 @@ PanelWindow {
 
     property var screen: Quickshell.screens[0]
 
+    readonly property bool defaultWallpaper: Config.general.wallpaper === States.defaultWallpaper
+
     anchors {
         top: true
         left: true
@@ -25,10 +27,12 @@ PanelWindow {
     }
 
     mask: itemsRegions
-    color: "transparent"
+    color: root.defaultWallpaper ? "black" : "transparent"
     implicitHeight: screen.height
     exclusiveZone: bar.visible ? bar.height + Config.bar.padding : 0
     WlrLayershell.layer: WlrLayer.Top
+
+    ColAnim {}
 
     Rectangle {
         id: bar
@@ -37,7 +41,7 @@ PanelWindow {
         implicitWidth: root.screen.width - Config.bar.padding * 2
         implicitHeight: Config.bar.height
         height: Config.bar.height
-        color: States.ecoMode ? Config.colors.bge : Config.colors.bg
+        color: States.ecoMode || !States.blurredBackground ? Config.colors.bge : Config.colors.bg
         radius: Config.general.cornerRadius
 
         //Bar.DynamicFrame {

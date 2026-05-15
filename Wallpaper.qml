@@ -46,7 +46,9 @@ Variants {
                 blur: 0.95
                 blurMax: 42
                 blurMultiplier: 0.3
-                autoPaddingEnabled: false
+                shadowEnabled: Config.general.shadows
+                shadowColor: Config.colors.bge
+                autoPaddingEnabled: Config.general.shadows
             }
 
             SequentialAnimation {
