@@ -12,7 +12,6 @@ Singleton {
     property PanelWindow barPanel: null
     property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0 ? DwlIpc.outputs[0] : null
 
-    property bool floatingTop: dwlOutput ? dwlOutput.floating : false
     property var locale: Qt.locale(Config.general.locale)
     property bool barEnabled: true
     property bool ecoMode: false
@@ -22,7 +21,7 @@ Singleton {
     property bool keepAwake: false
     property bool dashboardPresent: false
     property bool dropdownRevealed: false
-    property bool blurredBackground: ToplevelManager.activeToplevel && !ecoMode && !floatingTop ? true : false
+    property bool blurredBackground: ToplevelManager.activeToplevel && !ecoMode ? true : false
     property var dropdownOwner: null
     property int dropdownX: 0
     property int dropdownY: 0

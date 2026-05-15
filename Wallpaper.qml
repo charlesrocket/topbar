@@ -43,8 +43,9 @@ Variants {
             layer.enabled: root.blurred
             layer.effect: MultiEffect {
                 blurEnabled: root.blurred
-                blur: 0.65
-                blurMax: 64
+                blur: 0.95
+                blurMax: 42
+                blurMultiplier: 0.3
                 autoPaddingEnabled: false
             }
 
