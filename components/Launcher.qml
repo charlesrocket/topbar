@@ -17,7 +17,7 @@ Loader {
     sourceComponent: PanelWindow {
         id: root
 
-        WlrLayershell.layer: WlrLayer.Overlay
+        WlrLayershell.layer: WlrLayer.Top
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
         exclusionMode: ExclusionMode.Ignore
         color: "transparent"
