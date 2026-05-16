@@ -107,6 +107,21 @@ RowLayout {
         }
     }
 
+    // Jails
+    Loader {
+        id: jails
+        active: System.jails.length > 0 && Config.widgets.jails
+        visible: jails.active
+        asynchronous: true
+        Layout.rightMargin: 2
+
+        sourceComponent: Item {
+            implicitWidth: childrenRect.width
+            implicitHeight: childrenRect.height
+            Jails {}
+        }
+    }
+
     // language
     Loader {
         id: lang

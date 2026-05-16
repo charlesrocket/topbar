@@ -19,6 +19,8 @@ Singleton {
     property real cpuUsage: System.cpuUsage
     property real diskUsage: System.diskUsage
     property real memoryUsage: System.memoryUsage
+    property var jails: System.jails
+    property int jailCount: System.jails.length
 
     readonly property string desktop: Quickshell.env("XDG_CURRENT_DESKTOP").toLowerCase() || Quickshell.env("XDG_SESSION_DESKTOP").toLowerCase()
     readonly property string user: Quickshell.env("USER").toLowerCase()

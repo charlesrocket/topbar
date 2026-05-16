@@ -24,6 +24,7 @@ class System : public QObject {
     Q_PROPERTY(int interval READ interval WRITE setInterval NOTIFY intervalChanged);
     Q_PROPERTY(float cpuTemp READ cpuTemp NOTIFY cpuTempChanged);
     Q_PROPERTY(float pchTemp READ pchTemp NOTIFY pchTempChanged);
+    Q_PROPERTY(QStringList jails READ jails NOTIFY jailsChanged);
     // clang-format on
 
   public:
@@ -37,6 +38,7 @@ class System : public QObject {
     [[nodiscard]] float diskUsage() const;
     [[nodiscard]] QString diskMountPoint() const;
     [[nodiscard]] int interval() const;
+    [[nodiscard]] QStringList jails() const;
 
     void setInterval(int ms);
     void setDiskMountPoint(const QString &path);
@@ -49,6 +51,7 @@ class System : public QObject {
     void diskUsageChanged();
     void diskMountPointChanged();
     void intervalChanged();
+    void jailsChanged();
 
   private slots:
     void poll();
@@ -59,6 +62,7 @@ class System : public QObject {
     void updateMemory();
     void updateDisk();
     void updateTemperatures();
+    void updateJails();
 
     // FreeBSD kern.cp_times has CPUSTATES ticks per core. CPUSTATES == 5:
     // CP_USER, CP_NICE, CP_SYS, CP_INTR, CP_IDLE.
@@ -74,6 +78,7 @@ class System : public QObject {
     float mMemoryUsage = 0.0f;
     float mDiskUsage = 0.0f;
     QString mDiskMountPoint = QStringLiteral("/");
+    QStringList mJails;
 
     QTimer *mPollTimer = nullptr;
 };

@@ -17,6 +17,7 @@ Loader {
     sourceComponent: PanelWindow {
         id: root
 
+        WlrLayershell.namespace: "launcher"
         WlrLayershell.layer: WlrLayer.Top
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
         exclusionMode: ExclusionMode.Ignore

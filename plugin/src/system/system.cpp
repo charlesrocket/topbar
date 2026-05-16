@@ -5,9 +5,15 @@
 #include <qloggingcategory.h>
 #include <qtimer.h>
 #include <qvector.h>
+
+// clang-format off
+#include <sys/param.h>
+#include <sys/jail.h>
 #include <sys/statvfs.h>
 #include <sys/sysctl.h>
 #include <sys/types.h>
+#include <sys/uio.h>
+// clang-format on
 
 namespace topbar::system {
 
@@ -26,12 +32,15 @@ System::System(QObject *parent)
     this->updateCpu();
     this->updateMemory();
     this->updateDisk();
+    this->updateTemperatures();
+    this->updateJails();
 
     this->mPollTimer->start();
 }
 
 static constexpr int kTzZeroC = 2731;
 
+int System::interval() const { return this->mPollTimer->interval(); }
 int System::cpuCores() const { return this->mCpuCores; }
 float System::cpuTemp() const { return this->mCpuTemp; }
 float System::pchTemp() const { return this->mPchTemp; }
@@ -39,7 +48,7 @@ float System::cpuUsage() const { return this->mCpuUsage; }
 float System::memoryUsage() const { return this->mMemoryUsage; }
 float System::diskUsage() const { return this->mDiskUsage; }
 QString System::diskMountPoint() const { return this->mDiskMountPoint; }
-int System::interval() const { return this->mPollTimer->interval(); }
+QStringList System::jails() const { return this->mJails; }
 
 void System::setInterval(int ms) {
     ms = std::max(ms, 100);
@@ -62,6 +71,7 @@ void System::poll() {
     this->updateMemory();
     this->updateDisk();
     this->updateTemperatures();
+    this->updateJails();
 }
 
 void System::detectCores() {
@@ -70,7 +80,7 @@ void System::detectCores() {
 
     if (sysctlbyname("hw.ncpu", &cores, &size, nullptr, 0) == 0 && cores > 0) {
         this->mCpuCores = cores;
-        qCInfo(logSystem) << "Detected" << cores << "CPU core(s)";
+        qCDebug(logSystem) << "Detected CPU cores:" << cores;
     } else {
         qCWarning(logSystem) << "Failed to read hw.ncpu, defaulting to 1";
     }
@@ -155,22 +165,22 @@ void System::updateMemory() {
 
     if (totalPages == 0) { return; }
 
-    auto freePages = 0u;
-    auto inactivePages = 0u;
+    auto activePages = 0u;
+    auto wiredPages = 0u;
+    auto laundryPages = 0u;
 
-    size = sizeof(freePages);
+    size = sizeof(activePages);
+    sysctlbyname("vm.stats.vm.v_active_count", &activePages, &size, nullptr, 0);
 
-    sysctlbyname("vm.stats.vm.v_free_count", &freePages, &size, nullptr, 0);
+    size = sizeof(wiredPages);
+    sysctlbyname("vm.stats.vm.v_wire_count", &wiredPages, &size, nullptr, 0);
 
-    size = sizeof(inactivePages);
-
+    size = sizeof(laundryPages);
     sysctlbyname(
-        "vm.stats.vm.v_inactive_count", &inactivePages, &size, nullptr, 0
+        "vm.stats.vm.v_laundry_count", &laundryPages, &size, nullptr, 0
     );
 
-    const auto availablePages = freePages + inactivePages;
-    const auto usedPages =
-        totalPages > availablePages ? totalPages - availablePages : 0u;
+    const auto usedPages = activePages + wiredPages + laundryPages;
 
     const auto newUsage = std::clamp(
         static_cast<float>(usedPages) / static_cast<float>(totalPages), 0.0f,
@@ -234,6 +244,48 @@ void System::updateTemperatures() {
     if (this->mPchTemp != newPchTemp) {
         this->mPchTemp = newPchTemp;
         emit this->pchTempChanged();
+    }
+}
+
+void System::updateJails() {
+    QStringList newJails;
+    int lastJid = 0;
+
+    while (true) {
+        int jid = 0;
+        char name[MAXHOSTNAMELEN] = {};
+
+        static char kLastJid[] = "lastjid";
+        static char kJid[] = "jid";
+        static char kName[] = "name";
+
+        struct iovec iov[] = {
+            {kLastJid, sizeof("lastjid")},
+            {&lastJid,   sizeof(lastJid)},
+            {    kJid,     sizeof("jid")},
+            {    &jid,       sizeof(jid)},
+            {   kName,    sizeof("name")},
+            {    name,      sizeof(name)},
+        };
+
+        constexpr u_int nIov = sizeof(iov) / sizeof(iov[0]);
+        const int ret = ::jail_get(iov, nIov, 0);
+
+        if (ret < 0) {
+            if (errno != ENOENT) {
+                qCWarning(logSystem) << "jail_get failed:" << strerror(errno);
+            }
+
+            break;
+        }
+
+        lastJid = ret;
+        newJails.append(QString::fromLocal8Bit(name));
+    }
+
+    if (this->mJails != newJails) {
+        this->mJails = newJails;
+        emit this->jailsChanged();
     }
 }
 

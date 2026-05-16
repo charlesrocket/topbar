@@ -31,6 +31,7 @@ PanelWindow {
     implicitHeight: screen.height
     exclusiveZone: bar.visible ? bar.height + Config.bar.padding : 0
     WlrLayershell.layer: WlrLayer.Top
+    WlrLayershell.namespace: "topbar"
 
     ColAnim {}
 
@@ -41,7 +42,7 @@ PanelWindow {
         implicitWidth: root.screen.width - Config.bar.padding * 2
         implicitHeight: Config.bar.height
         height: Config.bar.height
-        color: States.ecoMode || !States.blurredBackground ? Config.colors.bge : Config.colors.bg
+        color: States.ecoMode ? Config.colors.bge : Config.colors.bg
         radius: Config.general.cornerRadius
 
         //Bar.DynamicFrame {

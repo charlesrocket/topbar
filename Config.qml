@@ -78,6 +78,7 @@ Singleton {
         property bool bluetooth: getSetting("widgets.bluetooth", false)
         property bool network: getSetting("widgets.network", false)
         property bool tray: getSetting("widgets.tray", false)
+        property bool jails: getSetting("widgets.jails", true)
         property bool weather: getSetting("widgets.weather", true)
         property bool language: getSetting("widgets.language", false)
         property bool clock: getSetting("widgets.clock", true)
