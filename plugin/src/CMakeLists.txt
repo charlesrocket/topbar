@@ -64,6 +64,10 @@ qml_module(topbar
         Qt::Concurrent
 )
 
+if (SYSTEM)
+    add_subdirectory(system)
+endif()
+
 if (NETWORK)
     add_subdirectory(network)
 endif()

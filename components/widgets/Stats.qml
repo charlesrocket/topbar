@@ -1,8 +1,10 @@
 import QtQuick
 import QtQuick.Layouts
+
 import Quickshell
 import Quickshell.Io
 
+import ".."
 import "../.."
 
 RowLayout {
@@ -17,92 +19,6 @@ RowLayout {
     property string mountPoint: "/"
     property int barWidth: 8
     property int barHeight: 14
-    property int cpuCores: 1
-
-    property real cpuLoad: 0.0
-    property real cpuPercent: 0.0
-    property int memPercent: 0
-    property int diskPercent: 0
-
-    Process {
-        id: coreDetect
-        command: ["sysctl", "-n", "hw.ncpu"]
-        running: true
-
-        stdout: SplitParser {
-            onRead: data => {
-                const cores = parseInt(data.trim());
-                if (!isNaN(cores) && cores > 0) {
-                    root.cpuCores = cores;
-                }
-            }
-        }
-    }
-
-    Process {
-        id: cpuProc
-        command: ["sh", "-c", "sysctl -n vm.loadavg | awk '{print $2}'"]
-        running: true
-
-        stdout: SplitParser {
-            onRead: data => {
-                const load = parseFloat(data.trim());
-
-                if (!isNaN(load)) {
-                    root.cpuLoad = load;
-                    root.cpuPercent = Math.min((load / root.cpuCores) * 100, 100);
-                }
-            }
-        }
-    }
-
-    Process {
-        id: memProc
-        command: ["sh", "-c", "sysctl hw.physmem hw.usermem | awk '{if(NR==1) physmem=$2; if(NR==2) usermem=$2} END {print int((physmem-usermem)/physmem*100)}'"]
-        running: true
-
-        stdout: SplitParser {
-            onRead: data => {
-                const percent = parseInt(data.trim());
-                if (!isNaN(percent)) {
-                    root.memPercent = percent;
-                }
-            }
-        }
-    }
-
-    Process {
-        id: diskProc
-        command: ["sh", "-c", `df -h ${root.mountPoint} | tail -1 | awk '{print $5}' | sed 's/%//'`]
-        running: true
-
-        stdout: SplitParser {
-            onRead: data => {
-                const percent = parseInt(data.trim());
-                if (!isNaN(percent)) {
-                    root.diskPercent = percent;
-                }
-            }
-        }
-    }
-
-    Timer {
-        interval: 5000
-        running: true
-        repeat: true
-
-        onTriggered: {
-            cpuProc.running = true;
-            memProc.running = true;
-        }
-    }
-
-    Timer {
-        interval: 150000
-        running: true
-        repeat: true
-        onTriggered: diskProc.running = true
-    }
 
     RowLayout {
         spacing: 6
@@ -128,14 +44,17 @@ RowLayout {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 1
-                height: (root.cpuPercent / 100.0) * (parent.height - 2)
+                height: System.cpuUsage * (parent.height - 2)
                 radius: 1
 
                 color: {
-                    if (root.cpuPercent > 90)
+                    const pct = System.cpuUsage;
+
+                    if (pct > 0.90)
                         return root.colCritical;
-                    if (root.cpuPercent > 75)
+                    if (pct > 0.75)
                         return root.colWarning;
+
                     return root.colFg;
                 }
 
@@ -172,13 +91,17 @@ RowLayout {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 1
-                height: (root.memPercent / 100.0) * (parent.height - 2)
+                height: System.memoryUsage * (parent.height - 2)
                 radius: 1
+
                 color: {
-                    if (root.memPercent > 90)
+                    const pct = System.memoryUsage;
+
+                    if (pct > 0.90)
                         return root.colCritical;
-                    if (root.memPercent > 75)
+                    if (pct > 0.75)
                         return root.colWarning;
+
                     return root.colFg;
                 }
 
@@ -215,14 +138,17 @@ RowLayout {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 1
-                height: (root.diskPercent / 100.0) * (parent.height - 2)
+                height: System.diskUsage * (parent.height - 2)
                 radius: 1
 
                 color: {
-                    if (root.diskPercent > 90)
+                    const pct = System.diskUsage;
+
+                    if (pct > 0.90)
                         return root.colCritical;
-                    if (root.diskPercent > 80)
+                    if (pct > 0.80)
                         return root.colWarning;
+
                     return root.colFg;
                 }
 

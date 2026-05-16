@@ -1,9 +1,7 @@
 import Quickshell
 import Quickshell.Io
 
-import QtCore
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Layouts
 
 import "../.."
@@ -17,33 +15,11 @@ Rectangle {
     anchors.leftMargin: 8
     anchors.rightMargin: 8
 
-    property real cpuTemp
-    property real pchTemp
+    property real cpuTemp: System.cpuTemp
+    property real pchTemp: System.pchTemp
     property int fontSize: Config.general.fontSize
     property string mail: ""
     property string mailErr: ""
-
-    Process {
-        id: sysctl
-        command: ["sysctl", "hw.acpi.thermal.tz0.temperature", "dev.pchtherm.0.temperature"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const lines = this.text.split("\n");
-
-                lines.forEach(line => {
-                    const match = line.match(/^(\S+):\s*([\d.]+)C/);
-                    if (!match)
-                        return;
-
-                    const [, key, val] = match;
-                    if (key === "hw.acpi.thermal.tz0.temperature")
-                        root.cpuTemp = parseFloat(val);
-                    else if (key === "dev.pchtherm.0.temperature")
-                        root.pchTemp = parseFloat(val);
-                });
-            }
-        }
-    }
 
     Process {
         id: checkMail
@@ -340,7 +316,6 @@ Rectangle {
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            sysctl.running = true;
             checkMail.running = true;
         }
     }

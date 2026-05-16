@@ -18,6 +18,7 @@ link_directories(/usr/local/lib)
 
 project(topbar VERSION 0.2.0)
 
+boption(SYSTEM "System" ON)
 boption(NETWORK "Network" ON)
 boption(OSS "Open sound system" ON)
 boption(DWL "Mango" ON)
