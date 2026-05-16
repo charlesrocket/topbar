@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
+import Quickshell.Wayland
 import Quickshell.Services.Notifications
 
 import QtQuick
@@ -10,9 +11,6 @@ import "../.."
 
 Item {
     id: root
-
-    implicitWidth: Config.notifications.width
-    implicitHeight: stack.implicitHeight
 
     property var notifications: []
 
@@ -41,27 +39,47 @@ Item {
         root.notifications = root.notifications.filter(n => n !== notif);
     }
 
-    ColumnLayout {
-        id: stack
-        spacing: 6
+    PanelWindow {
+        WlrLayershell.namespace: "notifications"
+        WlrLayershell.layer: WlrLayer.Overlay
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+        exclusionMode: ExclusionMode.Ignore
+        color: "transparent"
+        visible: root.notifications.length > 0
 
+        implicitWidth: Config.notifications.width + Config.bar.padding
+        implicitHeight: stack.implicitHeight + Config.bar.padding
         anchors {
-            top: parent.top
-            right: parent.right
+            top: true
+            right: true
         }
 
-        Repeater {
-            model: ScriptModel {
-                values: root.notifications
+        ColumnLayout {
+            id: stack
+            spacing: 6
+
+            anchors {
+                top: parent.top
+                right: parent.right
+
+                topMargin: Config.bar.padding
+                rightMargin: Config.bar.padding
             }
 
-            delegate: NotificationToast {
-                required property var modelData
+            Repeater {
+                model: ScriptModel {
+                    // TODO fix blinking
+                    values: root.notifications
+                }
 
-                notification: modelData
-                Layout.alignment: Qt.AlignRight
-                onDismissed: root.removeNotification(modelData)
-                onExpired: root.expireNotification(modelData)
+                delegate: NotificationToast {
+                    required property var modelData
+
+                    notification: modelData
+                    Layout.alignment: Qt.AlignRight
+                    onDismissed: root.removeNotification(modelData)
+                    onExpired: root.expireNotification(modelData)
+                }
             }
         }
     }

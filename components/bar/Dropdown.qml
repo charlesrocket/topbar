@@ -221,6 +221,7 @@ Item {
 
         HoverHandler {
             id: dropdownHover
+            grabPermissions: PointerHandler.TakeOverForbidden
 
             onHoveredChanged: {
                 if (hovered) {

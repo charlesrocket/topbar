@@ -18,7 +18,7 @@ Loader {
         id: root
 
         WlrLayershell.namespace: "launcher"
-        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
         exclusionMode: ExclusionMode.Ignore
         color: "transparent"
