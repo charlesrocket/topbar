@@ -47,8 +47,9 @@ Item {
         color: "transparent"
         visible: root.notifications.length > 0
 
-        implicitWidth: Config.notifications.width + Config.bar.padding
-        implicitHeight: stack.implicitHeight + Config.bar.padding
+        implicitWidth: Config.notifications.width + (Config.bar.padding)
+        implicitHeight: stack.implicitHeight + (Config.bar.padding * 2 + Config.bar.height)
+
         anchors {
             top: true
             right: true
@@ -62,7 +63,7 @@ Item {
                 top: parent.top
                 right: parent.right
 
-                topMargin: Config.bar.padding
+                topMargin: Config.bar.padding * 2 + Config.bar.height
                 rightMargin: Config.bar.padding
             }
 
