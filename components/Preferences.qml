@@ -15,6 +15,7 @@ FloatingWindow {
     title: "Configuration"
     color: "transparent"
 
+    property string version: System.version
     contentItem {
         focus: true
         Keys.onPressed: event => {
@@ -149,15 +150,6 @@ FloatingWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     spacing: 8
-
-                    Text {
-                        text: "Version " + Version.full
-                        font.family: Config.general.fontFamily
-                        font.pixelSize: Config.general.fontSize + 2
-                        font.bold: true
-                        color: Config.colors.fg
-                        Layout.topMargin: 16
-                    }
 
                     StackLayout {
                         id: stackLayout
@@ -882,6 +874,28 @@ FloatingWindow {
                     RowLayout {
                         Layout.fillWidth: true
                         spacing: 8
+
+                        Rectangle {
+                            border.width: 1
+                            border.color: Config.colors.passive
+                            color: "transparent"
+                            width: versionString.width + 12
+                            height: versionString.height + 6
+                            radius: Config.general.cornerRadius
+
+                            TextEdit {
+                                id: versionString
+                                anchors.centerIn: parent
+                                text: root.version
+                                font.family: Config.general.fontFamily
+                                font.pixelSize: Config.general.fontSize
+                                font.bold: false
+                                color: Config.colors.fg
+                                Layout.topMargin: 16
+                                readOnly: true
+                                selectByMouse: true
+                            }
+                        }
 
                         // save status text
                         Text {

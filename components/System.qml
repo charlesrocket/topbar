@@ -5,12 +5,15 @@ import Quickshell.Io
 
 import QtQuick
 
+import TopBar
 import TopBar.System
 
 import ".."
 
 Singleton {
     id: root
+
+    readonly property string version: Version.full
 
     property string id
     property string name

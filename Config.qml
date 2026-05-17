@@ -60,6 +60,7 @@ Singleton {
 
     property var dashboard: QtObject {
         property string disk: getSetting("dashboard.disk", "/")
+
         property var player: QtObject {
             property bool queueButtons: getSetting("dashboard.player.queueButtons", false)
         }

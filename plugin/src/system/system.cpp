@@ -28,7 +28,6 @@ Q_LOGGING_CATEGORY(logSystem, "topbar.system")
 
 System::System(QObject *parent)
     : QObject(parent), mPollTimer(new QTimer(this)) {
-    qCInfo(logSystem) << "Version" << PROJECT_VERSION_FULL;
     this->detectCores();
 
     this->mPrevTicks.resize(this->mCpuCores * kCpuStates, 0);
