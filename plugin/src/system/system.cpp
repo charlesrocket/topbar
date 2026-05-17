@@ -23,7 +23,7 @@ Q_LOGGING_CATEGORY(logSystem, "topbar.system")
 
 System::System(QObject *parent)
     : QObject(parent), mPollTimer(new QTimer(this)) {
-    qCInfo(logSystem) << "version" << PROJECT_VERSION_FULL;
+    qCInfo(logSystem) << "Version" << PROJECT_VERSION_FULL;
     this->detectCores();
 
     this->mPrevTicks.resize(this->mCpuCores * kCpuStates, 0);
@@ -83,7 +83,7 @@ void System::detectCores() {
 
     if (sysctlbyname("hw.ncpu", &cores, &size, nullptr, 0) == 0 && cores > 0) {
         this->mCpuCores = cores;
-        qCDebug(logSystem) << "Detected CPU cores:" << cores;
+        qCInfo(logSystem) << "Detected CPU cores:" << cores;
     } else {
         qCWarning(logSystem) << "Failed to read hw.ncpu, defaulting to 1";
     }
