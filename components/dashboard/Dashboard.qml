@@ -114,6 +114,25 @@ Rectangle {
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }
+
+                            Text {
+                                color: Config.colors.fg
+                                font.family: "Symbols Nerd Font"
+                                Layout.preferredWidth: root.fontSize * 2
+                                font.pixelSize: root.fontSize * 1.3
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                                text: ""
+                            }
+
+                            Text {
+                                color: Config.colors.fg
+                                font.pixelSize: root.fontSize
+                                font.family: Config.general.fontFamily
+                                text: System.cpuCores
+                                elide: Text.ElideRight
+                                Layout.maximumWidth: 220
+                            }
                         }
 
                         RowLayout {

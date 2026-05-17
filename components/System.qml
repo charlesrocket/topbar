@@ -19,6 +19,7 @@ Singleton {
     property real cpuTemp: System.cpuTemp
     property real pchTemp: System.pchTemp
     property real cpuUsage: System.cpuUsage
+    property real cpuCores: System.cpuCores
     property real diskUsage: System.diskUsage
     property real memoryUsage: System.memoryUsage
     property var jails: System.jails
