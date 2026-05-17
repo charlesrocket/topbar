@@ -6,6 +6,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import TopBar
+
 import ".."
 
 FloatingWindow {
@@ -147,6 +149,15 @@ FloatingWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     spacing: 8
+
+                    Text {
+                        text: "Version " + Version.full
+                        font.family: Config.general.fontFamily
+                        font.pixelSize: Config.general.fontSize + 2
+                        font.bold: true
+                        color: Config.colors.fg
+                        Layout.topMargin: 16
+                    }
 
                     StackLayout {
                         id: stackLayout
@@ -411,6 +422,13 @@ FloatingWindow {
                                     label: "Tray"
                                     targetObject: Config.widgets
                                     targetProperty: "tray"
+                                    valueType: "bool"
+                                }
+
+                                SettingRow {
+                                    label: "Jails"
+                                    targetObject: Config.widgets
+                                    targetProperty: "jails"
                                     valueType: "bool"
                                 }
 
