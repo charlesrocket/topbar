@@ -21,15 +21,16 @@ Singleton {
     property real cpuUsage: System.cpuUsage
     property real cpuCores: System.cpuCores
     property real diskUsage: System.diskUsage
+    property string diskMountPoint: System.diskMountPoint
     property real memoryUsage: System.memoryUsage
     property var jails: System.jails
     property int jailCount: System.jails.length
 
     property bool ecoMode: States.ecoMode
+    property string configDisk: Config.dashboard.disk
 
-    onEcoModeChanged: {
-        System.interval = ecoMode ? 35000 : 3000;
-    }
+    onConfigDiskChanged: System.setDiskMountPoint(configDisk)
+    onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000
 
     readonly property string desktop: Quickshell.env("XDG_CURRENT_DESKTOP").toLowerCase() || Quickshell.env("XDG_SESSION_DESKTOP").toLowerCase()
     readonly property string user: Quickshell.env("USER").toLowerCase()

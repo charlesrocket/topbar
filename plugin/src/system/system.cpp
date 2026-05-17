@@ -66,6 +66,7 @@ void System::setDiskMountPoint(const QString &path) {
         this->mDiskMountPoint = path;
         emit this->diskMountPointChanged();
         this->updateDisk();
+        qCInfo(logSystem) << "Mount point changed to " << path;
     }
 }
 

@@ -692,8 +692,20 @@ FloatingWindow {
                             clip: true
 
                             ColumnLayout {
+                                id: dashboardSection
                                 width: parent.width
                                 spacing: 12
+
+                                SettingRow {
+                                    label: "Disk"
+                                    targetObject: Config.dashboard
+                                    targetProperty: "disk"
+                                    valueType: "string"
+                                }
+
+                                Component.onCompleted: {
+                                    root.validateSection(Config.dashboard, dashboardSection, "Config.dashboard", null);
+                                }
 
                                 ColumnLayout {
                                     id: dashboardPlayerSection
@@ -1183,6 +1195,7 @@ FloatingWindow {
 
         // dashboard
         lines.push('    readonly property var dashboard: QtObject {');
+        lines.push('        readonly property string disk: ' + dashboard.disk);
         lines.push('        readonly property var player: QtObject {');
         lines.push('            readonly property bool queueButtons: ' + dashboard.player.queueButtons);
         lines.push('        }');
