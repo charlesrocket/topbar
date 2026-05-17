@@ -130,7 +130,7 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: !States.ecoMode
 
         onEntered: {
             hoverActiveWindow.opacity = 1;

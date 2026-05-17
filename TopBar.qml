@@ -190,13 +190,6 @@ PanelWindow {
         active: Config.notifications.enabled
         visible: notif.active
 
-        anchors {
-            top: parent.top
-            right: parent.right
-            topMargin: Config.bar.height + (Config.bar.padding * 2)
-            rightMargin: Config.bar.padding
-        }
-
         sourceComponent: Notifications {}
     }
 

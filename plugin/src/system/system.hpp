@@ -21,7 +21,7 @@ class System : public QObject {
     Q_PROPERTY(float memoryUsage READ memoryUsage NOTIFY memoryUsageChanged);
     Q_PROPERTY(float diskUsage READ diskUsage NOTIFY diskUsageChanged);
     Q_PROPERTY(QString diskMountPoint READ diskMountPoint WRITE setDiskMountPoint NOTIFY diskMountPointChanged);
-    Q_PROPERTY(int interval READ interval WRITE setInterval NOTIFY intervalChanged);
+    Q_PROPERTY(int interval READ interval WRITE setPollInterval NOTIFY intervalChanged);
     Q_PROPERTY(float cpuTemp READ cpuTemp NOTIFY cpuTempChanged);
     Q_PROPERTY(float pchTemp READ pchTemp NOTIFY pchTempChanged);
     Q_PROPERTY(QStringList jails READ jails NOTIFY jailsChanged);
@@ -40,8 +40,8 @@ class System : public QObject {
     [[nodiscard]] int interval() const;
     [[nodiscard]] QStringList jails() const;
 
-    void setInterval(int ms);
-    void setDiskMountPoint(const QString &path);
+    Q_INVOKABLE void setPollInterval(int ms);
+    Q_INVOKABLE void setDiskMountPoint(const QString &path);
 
   signals:
     void cpuTempChanged();

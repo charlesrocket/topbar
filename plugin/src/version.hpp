@@ -6,7 +6,7 @@
 #include <qqmlintegration.h>
 #include <qstring.h>
 
-class TopBarVersion : public QObject {
+class Version : public QObject {
     Q_OBJECT
     QML_ELEMENT
     QML_SINGLETON
@@ -17,7 +17,7 @@ class TopBarVersion : public QObject {
     Q_PROPERTY(QString full READ full CONSTANT)
 
   public:
-    explicit TopBarVersion(QObject *parent = nullptr) : QObject(parent) {}
+    explicit Version(QObject *parent = nullptr) : QObject(parent) {}
 
     int major() const { return PROJECT_VERSION_MAJOR; }
     int minor() const { return PROJECT_VERSION_MINOR; }

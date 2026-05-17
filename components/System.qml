@@ -7,6 +7,8 @@ import QtQuick
 
 import TopBar.System
 
+import ".."
+
 Singleton {
     id: root
 
@@ -21,6 +23,12 @@ Singleton {
     property real memoryUsage: System.memoryUsage
     property var jails: System.jails
     property int jailCount: System.jails.length
+
+    property bool ecoMode: States.ecoMode
+
+    onEcoModeChanged: {
+        System.interval = ecoMode ? 35000 : 3000;
+    }
 
     readonly property string desktop: Quickshell.env("XDG_CURRENT_DESKTOP").toLowerCase() || Quickshell.env("XDG_SESSION_DESKTOP").toLowerCase()
     readonly property string user: Quickshell.env("USER").toLowerCase()

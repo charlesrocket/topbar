@@ -1,5 +1,7 @@
 #include "system.hpp"
 
+#include "version.h"
+
 #include <algorithm>
 #include <qlogging.h>
 #include <qloggingcategory.h>
@@ -21,6 +23,7 @@ Q_LOGGING_CATEGORY(logSystem, "topbar.system")
 
 System::System(QObject *parent)
     : QObject(parent), mPollTimer(new QTimer(this)) {
+    qCInfo(logSystem) << "version" << PROJECT_VERSION_FULL;
     this->detectCores();
 
     this->mPrevTicks.resize(this->mCpuCores * kCpuStates, 0);
@@ -50,7 +53,7 @@ float System::diskUsage() const { return this->mDiskUsage; }
 QString System::diskMountPoint() const { return this->mDiskMountPoint; }
 QStringList System::jails() const { return this->mJails; }
 
-void System::setInterval(int ms) {
+void System::setPollInterval(int ms) {
     ms = std::max(ms, 100);
     if (this->mPollTimer->interval() != ms) {
         this->mPollTimer->setInterval(ms);

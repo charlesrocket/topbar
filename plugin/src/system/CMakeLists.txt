@@ -7,4 +7,8 @@ qt_add_qml_module(topbar-system
 
 install_qml_module(topbar-system)
 
-target_link_libraries(topbar PRIVATE Qt6::Core)
+target_include_directories(topbar-system PRIVATE
+    ${CMAKE_BINARY_DIR}/plugin
+)
+
+target_link_libraries(topbar-system PRIVATE Qt6::Core)

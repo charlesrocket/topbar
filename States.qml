@@ -22,11 +22,16 @@ Singleton {
     property bool dashboardPresent: false
     property bool dropdownRevealed: false
     property bool blurredBackground: ToplevelManager.activeToplevel && !ecoMode ? true : false
+    property bool fullScreen: ToplevelManager.activeToplevel ? ToplevelManager.activeToplevel.fullscreen : false
     property var dropdownOwner: null
     property int dropdownX: 0
     property int dropdownY: 0
     property int dropdownHeight: 0
     property int dropdownWidth: 0
+
+    onFullScreenChanged: {
+        ecoMode = fullScreen;
+    }
 
     // TODO add local
     property string defaultWallpaper: "https://raw.githubusercontent.com/charlesrocket/misc-files/trunk/puffy-red.png"
