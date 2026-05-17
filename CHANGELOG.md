@@ -2,6 +2,121 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2026-05-17
+
+### Bug Fixes
+
+- Remove network button cursor shape
+- Mute with red level
+- Set width
+- Adjust action text size
+- Do not use `netif-restart`
+- Center toast icon
+- Improve container tracking
+- Drop progress bar
+- Adjust title position
+- Improve device icon handling
+- Drop rectangle border
+- Handle rapid calls
+- Use vertical tab bar
+- Center tab bar buttons
+- Improve layout
+- Adjust switch placement
+- Rewrite window button
+- Add dropdown gap
+- Adjust separator
+- Mipmap icons
+- Hide `closeButton`
+- Update volume calls
+- Connect playback position
+- Use floating config window
+- Adjust dropdown timing
+- Align system properties
+- Reorder `States` imports
+- Update dpms commands
+- Update `logout` command
+- Update default workspaces
+- Handle window close event
+- Adjust dynamic border
+- Align workspace icons
+- Switch to `activeToplevel.title`
+- Reposition icons
+- Update `currentTime`
+- Add system tray rectangle
+- Adjust tray container height
+- Switch to `mipmap`
+- Disable `smooth`
+- Correct `netifRestart` command
+- Filter floating windows
+- Add `blur` toggle
+- Update `session` values
+- Adjust desktop blur
+- Change `WlrLayer`
+- Move notifications into panel
+- Change toast height
+- Eco mode in fullscreen
+- Edit info messages
+- Set version
+- Set mount point
+- Resolve type warnings
+
+### Documentation
+
+- Update feature list
+- Update compositors
+- Edit submodule command description
+- Add library installation
+
+### Features
+
+- Add notifications
+- Add icons
+- Add timeout bar
+- Write to `Settings.qml`
+- Add mango support
+- Add tag zero
+- Add system tray menus
+- Add `blurredBackground`
+- Add desktop blur
+- Add `DWL` module
+- Add `OSS` module
+- Add `Networking` module
+- Add `shadows` option
+- Add `shadows` option
+- Add `System` module
+- Add `jails`
+- Add `cpuCores`
+
+### Miscellaneous tasks
+
+- Ignore cmake output
+- Add linter settings
+
+### Operations
+
+- Add `wallpaper` label
+- Add `preferences` label
+- Add `notifications` label
+- Set `plugin` label
+
+### Refactor
+
+- Move hyprland widgets
+- Comment `DynamicFrame`
+- Update connection state
+
+### Styling
+
+- Fix formatting
+- Fix version formatting
+
+### Build
+
+- Move cmake functions
+- Drop `GuiPrivate`
+- Drop `WaylandClientPrivate`
+- Add library options
+
 ## [0.1.0] - 2026-02-18
 
 ### Bug Fixes
