@@ -13,25 +13,26 @@
 namespace topbar::dwl {
 
 DwlIpcQml::DwlIpcQml(QObject *parent) : QObject(parent) {
-    auto *manager = DwlIpcManager::instance();
-    this->manager = manager;
+    this->manager = DwlIpcManager::instance();
 
     QObject::connect(
-        manager, &DwlIpcManager::tagCountChanged, this,
+        this->manager, &DwlIpcManager::tagCountChanged, this,
         &DwlIpcQml::tagCountChanged
     );
     QObject::connect(
-        manager, &DwlIpcManager::layoutsChanged, this,
+        this->manager, &DwlIpcManager::layoutsChanged, this,
         &DwlIpcQml::layoutsChanged
     );
     QObject::connect(
-        manager, &DwlIpcManager::outputAdded, this, &DwlIpcQml::outputsChanged
+        this->manager, &DwlIpcManager::outputAdded, this,
+        &DwlIpcQml::outputsChanged
     );
     QObject::connect(
-        manager, &DwlIpcManager::outputRemoved, this, &DwlIpcQml::outputsChanged
+        this->manager, &DwlIpcManager::outputRemoved, this,
+        &DwlIpcQml::outputsChanged
     );
     QObject::connect(
-        manager, &QWaylandClientExtension::activeChanged, this,
+        this->manager, &QWaylandClientExtension::activeChanged, this,
         &DwlIpcQml::availableChanged
     );
 }

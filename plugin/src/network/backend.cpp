@@ -185,7 +185,7 @@ void FreeBSDBackend::initializeDevdSocket() {
 
         if (::connect(
                 this->mDevdFd, reinterpret_cast<struct sockaddr *>(&addr),
-                SUN_LEN(&addr)
+                static_cast<socklen_t>(SUN_LEN(&addr))
             )
             == 0) {
             const int flags = fcntl(this->mDevdFd, F_GETFL, 0);
@@ -309,8 +309,8 @@ void FreeBSDBackend::onDevdActivated() {
     ssize_t n = 0;
 
     while ((n = read(this->mDevdFd, buf.data(), buf.size() - 1)) > 0) {
-        buf[n] = '\0';
-        this->mDevdBuffer.append(buf.data(), n);
+        buf[static_cast<size_t>(n)] = '\0';
+        this->mDevdBuffer.append(buf.data(), static_cast<qsizetype>(n));
     }
 
     while (true) {

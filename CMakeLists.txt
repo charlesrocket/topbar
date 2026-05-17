@@ -20,15 +20,15 @@ project(topbar VERSION 0.2.0)
 
 boption(SYSTEM "System" ON)
 boption(NETWORK "Network" ON)
-boption(OSS "Open sound system" ON)
+boption(OSS "OSS" ON)
 boption(DWL "Mango" ON)
 
 add_compile_options(
     -Wall -Wextra -Wpedantic -Wshadow -Wconversion
-    -Wold-style-cast -Wnull-dereference -Wdouble-promotion
+    -Wnull-dereference -Wdouble-promotion
     -Wformat=2 -Wfloat-equal -Woverloaded-virtual
     -Wsign-conversion -Wredundant-decls -Wswitch
-    -Wunreachable-code
+    -Wunreachable-code -Wno-extra-semi
 )
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")

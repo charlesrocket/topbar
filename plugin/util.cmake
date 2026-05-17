@@ -161,7 +161,8 @@ function(wl_proto target name dir)
     )
 
     target_include_directories(${target} PUBLIC ${PROTO_BUILD_PATH})
-    target_compile_options(${target} PRIVATE ${wayland_CFLAGS})
+    target_compile_options(${target} PRIVATE ${wayland_CFLAGS} -Wno-sign-conversion)
+
     target_link_libraries(${target} PUBLIC
         Qt6::WaylandClient
     )

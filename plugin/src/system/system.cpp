@@ -3,6 +3,7 @@
 #include "version.h"
 
 #include <algorithm>
+#include <limits>
 #include <qlogging.h>
 #include <qloggingcategory.h>
 #include <qtimer.h>
@@ -16,6 +17,10 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 // clang-format on
+
+template <typename T> bool floatEq(T a, T b) {
+    return std::fabs(a - b) <= std::numeric_limits<T>::epsilon();
+}
 
 namespace topbar::system {
 
@@ -151,7 +156,7 @@ void System::updateCpu() {
         0.0f, 1.0f
     );
 
-    if (this->mCpuUsage != newUsage) {
+    if (!floatEq(this->mCpuUsage, newUsage)) {
         this->mCpuUsage = newUsage;
         emit this->cpuUsageChanged();
     }
@@ -191,7 +196,7 @@ void System::updateMemory() {
         1.0f
     );
 
-    if (this->mMemoryUsage != newUsage) {
+    if (!floatEq(this->mMemoryUsage, newUsage)) {
         this->mMemoryUsage = newUsage;
         emit this->memoryUsageChanged();
     }
@@ -217,7 +222,7 @@ void System::updateDisk() {
     const auto avail = static_cast<float>(st.f_bavail);
     const auto newUsage = std::clamp(1.0f - avail / total, 0.0f, 1.0f);
 
-    if (this->mDiskUsage != newUsage) {
+    if (!floatEq(this->mDiskUsage, newUsage)) {
         this->mDiskUsage = newUsage;
         emit this->diskUsageChanged();
     }
@@ -239,13 +244,13 @@ void System::updateTemperatures() {
     };
 
     const auto newCpuTemp = readTempC("hw.acpi.thermal.tz0.temperature");
-    if (this->mCpuTemp != newCpuTemp) {
+    if (!floatEq(this->mCpuTemp, newCpuTemp)) {
         this->mCpuTemp = newCpuTemp;
         emit this->cpuTempChanged();
     }
 
     const auto newPchTemp = readTempC("dev.pchtherm.0.temperature");
-    if (this->mPchTemp != newPchTemp) {
+    if (!floatEq(this->mPchTemp, newPchTemp)) {
         this->mPchTemp = newPchTemp;
         emit this->pchTempChanged();
     }

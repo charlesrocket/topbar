@@ -390,7 +390,8 @@ void OSS::connectToDevd() {
         strncpy(addr.sun_path, path, sizeof(addr.sun_path) - 1);
 
         if (::connect(
-                this->mDevdSocket, (struct sockaddr *)&addr, SUN_LEN(&addr)
+                this->mDevdSocket, (struct sockaddr *)&addr,
+                static_cast<socklen_t>(SUN_LEN(&addr))
             )
             == 0) {
             int flags = fcntl(this->mDevdSocket, F_GETFL, 0);
@@ -434,7 +435,7 @@ void OSS::handleDevdEvent() {
         return;
     }
 
-    buffer[n] = '\0';
+    buffer[static_cast<size_t>(n)] = '\0';
 
     const std::array<const char *, 4> audioKeywords = {
         "dsp", "mixer", "pcm", "snd"
