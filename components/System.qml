@@ -14,7 +14,7 @@ Singleton {
     id: root
 
     readonly property string version: Version.full
-    property var devd: Devd
+    readonly property Devd dev: Devd
 
     property string id
     property string name

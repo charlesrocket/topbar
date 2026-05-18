@@ -14,7 +14,7 @@ Item {
 
     FreeBSDBackend {
         id: netwk
-        devd: System.devd
+        devd: System.dev
     }
 
     property int fontSize: Config.general.fontSize

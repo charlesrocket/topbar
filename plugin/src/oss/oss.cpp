@@ -1,5 +1,7 @@
 #include "oss.hpp"
 
+#include "../devd.hpp"
+
 #include <algorithm>
 #include <array>
 #include <cerrno>
@@ -316,6 +318,8 @@ QList<QObject *> OSSSoundDevice::controls() const {
 
 // OSS Implementation
 OSS::OSS(QObject *parent) : QObject(parent), mRescanTimer(new QTimer(this)) {
+    this->setDevd(devd::Devd::instance());
+
     if (QFile::exists("/dev/sndstat")) {
         this->mAvailable = true;
 

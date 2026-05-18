@@ -1,11 +1,16 @@
 #pragma once
 
-#include <qbytearray.h>
-#include <qobject.h>
-#include <qqmlintegration.h>
-#include <qsocketnotifier.h>
-#include <qstring.h>
-#include <qtmetamacros.h>
+#include <QObject>
+#include <QQmlEngine>
+#include <QSocketNotifier>
+#include <QString>
+#include <QTimer>
+#include <cstring>
+
+// sbin/devd/devd.h
+inline constexpr size_t devdMaxBuf = 8192;
+inline constexpr int reconnectIntervalMs = 5000;
+inline constexpr const char *devdPipe = "/var/run/devd.seqpacket.pipe";
 
 namespace topbar::devd {
 
@@ -13,14 +18,22 @@ class Devd : public QObject {
     Q_OBJECT;
     QML_ELEMENT;
     QML_SINGLETON;
-
-    Q_PROPERTY(bool connected READ isConnected NOTIFY connectedChanged);
+    Q_PROPERTY(bool connected READ isConnected NOTIFY connectedChanged FINAL);
 
   public:
-    explicit Devd(QObject *parent = nullptr);
+    static Devd *create(QQmlEngine *engine, QJSEngine *_) {
+        Q_UNUSED(engine)
+        return instance();
+    }
+
+    static Devd *instance();
+
     ~Devd() override;
 
-    Q_DISABLE_COPY_MOVE(Devd);
+    Devd(const Devd &) = delete;
+    Devd &operator=(const Devd &) = delete;
+    Devd(Devd &&) = delete;
+    Devd &operator=(Devd &&) = delete;
 
     [[nodiscard]] bool isConnected() const;
 
@@ -29,16 +42,23 @@ class Devd : public QObject {
     void connectedChanged();
 
   private slots:
+    void attemptReconnect();
     void onSocketActivated();
 
   private:
+    explicit Devd(QObject *parent = nullptr);
+
+    static Devd *dInstance;
+
+    void scheduleReconnect();
     void connectToDevd();
+    void onDisconnected();
     void cleanup();
 
     int mFd = -1;
     QSocketNotifier *mNotifier = nullptr;
     bool mConnected = false;
-    QByteArray mBuffer;
+    QTimer *mReconnectTimer = nullptr;
 };
 
 } // namespace topbar::devd

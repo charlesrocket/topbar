@@ -16,7 +16,7 @@ RowLayout {
 
     OSS {
         id: sound
-        devd: System.devd
+        devd: System.dev
     }
 
     // devices

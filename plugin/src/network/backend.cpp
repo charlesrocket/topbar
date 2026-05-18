@@ -117,7 +117,7 @@ void FreeBSDBackend::setDevd(devd::Devd *devd) {
 FreeBSDBackend::FreeBSDBackend(QObject *parent)
     : NetworkBackend(parent), bWifiEnabled(true), bWifiHardwareEnabled(true) {
 
-    this->setDevd(new devd::Devd(this));
+    this->setDevd(devd::Devd::instance());
     this->initializeRouteSocket();
 
     // Defer device scan until after signals are connected
