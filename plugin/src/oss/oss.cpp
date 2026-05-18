@@ -330,7 +330,6 @@ OSS::OSS(QObject *parent) : QObject(parent), mRescanTimer(new QTimer(this)) {
             this->updateDefault();
         });
 
-        this->connectToDevd();
         this->initializeJackStates();
         this->setupJackDetection();
     } else {
@@ -340,12 +339,8 @@ OSS::OSS(QObject *parent) : QObject(parent), mRescanTimer(new QTimer(this)) {
 
 OSS::~OSS() {
     if (this->mKqueueNotifier) { this->mKqueueNotifier->setEnabled(false); }
-
     if (this->mKqueue >= 0) { close(this->mKqueue); }
-
     if (this->mLogFileDescriptor >= 0) { close(this->mLogFileDescriptor); }
-
-    if (this->mDevdSocket >= 0) { close(this->mDevdSocket); }
 }
 
 QList<QObject *> OSS::devices() const {
@@ -360,107 +355,38 @@ QList<QObject *> OSS::devices() const {
 OSSSoundDevice *OSS::defaultDevice() const { return this->mDefaultDevice; }
 bool OSS::isAvailable() const { return this->mAvailable; }
 
-void OSS::connectToDevd() {
-    // Try seqpacket first
-    const char *pipePaths[] = {
-        "/var/run/devd.seqpacket.pipe",
-        "/var/run/devd.pipe",
-    };
+void OSS::setDevd(topbar::devd::Devd *devd) {
+    if (this->mDevd == devd) return;
 
-    for (const auto *path : pipePaths) {
-        if (!QFile::exists(path)) {
-            qCInfo(logOSS) << "devd pipe" << path
-                           << "does not exist, trying next";
-            continue;
-        }
-
-        this->mDevdSocket = socket(PF_UNIX, SOCK_SEQPACKET, 0);
-        if (this->mDevdSocket < 0) {
-            this->mDevdSocket = socket(PF_UNIX, SOCK_STREAM, 0);
-        }
-
-        if (this->mDevdSocket < 0) {
-            qCWarning(logOSS) << "Failed to create socket for devd:"
-                              << qt_error_string(errno);
-            continue;
-        }
-
-        struct sockaddr_un addr = {};
-        addr.sun_family = AF_UNIX;
-        strncpy(addr.sun_path, path, sizeof(addr.sun_path) - 1);
-
-        if (::connect(
-                this->mDevdSocket, (struct sockaddr *)&addr,
-                static_cast<socklen_t>(SUN_LEN(&addr))
-            )
-            == 0) {
-            int flags = fcntl(this->mDevdSocket, F_GETFL, 0);
-            fcntl(this->mDevdSocket, F_SETFL, flags | O_NONBLOCK);
-
-            this->mDevdNotifier = new QSocketNotifier(
-                this->mDevdSocket, QSocketNotifier::Read, this
-            );
-            connect(
-                this->mDevdNotifier, &QSocketNotifier::activated, this,
-                &OSS::handleDevdEvent
-            );
-
-            this->mDevdNotifier->setEnabled(true);
-            qCInfo(logOSS) << "Successfully connected to devd at" << path;
-
-            return;
-        } else {
-            qCWarning(logOSS) << "Failed to connect to" << path << ":"
-                              << qt_error_string(errno);
-        }
-
-        close(this->mDevdSocket);
-        this->mDevdSocket = -1;
+    if (this->mDevd) {
+        disconnect(
+            this->mDevd, &devd::Devd::eventReceived, this, &OSS::handleDevdEvent
+        );
     }
 
-    qCWarning(logOSS
-    ) << "Failed to connect to a devd pipe—device monitoring disabled";
-    (void)this;
+    this->mDevd = devd;
+    emit this->devdChanged();
+
+    if (this->mDevd) {
+        connect(
+            this->mDevd, &devd::Devd::eventReceived, this, &OSS::handleDevdEvent
+        );
+    }
 }
 
-void OSS::handleDevdEvent() {
-    std::array<char, 4096> buffer{};
-    const ssize_t n = read(this->mDevdSocket, buffer.data(), buffer.size() - 1);
+devd::Devd *OSS::devd() const { return this->mDevd; }
 
-    if (n <= 0) {
-        if (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-            qCWarning(logOSS)
-                << "devd socket read error:" << qt_error_string(errno);
-        }
-        return;
-    }
+void OSS::handleDevdEvent(const QString &event) {
+    const bool isAudioRelated = event.contains("dsp") || event.contains("mixer")
+                             || event.contains("pcm") || event.contains("snd");
 
-    buffer[static_cast<size_t>(n)] = '\0';
-
-    const std::array<const char *, 4> audioKeywords = {
-        "dsp", "mixer", "pcm", "snd"
-    };
-    bool isAudioRelated = false;
-
-    for (const auto *keyword : audioKeywords) {
-        if (strstr(buffer.data(), keyword) != nullptr) {
-            isAudioRelated = true;
-            break;
-        }
-    }
-
-    if (!isAudioRelated) {
-        return; // Skip non-audio events
-    }
-
-    const QString event = QString::fromUtf8(buffer.data());
+    if (!isAudioRelated) return;
 
     bool needsRescan = false;
 
     if (event.contains("system=DEVFS")
         && (event.contains("cdev=dsp") || event.contains("cdev=mixer")
             || event.contains("cdev=snd") || event.contains("cdev=pcm"))) {
-
         qCInfo(logOSS) << "Audio device event detected, scheduling rescan";
         needsRescan = true;
     }
@@ -470,12 +396,10 @@ void OSS::handleDevdEvent() {
         needsRescan = true;
     }
 
-    // Prevent multiple rapid rescans when devices are changing quickly
     if (needsRescan && !this->mRescanTimer->isActive()) {
         this->mRescanTimer->start();
     }
 }
-
 void OSS::handleKqueueEvent() {
     struct kevent event;
     struct timespec timeout = {.tv_sec = 0, .tv_nsec = 0};

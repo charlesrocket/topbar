@@ -57,6 +57,7 @@ target_precompile_headers(topbar-pch INTERFACE
 qml_module(topbar
     URI TopBar
     SOURCES
+        devd.cpp
         version.cpp
     LIBRARIES
         Qt::Gui

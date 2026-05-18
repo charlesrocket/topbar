@@ -1,5 +1,6 @@
 #include "backend.hpp"
 
+#include "../devd.hpp"
 #include "device.hpp"
 #include "enums.hpp"
 #include "network.hpp"
@@ -90,11 +91,34 @@ namespace topbar::network {
 
 Q_LOGGING_CATEGORY(logNetworkFreeBSD, "topbar.network.fbsd")
 
+devd::Devd *FreeBSDBackend::devd() const { return this->mDevd; }
+
+void FreeBSDBackend::setDevd(devd::Devd *devd) {
+    if (this->mDevd == devd) return;
+
+    if (this->mDevd) {
+        disconnect(
+            this->mDevd, &devd::Devd::eventReceived, this,
+            &FreeBSDBackend::handleDevdEvent
+        );
+    }
+
+    this->mDevd = devd;
+    emit this->devdChanged();
+
+    if (this->mDevd) {
+        connect(
+            this->mDevd, &devd::Devd::eventReceived, this,
+            &FreeBSDBackend::handleDevdEvent
+        );
+    }
+}
+
 FreeBSDBackend::FreeBSDBackend(QObject *parent)
     : NetworkBackend(parent), bWifiEnabled(true), bWifiHardwareEnabled(true) {
 
+    this->setDevd(new devd::Devd(this));
     this->initializeRouteSocket();
-    this->initializeDevdSocket();
 
     // Defer device scan until after signals are connected
     QMetaObject::invokeMethod(
@@ -150,66 +174,6 @@ void FreeBSDBackend::initializeRouteSocket() {
         << "Route socket initialized for interface events";
 }
 
-// NOLINTNEXTLINE
-void FreeBSDBackend::initializeDevdSocket() {
-    const std::array pipePaths = {
-        "/var/run/devd.seqpacket.pipe",
-        "/var/run/devd.pipe",
-    };
-
-    for (const auto *path : pipePaths) {
-        if (!QFile::exists(path)) {
-            qCDebug(logNetworkFreeBSD)
-                << "devd pipe" << path << "does not exist";
-            continue;
-        }
-
-        if (path == pipePaths[0]) {
-            qCDebug(logNetworkFreeBSD) << "Connecting to SOCK_SEQPACKET";
-            this->mDevdFd = socket(PF_UNIX, SOCK_SEQPACKET, 0);
-        } else {
-            qCDebug(logNetworkFreeBSD) << "Falling back to SOCK_STREAM";
-            this->mDevdFd = socket(PF_UNIX, SOCK_STREAM, 0);
-        }
-
-        if (this->mDevdFd < 0) {
-            qCWarning(logNetworkFreeBSD)
-                << "Failed to connect a socket for devd:"
-                << qt_error_string(errno);
-            continue;
-        }
-
-        struct sockaddr_un addr = {};
-        addr.sun_family = AF_UNIX;
-        strncpy(addr.sun_path, path, sizeof(addr.sun_path) - 1);
-
-        if (::connect(
-                this->mDevdFd, reinterpret_cast<struct sockaddr *>(&addr),
-                static_cast<socklen_t>(SUN_LEN(&addr))
-            )
-            == 0) {
-            const int flags = fcntl(this->mDevdFd, F_GETFL, 0);
-            fcntl(this->mDevdFd, F_SETFL, flags | O_NONBLOCK);
-
-            this->mDevdNotifier =
-                new QSocketNotifier(this->mDevdFd, QSocketNotifier::Read, this);
-            QObject::connect(
-                this->mDevdNotifier, &QSocketNotifier::activated, this,
-                &FreeBSDBackend::onDevdActivated
-            );
-
-            this->mDevdNotifier->setEnabled(true);
-            qCInfo(logNetworkFreeBSD) << "Successfully connected to" << path;
-            return;
-        } else {
-            qCWarning(logNetworkFreeBSD) << "Failed to connect to" << path
-                                         << ":" << qt_error_string(errno);
-            close(this->mDevdFd);
-            this->mDevdFd = -1;
-        }
-    }
-}
-
 void FreeBSDBackend::cleanupSockets() {
     if (this->mRouteNotifier) {
         delete this->mRouteNotifier;
@@ -224,11 +188,6 @@ void FreeBSDBackend::cleanupSockets() {
     if (this->mDevdNotifier) {
         delete this->mDevdNotifier;
         this->mDevdNotifier = nullptr;
-    }
-
-    if (this->mDevdFd >= 0) {
-        close(this->mDevdFd);
-        this->mDevdFd = -1;
     }
 }
 
@@ -304,69 +263,43 @@ void FreeBSDBackend::handleRouteMessage(const char *buf, ssize_t len) {
     }
 }
 
-void FreeBSDBackend::onDevdActivated() {
-    std::array<char, 4096> buf{};
-    ssize_t n = 0;
-
-    while ((n = read(this->mDevdFd, buf.data(), buf.size() - 1)) > 0) {
-        buf[static_cast<size_t>(n)] = '\0';
-        this->mDevdBuffer.append(buf.data(), static_cast<qsizetype>(n));
-    }
-
-    while (true) {
-        const qsizetype newlineIdx = this->mDevdBuffer.indexOf('\n');
-        if (newlineIdx == -1) break;
-
-        if (newlineIdx < 0 || newlineIdx >= this->mDevdBuffer.size()) {
-            qCWarning(logNetworkFreeBSD) << "Invalid newline index";
-            break;
-        }
-
-        QByteArray line = this->mDevdBuffer.left(newlineIdx);
-        this->mDevdBuffer.remove(0, newlineIdx + 1);
-
-        if (!line.isEmpty() && line[0] == '!') {
-            this->handleDevdEvent(QString::fromUtf8(line));
-        }
-    }
-}
-
 void FreeBSDBackend::handleDevdEvent(const QString &event) {
-    // Looking for IFNET events
+    // devd notify events start with '!', others are '?', '+', '-'
+    // We only care about IFNET notify events
+    if (!event.startsWith('!')) return;
     if (!event.contains("system=IFNET")) return;
 
     const QRegularExpression re(R"(subsystem=(\w+)\s+type=(\w+))");
     auto match = re.match(event);
 
-    if (match.hasMatch()) {
-        const QString subsys = match.captured(1);
-        const QString type = match.captured(2);
+    if (!match.hasMatch()) return;
 
-        if (isIgnoredInterface(subsys)) {
-            qCDebug(logNetworkFreeBSD)
-                << "Ignoring devd event for interface:" << subsys;
-            return;
-        }
+    const QString subsys = match.captured(1);
+    const QString type = match.captured(2);
 
-        if (type == "ATTACH") {
-            qCInfo(logNetworkFreeBSD) << "devd: Interface attached:" << subsys;
-            this->processInterface(subsys, true);
-        } else if (type == "DETACH") {
-            qCInfo(logNetworkFreeBSD) << "devd: Interface detached:" << subsys;
-            this->removeInterface(subsys);
-        } else if (this->mDevices.contains(subsys)) {
-            // Handle other interface events (LINK_UP, LINK_DOWN, etc.)
-            qCDebug(logNetworkFreeBSD)
-                << "devd: Interface event:" << subsys << type;
+    if (isIgnoredInterface(subsys)) {
+        qCDebug(logNetworkFreeBSD)
+            << "Ignoring devd event for interface:" << subsys;
+        return;
+    }
 
-            if (auto *wifiDev =
-                    qobject_cast<FreeBSDWifiDevice *>(this->mDevices[subsys])) {
-                wifiDev->handleInterfaceEvent();
-            } else if (auto *wiredDev = qobject_cast<FreeBSDWiredDevice *>(
-                           this->mDevices[subsys]
+    if (type == "ATTACH") {
+        qCInfo(logNetworkFreeBSD) << "devd: Interface attached:" << subsys;
+        this->processInterface(subsys, true);
+    } else if (type == "DETACH") {
+        qCInfo(logNetworkFreeBSD) << "devd: Interface detached:" << subsys;
+        this->removeInterface(subsys);
+    } else if (this->mDevices.contains(subsys)) {
+        qCDebug(logNetworkFreeBSD)
+            << "devd: Interface event:" << subsys << type;
+
+        if (auto *wifiDev =
+                qobject_cast<FreeBSDWifiDevice *>(this->mDevices[subsys])) {
+            wifiDev->handleInterfaceEvent();
+        } else if (auto *wiredDev =
+                       qobject_cast<FreeBSDWiredDevice *>(this->mDevices[subsys]
                        )) {
-                wiredDev->handleInterfaceEvent();
-            }
+            wiredDev->handleInterfaceEvent();
         }
     }
 }

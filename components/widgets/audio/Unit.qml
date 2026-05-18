@@ -3,7 +3,6 @@ import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 
-import TopBar.OSS
 
 import "../../bar"
 import "../../.."
@@ -21,25 +20,27 @@ Item {
     property color colPassive: Config.colors.passive
     property color colMuted: Config.colors.red
 
+    required property var snd
+
     implicitWidth: iconText.width
     implicitHeight: Config.general.fontSize + 2
     Layout.alignment: Qt.AlignVCenter
 
     readonly property var device: {
-        if (!OSS.devices)
+        if (!snd.devices)
             return null;
 
         if (root.deviceId >= 0) {
-            for (var i = 0; i < OSS.devices.length; i++) {
-                if (OSS.devices[i].deviceId === root.deviceId) {
-                    return OSS.devices[i];
+            for (var i = 0; i < snd.devices.length; i++) {
+                if (snd.devices[i].deviceId === root.deviceId) {
+                    return snd.devices[i];
                 }
             }
 
             return null;
         }
 
-        return OSS.defaultDevice;
+        return snd.defaultDevice;
     }
 
     property var control: {
@@ -145,7 +146,7 @@ Item {
         hoverEnabled: true
 
         onEntered: {
-            OSS.refresh();
+            snd.refresh();
             volumeMenu.show = true;
         }
 
@@ -276,8 +277,8 @@ Item {
     Timer {
         interval: 200
         repeat: true
-        onTriggered: OSS.refresh()
+        onTriggered: snd.refresh()
 
-        running: OSS.devices ? (hoverDetector.containsMouse || volumeMenu.show) : false
+        running: snd.devices ? (hoverDetector.containsMouse || volumeMenu.show) : false
     }
 }

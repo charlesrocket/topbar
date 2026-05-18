@@ -14,8 +14,15 @@ RowLayout {
     anchors.right: parent.right
     spacing: 6
 
+    OSS {
+        id: sound
+        devd: System.devd
+    }
+
     // devices
-    Devices {}
+    Devices {
+        snd: sound
+    }
 
     // mic
     Unit {
@@ -23,6 +30,7 @@ RowLayout {
         mic: true
         opacity: mic.control ? 1 : 0
         visible: opacity > 0
+        snd: sound
 
         Behavior on opacity {
             NumberAnimation {
@@ -37,6 +45,7 @@ RowLayout {
         id: speaker
         opacity: speaker.control ? 1 : 0
         visible: opacity > 0
+        snd: sound
 
         Behavior on opacity {
             NumberAnimation {
@@ -49,7 +58,7 @@ RowLayout {
             target: speaker.control
 
             function onMutedChanged() {
-                OSS.refresh();
+                sound.refresh();
 
                 if (!speaker.menuAlias.show && Config.desktop.osd)
                     audioOSD.item.trigger();
@@ -57,7 +66,7 @@ RowLayout {
 
             // should be enough for now
             function onLeftChanged() {
-                OSS.refresh();
+                sound.refresh();
 
                 if (!speaker.menuAlias.show && Config.desktop.osd)
                     audioOSD.item.trigger();

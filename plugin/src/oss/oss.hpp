@@ -1,5 +1,6 @@
 #pragma once
 
+#include <../devd.hpp>
 #include <cstdint>
 #include <qloggingcategory.h>
 #include <qobject.h>
@@ -141,19 +142,19 @@ class OSSSoundDevice : public QObject {
 /// See @@OSSSoundDevice and @@OSSMixerControl for individual device control.
 class OSS : public QObject {
     Q_OBJECT;
+    QML_ELEMENT;
+    // clang-format off
     Q_DISABLE_COPY_MOVE(OSS);
     /// All available sound devices
     Q_PROPERTY(QList<QObject *> devices READ devices NOTIFY devicesChanged);
     /// The current system default device
-    Q_PROPERTY(OSSSoundDevice *defaultDevice READ defaultDevice NOTIFY
-                   defaultDeviceChanged);
+    Q_PROPERTY(OSSSoundDevice *defaultDevice READ defaultDevice NOTIFY defaultDeviceChanged);
     /// Whether OSS is available on this system
     Q_PROPERTY(bool available READ isAvailable CONSTANT);
     /// Audio jack detection
-    Q_PROPERTY(bool headphonesConnected READ headphonesConnected NOTIFY
-                   headphonesChanged)
-    QML_ELEMENT;
-    QML_SINGLETON;
+    Q_PROPERTY(bool headphonesConnected READ headphonesConnected NOTIFY headphonesChanged)
+    Q_PROPERTY(devd::Devd *devd READ devd WRITE setDevd NOTIFY devdChanged)
+    // clang-format on
 
   public:
     explicit OSS(QObject *parent = nullptr);
@@ -169,7 +170,11 @@ class OSS : public QObject {
     /// Manually refresh all devices and their states
     Q_INVOKABLE void refresh();
 
+    devd::Devd *devd() const;
+    void setDevd(devd::Devd *devd);
+
   signals:
+    void devdChanged();
     void devicesChanged();
     void defaultDeviceChanged();
     void jackStateChanged(int nid, bool connected);
@@ -179,8 +184,7 @@ class OSS : public QObject {
   private:
     void scanDevices();
     void updateDefault();
-    void connectToDevd();
-    void handleDevdEvent();
+    void handleDevdEvent(const QString &event);
     void readNewLogLines();
     void readRecentLogMessages();
     void parseLogLine(const QString &line);
@@ -191,13 +195,12 @@ class OSS : public QObject {
     void handleKqueueEvent();
     void setupJackDetection();
 
+    devd::Devd *mDevd = nullptr;
     QVector<OSSSoundDevice *> mDevices;
     OSSSoundDevice *mDefaultDevice = nullptr;
     bool mAvailable = false;
     bool mHeadphonesConnected = false;
     QTimer *mRescanTimer = nullptr;
-    int mDevdSocket = -1;
-    QSocketNotifier *mDevdNotifier = nullptr;
     int mLogFileDescriptor = -1;
     int mKqueue = -1;
     QSocketNotifier *mKqueueNotifier = nullptr;

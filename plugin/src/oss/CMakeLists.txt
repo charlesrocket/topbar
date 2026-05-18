@@ -7,4 +7,4 @@ qt_add_qml_module(topbar-oss
 
 install_qml_module(topbar-oss)
 
-target_link_libraries(topbar PRIVATE Qt6::Core)
+target_link_libraries(topbar-oss PRIVATE topbar Qt6::Core)

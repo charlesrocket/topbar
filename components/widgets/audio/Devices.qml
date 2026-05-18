@@ -3,8 +3,6 @@ import Quickshell
 import QtQuick
 import QtQuick.Layouts
 
-import TopBar.OSS
-
 import "../../bar"
 import "../../.."
 import "../.."
@@ -20,7 +18,9 @@ Item {
     property int cornerRadius: 8
     property string fontFamily: Config.general.fontFamily
     property int fontSize: Config.general.fontSize
-    property bool hpConnected: OSS.headphonesConnected
+    property bool hpConnected: snd.headphonesConnected
+
+    required property var snd
 
     implicitWidth: icon.implicitWidth
     implicitHeight: Config.general.fontSize + 2
@@ -42,8 +42,8 @@ Item {
             if (root.hpConnected)
                 return "󰋋";
 
-            for (var i = 0; i < OSS.devices.length; i++) {
-                const device = OSS.devices[i];
+            for (var i = 0; i < snd.devices.length; i++) {
+                const device = snd.devices[i];
                 if (device.isDefault) {
                     if (device.mode === 1 || device.mode === 3)
                         return "󰓃";
@@ -60,7 +60,7 @@ Item {
         }
 
         Connections {
-            target: OSS
+            target: snd
 
             function onHeadphonesChanged(state) {
                 root.hpConnected = state;
@@ -99,7 +99,7 @@ Item {
                 spacing: 8
 
                 Repeater {
-                    model: OSS.devices
+                    model: snd.devices
 
                     delegate: Rectangle {
                         required property var modelData
@@ -169,7 +169,7 @@ Item {
                             hoverEnabled: true
 
                             onClicked: {
-                                OSS.setDefaultDevice(modelData.deviceId);
+                                snd.setDefaultDevice(modelData.deviceId);
                                 menu.show = false;
                             }
                         }
@@ -180,8 +180,8 @@ Item {
     }
 
     function getActiveDeviceIcon() {
-        for (var i = 0; i < OSS.devices.length; i++) {
-            const device = OSS.devices[i];
+        for (var i = 0; i < snd.devices.length; i++) {
+            const device = snd.devices[i];
 
             if (device.isDefault) {
                 const mode = device.mode;
@@ -197,6 +197,6 @@ Item {
     }
 
     function getCurrentIcon() {
-        return OSS.headphonesConnected ? "󰋋" : root.getActiveDeviceIcon();
+        return snd.headphonesConnected ? "󰋋" : root.getActiveDeviceIcon();
     }
 }
