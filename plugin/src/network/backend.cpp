@@ -91,33 +91,14 @@ namespace topbar::network {
 
 Q_LOGGING_CATEGORY(logNetworkFreeBSD, "topbar.network.fbsd")
 
-devd::Devd *FreeBSDBackend::devd() const { return this->mDevd; }
-
-void FreeBSDBackend::setDevd(devd::Devd *devd) {
-    if (this->mDevd == devd) return;
-
-    if (this->mDevd) {
-        disconnect(
-            this->mDevd, &devd::Devd::eventReceived, this,
-            &FreeBSDBackend::handleDevdEvent
-        );
-    }
-
-    this->mDevd = devd;
-    emit this->devdChanged();
-
-    if (this->mDevd) {
-        connect(
-            this->mDevd, &devd::Devd::eventReceived, this,
-            &FreeBSDBackend::handleDevdEvent
-        );
-    }
-}
-
 FreeBSDBackend::FreeBSDBackend(QObject *parent)
     : NetworkBackend(parent), bWifiEnabled(true), bWifiHardwareEnabled(true) {
 
-    this->setDevd(devd::Devd::instance());
+    connect(
+        devd::Devd::instance(), &devd::Devd::eventReceived, this,
+        &FreeBSDBackend::handleDevdEvent
+    );
+
     this->initializeRouteSocket();
 
     // Defer device scan until after signals are connected

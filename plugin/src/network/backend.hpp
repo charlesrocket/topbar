@@ -26,9 +26,6 @@ class FreeBSDBackend : public NetworkBackend {
     Q_OBJECT;
     QML_ELEMENT;
 
-    Q_PROPERTY(topbar::devd::Devd *devd READ devd WRITE setDevd NOTIFY
-                   devdChanged)
-
   public:
     explicit FreeBSDBackend(QObject *parent = nullptr);
     ~FreeBSDBackend() override;
@@ -43,11 +40,7 @@ class FreeBSDBackend : public NetworkBackend {
     [[nodiscard]] bool wifiHardwareEnabled() const { return this->bWifiHardwareEnabled; }
     // clang-format on
 
-    devd::Devd *devd() const;
-    void setDevd(devd::Devd *devd);
-
   signals:
-    void devdChanged();
     void deviceAdded(NetworkDevice *device);
     void deviceRemoved(NetworkDevice *device);
     void wifiEnabledChanged();
@@ -67,7 +60,6 @@ class FreeBSDBackend : public NetworkBackend {
     void removeInterface(const QString &interfaceName);
     void scanExistingDevices();
 
-    devd::Devd *mDevd = nullptr;
     QList<QProcess *> mPendingProcesses;
     QHash<QString, NetworkDevice *> mDevices;
     int mRouteSocket = -1;

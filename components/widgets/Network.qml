@@ -12,11 +12,6 @@ import ".."
 Item {
     id: root
 
-    FreeBSDBackend {
-        id: netwk
-        devd: System.dev
-    }
-
     property int fontSize: Config.general.fontSize
     property color colFg: Config.colors.fg
     property color colAction: Config.colors.action
@@ -27,7 +22,7 @@ Item {
 
     property color colOnline: States.ecoMode ? root.colPassive : root.isOnline ? root.colFg : root.colOffline
 
-    readonly property var devicesList: netwk.Networking.devices.values
+    readonly property var devicesList: Networking.devices.values
     readonly property string uplinkIcon: hasActiveVpn ? "" : ""
 
     readonly property bool hasActiveVpn: {

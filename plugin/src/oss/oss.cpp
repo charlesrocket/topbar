@@ -318,8 +318,10 @@ QList<QObject *> OSSSoundDevice::controls() const {
 
 // OSS Implementation
 OSS::OSS(QObject *parent) : QObject(parent), mRescanTimer(new QTimer(this)) {
-    this->setDevd(devd::Devd::instance());
-
+    connect(
+        devd::Devd::instance(), &devd::Devd::eventReceived, this,
+        &OSS::handleDevdEvent
+    );
     if (QFile::exists("/dev/sndstat")) {
         this->mAvailable = true;
 
@@ -358,27 +360,6 @@ QList<QObject *> OSS::devices() const {
 
 OSSSoundDevice *OSS::defaultDevice() const { return this->mDefaultDevice; }
 bool OSS::isAvailable() const { return this->mAvailable; }
-
-void OSS::setDevd(topbar::devd::Devd *devd) {
-    if (this->mDevd == devd) return;
-
-    if (this->mDevd) {
-        disconnect(
-            this->mDevd, &devd::Devd::eventReceived, this, &OSS::handleDevdEvent
-        );
-    }
-
-    this->mDevd = devd;
-    emit this->devdChanged();
-
-    if (this->mDevd) {
-        connect(
-            this->mDevd, &devd::Devd::eventReceived, this, &OSS::handleDevdEvent
-        );
-    }
-}
-
-devd::Devd *OSS::devd() const { return this->mDevd; }
 
 void OSS::handleDevdEvent(const QString &event) {
     const bool isAudioRelated = event.contains("dsp") || event.contains("mixer")

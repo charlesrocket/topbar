@@ -153,7 +153,6 @@ class OSS : public QObject {
     Q_PROPERTY(bool available READ isAvailable CONSTANT);
     /// Audio jack detection
     Q_PROPERTY(bool headphonesConnected READ headphonesConnected NOTIFY headphonesChanged)
-    Q_PROPERTY(devd::Devd *devd READ devd WRITE setDevd NOTIFY devdChanged)
     // clang-format on
 
   public:
@@ -170,11 +169,7 @@ class OSS : public QObject {
     /// Manually refresh all devices and their states
     Q_INVOKABLE void refresh();
 
-    devd::Devd *devd() const;
-    void setDevd(devd::Devd *devd);
-
   signals:
-    void devdChanged();
     void devicesChanged();
     void defaultDeviceChanged();
     void jackStateChanged(int nid, bool connected);
