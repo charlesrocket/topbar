@@ -6,6 +6,7 @@ import Quickshell.Io
 import QtQuick
 
 import TopBar
+import TopBar.Devd
 import TopBar.System
 
 import ".."

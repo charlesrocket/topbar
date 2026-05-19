@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../devd.hpp"
+#include "../devd/devd.hpp"
 #include "device.hpp"
 #include "enums.hpp"
 #include "network.hpp"

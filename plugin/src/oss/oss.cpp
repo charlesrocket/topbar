@@ -1,6 +1,6 @@
 #include "oss.hpp"
 
-#include "../devd.hpp"
+#include "../devd/devd.hpp"
 
 #include <algorithm>
 #include <array>

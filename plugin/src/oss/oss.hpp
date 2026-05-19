@@ -1,6 +1,6 @@
 #pragma once
 
-#include <../devd.hpp>
+#include <../devd/devd.hpp>
 #include <cstdint>
 #include <qloggingcategory.h>
 #include <qobject.h>

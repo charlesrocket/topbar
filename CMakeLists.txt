@@ -17,9 +17,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+boption(DEVD "System" ON)
 boption(SYSTEM "System" ON)
-boption(NETWORK "Network" ON)
-boption(OSS "OSS" ON)
+boption(NETWORK "Network" ON REQUIRES DEVD)
+boption(OSS "OSS" ON REQUIRES DEVD)
 boption(DWL "Mango" ON)
 
 add_compile_options(
