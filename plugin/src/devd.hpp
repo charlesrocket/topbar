@@ -7,12 +7,12 @@
 #include <QTimer>
 #include <cstring>
 
+namespace topbar::devd {
+
 // sbin/devd/devd.h
 inline constexpr size_t devdMaxBuf = 8192;
 inline constexpr int reconnectIntervalMs = 5000;
 inline constexpr const char *devdPipe = "/var/run/devd.seqpacket.pipe";
-
-namespace topbar::devd {
 
 class Devd : public QObject {
     Q_OBJECT;

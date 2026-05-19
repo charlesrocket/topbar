@@ -102,7 +102,7 @@ void Devd::onSocketActivated() {
         }
     }
 
-    if (this->mConnected) { this->mNotifier->setEnabled(true); }
+    if (this->mNotifier) { this->mNotifier->setEnabled(true); }
 }
 
 void Devd::attemptReconnect() {
