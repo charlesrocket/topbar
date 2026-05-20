@@ -15,19 +15,29 @@ Singleton {
     property var locale: Qt.locale(Config.general.locale)
     property bool barEnabled: true
     property bool ecoMode: false
-    property bool preferencesWindowPresent: false
-    property bool launcherPresent: false
+
     property bool sessionPresent: false
     property bool keepAwake: false
+
+    property bool preferencesWindowPresent: false
+    property bool launcherPresent: false
     property bool dashboardPresent: false
+
     property bool dropdownRevealed: false
-    property bool blurredBackground: ToplevelManager.activeToplevel && !ecoMode ? true : false
-    property bool fullScreen: ToplevelManager.activeToplevel ? ToplevelManager.activeToplevel.fullscreen : false
     property var dropdownOwner: null
     property int dropdownX: 0
     property int dropdownY: 0
     property int dropdownHeight: 0
     property int dropdownWidth: 0
+
+    property bool fullScreen: ToplevelManager.activeToplevel ? ToplevelManager.activeToplevel.fullscreen : false
+
+    property bool blurredBackground: {
+        const output = DwlIpc.outputs.find(o => o.active);
+        const activeTag = output?.tags.find(tag => tag.active);
+        const hasClients = (activeTag?.clientCount ?? 0) > 0;
+        return hasClients || (hasClients && !ecoMode);
+    }
 
     onFullScreenChanged: {
         ecoMode = fullScreen;
