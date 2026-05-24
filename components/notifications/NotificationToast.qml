@@ -120,37 +120,6 @@ Rectangle {
         }
     }
 
-    // icon (absolute position)
-    Item {
-        id: iconContainer
-        visible: root.showIcon
-        width: 24
-        height: 24
-
-        anchors {
-            left: parent.left
-            leftMargin: 10
-            top: parent.top
-            topMargin: 10
-        }
-
-        IconImage {
-            id: notifImage
-            anchors.fill: parent
-            source: (root.hasImage && !root.hasAppIcon) ? root.notification.image : ""
-            visible: root.hasImage && !root.hasAppIcon
-            mipmap: true
-        }
-
-        IconImage {
-            id: appIconImage
-            anchors.fill: parent
-            source: (!root.hasImage && root.hasAppIcon) ? "image://icon/" + root.notification.appIcon : ""
-            visible: !root.hasImage && root.hasAppIcon
-            mipmap: true
-        }
-    }
-
     // content row (left margin shifts right to make room for icon when present)
     RowLayout {
         id: bodyRow
@@ -162,19 +131,44 @@ Rectangle {
             rightMargin: 8
             top: parent.top
             topMargin: 12
-            leftMargin: root.showIcon ? 40 : 12
+            leftMargin: 12
         }
 
         // text content
         ColumnLayout {
             id: contentLayout
             Layout.fillWidth: true
-            spacing: 2
+            spacing: 8
 
             // app name
             RowLayout {
                 Layout.fillWidth: true
-                spacing: 8
+                spacing: 4
+                visible: root.showIcon && root.ready
+
+                // icon
+                Item {
+                    id: iconContainer
+                    visible: root.showIcon
+                    width: 24
+                    height: 24
+
+                    IconImage {
+                        id: notifImage
+                        anchors.fill: parent
+                        source: (root.hasImage && !root.hasAppIcon) ? root.notification.image : ""
+                        visible: root.hasImage && !root.hasAppIcon
+                        mipmap: true
+                    }
+
+                    IconImage {
+                        id: appIconImage
+                        anchors.fill: parent
+                        source: (!root.hasImage && root.hasAppIcon) ? "image://icon/" + root.notification.appIcon : ""
+                        visible: !root.hasImage && root.hasAppIcon
+                        mipmap: true
+                    }
+                }
 
                 Text {
                     text: root.ready ? (root.notification.appName === "notify-send" ? "" : root.notification.appName) : ""
