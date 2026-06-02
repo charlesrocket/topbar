@@ -44,10 +44,11 @@ Item {
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
         exclusionMode: ExclusionMode.Ignore
-        implicitWidth: Config.notifications.width + (Config.bar.padding)
-        implicitHeight: stack.implicitHeight + (Config.bar.padding * 2 + Config.bar.height)
+        implicitWidth: Config.notifications.width + (Config.bar.padding * 2)
+        implicitHeight: stack.implicitHeight + (Config.bar.padding)
         color: "transparent"
         visible: root.notifications.length > 0
+        margins.top: Config.bar.height + (Config.bar.padding * 3)
 
         anchors {
             top: true
@@ -61,13 +62,11 @@ Item {
             anchors {
                 top: parent.top
                 right: parent.right
-                topMargin: Config.bar.padding * 2 + Config.bar.height
-                rightMargin: Config.bar.padding
+                rightMargin: Config.bar.padding * 2
             }
 
             Repeater {
-                model: ScriptModel {
-                    // TODO fix flickering
+                model: ScriptModel { // TODO fix flickering
                     values: root.notifications
                 }
 

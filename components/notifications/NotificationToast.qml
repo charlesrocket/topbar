@@ -120,7 +120,7 @@ Rectangle {
         }
     }
 
-    // content row (left margin shifts right to make room for icon when present)
+    // content row
     RowLayout {
         id: bodyRow
         spacing: 10
@@ -150,8 +150,8 @@ Rectangle {
                 Item {
                     id: iconContainer
                     visible: root.showIcon
-                    width: 24
-                    height: 24
+                    width: 12
+                    height: 12
 
                     IconImage {
                         id: notifImage
