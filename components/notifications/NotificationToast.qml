@@ -150,8 +150,8 @@ Rectangle {
                 Item {
                     id: iconContainer
                     visible: root.showIcon
-                    width: 12
-                    height: 12
+                    implicitWidth: 12
+                    implicitHeight: 12
 
                     IconImage {
                         id: notifImage
