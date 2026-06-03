@@ -30,12 +30,16 @@ Item {
     }
 
     function removeNotification(notif) {
-        notif.dismiss();
+        if (notif && notif.tracked)
+            notif.dismiss();
+
         root.notifications = root.notifications.filter(n => n !== notif);
     }
 
     function expireNotification(notif) {
-        notif.expire();
+        if (notif && notif.tracked)
+            notif.expire();
+
         root.notifications = root.notifications.filter(n => n !== notif);
     }
 

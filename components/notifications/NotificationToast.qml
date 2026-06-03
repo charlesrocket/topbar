@@ -8,6 +8,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../.."
+import ".."
 
 Rectangle {
     id: root
@@ -210,27 +211,42 @@ Rectangle {
             // action buttons
             Flow {
                 Layout.fillWidth: true
-                spacing: 6
+                layoutDirection: Qt.LeftToRight
                 visible: root.ready && root.notification.actions.length > 0
+                spacing: 8
 
                 Repeater {
                     model: root.ready ? root.notification.actions : []
-
-                    delegate: Text {
+                    delegate: Rectangle {
                         required property var modelData
 
-                        text: modelData.text
-                        color: Config.colors.fg
-                        font.pixelSize: 12
-                        font.family: root.fontFamily
-                        leftPadding: 8
-                        rightPadding: 8
-                        topPadding: 4
-                        bottomPadding: 4
+                        implicitWidth: label.implicitWidth + 24
+                        implicitHeight: label.implicitHeight + 10
+                        radius: Config.general.cornerRadius
+                        color: "transparent"
+                        border.color: buttonArea.containsMouse ? Config.colors.action : Config.colors.fg
+                        border.width: 1
+
+                        Behavior on border.color {
+                            ColAnim {}
+                        }
+
+                        Text {
+                            id: label
+                            anchors.centerIn: parent
+                            text: parent.modelData.text
+                            color: Config.colors.fg
+                            font.pixelSize: 14
+                            font.family: root.fontFamily
+                            font.bold: false
+                        }
 
                         MouseArea {
+                            id: buttonArea
                             anchors.fill: parent
+                            hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
+
                             onClicked: {
                                 parent.modelData.invoke();
                                 root.dismiss();
