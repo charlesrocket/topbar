@@ -13,7 +13,7 @@ Item {
 
     property color colMain: Config.colors.fg
     property color colBg: "transparent"
-    property color colBorder: Config.colors.action
+    property color colBorder: Config.colors.purple
     property int slideDuration: Config.general.animDuration
     property int fontSize: Config.general.fontSize
     property string fontFamily: "FiraCode Nerd Font"
