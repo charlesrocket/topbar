@@ -100,11 +100,7 @@ RowLayout {
         asynchronous: true
         Layout.rightMargin: 2
 
-        sourceComponent: Item {
-            implicitWidth: childrenRect.width
-            implicitHeight: childrenRect.height
-            Weather {}
-        }
+        sourceComponent: Weather {}
     }
 
     // Jails
@@ -115,11 +111,7 @@ RowLayout {
         asynchronous: true
         Layout.rightMargin: 2
 
-        sourceComponent: Item {
-            implicitWidth: childrenRect.width
-            implicitHeight: childrenRect.height
-            Jails {}
-        }
+        sourceComponent: Jails {}
     }
 
     // language
