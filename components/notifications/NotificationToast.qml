@@ -95,9 +95,12 @@ Rectangle {
     Rectangle {
         id: closeButtonCont
         opacity: 0
-        implicitWidth: closeButton.implicitWidth + 8
+        implicitWidth: closeButton.implicitWidth + 16
         implicitHeight: closeButton.implicitHeight + 8
-        color: Config.colors.bg
+        color: Config.colors.bge
+        border.width: 1
+        border.color: Config.colors.accent
+        radius: Config.general.cornerRadius
         z: 1
 
         anchors {
@@ -308,7 +311,6 @@ Rectangle {
         onHoveredChanged: {
             if (hovered) {
                 closeButtonCont.opacity = 1;
-
                 root.hoverPauseStart = Date.now();
                 root.timeoutMs = progressBar.width / (root.implicitWidth - 2) * root.timeoutMs;
                 progressAnim.stop();
