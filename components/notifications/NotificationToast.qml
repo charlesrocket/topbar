@@ -92,19 +92,18 @@ Rectangle {
     }
 
     // close button
-    Text {
-        id: closeButton
-        text: ""
-        color: Qt.darker(Config.colors.fg, 1.3)
-        font.pixelSize: 16
-        font.bold: false
-        font.family: "Symbols Nerd Font"
+    Rectangle {
+        id: closeButtonCont
         opacity: 0
+        implicitWidth: closeButton.implicitWidth + 8
+        implicitHeight: closeButton.implicitHeight + 8
+        color: Config.colors.bg
+        z: 1
 
         anchors {
             top: parent.top
             right: parent.right
-            margins: 12
+            margins: 8
         }
 
         Behavior on opacity {
@@ -119,6 +118,24 @@ Rectangle {
             cursorShape: Qt.PointingHandCursor
             onClicked: root.dismiss()
         }
+
+        Text {
+            id: closeButton
+            text: ""
+            color: Qt.darker(Config.colors.fg, 1.3)
+            font.pixelSize: 16
+            font.bold: false
+            font.family: "Symbols Nerd Font"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            anchors.fill: parent
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.dismiss()
+            }
+        }
     }
 
     // content row
@@ -128,7 +145,7 @@ Rectangle {
 
         anchors {
             left: parent.left
-            right: closeButton.left
+            right: parent.right
             rightMargin: 8
             top: parent.top
             topMargin: 12
@@ -290,13 +307,14 @@ Rectangle {
     HoverHandler {
         onHoveredChanged: {
             if (hovered) {
-                closeButton.opacity = 1;
+                closeButtonCont.opacity = 1;
+
                 root.hoverPauseStart = Date.now();
                 root.timeoutMs = progressBar.width / (root.implicitWidth - 2) * root.timeoutMs;
                 progressAnim.stop();
                 expireTimer.stop();
             } else {
-                closeButton.opacity = 0;
+                closeButtonCont.opacity = 0;
                 expireTimer.interval = root.timeoutMs;
                 progressAnim.from = progressBar.width;
                 progressAnim.duration = root.timeoutMs;
