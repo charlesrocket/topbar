@@ -56,10 +56,10 @@ Item {
 
         if (States.ecoMode) {
             hyprctlBatch.running = true;
-            notify.command = ["notify-send", "-u", "low", "ECO MODE", "ON", "--icon=dialog-information-symbolic"];
+            notify.command = ["notify-send", "-u", "low", "ECO MODE ON"];
         } else {
             hyprctlReload.running = true;
-            notify.command = ["notify-send", "-u", "low", "ECO MODE", "OFF", "--icon=dialog-information-symbolic"];
+            notify.command = ["notify-send", "-u", "low", "ECO MODE OFF"];
         }
 
         notify.running = true;
@@ -69,9 +69,9 @@ Item {
         States.keepAwake = !States.keepAwake;
 
         if (States.keepAwake) {
-            notify.command = ["notify-send", "-u", "low", "AWAKE MODE", "ON", "--icon=dialog-information-symbolic"];
+            notify.command = ["notify-send", "-u", "low", "AWAKE MODE ON"];
         } else {
-            notify.command = ["notify-send", "-u", "low", "AWAKE MODE", "OFF", "--icon=dialog-information-symbolic"];
+            notify.command = ["notify-send", "-u", "low", "AWAKE MODE OFF"];
         }
 
         notify.running = true;
