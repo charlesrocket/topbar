@@ -108,7 +108,10 @@ PanelWindow {
         Timer {
             id: hideTimer
             interval: Config.general.animDuration * 2
-            onTriggered: bar.visible = false
+            onTriggered: {
+                bar.visible = false;
+                States.barEnabled = false;
+            }
         }
 
         function hidden(val) {
@@ -116,6 +119,7 @@ PanelWindow {
                 bar.y = -(Config.bar.height);
                 hideTimer.start();
             } else {
+                States.barEnabled = true;
                 bar.y = Config.bar.padding;
                 bar.visible = true;
             }
