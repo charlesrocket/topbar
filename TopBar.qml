@@ -340,8 +340,8 @@ PanelWindow {
     }
 
     function lockScreen() {
-        lock.locked = true;
         States.barEnabled = false;
+        lock.locked = true;
     }
 
     function getAllVisibleItems() {
