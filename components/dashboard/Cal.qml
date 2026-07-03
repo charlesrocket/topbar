@@ -12,6 +12,10 @@ Item {
     property int month: currentDate.getMonth()
     property int year: currentDate.getFullYear()
 
+    function updateDate() {
+        root.currentDate = new Date();
+    }
+
     Rectangle {
         width: 284
         height: 280

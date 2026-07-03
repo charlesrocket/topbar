@@ -203,6 +203,7 @@ Rectangle {
                 spacing: 8
 
                 Cal {
+                    id: calendar
                     width: 284
                     height: 280
                 }
@@ -354,6 +355,7 @@ Rectangle {
         repeat: true
         triggeredOnStart: true
         onTriggered: {
+            calendar.updateDate();
             checkMail.running = true;
         }
     }
