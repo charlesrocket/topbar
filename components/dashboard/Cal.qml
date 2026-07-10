@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import "../.."
+import ".."
 
 Item {
     id: root
@@ -80,6 +81,10 @@ Item {
 
                     color: isSelected ? Config.colors.accent : isToday ? Config.colors.fg : "transparent"
                     radius: height / 2
+
+                    Behavior on color {
+                        ColAnim {}
+                    }
 
                     Text {
                         anchors.centerIn: parent
