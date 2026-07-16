@@ -63,6 +63,7 @@ Singleton {
 
         property var player: QtObject {
             property bool queueButtons: getSetting("dashboard.player.queueButtons", false)
+            property bool notifications: getSetting("dashboard.player.notifications", false)
         }
     }
 

@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell
+import Quickshell.Io
 
 import Quickshell.Services.Mpris
 
@@ -38,6 +38,21 @@ Item {
                 root.displayPosition = p;
             }
         }
+
+        function onPostTrackChanged() {
+            if (Config.dashboard.player.notifications)
+                root.showTrackInfo();
+        }
+    }
+
+    Process {
+        id: notify
+        Component.onCompleted: notify.running = false
+    }
+
+    function showTrackInfo() {
+        notify.command = ["notify-send", "-u", "low", "-a", "Player", "-i", root.artUrl, root.artist,  root.title];
+        notify.running = true;
     }
 
     onPlayerChanged: {

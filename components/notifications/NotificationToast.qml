@@ -164,15 +164,16 @@ Rectangle {
             // app name
             RowLayout {
                 Layout.fillWidth: true
-                spacing: 4
+                spacing: 8
                 visible: root.showIcon && root.ready
+                Layout.alignment: Qt.AlignVCenter
 
                 // icon
                 Item {
                     id: iconContainer
                     visible: root.showIcon
-                    implicitWidth: 12
-                    implicitHeight: 12
+                    implicitWidth: 15
+                    implicitHeight: 15
 
                     IconImage {
                         id: notifImage
@@ -194,9 +195,9 @@ Rectangle {
                 Text {
                     text: root.ready ? (root.notification.appName === "notify-send" ? "" : root.notification.appName) : ""
                     color: Qt.darker(Config.colors.fg, 1.3)
-                    font.pixelSize: 14
+                    font.pixelSize: 18
                     font.family: root.fontFamily
-                    font.weight: Font.Medium
+                    font.weight: Font.Light
                     elide: Text.ElideRight
                     Layout.fillWidth: true
                     visible: text.length > 0
