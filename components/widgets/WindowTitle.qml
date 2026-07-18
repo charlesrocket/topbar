@@ -70,7 +70,6 @@ Item {
         anchors.centerIn: parent
         width: parent.width
         text: parent.displayText
-        renderType: Text.NativeRendering
         color: root.colFg
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
@@ -89,7 +88,6 @@ Item {
         id: newTitle
         anchors.centerIn: parent
         width: parent.width
-        renderType: Text.NativeRendering
         color: root.colFg
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter

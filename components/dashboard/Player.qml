@@ -86,7 +86,6 @@ Item {
             color: Config.colors.fg
             font.pixelSize: Config.general.fontSize * 6
             font.family: "Symbols Nerd Font"
-            renderType: Text.NativeRendering
         }
     }
 

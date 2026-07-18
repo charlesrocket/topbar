@@ -139,7 +139,6 @@ Loader {
                                             color: (mouseArea.containsMouse || buttonRect.activeFocus) ? Config.colors.accent : Config.colors.fg
                                             font.pixelSize: 105
                                             font.family: "Symbols Nerd Font"
-                                            renderType: Text.NativeRendering
                                             text: `${buttonRect.modelData.icon}`
                                             focus: true
 
@@ -160,7 +159,6 @@ Loader {
                                             font.pointSize: 14
                                             font.bold: true
                                             font.family: Config.general.fontFamily
-                                            renderType: Text.NativeRendering
 
                                             anchors {
                                                 top: icon.bottom

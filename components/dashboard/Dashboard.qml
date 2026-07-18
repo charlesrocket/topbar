@@ -326,7 +326,6 @@ Rectangle {
                         color: Config.colors.fg
                         font.pixelSize: root.fontSize * 2
                         font.family: "Symbols Nerd Font"
-                        renderType: Text.NativeRendering
                         horizontalAlignment: Text.AlignLeft
                         verticalAlignment: Text.AlignVCenter
                         Layout.preferredWidth: root.fontSize * 2
