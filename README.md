@@ -41,23 +41,13 @@ rm -rf build
 
 ## Usage
 
-```qml
-import Quickshell
-import QtQuick
-
-import qs.topbar
-
-ShellRoot {
-    TopBar {}
-    Wallpaper {}
-}
-```
+`quickshell -c topbar`
 
 Use `Settings.qml` in the Quickshell's root to override the TopBar's configuration ([example](https://github.com/charlesrocket/dotfiles/blob/3392fd9fba04580e1139b0ec84a9c63502659220/.config/quickshell/Settings.qml)).
 
 ### IPC
 
-See `quickshell ipc call show` for all available commands.
+See `quickshell -c topbar ipc call show` for all available commands.
 
 ## Contributing
 
