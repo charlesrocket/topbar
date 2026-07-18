@@ -44,7 +44,7 @@ Singleton {
     }
 
     // TODO add local
-    property string defaultWallpaper: "https://raw.githubusercontent.com/charlesrocket/misc-files/trunk/puffy-red.png"
+    property string defaultWallpaper: "https://codeberg.org/charlesrocket/misc-files/raw/branch/trunk/puffy-red.png"
 
     property var battery: QtObject {
         function getIcon(batteryPercentage) {
