@@ -43,7 +43,7 @@ rm -rf build
 
 `quickshell -c topbar`
 
-Use `Settings.qml` in the Quickshell's root to override the TopBar's configuration ([example](https://github.com/charlesrocket/dotfiles/blob/3392fd9fba04580e1139b0ec84a9c63502659220/.config/quickshell/Settings.qml)).
+Use `Settings.qml` in the Quickshell's root to override the TopBar's configuration ([example](https://codeberg.org/charlesrocket/dotfiles/src/commit/b10ca59424f09be054c92a4c6080698aa3f27f18/.config/quickshell/Settings.qml)).
 
 ### IPC
 
