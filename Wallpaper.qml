@@ -6,9 +6,6 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Effects
 
-import ".."
-import "components"
-
 Variants {
     id: root
     model: Quickshell.screens

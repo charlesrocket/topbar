@@ -4,8 +4,6 @@ import Quickshell
 import QtQuick
 import QtCore
 
-import qs
-
 Singleton {
     function getPropertyCount(obj) {
         if (!obj || typeof obj !== "object")
