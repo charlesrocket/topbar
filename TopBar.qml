@@ -18,8 +18,6 @@ PanelWindow {
 
     property var screen: Quickshell.screens[0]
 
-    readonly property bool defaultWallpaper: Config.general.wallpaper === States.defaultWallpaper
-
     anchors {
         top: true
         left: true
@@ -27,7 +25,7 @@ PanelWindow {
     }
 
     mask: itemsRegions
-    color: root.defaultWallpaper ? "black" : "transparent"
+    color: "transparent"
     implicitHeight: screen.height
     exclusiveZone: bar.visible ? bar.height + Config.bar.padding : 0
     WlrLayershell.layer: WlrLayer.Top
