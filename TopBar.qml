@@ -157,7 +157,7 @@ PanelWindow {
     }
 
     IpcHandler {
-        target: "topbar"
+        target: "bar"
 
         function launcher(): void {
             if (Config.desktop.launcher)

@@ -104,7 +104,7 @@ Singleton {
         property color background: getSetting("session.background", "#aa202020")
 
         property var commands: QtObject {
-            property string lock: getSetting("session.commands.lock", "quickshell ipc call topbar lock")
+            property string lock: getSetting("session.commands.lock", "quickshell -c topbar ipc call bar lock")
             property string logout: getSetting("session.commands.logout", "pkill mango | hyprctl dispatch exit")
             property string suspend: getSetting("session.commands.suspend", "zzz")
             property string hibernate: getSetting("session.commands.hibernate", "acpiconf -s 4")
