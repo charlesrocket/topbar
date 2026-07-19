@@ -14,7 +14,7 @@ Singleton {
     FileView {
         id: fileView
         path: root.path
-        watchChanges: false
+        watchChanges: Config.general.configWatch
         onFileChanged: reload()
         onAdapterUpdated: writeAdapter()
 
@@ -37,6 +37,8 @@ Singleton {
                 property string wallpaper: States.defaultWallpaper
                 property bool blur: true
                 property bool shadows: true
+                property bool configWatch: true
+
             }
 
             // colors

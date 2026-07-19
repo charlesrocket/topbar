@@ -165,6 +165,13 @@ FloatingWindow {
                                 }
 
                                 SettingRow {
+                                    label: "Config watch"
+                                    targetObject: Config.general
+                                    targetProperty: "configWatch"
+                                    valueType: "bool"
+                                }
+
+                                SettingRow {
                                     label: "Font family"
                                     targetObject: Config.general
                                     targetProperty: "fontFamily"
