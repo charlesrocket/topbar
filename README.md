@@ -20,13 +20,16 @@ An interactive bar and desktop environment for [Quickshell](https://quickshell.o
 1. Wayland compositor (Mango/Hyprland)
 2. Quickshell
 3. Nerd fonts
+4. Qt6
+5. CMake
+6. Ninja
 
 ## Installation
 
 ```
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build
-doas cmake --install build
+cmake --install build
 ```
 
 ## Usage
