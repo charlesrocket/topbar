@@ -15,3 +15,32 @@ jobs:
 
       - name: Run yamllint
         run: pipx run yamllint .
+
+  cxx:
+    name: Lint CXX
+    if: forgejo.ref_type != 'tag'
+    runs-on: codeberg-medium
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install dependencies
+        run: >-
+          sudo apt update &&
+          sudo apt install -y clang-tidy clang-format gcc cmake ninja-build
+
+      - name: Check format
+        run: clang-format -Werror --dry-run **/*.{cpp,hpp}
+
+      - name: Build
+        run: >-
+          cmake -B build -G Ninja -DENABLE_PCH=false &&
+          cmake --build build
+
+      - name: Run clang-tidy
+        run: >-
+          find plugin -type f -name "*.cpp" -print0 |
+          parallel -j$(nproc) -q0 --no-notice --will-cite --tty
+          clang-tidy -p build/compile_commands.json
