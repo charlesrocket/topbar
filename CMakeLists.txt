@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.30)
 project(topbar VERSION 0.3.0)
 
 set(DISTRIBUTOR "Unset" CACHE STRING "Distributor")
+set(ENABLE_PCH TRUE CACHE BOOL "Use PCH")
 set(ENABLE_MODULES "components;plugin" CACHE STRING "Modules to build/install")
 set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install directory")
 set(INSTALL_QMLDIR "lib/qt6/qml" CACHE STRING "QML install directory")

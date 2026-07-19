@@ -41,18 +41,20 @@ install(TARGETS "${dwl_plugin_target}"
 install(FILES "${dwl_qmldir}"  DESTINATION "${dwl_dir}")
 install(FILES "${dwl_typeinfo}" DESTINATION "${dwl_dir}")
 
-target_precompile_headers(topbar-dwl PRIVATE
-    <cstdint>
-    <qlogging.h>
-    <qlist.h>
-    <qobject.h>
-    <qstring.h>
-    <qlist.h>
-    <qtmetamacros.h>
-    <qtypes.h>
-    <qwaylandclientextension.h>
-    <qscreen.h>
-)
+if(ENABLE_PCH)
+    target_precompile_headers(topbar-dwl PRIVATE
+        <cstdint>
+        <qlogging.h>
+        <qlist.h>
+        <qobject.h>
+        <qstring.h>
+        <qlist.h>
+        <qtmetamacros.h>
+        <qtypes.h>
+        <qwaylandclientextension.h>
+        <qscreen.h>
+    )
+endif()
 
 target_link_libraries(topbar-dwl PRIVATE
     Qt6::Core
