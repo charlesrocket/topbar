@@ -1,6 +1,6 @@
 qt_add_qml_module(topbar-network
     URI TopBar.Networking
-    VERSION 0.1
+    VERSION ${PROJECT_VERSION}
     SOURCES
         backend.cpp
         network.cpp

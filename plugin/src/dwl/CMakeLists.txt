@@ -13,7 +13,7 @@ target_sources(topbar-dwl PRIVATE
 
 qt_add_qml_module(topbar-dwl
     URI TopBar.DWL
-    VERSION 0.1
+    VERSION ${PROJECT_VERSION}
     TYPEINFO "topbar-dwl.qmltypes"
 )
 

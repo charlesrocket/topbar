@@ -1,6 +1,6 @@
 qt_add_qml_module(topbar-oss
     URI TopBar.OSS
-    VERSION 0.1
+    VERSION ${PROJECT_VERSION}
     SOURCES oss.cpp
     DEPENDENCIES QtQml
 )
