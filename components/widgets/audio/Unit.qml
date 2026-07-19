@@ -1,11 +1,8 @@
-import Quickshell.Io
-
 import QtQuick
 import QtQuick.Layouts
 
 
 import "../../bar"
-import "../../.."
 import "../.."
 
 Item {

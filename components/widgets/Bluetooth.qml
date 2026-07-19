@@ -1,9 +1,8 @@
 import Quickshell.Bluetooth
 
 import QtQuick
-import QtQuick.Layouts
 
-import "../.."
+import ".."
 
 Text {
     id: root

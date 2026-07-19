@@ -4,7 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../widgets"
-import "../.."
+import ".."
 
 RowLayout {
     id: rowLayout

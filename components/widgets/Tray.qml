@@ -1,12 +1,11 @@
 pragma ComponentBehavior: Bound
 
-import Quickshell
 import Quickshell.Services.SystemTray
 
 import QtQuick
 import QtQuick.Effects
 
-import "../.."
+import ".."
 
 Item {
     id: root

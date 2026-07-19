@@ -2,11 +2,8 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQml
-import QtQuick.Layouts
-import Quickshell
-import Quickshell.Io
 
-import "../.."
+import ".."
 
 Item {
     id: root

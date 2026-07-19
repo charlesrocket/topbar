@@ -5,7 +5,6 @@ import QtQuick.Layouts
 
 import "../bar"
 import "../dashboard"
-import "../.."
 import ".."
 
 Item {

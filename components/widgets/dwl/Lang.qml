@@ -1,9 +1,8 @@
 import QtQuick
-import Quickshell
 
 import TopBar.DWL
 
-import "../../.."
+import "../.."
 
 Rectangle {
     id: root

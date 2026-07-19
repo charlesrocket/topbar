@@ -1,9 +1,7 @@
-import Quickshell
-
 import QtQuick
 import QtQuick.Shapes
 
-import "../.."
+import ".."
 
 Shape {
     id: root

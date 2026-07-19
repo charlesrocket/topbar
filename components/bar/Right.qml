@@ -8,7 +8,6 @@ import "../widgets/audio"
 import "../widgets/dwl" as DWL
 import "../widgets/hypr" as Hypr
 import "../widgets"
-import "../.."
 import ".."
 
 RowLayout {

@@ -3,7 +3,6 @@ import QtQuick.Layouts
 
 import "../widgets/dwl" as DWL
 import "../widgets/hypr" as Hypr
-import "../.."
 import ".."
 
 RowLayout {
