@@ -1,12 +1,9 @@
 import Quickshell
-import Quickshell.Wayland
 import Quickshell.Io
 
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-
-import TopBar
 
 import ".."
 
@@ -32,11 +29,6 @@ FloatingWindow {
     MouseArea {
         anchors.fill: parent
         onClicked: States.preferencesWindowPresent = false
-    }
-
-    FileView {
-        id: settingsFile
-        path: Utils.expandPath("~/.config/quickshell/Settings.qml")
     }
 
     Rectangle {
@@ -711,6 +703,13 @@ FloatingWindow {
                                         valueType: "bool"
                                     }
 
+                                    SettingRow {
+                                        label: "Track notifications"
+                                        targetObject: Config.dashboard.player
+                                        targetProperty: "notifications"
+                                        valueType: "bool"
+                                    }
+
                                     Component.onCompleted: {
                                         root.validateSection(Config.dashboard.player, dashboardPlayerSection, "Config.dashboard.player", null);
                                     }
@@ -897,66 +896,8 @@ FloatingWindow {
                             }
                         }
 
-                        // save status text
-                        Text {
-                            id: saveStatus
-                            text: ""
-                            font.family: Config.general.fontFamily
-                            font.pixelSize: Config.general.fontSize - 2
-                            color: Config.colors.green
-                            opacity: 0
-
-                            Behavior on opacity {
-                                NumberAnimation {
-                                    duration: 300
-                                }
-                            }
-
-                            Timer {
-                                id: fadeTimer
-                                interval: 2000
-                                onTriggered: saveStatus.opacity = 0
-                            }
-                        }
-
                         Item {
                             Layout.fillWidth: true
-                        }
-
-                        // Save button
-                        Rectangle {
-                            id: saveButton
-                            color: Config.colors.passive
-                            width: 60
-                            height: 32
-                            radius: Config.general.cornerRadius
-
-                            Text {
-                                anchors.centerIn: parent
-                                color: Config.colors.fg
-                                font.family: Config.general.fontFamily
-                                font.pixelSize: Config.general.fontSize
-                                text: "Save"
-                            }
-
-                            MouseArea {
-                                anchors.fill: parent
-                                hoverEnabled: true
-
-                                onClicked: {
-                                    settingsFile.setText(root.generateSettings());
-                                    saveStatus.text = "Saved!";
-                                    saveStatus.opacity = 1;
-                                    fadeTimer.restart();
-                                }
-
-                                onEntered: saveButton.color = Config.colors.accent
-                                onExited: saveButton.color = Config.colors.passive
-                            }
-
-                            Behavior on color {
-                                ColAnim {}
-                            }
                         }
 
                         // OK button
@@ -1100,174 +1041,7 @@ FloatingWindow {
                     }
                 }
             }
-
-            Binding {
-                target: settingRow.targetObject
-                property: settingRow.targetProperty
-                value: boolSwitch.checked
-                when: boolSwitch.visible
-                delayed: true
-            }
         }
-    }
-
-    function generateSettings() {
-        var conf = Config;
-        var general = conf.general;
-        var colors = conf.colors;
-        var widgets = conf.widgets;
-        var bar = conf.bar;
-        var dashboard = conf.dashboard;
-        var notifications = conf.notifications;
-        var desktop = conf.desktop;
-        var workspaces = conf.workspaces;
-        var lockscreen = conf.lockscreen;
-        var session = conf.session;
-        var cmds = session.commands;
-
-        function q(val) {
-            return '"' + val + '"';
-        }
-
-        function colorStr(col) {
-            // convert to hex string
-            return '"' + col.toString().trim() + '"';
-        }
-
-        var lines = [];
-        lines.push('pragma Singleton');
-        lines.push('');
-        lines.push('import QtQuick');
-        lines.push('import Quickshell');
-        lines.push('');
-        lines.push('Singleton {');
-
-        // general
-        lines.push('    readonly property var general: QtObject {');
-        lines.push('        readonly property string locale: ' + q(general.locale));
-        lines.push('        readonly property string fontFamily: ' + q(general.fontFamily));
-        lines.push('        readonly property int fontSize: ' + general.fontSize);
-        lines.push('        readonly property int cornerRadius: ' + general.cornerRadius);
-        lines.push('        readonly property int borderWidth: ' + general.borderWidth);
-        lines.push('        readonly property int animDuration: ' + general.animDuration);
-        lines.push('        readonly property string wallpaper: ' + q(general.wallpaper));
-        lines.push('        readonly property bool blur: ' + general.blur);
-        lines.push('        readonly property bool shadows: ' + general.shadows);
-        lines.push('    }');
-        lines.push('');
-
-        // colors
-        lines.push('    readonly property var colors: QtObject {');
-        lines.push('        readonly property color bg: ' + colorStr(colors.bg));
-        lines.push('        readonly property color bgl: ' + colorStr(colors.bgl));
-        lines.push('        readonly property color bge: ' + colorStr(colors.bge));
-        lines.push('        readonly property color fg: ' + colorStr(colors.fg));
-        lines.push('        readonly property color border: ' + colorStr(colors.border));
-        lines.push('        readonly property color passive: ' + colorStr(colors.passive));
-        lines.push('        readonly property color dark: ' + colorStr(colors.dark));
-        lines.push('        readonly property color action: ' + colorStr(colors.action));
-        lines.push('        readonly property color accent: ' + colorStr(colors.accent));
-        lines.push('        readonly property color red: ' + colorStr(colors.red));
-        lines.push('        readonly property color yellow: ' + colorStr(colors.yellow));
-        lines.push('        readonly property color purple: ' + colorStr(colors.purple));
-        lines.push('        readonly property color green: ' + colorStr(colors.green));
-        lines.push('    }');
-        lines.push('');
-
-        // workspaces
-        lines.push('    readonly property var workspaces: QtObject {');
-        lines.push('        readonly property string one: ' + q(workspaces.one));
-        lines.push('        readonly property string two: ' + q(workspaces.two));
-        lines.push('        readonly property string three: ' + q(workspaces.three));
-        lines.push('        readonly property string four: ' + q(workspaces.four));
-        lines.push('        readonly property string five: ' + q(workspaces.five));
-        lines.push('        readonly property string six: ' + q(workspaces.six));
-        lines.push('        readonly property string seven: ' + q(workspaces.seven));
-        lines.push('        readonly property string eight: ' + q(workspaces.eight));
-        lines.push('        readonly property string nine: ' + q(workspaces.nine));
-        lines.push('        readonly property string ten: ' + q(workspaces.ten));
-        lines.push('    }');
-        lines.push('');
-
-        // bar
-        lines.push('    readonly property var bar: QtObject {');
-        lines.push('        readonly property int height: ' + bar.height);
-        lines.push('        readonly property int padding: ' + bar.padding);
-        lines.push('        readonly property var title: QtObject {');
-        lines.push('            readonly property int width: ' + bar.title.width);
-        lines.push('            readonly property string empty: ' + q(bar.title.empty));
-        lines.push('        }');
-        lines.push('    }');
-        lines.push('');
-
-        // desktop
-        lines.push('    readonly property var desktop: QtObject {');
-        lines.push('        readonly property bool launcher: ' + desktop.launcher);
-        lines.push('        readonly property bool osd: ' + desktop.osd);
-        lines.push('    }');
-        lines.push('');
-
-        // dashboard
-        lines.push('    readonly property var dashboard: QtObject {');
-        lines.push('        readonly property string disk: ' + dashboard.disk);
-        lines.push('        readonly property var player: QtObject {');
-        lines.push('            readonly property bool queueButtons: ' + dashboard.player.queueButtons);
-        lines.push('        }');
-        lines.push('    }');
-        lines.push('');
-
-        // notifications
-        lines.push('    readonly property var notifications: QtObject {');
-        lines.push('        readonly property bool enabled: ' + notifications.enabled);
-        lines.push('        readonly property int width: ' + notifications.width);
-        lines.push('    }');
-        lines.push('');
-
-        // widgets
-        lines.push('    readonly property var widgets: QtObject {');
-        lines.push('        readonly property bool workspaces: ' + widgets.workspaces);
-        lines.push('        readonly property bool title: ' + widgets.title);
-        lines.push('        readonly property bool battery: ' + widgets.battery);
-        lines.push('        readonly property bool network: ' + widgets.network);
-        lines.push('        readonly property bool bluetooth: ' + widgets.bluetooth);
-        lines.push('        readonly property bool audio: ' + widgets.audio);
-        lines.push('        readonly property bool language: ' + widgets.language);
-        lines.push('        readonly property bool weather: ' + widgets.weather);
-        lines.push('        readonly property bool clock: ' + widgets.clock);
-        lines.push('        readonly property bool stats: ' + widgets.stats);
-        lines.push('        readonly property bool tray: ' + widgets.tray);
-        lines.push('    }');
-        lines.push('');
-
-        // lockscreen
-        lines.push('    readonly property var lockscreen: QtObject {');
-        lines.push('        readonly property bool clock: ' + lockscreen.clock);
-        lines.push('        readonly property bool battery: ' + lockscreen.battery);
-        lines.push('        readonly property bool buttons: ' + lockscreen.buttons);
-        lines.push('        readonly property string wallpaper: ' + q(lockscreen.wallpaper));
-        lines.push('        readonly property bool shadows: ' + lockscreen.shadows);
-        lines.push('        readonly property bool username: ' + lockscreen.username);
-        lines.push('        readonly property bool icon: ' + lockscreen.icon);
-        lines.push('    }');
-        lines.push('');
-
-        // session
-        lines.push('    readonly property var session: QtObject {');
-        lines.push('        readonly property color background: ' + colorStr(session.background));
-        lines.push('        readonly property var commands: QtObject {');
-        lines.push('            readonly property string lock: ' + q(cmds.lock));
-        lines.push('            readonly property string logout: ' + q(cmds.logout));
-        lines.push('            readonly property string suspend: ' + q(cmds.suspend));
-        lines.push('            readonly property string hibernate: ' + q(cmds.hibernate));
-        lines.push('            readonly property string shutdown: ' + q(cmds.shutdown));
-        lines.push('            readonly property string reboot: ' + q(cmds.reboot));
-        lines.push('        }');
-        lines.push('    }');
-
-        lines.push('}');
-        lines.push('');
-
-        return lines.join('\n');
     }
 
     function validateSection(obj, section, key, offset) {
