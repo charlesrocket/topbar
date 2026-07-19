@@ -1,4 +1,6 @@
 # TopBar
+[![CI](https://codeberg.org/charlesrocket/topbar/badges/workflows/ci.yml/badge.svg?branch=trunk)](https://codeberg.org/charlesrocket/topbar/actions)
+[![CD](https://codeberg.org/charlesrocket/topbar/badges/workflows/cd.yml/badge.svg?branch=trunk)](https://codeberg.org/charlesrocket/topbar/actions)
 
 An interactive bar and desktop environment for [Quickshell](https://quickshell.org/).
 
