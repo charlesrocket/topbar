@@ -16,8 +16,6 @@ import "components"
 PanelWindow {
     id: root
 
-    property var screen: Quickshell.screens[0]
-
     anchors {
         top: true
         left: true
