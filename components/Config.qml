@@ -31,7 +31,7 @@ Singleton {
                 property string locale: "AnyTerritory"
                 property string fontFamily: "Hack Nerd Font"
                 property int fontSize: 14
-                property int borderWidth: 0
+                property int borderWidth: 1
                 property int cornerRadius: 8
                 property int animDuration: 250
                 property string wallpaper: States.defaultWallpaper
@@ -74,7 +74,7 @@ Singleton {
             // desktop
             property JsonObject desktop: JsonObject {
                 property bool launcher: true
-                property bool osd: false
+                property bool osd: true
             }
 
             // dashboard
