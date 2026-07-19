@@ -2,30 +2,26 @@ cmake_minimum_required(VERSION 3.30)
 project(topbar VERSION 0.3.0)
 
 set(DISTRIBUTOR "Unset" CACHE STRING "Distributor")
-set(ENABLE_MODULES "plugin" CACHE STRING "Modules to build/install")
 set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install directory")
 set(INSTALL_QMLDIR "lib/qt6/qml" CACHE STRING "QML install directory")
+set(INSTALL_XDGDIR "etc/xdg" CACHE STRING "XDG install directory")
 
 set(_bsd_systems "FreeBSD" "OpenBSD" "NetBSD")
 if(CMAKE_SYSTEM_NAME IN_LIST _bsd_systems)
-    set(XDG_CONFIG_DIR_DEFAULT "/usr/local/etc/xdg")
-else()
-    set(XDG_CONFIG_DIR_DEFAULT "/etc/xdg")
+    include_directories(/usr/local/include)
+    link_directories(/usr/local/lib)
 endif()
-
-set(XDG_CONFIG_DIR "${XDG_CONFIG_DIR_DEFAULT}" CACHE STRING
-    "XDG config install directory")
 
 include(${CMAKE_SOURCE_DIR}/plugin/version.cmake)
 include(${CMAKE_SOURCE_DIR}/plugin/util.cmake)
-include_directories(/usr/local/include)
-link_directories(/usr/local/lib)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(QT_MIN_VERSION "6.6.0")
 
 boption(DEVD "Devd" ON)
 boption(SYSTEM "System" ON)
@@ -47,7 +43,7 @@ endif()
 
 install(
     DIRECTORY "${CMAKE_SOURCE_DIR}/components/"
-    DESTINATION "${XDG_CONFIG_DIR}/quickshell/topbar"
+    DESTINATION "${INSTALL_XDGDIR}/quickshell/topbar"
 )
 
 add_subdirectory(plugin)
