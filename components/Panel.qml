@@ -7,11 +7,10 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
-import "components/bar" as Bar
-import "components/notifications"
-import "components/lockscreen"
-import "components/session"
-import "components"
+import "bar" as Bar
+import "notifications"
+import "lockscreen"
+import "session"
 
 PanelWindow {
     id: root

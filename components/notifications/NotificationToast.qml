@@ -1,13 +1,11 @@
 pragma ComponentBehavior: Bound
 
-import Quickshell
 import Quickshell.Services.Notifications
 import Quickshell.Widgets
 
 import QtQuick
 import QtQuick.Layouts
 
-import "../.."
 import ".."
 
 Rectangle {

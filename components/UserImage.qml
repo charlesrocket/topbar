@@ -1,9 +1,5 @@
-import Quickshell
-
 import QtQuick
 import QtQuick.Effects
-
-import ".."
 
 Item {
     id: root

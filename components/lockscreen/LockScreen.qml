@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 
 import Quickshell
 import Quickshell.Io
-import Quickshell.Wayland
 import Quickshell.Services.UPower
 
 import QtQuick
@@ -10,7 +9,6 @@ import QtQuick.Layouts
 import QtQuick.Effects
 import QtQuick.Controls.Fusion
 
-import "../.."
 import ".."
 
 Item {

@@ -7,8 +7,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
-import ".."
-
 Loader {
     active: States.launcherPresent
 

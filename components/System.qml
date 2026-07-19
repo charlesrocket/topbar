@@ -9,8 +9,6 @@ import TopBar
 import TopBar.Devd
 import TopBar.System
 
-import ".."
-
 Singleton {
     id: root
 

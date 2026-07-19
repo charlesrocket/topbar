@@ -4,7 +4,7 @@ import Quickshell.Io
 
 import Quickshell.Services.Mpris
 
-import "../.."
+import ".."
 
 Item {
     id: root

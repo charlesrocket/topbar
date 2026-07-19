@@ -5,7 +5,7 @@ import Quickshell
 import QtQuick
 
 ShellRoot {
-    TopBar {}
+    Panel {}
     Wallpaper {}
 
     Connections {
