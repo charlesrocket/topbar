@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.30)
 project(topbar VERSION 0.3.0)
 
 set(DISTRIBUTOR "Unset" CACHE STRING "Distributor")
+set(ENABLE_MODULES "components;plugin" CACHE STRING "Modules to build/install")
 set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install directory")
 set(INSTALL_QMLDIR "lib/qt6/qml" CACHE STRING "QML install directory")
 set(INSTALL_XDGDIR "etc/xdg" CACHE STRING "XDG install directory")
@@ -41,9 +42,13 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wunused-lambda-capture)
 endif()
 
-install(
-    DIRECTORY "${CMAKE_SOURCE_DIR}/components/"
-    DESTINATION "${INSTALL_XDGDIR}/quickshell/topbar"
-)
+if("components" IN_LIST ENABLE_MODULES)
+    install(
+        DIRECTORY "${CMAKE_SOURCE_DIR}/components/"
+        DESTINATION "${INSTALL_XDGDIR}/quickshell/topbar"
+    )
+endif()
 
-add_subdirectory(plugin)
+if("plugin" IN_LIST ENABLE_MODULES)
+    add_subdirectory(plugin)
+endif()
