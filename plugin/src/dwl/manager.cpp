@@ -6,6 +6,7 @@
 #include <qapplication.h>
 #include <qbytearray.h>
 #include <qcontainerfwd.h>
+#include <qglobal.h>
 #include <qguiapplication.h>
 #include <qlist.h>
 #include <qlogging.h>
@@ -15,7 +16,6 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtmetamacros.h>
-#include <qtversionchecks.h>
 #include <qwaylandclientextension.h>
 #include <wayland-client-protocol.h>
 
