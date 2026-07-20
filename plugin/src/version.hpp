@@ -17,6 +17,7 @@ class Version : public QObject {
     Q_PROPERTY(int minor READ minor CONSTANT);
     Q_PROPERTY(int patch READ patch CONSTANT);
     Q_PROPERTY(QString full READ full CONSTANT);
+    Q_PROPERTY(QString distributor READ distributor CONSTANT);
 
   public:
     explicit Version(QObject *parent = nullptr);
@@ -25,6 +26,7 @@ class Version : public QObject {
     int minor() const { return PROJECT_VERSION_MINOR; }
     int patch() const { return PROJECT_VERSION_PATCH; }
     QString full() const { return QStringLiteral(PROJECT_VERSION_FULL); }
+    QString distributor() const { return QStringLiteral(PROJECT_DISTRIBUTOR); }
 };
 
 } // namespace topbar::version

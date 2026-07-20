@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.20)
 project(topbar VERSION 0.3.0)
 
-set(DISTRIBUTOR "Unset" CACHE STRING "Distributor")
+set(DISTRIBUTOR "Source" CACHE STRING "Distributor")
 set(ENABLE_PCH TRUE CACHE BOOL "Use PCH")
 set(ENABLE_MODULES "components;plugin" CACHE STRING "Modules to build/install")
 set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install directory")
@@ -16,6 +16,10 @@ endif()
 
 include(${CMAKE_SOURCE_DIR}/plugin/version.cmake)
 include(${CMAKE_SOURCE_DIR}/plugin/util.cmake)
+
+message(STATUS "XDG install directory: ${INSTALL_XDGDIR}")
+message(STATUS "Library install directory: ${INSTALL_LIBDIR}")
+message(STATUS "Distributor: ${DISTRIBUTOR}")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

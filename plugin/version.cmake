@@ -47,7 +47,7 @@ endif()
 set(VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(PROJECT_VERSION_FULL "${GIT_VERSION}")
 
-message(STATUS "Target version: ${PROJECT_VERSION_FULL}")
+message(STATUS "Setting ${PROJECT_VERSION_FULL}")
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/plugin/version.h.in
