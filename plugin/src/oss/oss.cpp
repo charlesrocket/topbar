@@ -101,20 +101,28 @@ bool OSSMixerControl::updateValue() {
     auto value = 0;
     auto changed = false;
 
+    // clang-format off
+    #ifdef __FreeBSD__
     if (ioctl(fd, MIXER_READ(this->mMixerId), &value) < 0) { // NOLINT
         close(fd);
         qCWarning(logOSS) << "Failed to read mixer";
         return false;
     }
+    #endif
+    // clang-format on
 
     auto newLeft = value & 0xFF;
     auto newRight = (value >> 8) & 0xFF;
     auto muteValue = 0;
     bool newMuted = false;
 
+    // clang-format off
+    #ifdef __FreeBSD__
     if (ioctl(fd, SOUND_MIXER_READ_MUTE, &muteValue) >= 0) { // NOLINT
         newMuted = (muteValue & (1 << this->mMixerId)) != 0;
     }
+    #endif
+    // clang-format on
 
     close(fd);
 
@@ -156,15 +164,21 @@ bool OSSMixerControl::writeValue() {
     auto right = this->mStereo ? this->mRight : this->mLeft;
     auto value = (right << 8) | left;
 
+    // clang-format off
+    #ifdef __FreeBSD__
     if (ioctl(fd, MIXER_WRITE(this->mMixerId), &value) < 0) { // NOLINT
         close(fd);
         qCWarning(logOSS) << "Failed to write mixer value for control:"
                           << this->mName;
         return false;
     }
+    #endif
+    // clang-format on
 
     auto muteValue = 0;
 
+    // clang-format off
+    #ifdef __FreeBSD__
     if (ioctl(fd, SOUND_MIXER_READ_MUTE, &muteValue) >= 0) { // NOLINT
         if (this->mMuted) {
             muteValue |= (1 << this->mMixerId);
@@ -177,6 +191,8 @@ bool OSSMixerControl::writeValue() {
                 << "Failed to write mute state for control:" << this->mName;
         }
     }
+    #endif
+    // clang-format on
 
     close(fd);
     return true;
@@ -207,6 +223,8 @@ bool OSSSoundDevice::initialize() {
 
     auto devmask = 0;
 
+    // clang-format off
+    #ifdef __FreeBSD__
     if (ioctl(fd, SOUND_MIXER_READ_DEVMASK, &devmask) >= 0) { // NOLINT
         this->loadControls();
     } else {
@@ -214,6 +232,8 @@ bool OSSSoundDevice::initialize() {
         close(fd);
         return false;
     }
+    #endif
+    // clang-format on
 
     auto sndstat = QFile("/dev/sndstat");
 
@@ -261,12 +281,19 @@ void OSSSoundDevice::loadControls() {
 
     auto devmask = 0;
 
+    // clang-format off
+    #ifdef __FreeBSD__
     if (ioctl(fd, SOUND_MIXER_READ_DEVMASK, &devmask) < 0) {
         close(fd);
         return;
     }
+    #endif
+    // clang-format on
 
     auto recmask = 0;
+
+    // clang-format off
+    #ifdef __FreeBSD__
     ioctl(fd, SOUND_MIXER_READ_RECMASK, &recmask); // NOLINT
 
     const char *labels[] = SOUND_DEVICE_LABELS; // NOLINT
@@ -286,6 +313,8 @@ void OSSSoundDevice::loadControls() {
             }
         }
     }
+    #endif
+    // clang-format on
 
     close(fd);
 
@@ -736,12 +765,16 @@ void OSS::updateDefault() {
 bool OSS::setDefaultDevice(int deviceId) {
     const size_t size = sizeof(deviceId);
 
+    // clang-format off
+    #ifdef __FreeBSD__
     if (sysctlbyname("hw.snd.default_unit", nullptr, nullptr, &deviceId, size)
         == 0) {
         this->updateDefault();
         qCInfo(logOSS) << "Set default device to" << deviceId;
         return true;
     }
+    #endif
+    // clang-format on
 
     qCWarning(logOSS) << "Failed to set default device to" << deviceId
                       << "error:" << qt_error_string(errno);

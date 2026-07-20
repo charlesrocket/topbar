@@ -133,6 +133,8 @@ bool FreeBSDBackend::isAvailable() const {
 }
 
 void FreeBSDBackend::initializeRouteSocket() {
+    // clang-format off
+    #ifdef __FreeBSD__
     qCDebug(logNetworkFreeBSD) << "Connecting to the route socket";
     this->mRouteSocket = socket(PF_ROUTE, SOCK_RAW, 0);
     if (this->mRouteSocket < 0) {
@@ -143,6 +145,8 @@ void FreeBSDBackend::initializeRouteSocket() {
 
     const int flags = fcntl(this->mRouteSocket, F_GETFL, 0);
     fcntl(this->mRouteSocket, F_SETFL, flags | O_NONBLOCK);
+    #endif
+    // clang-format on
 
     this->mRouteNotifier =
         new QSocketNotifier(this->mRouteSocket, QSocketNotifier::Read, this);
@@ -182,6 +186,8 @@ void FreeBSDBackend::onRouteSocketActivated() {
 }
 
 void FreeBSDBackend::handleRouteMessage(const char *buf, ssize_t len) {
+    // clang-format off
+    #ifdef __FreeBSD__
     if (len < static_cast<ssize_t>(sizeof(struct rt_msghdr))) return;
 
     const auto *rtm = reinterpret_cast<const struct rt_msghdr *>(buf);
@@ -242,6 +248,8 @@ void FreeBSDBackend::handleRouteMessage(const char *buf, ssize_t len) {
             }
         }
     }
+    #endif
+    // clang-format on
 }
 
 void FreeBSDBackend::handleDevdEvent(const QString &event) {
