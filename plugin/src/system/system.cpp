@@ -1,21 +1,22 @@
 #include "system.hpp"
 
-#include "version.h"
-
 #include <algorithm>
 #include <limits>
 #include <qlogging.h>
 #include <qloggingcategory.h>
+#include <qstring.h>
+#include <qstringlist.h>
 #include <qtimer.h>
-#include <qvector.h>
 
 // clang-format off
+#ifdef __FreeBSD__
 #include <sys/param.h>
 #include <sys/jail.h>
 #include <sys/statvfs.h>
 #include <sys/sysctl.h>
 #include <sys/types.h>
 #include <sys/uio.h>
+#endif
 // clang-format on
 
 template <typename T> bool floatEq(T a, T b) {
