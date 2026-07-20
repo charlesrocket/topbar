@@ -8,6 +8,8 @@
 
 namespace topbar::version {
 
+using namespace Qt::StringLiterals;
+
 class Version : public QObject {
     Q_OBJECT;
     QML_ELEMENT;
@@ -26,8 +28,8 @@ class Version : public QObject {
     [[nodiscard]] int major() const { return PROJECT_VERSION_MAJOR; }
     [[nodiscard]] int minor() const { return PROJECT_VERSION_MINOR; }
     [[nodiscard]] int patch() const { return PROJECT_VERSION_PATCH; }
-    [[nodiscard]] QString full() const { return QStringLiteral(PROJECT_VERSION_FULL); }
-    [[nodiscard]] QString distributor() const { return QStringLiteral(PROJECT_DISTRIBUTOR); }
+    [[nodiscard]] QString full() const { return u"PROJECT_VERSION_FULL"_s; }
+    [[nodiscard]] QString distributor() const { return u"PROJECT_DISTRIBUTOR"_s; }
     // clang-format on
 };
 
