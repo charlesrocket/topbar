@@ -28,8 +28,9 @@ jobs:
 
       - name: Install dependencies
         run: >-
-          sudo apt update &&
-          sudo apt install -y clang-tidy clang-format gcc cmake ninja-build
+          sudo apt update && sudo apt install -y
+          clang-tidy clang-format gcc cmake ninja-build wayland-protocols
+          qt6-base qt6-declarative
 
       - name: Check format
         run: clang-format -Werror --dry-run plugin/**/*.{cpp,hpp}
