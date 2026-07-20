@@ -22,11 +22,13 @@ class Version : public QObject {
   public:
     explicit Version(QObject *parent = nullptr);
 
-    int major() const { return PROJECT_VERSION_MAJOR; }
-    int minor() const { return PROJECT_VERSION_MINOR; }
-    int patch() const { return PROJECT_VERSION_PATCH; }
-    QString full() const { return QStringLiteral(PROJECT_VERSION_FULL); }
-    QString distributor() const { return QStringLiteral(PROJECT_DISTRIBUTOR); }
+    // clang-format off
+    [[nodiscard]] int major() const { return PROJECT_VERSION_MAJOR; }
+    [[nodiscard]] int minor() const { return PROJECT_VERSION_MINOR; }
+    [[nodiscard]] int patch() const { return PROJECT_VERSION_PATCH; }
+    [[nodiscard]] QString full() const { return QStringLiteral(PROJECT_VERSION_FULL); }
+    [[nodiscard]] QString distributor() const { return QStringLiteral(PROJECT_DISTRIBUTOR); }
+    // clang-format on
 };
 
 } // namespace topbar::version
