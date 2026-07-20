@@ -15,10 +15,26 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtmetamacros.h>
+#include <qtversionchecks.h>
 #include <qwaylandclientextension.h>
 #include <wayland-client-protocol.h>
 
 namespace topbar::dwl {
+
+namespace {
+
+struct wl_output *wlOutputForScreen(QScreen *screen) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    auto *waylandScreen =
+        screen->nativeInterface<QNativeInterface::QWaylandScreen>();
+
+    return waylandScreen ? waylandScreen->output() : nullptr;
+#else
+    return nullptr;
+#endif
+}
+
+} // namespace
 
 DwlIpcManager::DwlIpcManager() : QWaylandClientExtensionTemplate(2) {
     QObject::connect(
@@ -54,17 +70,15 @@ QStringList DwlIpcManager::layouts() const { return this->mLayouts; }
 QList<DwlIpcOutput *> DwlIpcManager::outputs() const { return this->mOutputs; }
 
 void DwlIpcManager::onScreenAdded(QScreen *screen) {
-    auto *waylandScreen =
-        screen->nativeInterface<QNativeInterface::QWaylandScreen>();
-    if (!waylandScreen) return;
-    this->bindOutput(waylandScreen->output(), screen->name());
+    auto *wlOutput = wlOutputForScreen(screen);
+    if (!wlOutput) return;
+    this->bindOutput(wlOutput, screen->name());
 }
 
 void DwlIpcManager::onScreenRemoved(QScreen *screen) {
-    auto *waylandScreen =
-        screen->nativeInterface<QNativeInterface::QWaylandScreen>();
-    if (!waylandScreen) return;
-    this->removeOutput(waylandScreen->output());
+    auto *wlOutput = wlOutputForScreen(screen);
+    if (!wlOutput) return;
+    this->removeOutput(wlOutput);
 }
 
 DwlIpcOutput *
