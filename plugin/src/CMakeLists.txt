@@ -19,7 +19,9 @@ find_program(WAYLAND_SCANNER_EXE
 
 find_program(QT_WAYLAND_SCANNER_EXE
     NAMES qtwaylandscanner
-    HINTS "/usr/local/libexec/qt6"
+    HINTS
+        "/usr/local/libexec/qt6"
+        "/usr/lib/qt6/libexec"
     REQUIRED
 )
 
