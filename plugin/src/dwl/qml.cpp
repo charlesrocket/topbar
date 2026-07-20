@@ -7,7 +7,6 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qtypes.h>
 #include <qwaylandclientextension.h>
 
 namespace topbar::dwl {

@@ -7,7 +7,6 @@
 #include <qqmlintegration.h>
 #include <qstringlist.h>
 #include <qtmetamacros.h>
-#include <qtypes.h>
 
 namespace topbar::dwl {
 

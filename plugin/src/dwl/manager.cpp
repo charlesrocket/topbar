@@ -15,7 +15,6 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtmetamacros.h>
-#include <qtypes.h>
 #include <qwaylandclientextension.h>
 #include <wayland-client-protocol.h>
 

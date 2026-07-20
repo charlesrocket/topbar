@@ -9,7 +9,6 @@
 #include <qscreen.h>
 #include <qstringlist.h>
 #include <qtmetamacros.h>
-#include <qtypes.h>
 #include <qwayland-dwl-ipc-unstable-v2.h>
 #include <qwaylandclientextension.h>
 #include <wayland-client-protocol.h>

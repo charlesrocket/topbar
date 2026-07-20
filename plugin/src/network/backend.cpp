@@ -33,7 +33,6 @@
 #include <qtextstream.h>
 #include <qthread.h>
 #include <qtimer.h>
-#include <qtypes.h>
 #include <sys/event.h>
 #include <sys/param.h>
 #include <sys/socket.h>

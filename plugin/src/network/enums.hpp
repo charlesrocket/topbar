@@ -2,7 +2,6 @@
 
 #include <qobject.h>
 #include <qqmlintegration.h>
-#include <qtypes.h>
 
 namespace topbar::network {
 

@@ -9,7 +9,6 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qtmetamacros.h>
-#include <qtypes.h>
 #include <utility>
 
 namespace topbar::dwl {

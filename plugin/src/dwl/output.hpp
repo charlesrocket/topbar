@@ -7,7 +7,6 @@
 #include <qqmlintegration.h>
 #include <qstring.h>
 #include <qtmetamacros.h>
-#include <qtypes.h>
 #include <qwayland-dwl-ipc-unstable-v2.h>
 
 namespace topbar::dwl {

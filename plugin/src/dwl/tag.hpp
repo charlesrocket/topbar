@@ -5,7 +5,6 @@
 #include <qobject.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
-#include <qtypes.h>
 
 namespace topbar::dwl {
 

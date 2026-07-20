@@ -23,7 +23,6 @@
 #include <qtextstream.h>
 #include <qtimer.h>
 #include <qtmetamacros.h>
-#include <qtypes.h>
 #include <sys/event.h>
 #include <sys/ioccom.h>
 #include <sys/ioctl.h>

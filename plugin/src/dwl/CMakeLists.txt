@@ -50,7 +50,6 @@ if(ENABLE_PCH)
         <qstring.h>
         <qlist.h>
         <qtmetamacros.h>
-        <qtypes.h>
         <qwaylandclientextension.h>
         <qscreen.h>
     )

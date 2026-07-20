@@ -4,7 +4,6 @@
 
 #include <QtCore/qtmetamacros.h>
 #include <qobject.h>
-#include <qtypes.h>
 
 namespace topbar::dwl {
 

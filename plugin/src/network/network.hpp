@@ -8,7 +8,6 @@
 #include <qproperty.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
-#include <qtypes.h>
 
 namespace topbar::network {
 
