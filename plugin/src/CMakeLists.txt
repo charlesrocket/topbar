@@ -1,5 +1,4 @@
 find_package(Qt6 REQUIRED COMPONENTS
-    ShaderTools
     Core
     Qml
     Gui
@@ -28,14 +27,10 @@ set(QT_QML_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml")
 qt_standard_project_setup(REQUIRES 6.9)
 add_library(topbar-pch INTERFACE)
 
-if(NOT TARGET Wayland::Scanner)
-    message(FATAL_ERROR "Wayland::Scanner target not found. You might be missing the WaylandScanner CMake package.")
-endif()
-
 pkg_get_variable(WAYLAND_PROTOCOLS wayland-protocols pkgdatadir)
 
 if(WAYLAND_PROTOCOLS)
-    message(STATUS "Found wayland protocols at ${WAYLAND_PROTOCOLS}")
+    message(STATUS "Found Wayland protocols: ${WAYLAND_PROTOCOLS}")
 else()
 	  message(FATAL_ERROR "Could not find wayland protocols")
 endif()
