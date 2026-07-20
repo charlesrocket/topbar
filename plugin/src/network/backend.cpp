@@ -20,7 +20,6 @@
 #include <qnamespace.h>
 #include <qnumeric.h>
 #include <qobject.h>
-#include <qoverload.h>
 #include <qprocess.h>
 #include <qregularexpression.h>
 #include <qset.h>
@@ -291,7 +290,10 @@ void FreeBSDBackend::scanExistingDevices() {
     this->mPendingProcesses.append(process);
 
     QObject::connect(
-        process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+        process,
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+            &QProcess::finished
+        ),
         this,
         [this, process](int exitCode, QProcess::ExitStatus) {
             if (exitCode != 0) {
@@ -395,7 +397,10 @@ void FreeBSDBackend::setWifiEnabled(bool enabled) {
 
         QObject::connect(
             process,
-            QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+            static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+                &QProcess::finished
+            ),
+            this,
             [this, process](int, QProcess::ExitStatus) {
                 this->mPendingProcesses.removeOne(process);
                 process->deleteLater();
@@ -471,7 +476,10 @@ void FreeBSDWiredDevice::updateStateFromIfconfig() {
     this->mPendingProcesses.append(process);
 
     QObject::connect(
-        process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+        process,
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+            &QProcess::finished
+        ),
         this,
         [this, process](int exitCode, QProcess::ExitStatus) {
             if (exitCode == 0) {
@@ -516,7 +524,10 @@ void FreeBSDWiredDevice::onDisconnectRequested() {
     this->mPendingProcesses.append(process);
 
     QObject::connect(
-        process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+        process,
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+            &QProcess::finished
+        ),
         this,
         [this, process](int, QProcess::ExitStatus) {
             this->updateStateFromIfconfig();
@@ -788,7 +799,10 @@ void FreeBSDWifiDevice::loadKnownNetworks() {
 
     connect(
         wpaCliProcess,
-        QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+            &QProcess::finished
+        ),
+        this,
         [this, wpaCliProcess](int exitCode, QProcess::ExitStatus) {
             if (exitCode == 0) {
                 // Skip header line
@@ -844,7 +858,10 @@ void FreeBSDWifiDevice::triggerScan() {
 
     QObject::connect(
         ifconfigProcess,
-        QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+            &QProcess::finished
+        ),
+        this,
         [this, ifconfigProcess](int exitCode, QProcess::ExitStatus) {
             if (exitCode == 0) {
                 const QString output =
@@ -871,7 +888,9 @@ void FreeBSDWifiDevice::triggerScan() {
 
             QObject::connect(
                 scanRequestProcess,
-                QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+                    &QProcess::finished
+                ),
                 this,
                 [this, scanRequestProcess](int, QProcess::ExitStatus) {
                     this->mPendingProcesses.removeOne(scanRequestProcess);
@@ -883,7 +902,8 @@ void FreeBSDWifiDevice::triggerScan() {
 
                         QObject::connect(
                             scanResultProcess,
-                            QOverload<int, QProcess::ExitStatus>::of(
+                            static_cast<
+                                void (QProcess::*)(int, QProcess::ExitStatus)>(
                                 &QProcess::finished
                             ),
                             this,
@@ -1114,7 +1134,10 @@ void FreeBSDWifiDevice::updateStateFromIfconfig() {
     this->mPendingProcesses.append(process);
 
     QObject::connect(
-        process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+        process,
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+            &QProcess::finished
+        ),
         this,
         [this, process](int exitCode, QProcess::ExitStatus) {
             if (exitCode == 0) {
@@ -1208,7 +1231,10 @@ void FreeBSDWifiDevice::onDisconnectRequested() {
     this->mPendingProcesses.append(process);
 
     QObject::connect(
-        process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+        process,
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+            &QProcess::finished
+        ),
         this,
         [this, process](int, QProcess::ExitStatus) {
             this->updateStateFromIfconfig();
@@ -1290,7 +1316,10 @@ void FreeBSDWifiNetwork::onConnectRequested() {
     this->mPendingProcesses.append(process);
 
     QObject::connect(
-        process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+        process,
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+            &QProcess::finished
+        ),
         this,
         [this, process](int exitCode, QProcess::ExitStatus) {
             if (exitCode == 0) {
@@ -1323,7 +1352,10 @@ void FreeBSDWifiNetwork::onDisconnectRequested() {
 
     auto *process = new QProcess(this);
     QObject::connect(
-        process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+        process,
+        static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(
+            &QProcess::finished
+        ),
         this,
         [this, process](int, QProcess::ExitStatus) {
             this->updateConnectionState(ConnectionState::Disconnected);
