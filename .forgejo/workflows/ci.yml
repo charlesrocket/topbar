@@ -30,7 +30,7 @@ jobs:
         run: >-
           sudo apt update && sudo apt install -y
           clang-tidy clang-format gcc cmake ninja-build wayland-protocols
-          qt6-base qt6-declarative
+          qt6-base-dev qt6-declarative-dev wayland-scanner++
 
       - name: Check format
         run: clang-format -Werror --dry-run plugin/**/*.{cpp,hpp}
