@@ -2,11 +2,11 @@
 
 #include "output.hpp"
 
+#include <QtGlobal>
 #include <cstdint>
 #include <qapplication.h>
 #include <qbytearray.h>
 #include <qcontainerfwd.h>
-#include <qglobal.h>
 #include <qguiapplication.h>
 #include <qlist.h>
 #include <qlogging.h>
@@ -24,9 +24,9 @@ namespace topbar::dwl {
 namespace {
 
 struct wl_output *wlOutputForScreen(QScreen *screen) {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0) // NOLINT
     auto *waylandScreen =
-        screen->nativeInterface<QNativeInterface::QWaylandScreen>();
+        screen->nativeInterface<QNativeInterface::QWaylandScreen>(); // NOLINT
 
     return waylandScreen ? waylandScreen->output() : nullptr;
 #else
@@ -65,7 +65,7 @@ DwlIpcManager *DwlIpcManager::instance() {
     return instance;
 }
 
-quint32 DwlIpcManager::tagCount() const { return this->mTagCount; }
+quint32 DwlIpcManager::tagCount() const { return this->mTagCount; } // NOLINT
 QStringList DwlIpcManager::layouts() const { return this->mLayouts; }
 QList<DwlIpcOutput *> DwlIpcManager::outputs() const { return this->mOutputs; }
 
