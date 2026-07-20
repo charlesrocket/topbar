@@ -5,7 +5,6 @@
 #include <qstring.h>
 #include <qtimer.h>
 #include <qtmetamacros.h>
-#include <qtypes.h>
 #include <qvector.h>
 
 namespace topbar::system {

@@ -1,11 +1,11 @@
 #include "devd.hpp"
 
-#include <QLoggingCategory>
 #include <QQmlEngine>
-#include <QtLogging>
 #include <cerrno>
 #include <cstddef>
 #include <cstring>
+#include <qlogging.h>
+#include <qloggingcategory.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>

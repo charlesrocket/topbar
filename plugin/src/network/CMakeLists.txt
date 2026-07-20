@@ -16,5 +16,5 @@ install_qml_module(topbar-network)
 target_link_libraries(topbar-network PRIVATE
     topbar-devd
     Qt6::Core
-    Qt::Qml
+    Qt6::Qml
 )

@@ -56,9 +56,9 @@ qml_module(topbar
     SOURCES
         version.cpp
     LIBRARIES
-        Qt::Gui
-        Qt::Quick
-        Qt::Concurrent
+        Qt6::Gui
+        Qt6::Quick
+        Qt6::Concurrent
 )
 
 if (DEVD)
