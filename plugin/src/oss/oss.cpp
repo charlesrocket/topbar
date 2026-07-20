@@ -23,6 +23,7 @@
 #include <qtextstream.h>
 #include <qtimer.h>
 #include <qtmetamacros.h>
+#ifdef __FreeBSD__
 #include <sys/event.h>
 #include <sys/ioccom.h>
 #include <sys/ioctl.h>
@@ -32,6 +33,7 @@
 #include <sys/sysctl.h>
 #include <sys/types.h>
 #include <sys/un.h>
+#endif
 #include <unistd.h>
 #include <utility>
 
@@ -384,6 +386,8 @@ void OSS::handleDevdEvent(const QString &event) {
         this->mRescanTimer->start();
     }
 }
+
+#ifdef __FreeBSD__
 void OSS::handleKqueueEvent() {
     struct kevent event;
     struct timespec timeout = {.tv_sec = 0, .tv_nsec = 0};
@@ -394,7 +398,9 @@ void OSS::handleKqueueEvent() {
         this->readNewLogLines();
     }
 }
+#endif
 
+#ifdef __FreeBSD__
 void OSS::setupJackDetection() {
     this->mLogFileDescriptor = open("/var/log/messages", O_RDONLY);
     if (this->mLogFileDescriptor < 0) {
@@ -442,6 +448,7 @@ void OSS::setupJackDetection() {
 
     qCInfo(logOSS) << "Jack detection monitoring enabled";
 }
+#endif
 
 void OSS::identifyJackType(int nid, bool connected) {
     // Read sysctl to identify what this nid is

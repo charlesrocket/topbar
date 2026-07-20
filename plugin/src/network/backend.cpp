@@ -11,9 +11,6 @@
 #include <cstdint>
 #include <cstring>
 #include <fcntl.h>
-#include <net/if.h>
-#include <net/if_types.h>
-#include <net/route.h>
 #include <qdebug.h>
 #include <qfile.h>
 #include <qiodevice.h>
@@ -33,11 +30,16 @@
 #include <qtextstream.h>
 #include <qthread.h>
 #include <qtimer.h>
+#ifdef __FreeBSD__
+#include <net/if.h>
+#include <net/if_types.h>
+#include <net/route.h>
 #include <sys/event.h>
 #include <sys/param.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
+#endif
 #include <unistd.h>
 #include <utility>
 
