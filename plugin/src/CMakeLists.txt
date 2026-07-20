@@ -66,7 +66,9 @@ if (DEVD)
 endif()
 
 if (SYSTEM)
-    add_subdirectory(system)
+    if (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+        add_subdirectory(system)
+    endif()
 endif()
 
 if (NETWORK)
