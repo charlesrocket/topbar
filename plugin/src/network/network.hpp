@@ -33,14 +33,17 @@ class Networking : public QObject {
     [[nodiscard]] ObjectModel<NetworkDevice> *devices() { return &this->mDevices; }
     [[nodiscard]] NetworkBackendType::Enum backend() const { return this->mBackendType; }
     QBindable<bool> bindableWifiEnabled() { return &this->bWifiEnabled; }
+    [[nodiscard]] bool wifiHardwareEnabled() const { return this->bWifiHardwareEnabled; }
     [[nodiscard]] bool wifiEnabled() const { return this->bWifiEnabled; }
     void setWifiEnabled(bool enabled);
     QBindable<bool> bindableWifiHardwareEnabled() { return &this->bWifiHardwareEnabled; }
     QBindable<bool> bindableCanCheckConnectivity() { return &this->bCanCheckConnectivity; }
+    [[nodiscard]] bool canCheckConnectivity() const { return this->bCanCheckConnectivity; }
     QBindable<bool> bindableConnectivityCheckEnabled() { return &this->bConnectivityCheckEnabled; }
     [[nodiscard]] bool connectivityCheckEnabled() const { return this->bConnectivityCheckEnabled; }
     void setConnectivityCheckEnabled(bool enabled);
     QBindable<NetworkConnectivity::Enum> bindableConnectivity() { return &this->bConnectivity; }
+    [[nodiscard]] NetworkConnectivity::Enum connectivity() const { return this->bConnectivity; }
     // clang-format on
 
   signals:
@@ -81,10 +84,10 @@ class NetworkingQml : public QObject {
 	Q_PROPERTY(UntypedObjectModel* devices READ devices CONSTANT);
 	Q_PROPERTY(topbar::network::NetworkBackendType::Enum backend READ backend CONSTANT);
 	Q_PROPERTY(bool wifiEnabled READ wifiEnabled WRITE setWifiEnabled NOTIFY wifiEnabledChanged);
-	Q_PROPERTY(bool wifiHardwareEnabled READ default NOTIFY wifiHardwareEnabledChanged BINDABLE bindableWifiHardwareEnabled);
-	Q_PROPERTY(bool canCheckConnectivity READ default NOTIFY canCheckConnectivityChanged BINDABLE bindableCanCheckConnectivity);
+	Q_PROPERTY(bool wifiHardwareEnabled READ wifiHardwareEnabled NOTIFY wifiHardwareEnabledChanged BINDABLE bindableWifiHardwareEnabled);
+	Q_PROPERTY(bool canCheckConnectivity READ canCheckConnectivity NOTIFY canCheckConnectivityChanged BINDABLE bindableCanCheckConnectivity);
 	Q_PROPERTY(bool connectivityCheckEnabled READ connectivityCheckEnabled WRITE setConnectivityCheckEnabled NOTIFY connectivityCheckEnabledChanged);
-	Q_PROPERTY(topbar::network::NetworkConnectivity::Enum connectivity READ default NOTIFY connectivityChanged BINDABLE bindableConnectivity);
+	Q_PROPERTY(topbar::network::NetworkConnectivity::Enum connectivity READ connectivity NOTIFY connectivityChanged BINDABLE bindableConnectivity);
     // clang-format on
 
   public:
@@ -92,39 +95,21 @@ class NetworkingQml : public QObject {
 
     Q_INVOKABLE static void checkConnectivity();
 
-    // clang-format on
-    [[nodiscard]] static ObjectModel<NetworkDevice> *devices() {
-        return Networking::instance()->devices();
-    }
-    [[nodiscard]] static NetworkBackendType::Enum backend() {
-        return Networking::instance()->backend();
-    }
-    [[nodiscard]] static bool wifiEnabled() {
-        return Networking::instance()->wifiEnabled();
-    }
-    static void setWifiEnabled(bool enabled) {
-        Networking::instance()->setWifiEnabled(enabled);
-    }
-    [[nodiscard]] static QBindable<bool> bindableWifiHardwareEnabled() {
-        return Networking::instance()->bindableWifiHardwareEnabled();
-    }
-    [[nodiscard]] static QBindable<bool> bindableWifiEnabled() {
-        return Networking::instance()->bindableWifiEnabled();
-    }
-    [[nodiscard]] static QBindable<bool> bindableCanCheckConnectivity() {
-        return Networking::instance()->bindableCanCheckConnectivity();
-    }
-    [[nodiscard]] static bool connectivityCheckEnabled() {
-        return Networking::instance()->connectivityCheckEnabled();
-    }
-    static void setConnectivityCheckEnabled(bool enabled) {
-        Networking::instance()->setConnectivityCheckEnabled(enabled);
-    }
-    [[nodiscard]] static QBindable<NetworkConnectivity::Enum>
-    bindableConnectivity() {
-        return Networking::instance()->bindableConnectivity();
-    }
     // clang-format off
+    [[nodiscard]] static ObjectModel<NetworkDevice> *devices() { return Networking::instance()->devices(); }
+    [[nodiscard]] static NetworkBackendType::Enum backend() { return Networking::instance()->backend(); }
+    [[nodiscard]] static bool wifiEnabled() { return Networking::instance()->wifiEnabled(); }
+    [[nodiscard]] static bool wifiHardwareEnabled() { return Networking::instance()->wifiHardwareEnabled(); }
+    [[nodiscard]] static bool canCheckConnectivity() { return Networking::instance()->canCheckConnectivity(); }
+    static void setWifiEnabled(bool enabled) { Networking::instance()->setWifiEnabled(enabled); }
+    [[nodiscard]] static QBindable<bool> bindableWifiHardwareEnabled() { return Networking::instance()->bindableWifiHardwareEnabled(); }
+    [[nodiscard]] static QBindable<bool> bindableWifiEnabled() { return Networking::instance()->bindableWifiEnabled(); }
+    [[nodiscard]] static QBindable<bool> bindableCanCheckConnectivity() { return Networking::instance()->bindableCanCheckConnectivity(); }
+    [[nodiscard]] static bool connectivityCheckEnabled() { return Networking::instance()->connectivityCheckEnabled(); }
+    static void setConnectivityCheckEnabled(bool enabled) { Networking::instance()->setConnectivityCheckEnabled(enabled); }
+    [[nodiscard]] static QBindable<NetworkConnectivity::Enum> bindableConnectivity() { return Networking::instance()->bindableConnectivity(); }
+    [[nodiscard]] static NetworkConnectivity::Enum connectivity() { return Networking::instance()->connectivity(); }
+    // clang-format on
 
   signals:
     void wifiEnabledChanged();
@@ -141,10 +126,10 @@ class Network : public QObject {
 
     // clang-format off
 	Q_PROPERTY(QString name READ name CONSTANT);
-	Q_PROPERTY(bool connected READ default NOTIFY connectedChanged BINDABLE bindableConnected);
-	Q_PROPERTY(bool known READ default NOTIFY knownChanged BINDABLE bindableKnown);
-	Q_PROPERTY(ConnectionState::Enum state READ default NOTIFY stateChanged BINDABLE bindableState);
-	Q_PROPERTY(bool stateChanging READ default NOTIFY stateChangingChanged BINDABLE bindableStateChanging);
+	Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged BINDABLE bindableConnected);
+	Q_PROPERTY(bool known READ known NOTIFY knownChanged BINDABLE bindableKnown);
+	Q_PROPERTY(ConnectionState::Enum state READ state NOTIFY stateChanged BINDABLE bindableState);
+	Q_PROPERTY(bool stateChanging READ stateChanging NOTIFY stateChangingChanged BINDABLE bindableStateChanging);
     // clang-format on
 
   public:
@@ -157,10 +142,13 @@ class Network : public QObject {
     // clang-format off
 	[[nodiscard]] QString name() const { return this->mName; }
 	QBindable<bool> bindableConnected() { return &this->bConnected; }
+	[[nodiscard]] bool connected() const { return this->bConnected; }
 	QBindable<bool> bindableKnown() { return &this->bKnown; }
+	[[nodiscard]] bool known() const { return this->bKnown; }
 	[[nodiscard]] ConnectionState::Enum state() const { return this->bState; }
 	QBindable<ConnectionState::Enum> bindableState() { return &this->bState; }
 	QBindable<bool> bindableStateChanging() { return &this->bStateChanging; }
+	[[nodiscard]] bool stateChanging() const { return this->bStateChanging; }
     // clang-format on
 
   signals:

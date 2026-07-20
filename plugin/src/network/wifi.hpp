@@ -18,8 +18,8 @@ class WifiNetwork : public Network {
     QML_UNCREATABLE("WifiNetwork can only be acquired through WifiDevice");
 
     // clang-format off
-	Q_PROPERTY(qreal signalStrength READ default NOTIFY signalStrengthChanged BINDABLE bindableSignalStrength);
-	Q_PROPERTY(WifiSecurityType::Enum security READ default NOTIFY securityChanged BINDABLE bindableSecurity);
+	Q_PROPERTY(qreal signalStrength READ signalStrength NOTIFY signalStrengthChanged BINDABLE bindableSignalStrength);
+	Q_PROPERTY(WifiSecurityType::Enum security READ security NOTIFY securityChanged BINDABLE bindableSecurity);
     // clang-format on
 
   public:
@@ -30,6 +30,11 @@ class WifiNetwork : public Network {
     QBindable<qreal> bindableSignalStrength() { return &this->bSignalStrength; }
     QBindable<WifiSecurityType::Enum> bindableSecurity() {
         return &this->bSecurity;
+    }
+
+    [[nodiscard]] qreal signalStrength() const { return this->bSignalStrength; }
+    [[nodiscard]] WifiSecurityType::Enum security() const {
+        return this->bSecurity;
     }
 
   signals:
@@ -53,7 +58,7 @@ class WifiDevice : public NetworkDevice {
     // clang-format off
 	Q_PROPERTY(UntypedObjectModel* networks READ networks CONSTANT);
 	Q_PROPERTY(bool scannerEnabled READ scannerEnabled WRITE setScannerEnabled NOTIFY scannerEnabledChanged BINDABLE bindableScannerEnabled);
-	Q_PROPERTY(WifiDeviceMode::Enum mode READ default NOTIFY modeChanged BINDABLE bindableMode);
+	Q_PROPERTY(WifiDeviceMode::Enum mode READ mode NOTIFY modeChanged BINDABLE bindableMode);
     // clang-format on
 
   public:
@@ -68,6 +73,7 @@ class WifiDevice : public NetworkDevice {
     [[nodiscard]] bool scannerEnabled() const { return this->bScannerEnabled; }
     void setScannerEnabled(bool enabled);
     QBindable<WifiDeviceMode::Enum> bindableMode() { return &this->bMode; }
+    [[nodiscard]] WifiDeviceMode::Enum mode() { return this->bMode; }
     // clang-format on
 
   signals:
