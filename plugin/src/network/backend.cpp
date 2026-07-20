@@ -13,10 +13,10 @@
 #include <fcntl.h>
 #include <qdebug.h>
 #include <qfile.h>
+#include <qglobal.h>
 #include <qiodevice.h>
 #include <qlogging.h>
 #include <qloggingcategory.h>
-#include <qminmax.h>
 #include <qnamespace.h>
 #include <qnumeric.h>
 #include <qobject.h>
