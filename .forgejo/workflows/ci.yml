@@ -16,8 +16,8 @@ jobs:
       - name: Run yamllint
         run: pipx run yamllint .
 
-  cxx:
-    name: Lint CXX
+  plugin:
+    name: Build
     if: forgejo.ref_type != 'tag'
     runs-on: codeberg-medium
     steps:
