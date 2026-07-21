@@ -2,8 +2,10 @@
 
 #include <algorithm>
 #include <limits>
+#include <qglobal.h>
 #include <qlogging.h>
 #include <qloggingcategory.h>
+#include <qobject.h>
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtimer.h>
@@ -19,9 +21,11 @@
 #endif
 // clang-format on
 
-template <typename T> bool floatEq(T a, T b) {
+template <typename T> static bool floatEq(T a, T b) {
     return std::fabs(a - b) <= std::numeric_limits<T>::epsilon();
 }
+
+// NOLINTBEGIN(misc-include-cleaner)
 
 namespace topbar::system {
 
@@ -31,7 +35,7 @@ System::System(QObject *parent)
     : QObject(parent), mPollTimer(new QTimer(this)) {
     this->detectCores();
 
-    this->mPrevTicks.resize(this->mCpuCores * kCpuStates, 0);
+    this->mPrevTicks.resize(qsizetype{this->mCpuCores} * K_CPU_STATES, 0);
     this->mPollTimer->setInterval(3000);
     this->mPollTimer->setSingleShot(false);
 
@@ -46,7 +50,7 @@ System::System(QObject *parent)
     this->mPollTimer->start();
 }
 
-static constexpr int kTzZeroC = 2731;
+static constexpr int K_TZ_ZERO_C = 2731;
 
 int System::interval() const { return this->mPollTimer->interval(); }
 int System::cpuCores() const { return this->mCpuCores; }
@@ -83,6 +87,7 @@ void System::poll() {
     this->updateJails();
 }
 
+#ifdef __FreeBSD__
 void System::detectCores() {
     auto cores = 0;
     auto size = sizeof(cores);
@@ -94,12 +99,14 @@ void System::detectCores() {
         qCWarning(logSystem) << "Failed to read hw.ncpu, defaulting to 1";
     }
 }
+#endif
 
+#ifdef __FreeBSD__
 void System::updateCpu() {
     const auto wantedBytes =
-        static_cast<size_t>(this->mCpuCores * kCpuStates) * sizeof(qint64);
+        static_cast<size_t>(this->mCpuCores * K_CPU_STATES) * sizeof(qint64);
 
-    auto ticks = QVector<qint64>(this->mCpuCores * kCpuStates, 0);
+    auto ticks = QVector<qint64>(this->mCpuCores * K_CPU_STATES, 0);
     auto returnedBytes = wantedBytes;
 
     if (sysctlbyname("kern.cp_times", ticks.data(), &returnedBytes, nullptr, 0)
@@ -109,7 +116,7 @@ void System::updateCpu() {
     }
 
     const auto validCores =
-        static_cast<int>(returnedBytes / sizeof(qint64)) / kCpuStates;
+        static_cast<int>(returnedBytes / sizeof(qint64)) / K_CPU_STATES;
 
     if (validCores <= 0) { return; }
 
@@ -123,12 +130,12 @@ void System::updateCpu() {
     qint64 idleDelta = 0;
 
     for (auto core = 0; core < validCores; core++) {
-        const auto base = core * kCpuStates;
+        const auto base = core * K_CPU_STATES;
 
         qint64 coreTotalDelta = 0;
         qint64 coreIdleDelta = 0;
 
-        for (auto state = 0; state < kCpuStates; state++) {
+        for (auto state = 0; state < K_CPU_STATES; state++) {
             const auto delta =
                 ticks[base + state] - this->mPrevTicks[base + state];
 
@@ -161,7 +168,9 @@ void System::updateCpu() {
         emit this->cpuUsageChanged();
     }
 }
+#endif
 
+#ifdef __FreeBSD__
 void System::updateMemory() {
     auto totalPages = 0u;
     auto size = sizeof(totalPages);
@@ -201,14 +210,16 @@ void System::updateMemory() {
         emit this->memoryUsageChanged();
     }
 }
+#endif
 
+#ifdef __FreeBSD__
 void System::updateDisk() {
     struct statvfs st{};
 
     // statvfs(2): f_blocks is total blocks, f_bfree is free blocks (incl. root
     // reserved), f_bavail is free blocks available to unprivileged processes.
     // We use f_bavail so the bar reflects what the user can actually use.
-    if (::statvfs(this->mDiskMountPoint.toLocal8Bit().constData(), &st) != 0) {
+    if (statvfs(this->mDiskMountPoint.toLocal8Bit().constData(), &st) != 0) {
         qCWarning(logSystem) << "statvfs failed for" << this->mDiskMountPoint;
         return;
     }
@@ -227,7 +238,9 @@ void System::updateDisk() {
         emit this->diskUsageChanged();
     }
 }
+#endif
 
+#ifdef __FreeBSD__
 void System::updateTemperatures() {
     const auto readTempC = [](const char *oid) -> float {
         int raw = 0;
@@ -237,10 +250,10 @@ void System::updateTemperatures() {
             return -1.0f; // sensor module not loaded or OID absent
         }
 
-        // raw <= kTzZeroC means 0 °C or below — sensor uninitialised or broken
-        // (a running CPU will never genuinely be at 0 °C or below)
-        if (raw <= kTzZeroC) { return -1.0f; }
-        return static_cast<float>(raw - kTzZeroC) / 10.0f;
+        // raw <= K_TZ_ZERO_C means 0 °C or below — sensor uninitialised or
+        // broken (a running CPU will never genuinely be at 0 °C or below)
+        if (raw <= K_TZ_ZERO_C) { return -1.0f; }
+        return static_cast<float>(raw - K_TZ_ZERO_C) / 10.0f;
     };
 
     const auto newCpuTemp = readTempC("hw.acpi.thermal.tz0.temperature");
@@ -255,7 +268,9 @@ void System::updateTemperatures() {
         emit this->pchTempChanged();
     }
 }
+#endif
 
+#ifdef __FreeBSD__
 void System::updateJails() {
     QStringList newJails;
     int lastJid = 0;
@@ -269,12 +284,12 @@ void System::updateJails() {
         static char kName[] = "name";
 
         struct iovec iov[] = {
-            {kLastJid, sizeof("lastjid")},
-            {&lastJid,   sizeof(lastJid)},
-            {    kJid,     sizeof("jid")},
-            {    &jid,       sizeof(jid)},
-            {   kName,    sizeof("name")},
-            {    name,      sizeof(name)},
+            {.iov_base = kLastJid, .iov_len = sizeof("lastjid")},
+            {.iov_base = &lastJid,   .iov_len = sizeof(lastJid)},
+            {    .iov_base = kJid,     .iov_len = sizeof("jid")},
+            {    .iov_base = &jid,       .iov_len = sizeof(jid)},
+            {   .iov_base = kName,    .iov_len = sizeof("name")},
+            {    .iov_base = name,      .iov_len = sizeof(name)},
         };
 
         constexpr u_int nIov = sizeof(iov) / sizeof(iov[0]);
@@ -297,5 +312,8 @@ void System::updateJails() {
         emit this->jailsChanged();
     }
 }
+#endif
+
+// NOLINTEND(misc-include-cleaner)
 
 } // namespace topbar::system

@@ -3,6 +3,7 @@
 #include "manager.hpp"
 #include "output.hpp"
 
+#include <QtGlobal>
 #include <qlist.h>
 #include <qobject.h>
 #include <qstring.h>
@@ -11,32 +12,39 @@
 
 namespace topbar::dwl {
 
-DwlIpcQml::DwlIpcQml(QObject *parent) : QObject(parent) {
-    this->manager = DwlIpcManager::instance();
+DwlIpcQml::DwlIpcQml(QObject *parent)
+    : QObject(parent), manager(DwlIpcManager::instance()) {
 
     QObject::connect(
         this->manager, &DwlIpcManager::tagCountChanged, this,
         &DwlIpcQml::tagCountChanged
     );
+
     QObject::connect(
         this->manager, &DwlIpcManager::layoutsChanged, this,
         &DwlIpcQml::layoutsChanged
     );
+
     QObject::connect(
         this->manager, &DwlIpcManager::outputAdded, this,
         &DwlIpcQml::outputsChanged
     );
+
     QObject::connect(
         this->manager, &DwlIpcManager::outputRemoved, this,
         &DwlIpcQml::outputsChanged
     );
+
     QObject::connect(
         this->manager, &QWaylandClientExtension::activeChanged, this,
         &DwlIpcQml::availableChanged
     );
 }
 
-quint32 DwlIpcQml::tagCount() const { return this->manager->tagCount(); }
+quint32 DwlIpcQml::tagCount() const { // NOLINT
+    return this->manager->tagCount();
+}
+
 // NOLINTNEXTLINE(misc-include-cleaner)
 QStringList DwlIpcQml::layouts() const { return this->manager->layouts(); }
 QList<DwlIpcOutput *> DwlIpcQml::outputs() const {

@@ -16,7 +16,8 @@ class UntypedObjectModel : public QAbstractListModel {
     explicit UntypedObjectModel(QObject *parent = nullptr)
         : QAbstractListModel(parent) {}
 
-    QHash<int, QByteArray> roleNames() const override {
+    [[nodiscard]] [[nodiscard]] [[nodiscard]] QHash<int, QByteArray>
+    roleNames() const override {
         return {
             {Qt::UserRole, "modelData"}
         };
@@ -38,13 +39,13 @@ template <typename T> class ObjectModel : public UntypedObjectModel {
     explicit ObjectModel(QObject *parent = nullptr)
         : UntypedObjectModel(parent) {}
 
-    const QList<T *> &valueList() const { return mValuesList; }
+    [[nodiscard]] const QList<T *> &valueList() const { return mValuesList; }
     QList<T *> &valueList() { return mValuesList; }
 
     void insertObject(T *object, qsizetype index = -1) {
         auto i = (index == -1) ? mValuesList.length() : index;
         emit objectInsertedPre(object, i);
-        int intIndex = static_cast<int>(i);
+        int const intIndex = static_cast<int>(i);
         beginInsertRows(QModelIndex(), intIndex, intIndex);
         mValuesList.insert(i, object);
         endInsertRows();
@@ -75,7 +76,7 @@ template <typename T> class ObjectModel : public UntypedObjectModel {
     void removeAt(qsizetype index) {
         auto *object = mValuesList.at(index);
         emit objectRemovedPre(object, index);
-        int intIndex = static_cast<int>(index);
+        int const intIndex = static_cast<int>(index);
         beginRemoveRows(QModelIndex(), intIndex, intIndex);
         mValuesList.removeAt(index);
         endRemoveRows();
@@ -108,12 +109,13 @@ template <typename T> class ObjectModel : public UntypedObjectModel {
         return &instance;
     }
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override {
+    [[nodiscard]] [[nodiscard]] [[nodiscard]] int
+    rowCount(const QModelIndex &parent = QModelIndex()) const override {
         if (parent.isValid()) return 0;
         return static_cast<int>(mValuesList.length());
     }
 
-    QVariant
+    [[nodiscard]] QVariant
     data(const QModelIndex &index, int role = Qt::UserRole) const override {
         if (!index.isValid() || role != Qt::UserRole) return {};
         return QVariant::fromValue(

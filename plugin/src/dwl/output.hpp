@@ -2,6 +2,7 @@
 
 #include "tag.hpp"
 
+#include <QtGlobal>
 #include <qlist.h>
 #include <qobject.h>
 #include <qqmlintegration.h>

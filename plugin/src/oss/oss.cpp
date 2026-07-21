@@ -3,7 +3,6 @@
 #include "../devd/devd.hpp"
 
 #include <algorithm>
-#include <array>
 #include <cerrno>
 #include <cstdlib>
 #include <cstring>
@@ -418,8 +417,8 @@ void OSS::handleDevdEvent(const QString &event) {
 
 #ifdef __FreeBSD__
 void OSS::handleKqueueEvent() {
-    struct kevent event;
-    struct timespec timeout = {.tv_sec = 0, .tv_nsec = 0};
+    struct kevent event{};
+    struct timespec const timeout = {.tv_sec = 0, .tv_nsec = 0};
 
     auto nev = kevent(this->mKqueue, nullptr, 0, &event, 1, &timeout);
 
@@ -450,7 +449,7 @@ void OSS::setupJackDetection() {
         return;
     }
 
-    struct kevent change;
+    struct kevent change{};
     EV_SET(
         &change, this->mLogFileDescriptor, EVFILT_VNODE,
         EV_ADD | EV_ENABLE | EV_CLEAR, NOTE_WRITE | NOTE_EXTEND, 0, nullptr

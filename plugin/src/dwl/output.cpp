@@ -4,6 +4,7 @@
 #include "tag.hpp"
 #include "wayland-dwl-ipc-unstable-v2-client-protocol.h"
 
+#include <QtGlobal>
 #include <cstdint>
 #include <qlist.h>
 #include <qobject.h>
@@ -24,7 +25,10 @@ DwlIpcOutput::~DwlIpcOutput() {
 }
 
 bool DwlIpcOutput::active() const { return this->mActive; }
-quint32 DwlIpcOutput::layoutIndex() const { return this->mLayoutIndex; }
+quint32 DwlIpcOutput::layoutIndex() const { // NOLINT
+    return this->mLayoutIndex;
+}
+
 QString DwlIpcOutput::layoutSymbol() const { return this->mLayoutSymbol; }
 bool DwlIpcOutput::floating() const { return this->mFloating; }
 QList<DwlTag *> DwlIpcOutput::tags() const { return this->mTags; }
@@ -44,9 +48,11 @@ void DwlIpcOutput::setLayout(quint32 index) { this->set_layout(index); }
 void DwlIpcOutput::initTags(quint32 count) {
     for (DwlTag *t : this->mTags) t->deleteLater();
     this->mTags.clear();
-    this->mTags.reserve(static_cast<qsizetype>(count));
+    this->mTags.reserve(static_cast<qsizetype>(count)); // NOLINT
 
-    for (quint32 i = 0; i < count; ++i) this->mTags.append(new DwlTag(i, this));
+    for (quint32 i = 0; i < count; ++i) // NOLINT
+        this->mTags.append(new DwlTag(i, this));
+
     emit this->tagsChanged();
 }
 

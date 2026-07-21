@@ -2,11 +2,13 @@
 
 #include "wayland-dwl-ipc-unstable-v2-client-protocol.h"
 
+#include <QtGlobal>
 #include <qobject.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
 
 namespace topbar::dwl {
+// NOLINTBEGIN(misc-include-cleaner)
 
 ///! State of a single DWL tag.
 /// Represents one tag slot on @@DwlIpcOutput.
@@ -51,5 +53,6 @@ class DwlTag : public QObject {
     quint32 mClientCount = 0;
     quint32 mFocusedClient = 0;
 };
+// NOLINTEND(misc-include-cleaner)
 
 } // namespace topbar::dwl

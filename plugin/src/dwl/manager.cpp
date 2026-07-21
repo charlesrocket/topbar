@@ -23,8 +23,8 @@ namespace topbar::dwl {
 
 namespace {
 
-struct wl_output *wlOutputForScreen(QScreen *screen) {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0) // NOLINT
+struct wl_output *wlOutputForScreen(QScreen *screen) { // NOLINT
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)            // NOLINT
     auto *waylandScreen =
         screen->nativeInterface<QNativeInterface::QWaylandScreen>(); // NOLINT
 

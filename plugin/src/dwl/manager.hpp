@@ -2,6 +2,7 @@
 
 #include "output.hpp"
 
+#include <QtGlobal>
 #include <qhash.h>
 #include <qlist.h>
 #include <qloggingcategory.h>
@@ -24,8 +25,10 @@ class DwlIpcManager : public QWaylandClientExtensionTemplate<DwlIpcManager>,
   public:
     explicit DwlIpcManager();
 
+    // NOLINTBEGIN(misc-include-cleaner)
     [[nodiscard]] quint32 tagCount() const;
     [[nodiscard]] QStringList layouts() const;
+    // NOLINTEND(misc-include-cleaner)
     [[nodiscard]] QList<DwlIpcOutput *> outputs() const;
 
     DwlIpcOutput *bindOutput(struct wl_output *wlOutput, const QString &name);
@@ -40,7 +43,7 @@ class DwlIpcManager : public QWaylandClientExtensionTemplate<DwlIpcManager>,
     void outputRemoved(DwlIpcOutput *output);
 
   protected:
-    void zdwl_ipc_manager_v2_tags(uint32_t amount) override;
+    void zdwl_ipc_manager_v2_tags(uint32_t amount) override; // NOLINT
     void zdwl_ipc_manager_v2_layout(const QString &name) override;
 
   private slots:
@@ -49,7 +52,7 @@ class DwlIpcManager : public QWaylandClientExtensionTemplate<DwlIpcManager>,
 
   private:
     quint32 mTagCount = 0;
-    QStringList mLayouts;
+    QStringList mLayouts; // NOLINT
     QList<DwlIpcOutput *> mOutputs;
     QHash<struct wl_output *, DwlIpcOutput *> mOutputMap;
 };

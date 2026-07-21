@@ -8,11 +8,12 @@
 #include <cstring>
 
 namespace topbar::devd {
+// NOLINTBEGIN(misc-include-cleaner)
 
 // sbin/devd/devd.h
-inline constexpr size_t devdMaxBuf = 8192;
-inline constexpr int reconnectIntervalMs = 5000;
-inline constexpr const char *devdPipe = "/var/run/devd.seqpacket.pipe";
+inline constexpr size_t DEVD_MAX_BUF = 8192;
+inline constexpr int RECONNECT_INTERVAL_MS = 5000;
+inline constexpr const char *DEVD_PIPE = "/var/run/devd.seqpacket.pipe";
 
 class Devd : public QObject {
     Q_OBJECT;
@@ -21,7 +22,8 @@ class Devd : public QObject {
     Q_PROPERTY(bool connected READ isConnected NOTIFY connectedChanged FINAL);
 
   public:
-    static Devd *create(QQmlEngine *engine, QJSEngine *_) {
+    static Devd *
+    create(QQmlEngine *engine, QJSEngine * /*_*/ /*_*/ /*_*/ /*_*/) {
         Q_UNUSED(engine)
         return instance();
     }
@@ -60,5 +62,6 @@ class Devd : public QObject {
     bool mConnected = false;
     QTimer *mReconnectTimer = nullptr;
 };
+// NOLINTEND(misc-include-cleaner)
 
 } // namespace topbar::devd

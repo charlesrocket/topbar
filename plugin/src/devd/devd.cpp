@@ -1,6 +1,8 @@
 #include "devd.hpp"
 
+#include <QObject>
 #include <QQmlEngine>
+#include <QSocketNotifier>
 #include <cerrno>
 #include <cstddef>
 #include <cstring>
@@ -11,6 +13,7 @@
 #include <unistd.h>
 
 namespace topbar::devd {
+// NOLINTBEGIN(misc-include-cleaner)
 
 Q_LOGGING_CATEGORY(logDevd, "topbar.devd")
 
@@ -49,14 +52,14 @@ void Devd::connectToDevd() {
 
     struct sockaddr_un addr = {};
     addr.sun_family = AF_UNIX;
-    strncpy(addr.sun_path, devdPipe, sizeof(addr.sun_path) - 1);
+    strncpy(addr.sun_path, DEVD_PIPE, sizeof(addr.sun_path) - 1);
 
     if (::connect(
             fd, reinterpret_cast<struct sockaddr *>(&addr),
             static_cast<socklen_t>(SUN_LEN(&addr))
         )
         != 0) {
-        qCWarning(logDevd) << "Failed to connect to" << devdPipe
+        qCWarning(logDevd) << "Failed to connect to" << DEVD_PIPE
                            << qt_error_string(errno);
 
         close(fd);
@@ -74,13 +77,13 @@ void Devd::connectToDevd() {
     this->mConnected = true;
 
     emit this->connectedChanged();
-    qCInfo(logDevd) << "Connected to" << devdPipe;
+    qCInfo(logDevd) << "Connected to" << DEVD_PIPE;
 }
 
 void Devd::onSocketActivated() {
     this->mNotifier->setEnabled(false);
 
-    QByteArray buf(devdMaxBuf, Qt::Uninitialized);
+    QByteArray buf(DEVD_MAX_BUF, Qt::Uninitialized);
     const ssize_t n =
         ::recv(this->mFd, buf.data(), static_cast<size_t>(buf.size()), 0);
 
@@ -123,7 +126,7 @@ void Devd::scheduleReconnect() {
     }
 
     if (!this->mReconnectTimer->isActive()) {
-        this->mReconnectTimer->start(reconnectIntervalMs);
+        this->mReconnectTimer->start(RECONNECT_INTERVAL_MS);
     }
 }
 
@@ -153,5 +156,6 @@ void Devd::cleanup() {
 
     if (this->mReconnectTimer) { this->mReconnectTimer->stop(); }
 }
+// NOLINTEND(misc-include-cleaner)
 
 } // namespace topbar::devd

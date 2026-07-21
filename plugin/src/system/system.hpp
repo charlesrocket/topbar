@@ -3,11 +3,14 @@
 #include <qobject.h>
 #include <qqmlintegration.h>
 #include <qstring.h>
+#include <qstringlist.h>
 #include <qtimer.h>
 #include <qtmetamacros.h>
 #include <qvector.h>
 
 namespace topbar::system {
+
+// NOLINTBEGIN(misc-include-cleaner)
 
 class System : public QObject {
     Q_OBJECT;
@@ -65,7 +68,7 @@ class System : public QObject {
 
     // FreeBSD kern.cp_times has CPUSTATES ticks per core. CPUSTATES == 5:
     // CP_USER, CP_NICE, CP_SYS, CP_INTR, CP_IDLE.
-    static constexpr int kCpuStates = 5;
+    static constexpr int K_CPU_STATES = 5;
 
     int mCpuCores = 1;
     QVector<qint64> mPrevTicks; // mCpuCores * kCpuStates
@@ -81,5 +84,7 @@ class System : public QObject {
 
     QTimer *mPollTimer = nullptr;
 };
+
+// NOLINTEND(misc-include-cleaner)
 
 } // namespace topbar::system

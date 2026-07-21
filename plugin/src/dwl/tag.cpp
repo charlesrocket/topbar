@@ -3,10 +3,12 @@
 #include "wayland-dwl-ipc-unstable-v2-client-protocol.h"
 
 #include <QtCore/qtmetamacros.h>
+#include <QtGlobal>
 #include <qobject.h>
 
 namespace topbar::dwl {
 
+// NOLINTBEGIN(misc-include-cleaner)
 DwlTag::DwlTag(quint32 index, QObject *parent)
     : QObject(parent), mIndex(index) {}
 
@@ -40,5 +42,6 @@ void DwlTag::updateState(quint32 state, quint32 clients, quint32 focused) {
         emit this->focusedClientChanged();
     }
 }
+// NOLINTEND(misc-include-cleaner)
 
 } // namespace topbar::dwl

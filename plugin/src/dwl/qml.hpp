@@ -2,9 +2,11 @@
 
 #include "output.hpp"
 
+#include <QtGlobal>
 #include <manager.hpp>
 #include <qobject.h>
 #include <qqmlintegration.h>
+#include <qstring.h>
 #include <qstringlist.h>
 #include <qtmetamacros.h>
 
@@ -25,8 +27,10 @@ class DwlIpcQml : public QObject {
   public:
     explicit DwlIpcQml(QObject *parent = nullptr);
 
+    // NOLINTBEGIN(misc-include-cleaner)
     [[nodiscard]] quint32 tagCount() const;
     [[nodiscard]] QStringList layouts() const;
+    // NOLINTEND(misc-include-cleaner)
     [[nodiscard]] QList<DwlIpcOutput *> outputs() const;
     [[nodiscard]] bool available() const;
 

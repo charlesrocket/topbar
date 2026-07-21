@@ -25,11 +25,11 @@ class Version : public QObject {
     explicit Version(QObject *parent = nullptr);
 
     // clang-format off
-    [[nodiscard]] int major() const { return PROJECT_VERSION_MAJOR; }
-    [[nodiscard]] int minor() const { return PROJECT_VERSION_MINOR; }
-    [[nodiscard]] int patch() const { return PROJECT_VERSION_PATCH; }
-    [[nodiscard]] QString full() const { return u"PROJECT_VERSION_FULL"_s; }
-    [[nodiscard]] QString distributor() const { return u"PROJECT_DISTRIBUTOR"_s; }
+    [[nodiscard]] static int major() { return PROJECT_VERSION_MAJOR; }
+    [[nodiscard]] static int minor() { return PROJECT_VERSION_MINOR; }
+    [[nodiscard]] static int patch() { return PROJECT_VERSION_PATCH; }
+    [[nodiscard]] static QString full() { return u"PROJECT_VERSION_FULL"_s; }
+    [[nodiscard]] static QString distributor() { return u"PROJECT_DISTRIBUTOR"_s; }
     // clang-format on
 };
 

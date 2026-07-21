@@ -5,7 +5,7 @@
 #include "enums.hpp"
 #include "network.hpp"
 #include "wifi.hpp"
-
+// NOLINTBEGIN(misc-include-cleaner)
 #include <array>
 #include <cerrno>
 #include <cstdint>
@@ -18,7 +18,6 @@
 #include <qlogging.h>
 #include <qloggingcategory.h>
 #include <qnamespace.h>
-#include <qnumeric.h>
 #include <qobject.h>
 #include <qprocess.h>
 #include <qregularexpression.h>
@@ -87,6 +86,8 @@ bool isIgnoredInterface(const QString &ifname) {
 }
 } // namespace
 
+// NOLINTBEGIN(misc-include-cleaner)
+
 namespace topbar::network {
 
 Q_LOGGING_CATEGORY(logNetworkFreeBSD, "topbar.network.fbsd")
@@ -122,7 +123,7 @@ FreeBSDBackend::~FreeBSDBackend() {
 }
 
 bool FreeBSDBackend::isAvailable() const {
-    bool available = QFile::exists("/sbin/ifconfig");
+    bool const available = QFile::exists("/sbin/ifconfig");
     if (!available) {
         qCDebug(logNetworkFreeBSD) << "ifconfig not found";
         qCWarning(logNetworkFreeBSD)
@@ -202,7 +203,7 @@ void FreeBSDBackend::handleRouteMessage(const char *buf, ssize_t len) {
 
         const auto *ifan =
             reinterpret_cast<const struct if_announcemsghdr *>(buf);
-        QString ifname = QString::fromLatin1(ifan->ifan_name);
+        QString const ifname = QString::fromLatin1(ifan->ifan_name);
 
         if (isIgnoredInterface(ifname)) {
             qCDebug(logNetworkFreeBSD) << "Ignoring interface:" << ifname;
@@ -370,7 +371,7 @@ void FreeBSDBackend::processInterface(
         auto *device = new FreeBSDWifiDevice(interfaceName, this);
 
         this->mDevices.insert(interfaceName, device);
-        emit this->deviceAdded(device); // NOLINT
+        emit this->deviceAdded(device);
 
         qCDebug(logNetworkFreeBSD) << "Device pointer:" << device;
     } else if (isWiredInterface(interfaceName)) {
@@ -378,7 +379,7 @@ void FreeBSDBackend::processInterface(
         auto *device = new FreeBSDWiredDevice(interfaceName, this);
 
         this->mDevices.insert(interfaceName, device);
-        emit this->deviceAdded(device); // NOLINT
+        emit this->deviceAdded(device);
 
         qCDebug(logNetworkFreeBSD) << "Device pointer:" << device;
     } else {
@@ -1379,6 +1380,8 @@ void FreeBSDWifiNetwork::onForgetRequested() {
         << "Forgetting network" << this->name() << "BSSID:" << this->mBssid;
     this->updateKnown(false);
 }
+
+// NOLINTEND(misc-include-cleaner)
 
 } // namespace topbar::network
 
