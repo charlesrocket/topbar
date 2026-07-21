@@ -21,9 +21,13 @@
 #endif
 // clang-format on
 
-template <typename T> static bool floatEq(T a, T b) {
+namespace {
+
+template <typename T> bool floatEq(T a, T b) {
     return std::fabs(a - b) <= std::numeric_limits<T>::epsilon();
 }
+
+} // namespace
 
 // NOLINTBEGIN(misc-include-cleaner)
 

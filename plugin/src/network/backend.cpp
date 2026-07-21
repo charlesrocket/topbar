@@ -78,15 +78,15 @@ bool isWiredInterface(const QString &ifname) {
 bool isWirelessInterface(const QString &ifname) {
     return ifname.startsWith("wlan");
 }
+
 bool isIgnoredInterface(const QString &ifname) {
     return ifname.startsWith("lo") || ifname.startsWith("pflog")
         || ifname.startsWith("pfsync") || ifname.startsWith("bastille")
         || ifname.startsWith("bridge") || ifname.startsWith("gif")
         || ifname.startsWith("gre") || ifname.startsWith("stf");
 }
-} // namespace
 
-// NOLINTBEGIN(misc-include-cleaner)
+} // namespace
 
 namespace topbar::network {
 
@@ -141,6 +141,7 @@ void FreeBSDBackend::initializeRouteSocket() {
     if (this->mRouteSocket < 0) {
         qCWarning(logNetworkFreeBSD) << "Failed to connect to the route socket:"
                                      << qt_error_string(errno);
+
         return;
     }
 

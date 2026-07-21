@@ -88,6 +88,7 @@ void OSSMixerControl::setMuted(bool muted) {
 
 bool OSSMixerControl::refresh() { return this->updateValue(); }
 
+#ifdef __FreeBSD__
 bool OSSMixerControl::updateValue() {
     auto mixerPath = QString("/dev/mixer%1").arg(this->mDeviceId);
     auto fd = open(mixerPath.toUtf8().constData(), O_RDONLY);
@@ -100,28 +101,20 @@ bool OSSMixerControl::updateValue() {
     auto value = 0;
     auto changed = false;
 
-    // clang-format off
-    #ifdef __FreeBSD__
-    if (ioctl(fd, MIXER_READ(this->mMixerId), &value) < 0) { // NOLINT
+    if (ioctl(fd, MIXER_READ(this->mMixerId), &value) < 0) {
         close(fd);
         qCWarning(logOSS) << "Failed to read mixer";
         return false;
     }
-    #endif
-    // clang-format on
 
     auto newLeft = value & 0xFF;
     auto newRight = (value >> 8) & 0xFF;
     auto muteValue = 0;
     bool newMuted = false;
 
-    // clang-format off
-    #ifdef __FreeBSD__
-    if (ioctl(fd, SOUND_MIXER_READ_MUTE, &muteValue) >= 0) { // NOLINT
+    if (ioctl(fd, SOUND_MIXER_READ_MUTE, &muteValue) >= 0) {
         newMuted = (muteValue & (1 << this->mMixerId)) != 0;
     }
-    #endif
-    // clang-format on
 
     close(fd);
 
@@ -148,6 +141,7 @@ bool OSSMixerControl::updateValue() {
 
     return changed;
 }
+#endif
 
 bool OSSMixerControl::writeValue() {
     auto mixerPath = QString("/dev/mixer%1").arg(this->mDeviceId);
@@ -217,6 +211,7 @@ bool OSSSoundDevice::initialize() {
     if (fd < 0) {
         qCWarning(logOSS) << "Failed to open mixer device:" << mixerPath
                           << "error:" << qt_error_string(errno);
+
         return false;
     }
 
@@ -458,6 +453,7 @@ void OSS::setupJackDetection() {
     if (kevent(this->mKqueue, &change, 1, nullptr, 0, nullptr) < 0) {
         qCWarning(logOSS) << "Failed to register kqueue event:"
                           << qt_error_string(errno);
+
         close(this->mKqueue);
         close(this->mLogFileDescriptor);
 
@@ -761,7 +757,9 @@ void OSS::updateDefault() {
     }
 }
 
-bool OSS::setDefaultDevice(int deviceId) {
+// NOLINTEND(misc-include-cleaner)
+
+bool OSS::setDefaultDevice(int deviceId) { // NOLINT
     const size_t size = sizeof(deviceId);
 
     // clang-format off

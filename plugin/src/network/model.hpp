@@ -67,7 +67,7 @@ template <typename T> class ObjectModel : public UntypedObjectModel {
     }
 
     bool removeObject(const T *object) {
-        auto index = mValuesList.indexOf(const_cast<T *>(object));
+        auto index = mValuesList.indexOf(object);
         if (index == -1) return false;
         removeAt(index);
         return true;
