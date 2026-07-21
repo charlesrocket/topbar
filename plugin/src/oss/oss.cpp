@@ -197,6 +197,8 @@ OSSSoundDevice::OSSSoundDevice(int deviceId, QObject *parent)
     this->mName = QString("pcm%1").arg(deviceId);
 }
 
+// NOLINTBEGIN(misc-include-cleaner)
+
 int OSSSoundDevice::deviceId() const { return this->mDeviceId; }
 QString OSSSoundDevice::name() const { return this->mName; }
 QString OSSSoundDevice::description() const { return this->mDescription; }
