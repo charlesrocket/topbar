@@ -1,4 +1,4 @@
-find_package(Git REQUIRED)
+find_package(Git)
 
 execute_process(
     COMMAND git status --porcelain
