@@ -15,10 +15,7 @@ endif()
 
 include(${CMAKE_SOURCE_DIR}/plugin/version.cmake)
 include(${CMAKE_SOURCE_DIR}/plugin/util.cmake)
-
-message(STATUS "XDG install directory: ${INSTALL_XDGDIR}")
-message(STATUS "Library install directory: ${INSTALL_LIBDIR}")
-message(STATUS "Distributor: ${DISTRIBUTOR}")
+include(${CMAKE_SOURCE_DIR}/plugin/pch.cmake)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -42,10 +39,6 @@ add_compile_options(
     -Wunreachable-code -Wno-extra-semi
 )
 
-if(TESTING)
-  enable_testing()
-endif()
-
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wunused-lambda-capture)
 endif()
@@ -59,4 +52,8 @@ endif()
 
 if("plugin" IN_LIST ENABLE_MODULES)
     add_subdirectory(plugin)
+endif()
+
+if(TESTING)
+    enable_testing()
 endif()
