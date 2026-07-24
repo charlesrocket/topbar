@@ -7,6 +7,10 @@ set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install directory")
 set(INSTALL_QMLDIR "lib/qt6/qml" CACHE STRING "QML install directory")
 set(INSTALL_XDGDIR "etc/xdg" CACHE STRING "XDG install directory")
 
+if (FETCHCONTENT_FULLY_DISCONNECTED)
+    message(STATUS "Offline build engaged")
+endif()
+
 if(UNIX)
     include_directories(/usr/local/include)
     link_directories(/usr/local/lib)
