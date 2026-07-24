@@ -3,21 +3,8 @@ name: CI
 "on": [push, pull_request]
 
 jobs:
-  yaml:
-    name: Lint YAML
-    if: forgejo.ref_type != 'tag'
-    runs-on: codeberg-tiny
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          persist-credentials: false
-
-      - name: Run yamllint
-        run: pipx run yamllint .
-
-  plugin:
-    name: Build
+  lint:
+    name: Lint
     if: forgejo.ref_type != 'tag'
     runs-on: codeberg-medium
     steps:
@@ -47,3 +34,45 @@ jobs:
           find plugin -type f -name "*.cpp" -print0 |
           parallel -j$(nproc) -q0 --no-notice --will-cite --tty
           clang-tidy -p build/compile_commands.json
+
+  test:
+    name: Test
+    if: false # waiting for ubuntu26
+    runs-on: codeberg-medium
+    env:
+      QT_QPA_PLATFORM: offscreen
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Install dependencies
+        run: >-
+          sudo apt update && sudo apt install -y
+          gcc cmake ninja-build
+          qt6-base-dev qt6-declarative-dev
+          qt6-wayland qt6-wayland-dev qt6-wayland-dev-tools
+          wayland-protocols
+          qml6-module-qtqml-workerscript
+          qml6-module-qtquick
+
+      - name: Build
+        run: >-
+          cmake -B build -G Ninja &&
+          cmake --build build
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
+
+  release:
+    name: Create release
+    needs: test
+    if: >-
+      forgejo.ref_type == 'tag' &&
+      forgejo.repository_owner == 'charlesrocket'
+
+    uses: charlesrocket/reusable/.forgejo/workflows/release.yml@trunk
+    with:
+      skip-assets: true
