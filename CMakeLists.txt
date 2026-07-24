@@ -14,8 +14,8 @@ if(UNIX)
 endif()
 
 include(${CMAKE_SOURCE_DIR}/plugin/version.cmake)
-include(${CMAKE_SOURCE_DIR}/plugin/util.cmake)
 include(${CMAKE_SOURCE_DIR}/plugin/pch.cmake)
+include(${CMAKE_SOURCE_DIR}/plugin/util.cmake)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
