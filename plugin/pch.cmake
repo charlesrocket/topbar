@@ -17,7 +17,7 @@ if (ENABLE_PCH)
         <qtmetamacros.h>
         <qdir.h>
         <qlist.h>
-        <qstringlist.h>
+        <qsocketnotifier.h>
         <qstringlist.h>
         <qpointer.h>
     )
