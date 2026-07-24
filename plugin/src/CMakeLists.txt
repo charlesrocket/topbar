@@ -7,6 +7,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     Quick
     QuickControls2
     Concurrent
+    Test
 )
 
 find_package(PkgConfig REQUIRED)
@@ -26,9 +27,8 @@ find_program(QT_WAYLAND_SCANNER_EXE
 )
 
 set(QT_QML_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml")
-qt_standard_project_setup(REQUIRES 6.9)
+qt_standard_project_setup(REQUIRES 6.10)
 add_library(topbar-pch INTERFACE)
-
 pkg_get_variable(WAYLAND_PROTOCOLS wayland-protocols pkgdatadir)
 
 if(WAYLAND_PROTOCOLS)

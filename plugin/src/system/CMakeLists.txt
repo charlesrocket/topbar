@@ -1,6 +1,6 @@
 qt_add_qml_module(topbar-system
     URI TopBar.System
-    VERSION ${PROJECT_VERSION}
+    VERSION 0.1
     SOURCES system.cpp
     DEPENDENCIES QtQml
 )
