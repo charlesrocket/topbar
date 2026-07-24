@@ -1,7 +1,7 @@
 message(STATUS "Distributor: ${DISTRIBUTOR}")
+message(STATUS "Library directory: ${INSTALL_LIBDIR}")
 message(STATUS "QML directory: ${CMAKE_INSTALL_PREFIX}/${INSTALL_QMLDIR}")
 message(STATUS "XDG directory: ${INSTALL_XDGDIR}")
-message(STATUS "Library directory: ${INSTALL_LIBDIR}")
 
 find_package(Qt6 REQUIRED COMPONENTS
     Core
@@ -40,6 +40,7 @@ else()
 endif()
 
 set(QT_QML_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml")
+include(${CMAKE_SOURCE_DIR}/plugin/pch.cmake)
 
 qt_standard_project_setup(REQUIRES 6.10)
 

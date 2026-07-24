@@ -1,4 +1,4 @@
-if (ENABLE_PCH)
+if (PCH)
     add_library(topbar-pch INTERFACE)
     target_precompile_headers(topbar-pch INTERFACE
         <cstdint>

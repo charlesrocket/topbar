@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
-project(topbar VERSION 0.3.0)
+project(topbar VERSION 0.3.0 LANGUAGES CXX C)
 
 set(DISTRIBUTOR "Unset" CACHE STRING "Distributor")
 set(ENABLE_MODULES "components;plugin" CACHE STRING "Modules to build")
 set(INSTALL_LIBDIR "lib/topbar" CACHE STRING "Library install directory")
 set(INSTALL_QMLDIR "lib/qt6/qml" CACHE STRING "QML install directory")
 set(INSTALL_XDGDIR "etc/xdg" CACHE STRING "XDG install directory")
-set(ENABLE_PCH TRUE CACHE BOOL "Use PCH")
 
 if(UNIX)
     include_directories(/usr/local/include)
@@ -14,7 +13,6 @@ if(UNIX)
 endif()
 
 include(${CMAKE_SOURCE_DIR}/plugin/version.cmake)
-include(${CMAKE_SOURCE_DIR}/plugin/pch.cmake)
 include(${CMAKE_SOURCE_DIR}/plugin/util.cmake)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -29,6 +27,7 @@ boption(SYSTEM "System" ON)
 boption(NETWORK "Network" ON REQUIRES DEVD)
 boption(OSS "OSS" ON REQUIRES DEVD)
 boption(DWL "Mango" ON)
+boption(PCH "Precompiled headers" ON)
 boption(TESTING "Test suite" ON)
 
 add_compile_options(
