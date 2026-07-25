@@ -17,10 +17,11 @@ Item {
     NotificationServer {
         id: server
 
-        actionsSupported: true
         bodySupported: true
+        bodyImagesSupported: true
         bodyMarkupSupported: false
         imageSupported: true
+        actionsSupported: true
         keepOnReload: false
 
         onNotification: notif => {

@@ -51,7 +51,7 @@ Item {
     }
 
     function showTrackInfo() {
-        notify.command = ["notify-send", "-u", "low", "-a", "Player", "-i", root.artUrl, root.artist,  root.title];
+        notify.command = ["notify-send", "-u", "low", "-i", root.artUrl, root.artist,  root.title];
         notify.running = true;
     }
 

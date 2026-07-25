@@ -22,7 +22,6 @@ Rectangle {
     readonly property bool ready: notification !== null
     readonly property bool hasImage: ready && notification.image !== ""
     readonly property bool hasAppIcon: ready && notification.appIcon !== ""
-    readonly property bool showIcon: hasImage || hasAppIcon
 
     readonly property color urgencyColor: {
         if (!ready)
@@ -142,50 +141,43 @@ Rectangle {
     // content row
     RowLayout {
         id: bodyRow
-        spacing: 10
+        spacing: 6
 
         anchors {
             left: parent.left
             right: parent.right
-            rightMargin: 8
             top: parent.top
             topMargin: 12
             leftMargin: 12
+            rightMargin: 12
+            bottomMargin: 12
         }
 
         // text content
         ColumnLayout {
             id: contentLayout
             Layout.fillWidth: true
-            spacing: 8
+            spacing: 6
 
             // app name
             RowLayout {
                 Layout.fillWidth: true
-                spacing: 8
-                visible: root.showIcon && root.ready
+                spacing: 6
+                visible: root.notification.appName && root.ready
                 Layout.alignment: Qt.AlignVCenter
 
-                // icon
+                // app icon
                 Item {
                     id: iconContainer
-                    visible: root.showIcon
-                    implicitWidth: 15
-                    implicitHeight: 15
-
-                    IconImage {
-                        id: notifImage
-                        anchors.fill: parent
-                        source: (root.hasImage && !root.hasAppIcon) ? root.notification.image : ""
-                        visible: root.hasImage && !root.hasAppIcon
-                        mipmap: true
-                    }
+                    visible: root.hasAppIcon && root.notification.appName
+                    implicitWidth: 12
+                    implicitHeight: 12
 
                     IconImage {
                         id: appIconImage
                         anchors.fill: parent
-                        source: (!root.hasImage && root.hasAppIcon) ? "image://icon/" + root.notification.appIcon : ""
-                        visible: !root.hasImage && root.hasAppIcon
+                        source: root.hasAppIcon ? root.notification.appIcon : ""
+                        visible: root.hasAppIcon
                         mipmap: true
                     }
                 }
@@ -193,7 +185,7 @@ Rectangle {
                 Text {
                     text: root.ready ? (root.notification.appName === "notify-send" ? "" : root.notification.appName) : ""
                     color: Qt.darker(Config.colors.fg, 1.3)
-                    font.pixelSize: 18
+                    font.pixelSize: 14
                     font.family: root.fontFamily
                     font.weight: Font.Light
                     elide: Text.ElideRight
@@ -216,15 +208,37 @@ Rectangle {
             }
 
             // body
-            Text {
-                text: root.ready ? root.notification.body : ""
-                color: Config.colors.fg
-                font.pixelSize: 13
-                font.family: root.fontFamily
-                wrapMode: Text.WordWrap
-                textFormat: Text.PlainText
+            RowLayout {
                 Layout.fillWidth: true
-                visible: text.length > 0
+                spacing: 6
+                visible: root.ready
+                Layout.alignment: Qt.AlignVCenter
+
+                Text {
+                    text: root.ready ? root.notification.body : ""
+                    color: Config.colors.fg
+                    font.pixelSize: 13
+                    font.family: root.fontFamily
+                    wrapMode: Text.WordWrap
+                    textFormat: Text.PlainText
+                    Layout.fillWidth: true
+                    visible: text.length > 0
+                }
+
+                // image
+                Item {
+                    visible: root.hasImage
+                    implicitWidth: 28
+                    implicitHeight: 28
+
+                    Image {
+                        anchors.fill: parent
+                        visible: root.hasImage
+                        source: root.hasImage ? root.notification.image : ""
+                        mipmap: true
+                        smooth: false
+                    }
+                }
             }
 
             // action buttons
