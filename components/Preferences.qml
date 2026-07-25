@@ -822,6 +822,49 @@ FloatingWindow {
                                 }
 
                                 Text {
+                                    text: "Timeouts"
+                                    font.family: Config.general.fontFamily
+                                    font.pixelSize: Config.general.fontSize + 2
+                                    font.bold: true
+                                    color: Config.colors.accent
+                                    Layout.topMargin: 16
+                                }
+
+                                GridLayout {
+                                    id: sessionTimeoutsSection
+                                    width: parent.width
+                                    columns: 3
+                                    rows: 1
+                                    columnSpacing: 14
+                                    rowSpacing: 14
+
+                                    SettingRow {
+                                        label: "Lock"
+                                        targetObject: Config.session.timeouts
+                                        targetProperty: "lock"
+                                        valueType: "string"
+                                    }
+
+                                    SettingRow {
+                                        label: "Display"
+                                        targetObject: Config.session.timeouts
+                                        targetProperty: "display"
+                                        valueType: "string"
+                                    }
+
+                                    SettingRow {
+                                        label: "Suspend"
+                                        targetObject: Config.session.timeouts
+                                        targetProperty: "suspend"
+                                        valueType: "string"
+                                    }
+
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.session.commands, sessionCommandsSection, "Config.session.timeouts", null);
+                                    }
+                                }
+
+                                Text {
                                     text: "Commands"
                                     font.family: Config.general.fontFamily
                                     font.pixelSize: Config.general.fontSize + 2
@@ -963,18 +1006,6 @@ FloatingWindow {
         required property string targetProperty
         required property string valueType
 
-        Text {
-            text: settingRow.label
-            font.family: Config.general.fontFamily
-            font.pixelSize: Config.general.fontSize
-            color: Config.colors.fg
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignRight
-            Layout.preferredWidth: 150
-            Layout.alignment: Qt.AlignVCenter
-            Layout.fillWidth: true
-        }
-
         Item {
             Layout.fillWidth: false
             Layout.preferredWidth: 160
@@ -1058,6 +1089,17 @@ FloatingWindow {
                     }
                 }
             }
+        }
+
+        Text {
+            text: settingRow.label
+            font.family: Config.general.fontFamily
+            font.pixelSize: Config.general.fontSize
+            color: Config.colors.fg
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
+            Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
         }
     }
 

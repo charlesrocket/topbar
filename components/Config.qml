@@ -132,6 +132,12 @@ Singleton {
                     property string shutdown: "shutdown -p now"
                     property string reboot: "shutdown -r now"
                 }
+
+                property JsonObject timeouts: JsonObject { // in seconds
+                    property int lock: 600
+                    property int display: 690
+                    property int suspend: 3600
+                }
             }
 
             // workspaces

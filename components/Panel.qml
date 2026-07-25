@@ -188,7 +188,6 @@ PanelWindow {
         id: notif
         active: Config.notifications.enabled
         visible: notif.active
-
         sourceComponent: Notifications {}
     }
 
@@ -278,7 +277,7 @@ PanelWindow {
     }
 
     IdleMonitor {
-        timeout: 600
+        timeout: Config.session.timeouts.lock
         enabled: !States.keepAwake
 
         onIsIdleChanged: {
@@ -289,7 +288,7 @@ PanelWindow {
     }
 
     IdleMonitor {
-        timeout: 690
+        timeout: Config.session.timeouts.display
         enabled: !States.keepAwake
 
         onIsIdleChanged: {
@@ -302,7 +301,7 @@ PanelWindow {
     }
 
     IdleMonitor {
-        timeout: 3600
+        timeout: Config.session.timeouts.suspend
         enabled: !States.keepAwake
 
         onIsIdleChanged: {
