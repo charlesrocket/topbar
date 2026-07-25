@@ -28,8 +28,8 @@ class Version : public QObject {
     [[nodiscard]] static int major() { return PROJECT_VERSION_MAJOR; }
     [[nodiscard]] static int minor() { return PROJECT_VERSION_MINOR; }
     [[nodiscard]] static int patch() { return PROJECT_VERSION_PATCH; }
-    [[nodiscard]] static QString full() { return u"PROJECT_VERSION_FULL"_s; }
-    [[nodiscard]] static QString distributor() { return u"PROJECT_DISTRIBUTOR"_s; }
+    [[nodiscard]] static QString full() { return QStringLiteral(PROJECT_VERSION_FULL); }
+    [[nodiscard]] static QString distributor() { return QStringLiteral(PROJECT_DISTRIBUTOR); }
     // clang-format on
 };
 
