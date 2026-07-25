@@ -152,10 +152,12 @@ FloatingWindow {
                             Layout.fillHeight: true
                             clip: true
 
-                            ColumnLayout {
+                            GridLayout {
                                 id: generalSection
                                 width: parent.width
-                                spacing: 12
+                                columns: 1
+                                columnSpacing: 14
+                                rowSpacing: 14
 
                                 SettingRow {
                                     label: "Locale"
@@ -243,8 +245,8 @@ FloatingWindow {
                                 id: colorsSection
                                 width: parent.width
                                 columns: 2
-                                columnSpacing: 16
-                                rowSpacing: 12
+                                columnSpacing: 14
+                                rowSpacing: 14
 
                                 SettingRow {
                                     label: "Background"
@@ -361,7 +363,7 @@ FloatingWindow {
                                 width: parent.width
                                 height: parent.height
                                 columns: 2
-                                columnSpacing: 16
+                                columnSpacing: 14
                                 rowSpacing: 14
 
                                 SettingRow {
@@ -460,14 +462,18 @@ FloatingWindow {
                             Layout.fillHeight: true
                             clip: true
 
-                            ColumnLayout {
+                            GridLayout {
                                 width: parent.width
-                                spacing: 12
+                                columns: 2
+                                columnSpacing: 14
+                                rowSpacing: 14
 
-                                ColumnLayout {
+                                GridLayout {
                                     id: barSection
                                     width: parent.width
-                                    spacing: 12
+                                    columns: 1
+                                    columnSpacing: 14
+                                    rowSpacing: 14
 
                                     SettingRow {
                                         label: "Height"
@@ -488,10 +494,12 @@ FloatingWindow {
                                     }
                                 }
 
-                                ColumnLayout {
+                                GridLayout {
                                     id: barTitleSection
                                     width: parent.width
-                                    spacing: 12
+                                    columns: 1
+                                    columnSpacing: 14
+                                    rowSpacing: 14
 
                                     SettingRow {
                                         label: "Width"
@@ -592,10 +600,12 @@ FloatingWindow {
                             Layout.fillHeight: true
                             clip: true
 
-                            ColumnLayout {
+                            GridLayout {
                                 id: workspaceSection
                                 width: parent.width
-                                spacing: 12
+                                columns: 2
+                                columnSpacing: 14
+                                rowSpacing: 14
 
                                 SettingRow {
                                     label: "Workspace 1"
@@ -727,10 +737,12 @@ FloatingWindow {
                             Layout.fillHeight: true
                             clip: true
 
-                            ColumnLayout {
+                            GridLayout {
                                 id: lockscreenSection
                                 width: parent.width
-                                spacing: 12
+                                columns: 2
+                                columnSpacing: 14
+                                rowSpacing: 14
 
                                 SettingRow {
                                     label: "Wallpaper"
@@ -818,10 +830,12 @@ FloatingWindow {
                                     Layout.topMargin: 16
                                 }
 
-                                ColumnLayout {
+                                GridLayout {
                                     id: sessionCommandsSection
                                     width: parent.width
-                                    spacing: 12
+                                    columns: 2
+                                    columnSpacing: 14
+                                    rowSpacing: 14
 
                                     SettingRow {
                                         label: "Lock"
@@ -940,15 +954,14 @@ FloatingWindow {
 
     component SettingRow: RowLayout {
         id: settingRow
+        height: 32
+        Layout.fillWidth: true
+        spacing: 14
 
         required property string label
         required property var targetObject
         required property string targetProperty
         required property string valueType
-
-        height: 32
-        Layout.fillWidth: true
-        spacing: 8
 
         Text {
             text: settingRow.label
@@ -956,91 +969,91 @@ FloatingWindow {
             font.pixelSize: Config.general.fontSize
             color: Config.colors.fg
             verticalAlignment: Text.AlignVCenter
-            Layout.preferredWidth: valueType === "bool" ? -1 : 150
-            Layout.fillWidth: valueType === "bool"
-        }
-
-        // color preview box
-        Rectangle {
-            visible: valueType === "color"
-            width: 40
-            height: 24
-            color: visible ? targetObject[targetProperty] : "transparent"
-            border.color: Config.colors.border
-            border.width: 1
-            radius: Config.general.cornerRadius
-        }
-
-        // string box
-        TextField {
-            id: textField
-            visible: valueType === "string" || valueType === "int" || valueType === "color"
-            Layout.fillWidth: true
-            font.family: Config.general.fontFamily
-            font.pixelSize: Config.general.fontSize - 2
-            color: Config.colors.fg
-            selectionColor: Config.colors.action
-            selectedTextColor: Config.colors.bg
-
-            Component.onCompleted: {
-                text = targetObject[targetProperty].toString();
-            }
-
-            onEditingFinished: {
-                if (valueType === "int") {
-                    targetObject[targetProperty] = parseInt(text);
-                } else {
-                    targetObject[targetProperty] = text;
-                }
-            }
-
-            background: Rectangle {
-                color: Config.colors.dark
-                border.color: parent.activeFocus ? Config.colors.action : Config.colors.border
-                border.width: 1
-                radius: Config.general.cornerRadius
-
-                Behavior on border.color {
-                    ColAnim {}
-                }
-            }
-        }
-
-        // boolean switch
-        Switch {
-            id: boolSwitch
-            visible: valueType === "bool"
+            horizontalAlignment: Text.AlignRight
+            Layout.preferredWidth: 150
             Layout.alignment: Qt.AlignVCenter
-            implicitHeight: 24
-            checked: targetObject[targetProperty]
+            Layout.fillWidth: true
+        }
 
-            onToggled: {
-                targetObject[targetProperty] = checked;
-            }
+        Item {
+            Layout.fillWidth: false
+            Layout.preferredWidth: 160
+            Layout.alignment: Qt.AlignVCenter
+            implicitHeight: 32
 
-            indicator: Rectangle {
-                implicitWidth: 48
-                implicitHeight: 24
-                radius: 12
-                color: parent.checked ? Config.colors.accent : Config.colors.passive
+            Rectangle {
+                id: colorSwatch
+                visible: settingRow.valueType === "color"
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                width: 40
+                height: 24
+                color: visible ? settingRow.targetObject[settingRow.targetProperty] : "transparent"
                 border.color: Config.colors.border
                 border.width: 1
+                radius: Config.general.cornerRadius
+            }
 
-                Behavior on color {
-                    ColAnim {}
+            TextField {
+                id: textField
+                visible: settingRow.valueType === "string" || settingRow.valueType === "int" || settingRow.valueType === "color"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.left: settingRow.valueType === "color" ? colorSwatch.right : parent.left
+                anchors.leftMargin: settingRow.valueType === "color" ? 8 : 0
+                font.family: Config.general.fontFamily
+                font.pixelSize: Config.general.fontSize - 2
+                color: Config.colors.fg
+                selectionColor: Config.colors.action
+                selectedTextColor: Config.colors.bg
+                Component.onCompleted: text = settingRow.targetObject[settingRow.targetProperty].toString()
+
+                onEditingFinished: {
+                    if (settingRow.valueType === "int")
+                        settingRow.targetObject[settingRow.targetProperty] = parseInt(text);
+                    else
+                        settingRow.targetObject[settingRow.targetProperty] = text;
                 }
 
-                Rectangle {
-                    x: parent.parent.checked ? parent.width - width - 2 : 2
-                    y: 2
-                    width: 20
-                    height: 20
-                    radius: 10
-                    color: Config.colors.fg
+                background: Rectangle {
+                    color: Config.colors.dark
+                    border.color: parent.activeFocus ? Config.colors.action : Config.colors.border
+                    border.width: 1
+                    radius: Config.general.cornerRadius
 
-                    Behavior on x {
-                        NumberAnimation {
-                            duration: Config.general.animDuration
+                    Behavior on border.color { ColAnim {} }
+                }
+            }
+
+            Switch {
+                id: boolSwitch
+                visible: settingRow.valueType === "bool"
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                implicitHeight: 24
+                checked: settingRow.targetObject[settingRow.targetProperty]
+                onToggled: settingRow.targetObject[settingRow.targetProperty] = checked
+
+                indicator: Rectangle {
+                    implicitWidth: 48
+                    implicitHeight: 24
+                    radius: 12
+                    color: parent.checked ? Config.colors.accent : Config.colors.passive
+                    border.color: Config.colors.border
+                    border.width: 1
+
+                    Behavior on color { ColAnim {} }
+
+                    Rectangle {
+                        x: parent.parent.checked ? parent.width - width - 2 : 2
+                        y: 2
+                        width: 20
+                        height: 20
+                        radius: 10
+                        color: Config.colors.fg
+
+                        Behavior on x {
+                            NumberAnimation { duration: Config.general.animDuration }
                         }
                     }
                 }
