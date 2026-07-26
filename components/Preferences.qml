@@ -1007,9 +1007,9 @@ FloatingWindow {
         required property string valueType
 
         Item {
-            Layout.fillWidth: false
-            Layout.preferredWidth: 160
-            Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
+            Layout.preferredWidth: 120
+            Layout.alignment: Qt.AlignRight
             implicitHeight: 32
 
             Rectangle {
@@ -1049,7 +1049,7 @@ FloatingWindow {
                 background: Rectangle {
                     color: Config.colors.dark
                     border.color: parent.activeFocus ? Config.colors.action : Config.colors.border
-                    border.width: 1
+                    border.width: Config.general.borderWidth
                     radius: Config.general.cornerRadius
 
                     Behavior on border.color { ColAnim {} }
@@ -1099,7 +1099,7 @@ FloatingWindow {
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
             Layout.alignment: Qt.AlignVCenter
-            Layout.fillWidth: true
+            Layout.fillWidth: false
         }
     }
 
