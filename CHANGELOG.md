@@ -2,6 +2,140 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2026-07-26
+
+### Bug Fixes
+
+- Move `Version`
+- Use local devd module
+- Use single `Devd` instance
+- Check `mNotifier`
+- Connect devd directly
+- Improve blur detection
+- Reposition toast icon
+- Move notifications toast
+- Use implicit sizes in toasts
+- Improve toast actions
+- Change `Weather` border color
+- Drop implicit source dimensions
+- Fully utilize toast surface
+- Set close button background
+- Edit toast messages
+- Disable bar when hidden
+- Disable widgets before lock
+- Ensure current date is valid
+- Update default wallpaper
+- Remove old imports
+- Move root file
+- Drop `defaultWallpaper`
+- Link settings
+- Set `NativeTextRendering`
+- `topbar` -> `bar`
+- Drop qml file
+- Update imports
+- Remove `qtypes`
+- Gate `QWaylandScreen` call
+- Import `QT_VERSION_CHECK`
+- Drop `default`
+- Reimport `qMin`
+- Drop `QOverload`
+- Gate FreeBSD calls
+- Add `qstring`
+- Update `version`
+- Add `QtGlobal`
+- Reimplement images
+- Fix `Version` strings
+- Improve layout
+- Adjust layout
+
+### Documentation
+
+- Add `Contributing`
+- Update usage
+- Update settings file
+- Remove qml settings
+- Update installation
+- Update requirements
+- Add badges
+
+### Features
+
+- Animate calendar
+- Add player toasts
+- Use `topbar/settings.json`
+- Add `configWatch`
+- Add `session.timeouts`
+
+### Miscellaneous tasks
+
+- Update default values
+- Ignore `.cache`
+- Drop `.qmlls.ini`
+
+### Operations
+
+- Bump actions/checkout from 6 to 7
+- Move pull request template
+- Add release job
+- More `release` job
+- Downgrade runner
+- Update `release` job
+- Add `yaml` job
+- Add `cxx` job
+- Fix format command
+- Install qt packages
+- Install `wayland-scanner`
+- Install qt wayland tools
+- Install `parallel`
+- Rename cxx job
+- Add `test` job
+- Update `release`
+
+### Refactor
+
+- Use literal operator
+- Improve constants
+- Drop const casts
+- Fix `oss` lints
+
+### Styling
+
+- Drop newline
+
+### Testing
+
+- Add `instance`
+
+### Build
+
+- Fix fallback version string
+- Check dirty state
+- Move `devd` module
+- Fix devd module description
+- Install config in xdg path
+- Set module version
+- Set xdg directory
+- Add modules
+- Add `ENABLE_PCH`
+- Set distributor
+- Edit messages
+- Fix `qtwaylandscanner`
+- Fix target links
+- Enable `SYSTEM` on FreeBSD
+- Add FreeBSD gates
+- Fix bsd check
+- Watch plugin files
+- Set qt project
+- Update direnv command
+- Reorganize modules
+- Add `qsocketnotifier` to pch
+- Set versions
+- Move pch import
+- Fix `CMAKE_RUNTIME_OUTPUT_DIRECTORY`
+- Add `PCH` option
+- Indicate offline configuration
+- Make `git` soft dependency
+
 ## [0.2.0] - 2026-05-17
 
 ### Bug Fixes
