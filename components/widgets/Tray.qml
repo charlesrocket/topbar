@@ -33,6 +33,7 @@ Item {
                 MouseArea {
                     id: trayElement
                     width: root.iconSize
+                    hoverEnabled: true
                     height: root.iconSize
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
@@ -61,8 +62,8 @@ Item {
                         layer.smooth: true
                         layer.textureSize: Qt.size(root.iconSize * 2, root.iconSize * 2)
                         layer.effect: MultiEffect {
-                            saturation: -1.0
-                            colorization: 1.0
+                            saturation: trayElement.containsMouse | trayElement.containsPress ? 0 : -1.0
+                            colorization: trayElement.containsMouse | trayElement.containsPress ? 0 : 1.0
                             colorizationColor: root.iconColor
                         }
                     }
