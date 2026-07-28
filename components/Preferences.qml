@@ -842,21 +842,21 @@ FloatingWindow {
                                         label: "Lock"
                                         targetObject: Config.session.timeouts
                                         targetProperty: "lock"
-                                        valueType: "string"
+                                        valueType: "int"
                                     }
 
                                     SettingRow {
                                         label: "Display"
                                         targetObject: Config.session.timeouts
                                         targetProperty: "display"
-                                        valueType: "string"
+                                        valueType: "int"
                                     }
 
                                     SettingRow {
                                         label: "Suspend"
                                         targetObject: Config.session.timeouts
                                         targetProperty: "suspend"
-                                        valueType: "string"
+                                        valueType: "int"
                                     }
 
                                     Component.onCompleted: {
