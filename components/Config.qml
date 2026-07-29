@@ -1,5 +1,5 @@
-pragma ComponentBehavior: Bound
 pragma Singleton
+pragma ComponentBehavior: Bound
 
 import Quickshell
 import Quickshell.Io
