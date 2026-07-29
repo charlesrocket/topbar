@@ -19,6 +19,7 @@ class Version : public QObject {
     Q_PROPERTY(int minor READ minor CONSTANT);
     Q_PROPERTY(int patch READ patch CONSTANT);
     Q_PROPERTY(QString full READ full CONSTANT);
+    Q_PROPERTY(QString plaform READ platform CONSTANT);
     Q_PROPERTY(QString distributor READ distributor CONSTANT);
 
   public:
@@ -29,6 +30,7 @@ class Version : public QObject {
     [[nodiscard]] static int minor() { return PROJECT_VERSION_MINOR; }
     [[nodiscard]] static int patch() { return PROJECT_VERSION_PATCH; }
     [[nodiscard]] static QString full() { return QStringLiteral(PROJECT_VERSION_FULL); }
+    [[nodiscard]] static QString platform() { return QStringLiteral(PROJECT_PLATFORM); }
     [[nodiscard]] static QString distributor() { return QStringLiteral(PROJECT_DISTRIBUTOR); }
     // clang-format on
 };

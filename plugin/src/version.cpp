@@ -12,6 +12,7 @@ Q_LOGGING_CATEGORY(logVersion, "topbar.version")
 
 Version::Version(QObject *parent) : QObject(parent) {
     qCInfo(logVersion) << PROJECT_VERSION_FULL;
+    qDebug(logVersion) << "distributor " << PROJECT_DISTRIBUTOR;
 }
 
 } // namespace topbar::version
