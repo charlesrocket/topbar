@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2026-07-30
+
+### Bug Fixes
+
+- Colorize tray icons on hover
+- Fix `timeouts` types
+- Reset singletons
+- Set `distributor`
+- Edit `distributor` print
+
+### Build
+
+- Set `PROJECT_PLATFORM`
+
 ## [0.3.0] - 2026-07-26
 
 ### Bug Fixes
