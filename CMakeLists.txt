@@ -50,6 +50,7 @@ if("components" IN_LIST ENABLE_MODULES)
     install(
         DIRECTORY "${CMAKE_SOURCE_DIR}/components/"
         DESTINATION "${INSTALL_XDGDIR}/quickshell/topbar"
+        PATTERN ".qmlls.ini" EXCLUDE
     )
 endif()
 
