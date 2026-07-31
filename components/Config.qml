@@ -1,23 +1,49 @@
 pragma Singleton
 pragma ComponentBehavior: Bound
 
+import QtQuick
+
 import Quickshell
 import Quickshell.Io
-
-import QtQuick
 
 Singleton {
     id: root
 
     readonly property string path: Quickshell.env("HOME") + "/.config/topbar/settings.json"
+    property alias general: settings.general
+    property alias bar: settings.bar
+    property alias desktop: settings.desktop
+    property alias dashboard: settings.dashboard
+    property alias notifications: settings.notifications
+    property alias widgets: settings.widgets
+    property alias lockscreen: settings.lockscreen
+    property alias session: settings.session
+    property alias workspaces: settings.workspaces
+    property var colors: QtObject {
+        property color bg: settings.colors.bg
+        property color bgl: settings.colors.bgl
+        property color bge: settings.colors.bge
+        property color fg: settings.colors.fg
+        property color border: settings.colors.border
+        property color passive: settings.colors.passive
+        property color dark: settings.colors.dark
+        property color extraDark: settings.colors.extraDark
+        property color action: settings.colors.action
+        property color accent: settings.colors.accent
+        property color red: settings.colors.red
+        property color yellow: settings.colors.yellow
+        property color purple: settings.colors.purple
+        property color green: settings.colors.green
+    }
 
     FileView {
         id: fileView
+
         path: root.path
         watchChanges: Config.general.configWatch
+
         onFileChanged: reload()
         onAdapterUpdated: writeAdapter()
-
         onLoadFailed: error => {
             if (error === FileViewError.FileNotFound)
                 writeAdapter();
@@ -38,7 +64,6 @@ Singleton {
                 property bool blur: true
                 property bool shadows: true
                 property bool configWatch: true
-
             }
 
             // colors
@@ -64,7 +89,6 @@ Singleton {
                 property int height: 30
                 // should be in sync with the compositor's (outer) gaps
                 property int padding: 8
-
                 property JsonObject title: JsonObject {
                     property int width: 400
                     property string empty: ""
@@ -80,7 +104,6 @@ Singleton {
             // dashboard
             property JsonObject dashboard: JsonObject {
                 property string disk: "/"
-
                 property JsonObject player: JsonObject {
                     property bool queueButtons: false
                     property bool notifications: false
@@ -123,7 +146,6 @@ Singleton {
             // session
             property JsonObject session: JsonObject {
                 property string background: "#aa202020"
-
                 property JsonObject commands: JsonObject {
                     property string lock: "quickshell -c topbar ipc call bar lock"
                     property string logout: "pkill mango | hyprctl dispatch exit"
@@ -132,7 +154,6 @@ Singleton {
                     property string shutdown: "shutdown -p now"
                     property string reboot: "shutdown -r now"
                 }
-
                 property JsonObject timeouts: JsonObject { // in seconds
                     property int lock: 600
                     property int display: 690
@@ -154,32 +175,5 @@ Singleton {
                 property string ten: "0"
             }
         }
-    }
-
-    property alias general: settings.general
-    property alias bar: settings.bar
-    property alias desktop: settings.desktop
-    property alias dashboard: settings.dashboard
-    property alias notifications: settings.notifications
-    property alias widgets: settings.widgets
-    property alias lockscreen: settings.lockscreen
-    property alias session: settings.session
-    property alias workspaces: settings.workspaces
-
-    property var colors: QtObject {
-        property color bg: settings.colors.bg
-        property color bgl: settings.colors.bgl
-        property color bge: settings.colors.bge
-        property color fg: settings.colors.fg
-        property color border: settings.colors.border
-        property color passive: settings.colors.passive
-        property color dark: settings.colors.dark
-        property color extraDark: settings.colors.extraDark
-        property color action: settings.colors.action
-        property color accent: settings.colors.accent
-        property color red: settings.colors.red
-        property color yellow: settings.colors.yellow
-        property color purple: settings.colors.purple
-        property color green: settings.colors.green
     }
 }

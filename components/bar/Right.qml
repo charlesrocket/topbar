@@ -1,8 +1,8 @@
-import Quickshell.Services.SystemTray
-import Quickshell.Services.UPower
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell.Services.SystemTray
+import Quickshell.Services.UPower
 
 import "../widgets/audio"
 import "../widgets/dwl" as DWL
@@ -13,7 +13,6 @@ import ".."
 RowLayout {
     Layout.preferredWidth: parent.width / 3
     Layout.alignment: Qt.AlignVCenter
-
     spacing: 6
 
     Item {
@@ -23,9 +22,11 @@ RowLayout {
     // system stats
     Loader {
         id: stats
+
         active: !States.ecoMode && Config.widgets.stats
         visible: stats.active
         asynchronous: true
+
         sourceComponent: Stats {}
     }
 
@@ -36,6 +37,7 @@ RowLayout {
     // audio
     Loader {
         id: audio
+
         active: Config.widgets.audio
         visible: audio.active
         asynchronous: true
@@ -49,7 +51,6 @@ RowLayout {
                 easing.type: Easing.OutCubic
             }
         }
-
         sourceComponent: Audio {}
     }
 
@@ -60,20 +61,24 @@ RowLayout {
     // bt
     Loader {
         id: bt
+
         active: !States.ecoMode && Config.widgets.bluetooth
         visible: bt.active
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
+
         sourceComponent: Bluetooth {}
     }
 
     // comms
     Loader {
         id: netwrk
+
         active: Config.widgets.network
         visible: netwrk.active
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
+
         sourceComponent: Network {}
     }
 
@@ -84,16 +89,19 @@ RowLayout {
     // system tray
     Loader {
         id: sysTray
+
         active: !States.ecoMode && Config.widgets.tray
         visible: sysTray.active && SystemTray.items && SystemTray.items.values.length > 0
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
+
         sourceComponent: Tray {}
     }
 
     // weather
     Loader {
         id: localWeather
+
         active: !States.ecoMode && Config.widgets.weather
         visible: localWeather.active
         asynchronous: true
@@ -105,6 +113,7 @@ RowLayout {
     // Jails
     Loader {
         id: jails
+
         active: System.jails.length > 0 && Config.widgets.jails
         visible: jails.active
         asynchronous: true
@@ -116,11 +125,11 @@ RowLayout {
     // language
     Loader {
         id: lang
+
         active: Config.widgets.language
         visible: lang.active
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
-
         sourceComponent: switch (System.desktop) {
         case "mango":
             return dwlLang;
@@ -130,18 +139,22 @@ RowLayout {
 
         Component {
             id: dwlLang
+
             Item {
                 implicitWidth: childrenRect.width
                 implicitHeight: childrenRect.height
+
                 DWL.Lang {}
             }
         }
 
         Component {
             id: hyprLang
+
             Item {
                 implicitWidth: childrenRect.width
                 implicitHeight: childrenRect.height
+
                 Hypr.Lang {}
             }
         }
@@ -150,6 +163,7 @@ RowLayout {
     // clock
     Loader {
         id: time
+
         active: Config.widgets.clock
         visible: time.active
         asynchronous: true
@@ -166,6 +180,7 @@ RowLayout {
     // battery
     Loader {
         id: batt
+
         active: (UPower.displayDevice.ready && Config.widgets.battery) || false
         visible: batt.active
         asynchronous: true

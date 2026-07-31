@@ -1,8 +1,9 @@
 pragma Singleton
 
-import Quickshell
-import QtQuick
 import QtCore
+import QtQuick
+
+import Quickshell
 
 Singleton {
     function getPropertyCount(obj) {

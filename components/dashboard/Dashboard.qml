@@ -1,17 +1,12 @@
-import Quickshell.Io
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell.Io
 
 import ".."
 
 Rectangle {
     id: root
-    anchors.fill: parent
-    anchors.topMargin: Config.general.borderWidth > 0 ? 8 : 2
-    anchors.bottomMargin: 8
-    anchors.leftMargin: 8
-    anchors.rightMargin: 8
 
     property real cpuTemp: System.cpuTemp
     property real pchTemp: System.pchTemp
@@ -19,10 +14,33 @@ Rectangle {
     property string mail: ""
     property string mailErr: ""
 
+    function getTempColor(temp) {
+        if (temp > 80)
+            return Config.colors.red;
+        if (temp > 65)
+            return Config.colors.yellow;
+
+        return Config.colors.fg;
+    }
+
+    function getOsIcon() {
+        if (System.id === "freebsd")
+            return "󰣠";
+        else
+            return "󰌽";
+    }
+
+    anchors.fill: parent
+    anchors.topMargin: Config.general.borderWidth > 0 ? 8 : 2
+    anchors.bottomMargin: 8
+    anchors.leftMargin: 8
+    anchors.rightMargin: 8
+
     Process {
         id: checkMail
 
         command: ["mail"]
+
         stderr: StdioCollector {
             onStreamFinished: {
                 root.mailErr = this.text;
@@ -37,6 +55,7 @@ Rectangle {
 
     GridLayout {
         id: dashGrid
+
         anchors.fill: parent
         columns: 2
         rows: 2
@@ -45,6 +64,7 @@ Rectangle {
 
         ColumnLayout {
             spacing: 8
+
             // info
             Rectangle {
                 Layout.preferredWidth: 357
@@ -56,6 +76,7 @@ Rectangle {
 
                 RowLayout {
                     id: sysinfo
+
                     anchors.centerIn: parent
 
                     Loader {
@@ -202,6 +223,7 @@ Rectangle {
 
                 Cal {
                     id: calendar
+
                     width: 284
                     height: 280
                 }
@@ -231,19 +253,18 @@ Rectangle {
                                 Layout.fillHeight: true
                                 Layout.fillWidth: false
                                 Layout.preferredWidth: 10
-
                                 radius: Config.general.cornerRadius
                                 color: Config.colors.extraDark
                                 clip: true
 
                                 Rectangle {
+                                    readonly property real fraction: root.cpuTemp > 0 ? Math.min(root.cpuTemp / 100.0, 1.0) : 0.0
+
                                     anchors.bottom: parent.bottom
                                     width: parent.width
                                     height: parent.height * fraction
                                     radius: Config.general.cornerRadius
                                     color: getTempColor(root.cpuTemp)
-
-                                    readonly property real fraction: root.cpuTemp > 0 ? Math.min(root.cpuTemp / 100.0, 1.0) : 0.0
 
                                     Behavior on height {
                                         NumberAnimation {
@@ -264,13 +285,13 @@ Rectangle {
                                 clip: true
 
                                 Rectangle {
+                                    readonly property real fraction: root.pchTemp > 0 ? Math.min(root.pchTemp / 100.0, 1.0) : 0.0
+
                                     anchors.bottom: parent.bottom
                                     width: parent.width
                                     height: parent.height * fraction
                                     radius: Config.general.cornerRadius
                                     color: getTempColor(root.pchTemp)
-
-                                    readonly property real fraction: root.pchTemp > 0 ? Math.min(root.pchTemp / 100.0, 1.0) : 0.0
 
                                     Behavior on height {
                                         NumberAnimation {
@@ -351,25 +372,10 @@ Rectangle {
         interval: 5000
         repeat: true
         triggeredOnStart: true
+
         onTriggered: {
             calendar.updateDate();
             checkMail.running = true;
         }
-    }
-
-    function getTempColor(temp) {
-        if (temp > 80)
-            return Config.colors.red;
-        if (temp > 65)
-            return Config.colors.yellow;
-
-        return Config.colors.fg;
-    }
-
-    function getOsIcon() {
-        if (System.id === "freebsd")
-            return "󰣠";
-        else
-            return "󰌽";
     }
 }

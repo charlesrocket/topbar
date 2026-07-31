@@ -1,17 +1,29 @@
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+
 import Quickshell
 import Quickshell.Wayland
 
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls
-
 Loader {
-    active: States.launcherPresent
-
     property color backgroundColor: "transparent"
+
+    active: States.launcherPresent
 
     sourceComponent: PanelWindow {
         id: root
+
+        function launchApp(index) {
+            if (index < 0 || index >= appList.count)
+                return;
+
+            var app = appList.model[index];
+
+            if (app) {
+                app.execute();
+                States.launcherPresent = false;
+            }
+        }
 
         WlrLayershell.namespace: "launcher"
         WlrLayershell.layer: WlrLayer.Overlay
@@ -40,6 +52,7 @@ Loader {
 
             MouseArea {
                 anchors.fill: parent
+
                 onClicked: States.launcherPresent = false
 
                 Item {
@@ -50,6 +63,7 @@ Loader {
 
                     Rectangle {
                         id: container
+
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.top: parent.top
@@ -66,6 +80,7 @@ Loader {
 
                         ColumnLayout {
                             id: contentColumn
+
                             anchors.top: parent.top
                             anchors.left: parent.left
                             anchors.right: parent.right
@@ -96,6 +111,7 @@ Loader {
 
                                     TextField {
                                         id: searchField
+
                                         Layout.fillWidth: true
                                         Layout.fillHeight: true
                                         placeholderText: "Search applications"
@@ -103,27 +119,24 @@ Loader {
                                         font.pixelSize: Config.general.fontSize + 2
                                         font.bold: false
                                         color: Config.colors.fg
+
                                         background: Item {}
 
                                         Component.onCompleted: {
                                             forceActiveFocus();
                                         }
-
                                         onActiveFocusChanged: {
                                             if (activeFocus) {
                                                 // active focus sets this to true
                                                 cursorVisible = false;
                                             }
                                         }
-
                                         Keys.onReturnPressed: {
                                             if (appList.count > 0) {
                                                 root.launchApp(appList.currentIndex >= 0 ? appList.currentIndex : 0);
                                             }
                                         }
-
                                         Keys.onEscapePressed: States.launcherPresent = false
-
                                         Keys.onDownPressed: {
                                             if (appList.count > 0) {
                                                 appList.incrementCurrentIndex();
@@ -151,9 +164,11 @@ Loader {
 
                                         MouseArea {
                                             id: clearButton
+
                                             anchors.fill: parent
                                             hoverEnabled: true
                                             cursorShape: Qt.PointingHandCursor
+
                                             onClicked: {
                                                 searchField.text = "";
                                                 searchField.forceActiveFocus();
@@ -174,7 +189,6 @@ Loader {
                                     font.family: Config.general.fontFamily
                                     font.bold: false
                                     color: Config.colors.fg
-
                                     text: {
                                         var count = appList.count;
                                         return count === 1 ? "1 application found" : count + " applications found";
@@ -195,12 +209,6 @@ Loader {
                             // application list
                             Rectangle {
                                 id: listContainer
-                                visible: Layout.preferredHeight > 0
-                                color: States.ecoMode ? Config.colors.bge : Config.colors.bgl
-                                radius: Config.general.cornerRadius
-                                clip: true
-                                Layout.fillWidth: true
-                                Layout.preferredHeight: targetHeight
 
                                 readonly property real targetHeight: {
                                     if (appList.count === 0)
@@ -208,6 +216,13 @@ Loader {
                                     var visibleItems = Math.min(appList.count, 5);
                                     return (visibleItems * 64) + (visibleItems - 1) * 4 + 12;
                                 }
+
+                                visible: Layout.preferredHeight > 0
+                                color: States.ecoMode ? Config.colors.bge : Config.colors.bgl
+                                radius: Config.general.cornerRadius
+                                clip: true
+                                Layout.fillWidth: true
+                                Layout.preferredHeight: targetHeight
 
                                 Behavior on Layout.preferredHeight {
                                     NumberAnimation {
@@ -218,12 +233,12 @@ Loader {
 
                                 ListView {
                                     id: appList
+
                                     anchors.fill: parent
                                     anchors.margins: 6
                                     spacing: 4
                                     clip: true
                                     reuseItems: true
-
                                     model: {
                                         var apps = DesktopEntries.applications.values;
                                         var searchText = searchField.text.toLowerCase().trim();
@@ -252,36 +267,24 @@ Loader {
 
                                         return filtered;
                                     }
-
                                     boundsBehavior: Flickable.StopAtBounds
+                                    highlightMoveDuration: 0
 
                                     highlight: Rectangle {
                                         color: Config.colors.accent
                                         radius: 6
                                         opacity: 0.4
                                     }
-
-                                    highlightMoveDuration: 0
-
-                                    Keys.onUpPressed: {
-                                        if (currentIndex <= 0) {
-                                            searchField.forceActiveFocus();
-                                        } else {
-                                            decrementCurrentIndex();
-                                        }
-                                    }
-
-                                    Keys.onDownPressed: incrementCurrentIndex()
-                                    Keys.onReturnPressed: root.launchApp(currentIndex)
-                                    Keys.onEscapePressed: States.launcherPresent = false
-
                                     ScrollBar.vertical: ScrollBar {
                                         policy: ScrollBar.AsNeeded
                                         width: 8
                                     }
-
                                     delegate: Rectangle {
                                         id: appDelegate
+
+                                        required property var modelData
+                                        required property int index
+
                                         width: appList.width
                                         height: 64
                                         color: "transparent"
@@ -289,11 +292,9 @@ Loader {
                                         border.color: Config.colors.accent
                                         radius: Config.general.cornerRadius
 
-                                        required property var modelData
-                                        required property int index
-
                                         MouseArea {
                                             id: delegateMouseArea
+
                                             anchors.fill: parent
                                             hoverEnabled: true
                                             cursorShape: Qt.PointingHandCursor
@@ -315,6 +316,7 @@ Loader {
 
                                                 Image {
                                                     id: appIcon
+
                                                     anchors.fill: parent
                                                     source: {
                                                         if (!appDelegate.modelData.icon)
@@ -323,7 +325,6 @@ Loader {
                                                         var iconPath = Quickshell.iconPath(appDelegate.modelData.icon, false);
                                                         return iconPath || "";
                                                     }
-
                                                     sourceSize.width: 44
                                                     sourceSize.height: 44
                                                     fillMode: Image.PreserveAspectFit
@@ -379,23 +380,22 @@ Loader {
                                             }
                                         }
                                     }
+
+                                    Keys.onUpPressed: {
+                                        if (currentIndex <= 0) {
+                                            searchField.forceActiveFocus();
+                                        } else {
+                                            decrementCurrentIndex();
+                                        }
+                                    }
+                                    Keys.onDownPressed: incrementCurrentIndex()
+                                    Keys.onReturnPressed: root.launchApp(currentIndex)
+                                    Keys.onEscapePressed: States.launcherPresent = false
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-
-        function launchApp(index) {
-            if (index < 0 || index >= appList.count)
-                return;
-
-            var app = appList.model[index];
-
-            if (app) {
-                app.execute();
-                States.launcherPresent = false;
             }
         }
     }

@@ -1,11 +1,11 @@
+import QtQuick
+import QtQuick.Controls.Fusion
+import QtQuick.Effects
+import QtQuick.Layouts
+
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.UPower
-
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Effects
-import QtQuick.Controls.Fusion
 
 import ".."
 
@@ -13,17 +13,11 @@ Item {
     id: root
 
     property string fullName: ""
-
     readonly property string userName: Quickshell.env("USER")
     readonly property bool defaultWallpaper: Config.lockscreen.wallpaper === States.defaultWallpaper
-
     required property LockContext context
 
     opacity: 0
-
-    Component.onCompleted: {
-        opacity = 1;
-    }
 
     Behavior on opacity {
         NumberAnimation {
@@ -32,9 +26,14 @@ Item {
         }
     }
 
+    Component.onCompleted: {
+        opacity = 1;
+    }
+
     Process {
         running: true
         command: ["sh", "-c", "getent passwd " + root.userName]
+
         stdout: StdioCollector {
             onStreamFinished: {
                 var parts = this.text.split(":");
@@ -48,16 +47,19 @@ Item {
 
     Process {
         id: reboot
+
         command: ["sh", "-c", Config.session.commands.reboot]
     }
 
     Process {
         id: suspend
+
         command: ["sh", "-c", Config.session.commands.suspend]
     }
 
     Process {
         id: shutdown
+
         command: ["sh", "-c", Config.session.commands.shutdown]
     }
 
@@ -78,16 +80,10 @@ Item {
 
     Loader {
         id: widgets
+
         active: Config.lockscreen.clock || Config.lockscreen.battery
         visible: widgets.active
         asynchronous: true
-
-        anchors {
-            top: parent.top
-            left: parent.left
-            topMargin: 40
-            leftMargin: 40
-        }
 
         sourceComponent: Item {
             RowLayout {
@@ -95,12 +91,14 @@ Item {
 
                 Loader {
                     id: clock
+
                     active: Config.lockscreen.clock
                     visible: clock.active
                     asynchronous: true
 
                     sourceComponent: Rectangle {
                         id: clockContainer
+
                         width: clockRow.implicitWidth + 22
                         height: clockRow.implicitHeight + 12
                         color: Config.colors.bg
@@ -124,6 +122,7 @@ Item {
 
                         RowLayout {
                             id: clockRow
+
                             anchors.centerIn: parent
                             spacing: 0
 
@@ -133,18 +132,20 @@ Item {
 
                                 Rectangle {
                                     id: clockRect
+
+                                    property var currentTime: new Date()
+
                                     anchors.fill: parent
                                     radius: Config.general.cornerRadius
                                     color: "transparent"
                                     anchors.topMargin: 4
-
-                                    property var currentTime: new Date()
 
                                     Timer {
                                         interval: 60000
                                         running: true
                                         repeat: true
                                         triggeredOnStart: true
+
                                         onTriggered: clockRect.currentTime = new Date()
                                     }
 
@@ -164,12 +165,14 @@ Item {
 
                 Loader {
                     id: battery
+
                     active: Config.lockscreen.battery && UPower.displayDevice.ready
                     visible: battery.active
                     asynchronous: true
 
                     sourceComponent: Rectangle {
                         id: battContainer
+
                         width: battRow.implicitWidth + 22
                         height: battRow.implicitHeight + 12
                         color: Config.colors.bg
@@ -193,6 +196,7 @@ Item {
 
                         RowLayout {
                             id: battRow
+
                             anchors.centerIn: parent
                             spacing: 0
 
@@ -202,12 +206,14 @@ Item {
 
                                 Rectangle {
                                     id: battRect
+
                                     anchors.fill: parent
                                     radius: Config.general.cornerRadius
                                     color: "transparent"
 
                                     Text {
                                         id: battIcon
+
                                         text: States.battery.getIcon()
                                         font.pixelSize: 22
                                         font.family: "FiraCode Nerd Font"
@@ -215,7 +221,6 @@ Item {
                                         anchors.fill: parent
                                         horizontalAlignment: Text.AlignHCenter
                                         verticalAlignment: Text.AlignVCenter
-
                                         color: {
                                             if (States.battery.isCharging)
                                                 return Config.colors.yellow;
@@ -232,23 +237,25 @@ Item {
                 }
             }
         }
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            topMargin: 40
+            leftMargin: 40
+        }
     }
 
     Loader {
         id: buttons
+
         active: Config.lockscreen.buttons
         visible: buttons.active
         asynchronous: true
 
-        anchors {
-            top: parent.top
-            right: parent.right
-            topMargin: 40
-            rightMargin: 40
-        }
-
         sourceComponent: Rectangle {
             id: buttonsContainer
+
             width: buttonsRow.implicitWidth + 18
             height: buttonsRow.implicitHeight + 12
             color: Config.colors.bg
@@ -272,6 +279,7 @@ Item {
 
             RowLayout {
                 id: buttonsRow
+
                 anchors.centerIn: parent
                 spacing: 12
 
@@ -283,6 +291,10 @@ Item {
                         anchors.fill: parent
                         radius: Config.general.cornerRadius
                         color: powerMouseArea.containsMouse ? Config.colors.fg : "transparent"
+
+                        Behavior on color {
+                            ColAnim {}
+                        }
 
                         Text {
                             text: "󰤆"
@@ -296,17 +308,15 @@ Item {
                                 ColAnim {}
                             }
                         }
-
-                        Behavior on color {
-                            ColAnim {}
-                        }
                     }
 
                     MouseArea {
                         id: powerMouseArea
+
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
+
                         onClicked: shutdown.running = true
                     }
                 }
@@ -321,6 +331,10 @@ Item {
                         radius: Config.general.cornerRadius
                         color: sleepMouseArea.containsMouse ? Config.colors.fg : "transparent"
 
+                        Behavior on color {
+                            ColAnim {}
+                        }
+
                         Text {
                             text: ""
                             font.family: "Symbols Nerd Font"
@@ -333,17 +347,15 @@ Item {
                                 ColAnim {}
                             }
                         }
-
-                        Behavior on color {
-                            ColAnim {}
-                        }
                     }
 
                     MouseArea {
                         id: sleepMouseArea
+
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
+
                         onClicked: suspend.running = true
                     }
                 }
@@ -358,6 +370,10 @@ Item {
                         radius: Config.general.cornerRadius
                         color: rebootMouseArea.containsMouse ? Config.colors.fg : "transparent"
 
+                        Behavior on color {
+                            ColAnim {}
+                        }
+
                         Text {
                             text: "󰑐"
                             font.family: "Symbols Nerd Font"
@@ -370,21 +386,26 @@ Item {
                                 ColAnim {}
                             }
                         }
-
-                        Behavior on color {
-                            ColAnim {}
-                        }
                     }
 
                     MouseArea {
                         id: rebootMouseArea
+
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
+
                         onClicked: reboot.running = true
                     }
                 }
             }
+        }
+
+        anchors {
+            top: parent.top
+            right: parent.right
+            topMargin: 40
+            rightMargin: 40
         }
     }
 
@@ -439,15 +460,18 @@ Item {
 
                 Rectangle {
                     id: usernameRect
+
                     implicitWidth: usernameText.implicitWidth + 20
                     implicitHeight: usernameText.implicitHeight + 12
                     color: Config.colors.bg
                     radius: Config.general.cornerRadius
+
                     //border.width: 1
                     //border.color: Config.colors.passive
 
                     Text {
                         id: usernameText
+
                         anchors.centerIn: parent
                         text: root.fullName || root.userName
                         color: Config.colors.fg
@@ -484,6 +508,7 @@ Item {
 
                 TextField {
                     id: passwordBox
+
                     anchors.fill: parent
                     padding: 10
                     focus: true
@@ -491,16 +516,16 @@ Item {
                     echoMode: TextInput.NoEcho
                     inputMethodHints: Qt.ImhSensitiveData
                     color: "transparent"
-                    onAccepted: root.context.tryUnlock()
 
                     background: Rectangle {
                         id: blinkBorder
+
+                        property real borderOpacity: 0
+
                         color: Config.colors.bg
                         radius: Config.general.cornerRadius
                         border.width: 2
                         border.color: Qt.rgba(Config.colors.accent.r, Config.colors.accent.g, Config.colors.accent.b, blinkBorder.borderOpacity)
-
-                        property real borderOpacity: 0
 
                         SequentialAnimation {
                             id: blinkAnimation
@@ -521,6 +546,7 @@ Item {
                         }
                     }
 
+                    onAccepted: root.context.tryUnlock()
                     onTextChanged: {
                         root.context.currentText = this.text;
 
@@ -530,11 +556,11 @@ Item {
                     }
 
                     Connections {
-                        target: root.context
-
                         function onCurrentTextChanged() {
                             passwordBox.text = root.context.currentText;
                         }
+
+                        target: root.context
                     }
 
                     Text {

@@ -1,9 +1,9 @@
-import Quickshell
-import Quickshell.Wayland
-import Quickshell.Services.Notifications
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell
+import Quickshell.Services.Notifications
+import Quickshell.Wayland
 
 import ".."
 
@@ -11,6 +11,20 @@ Item {
     id: root
 
     property var notifications: []
+
+    function removeNotification(notif) {
+        if (notif && notif.tracked)
+            notif.dismiss();
+
+        root.notifications = root.notifications.filter(n => n !== notif);
+    }
+
+    function expireNotification(notif) {
+        if (notif && notif.tracked)
+            notif.expire();
+
+        root.notifications = root.notifications.filter(n => n !== notif);
+    }
 
     NotificationServer {
         id: server
@@ -26,20 +40,6 @@ Item {
             notif.tracked = true;
             root.notifications = [notif].concat(root.notifications);
         }
-    }
-
-    function removeNotification(notif) {
-        if (notif && notif.tracked)
-            notif.dismiss();
-
-        root.notifications = root.notifications.filter(n => n !== notif);
-    }
-
-    function expireNotification(notif) {
-        if (notif && notif.tracked)
-            notif.expire();
-
-        root.notifications = root.notifications.filter(n => n !== notif);
     }
 
     PanelWindow {
@@ -60,6 +60,7 @@ Item {
 
         ColumnLayout {
             id: stack
+
             spacing: 6
 
             anchors {
@@ -72,12 +73,12 @@ Item {
                 model: ScriptModel { // TODO fix flickering
                     values: root.notifications
                 }
-
                 delegate: NotificationToast {
                     required property var modelData
 
                     notification: modelData
                     Layout.alignment: Qt.AlignRight
+
                     onDismissed: root.removeNotification(modelData)
                     onExpired: root.expireNotification(modelData)
                 }

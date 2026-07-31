@@ -1,8 +1,8 @@
-import Quickshell
-import Quickshell.Io
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell
+import Quickshell.Io
 
 import ".."
 
@@ -16,39 +16,6 @@ Item {
     property color colPurple: Config.colors.purple
     property string fontFamily: "FiraCode Nerd Font"
     property int fontSize: Config.general.fontSize
-
-    Layout.alignment: Qt.AlignVCenter
-    implicitWidth: (hoverDetector.hovered ? dateContainer.width + 8 : 0) + clockText.width
-    implicitHeight: clockText.height
-
-    Behavior on implicitWidth {
-        NumberAnimation {
-            duration: root.slideDuration
-            easing.type: Easing.OutCubic
-        }
-    }
-
-    SystemClock {
-        id: clock
-        precision: SystemClock.Minutes
-    }
-
-    Process {
-        id: hyprctlReload
-        command: ["hyprctl", "reload", "--quiet"]
-        Component.onCompleted: running = false
-    }
-
-    Process {
-        id: hyprctlBatch
-        command: ["hyprctl", "--quiet", "--batch", "keyword animations:enabled false;keyword decoration:blur:enabled false;keyword decoration:shadow:enabled false;"]
-        Component.onCompleted: running = false
-    }
-
-    Process {
-        id: notify
-        Component.onCompleted: running = false
-    }
 
     function toggleEcoMode() {
         States.ecoMode = !States.ecoMode;
@@ -76,8 +43,48 @@ Item {
         notify.running = true;
     }
 
+    Layout.alignment: Qt.AlignVCenter
+    implicitWidth: (hoverDetector.hovered ? dateContainer.width + 8 : 0) + clockText.width
+    implicitHeight: clockText.height
+
+    Behavior on implicitWidth {
+        NumberAnimation {
+            duration: root.slideDuration
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    SystemClock {
+        id: clock
+
+        precision: SystemClock.Minutes
+    }
+
+    Process {
+        id: hyprctlReload
+
+        command: ["hyprctl", "reload", "--quiet"]
+
+        Component.onCompleted: running = false
+    }
+
+    Process {
+        id: hyprctlBatch
+
+        command: ["hyprctl", "--quiet", "--batch", "keyword animations:enabled false;keyword decoration:blur:enabled false;keyword decoration:shadow:enabled false;"]
+
+        Component.onCompleted: running = false
+    }
+
+    Process {
+        id: notify
+
+        Component.onCompleted: running = false
+    }
+
     RowLayout {
         id: dateContainer
+
         anchors.right: clockContainer.left
         anchors.rightMargin: hoverDetector.hovered ? 8 : 0
         anchors.verticalCenter: parent.verticalCenter
@@ -87,21 +94,19 @@ Item {
         transformOrigin: Item.Right
         visible: opacity > 0
 
+        Behavior on anchors.rightMargin {
+            NumberAnimation {
+                duration: root.slideDuration
+                easing.type: Easing.OutCubic
+            }
+        }
         Behavior on opacity {
             NumberAnimation {
                 duration: root.slideDuration
                 easing.type: Easing.OutCubic
             }
         }
-
         Behavior on scale {
-            NumberAnimation {
-                duration: root.slideDuration
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        Behavior on anchors.rightMargin {
             NumberAnimation {
                 duration: root.slideDuration
                 easing.type: Easing.OutCubic
@@ -110,6 +115,7 @@ Item {
 
         Text {
             id: dateText
+
             text: ""
             color: root.colMain
 
@@ -122,18 +128,19 @@ Item {
 
         Text {
             id: ecoBtn
+
             text: States.ecoMode ? "󰌪" : "󱋙"
             color: States.ecoMode ? root.colGreen : root.colMain
             Layout.bottomMargin: 2
+
+            Behavior on color {
+                ColAnim {}
+            }
 
             font {
                 family: "Symbols Nerd Font"
                 pixelSize: root.fontSize + 1
                 bold: true
-            }
-
-            Behavior on color {
-                ColAnim {}
             }
 
             TapHandler {
@@ -143,18 +150,19 @@ Item {
 
         Text {
             id: coffeeBtn
+
             text: States.keepAwake ? "󰅶" : "󰾪"
             color: States.keepAwake ? root.colPurple : root.colMain
             Layout.bottomMargin: 2
+
+            Behavior on color {
+                ColAnim {}
+            }
 
             font {
                 family: "Symbols Nerd Font"
                 pixelSize: root.fontSize + 1
                 bold: true
-            }
-
-            Behavior on color {
-                ColAnim {}
             }
 
             TapHandler {
@@ -164,6 +172,7 @@ Item {
 
         Text {
             id: powerBtn
+
             text: ""
             color: root.colButton
             Layout.bottomMargin: 2
@@ -182,6 +191,7 @@ Item {
 
     Item {
         id: clockContainer
+
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         width: clockText.width
@@ -189,6 +199,7 @@ Item {
 
         Text {
             id: clockText
+
             anchors.centerIn: parent
             text: Qt.formatDateTime(clock.date, "HH:mm")
             color: root.colMain
@@ -202,13 +213,13 @@ Item {
     }
 
     Connections {
-        target: hoverDetector
-
         function onHoveredChanged() {
             if (hoverDetector.hovered) {
                 dateText.text = Qt.formatDateTime(clock.date, "ddd dd MMMM yyyy");
             }
         }
+
+        target: hoverDetector
     }
 
     HoverHandler {

@@ -1,5 +1,5 @@
-import QtQuick
 import QtQml
+import QtQuick
 
 import ".."
 
@@ -112,8 +112,23 @@ Item {
         geoReq.send();
     }
 
+    implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0) + weatherText.width
+    implicitHeight: weatherText.height
+
+    Behavior on implicitWidth {
+        NumberAnimation {
+            duration: root.slideDuration
+            easing.type: Easing.OutCubic
+        }
+    }
+
+    Component.onCompleted: {
+        fetchWeather();
+    }
+
     Timer {
         id: updateTimer
+
         interval: 1200
         running: true
         repeat: true
@@ -125,22 +140,9 @@ Item {
         }
     }
 
-    Component.onCompleted: {
-        fetchWeather();
-    }
-
-    implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0) + weatherText.width
-    implicitHeight: weatherText.height
-
-    Behavior on implicitWidth {
-        NumberAnimation {
-            duration: root.slideDuration
-            easing.type: Easing.OutCubic
-        }
-    }
-
     Rectangle {
         id: infoContainer
+
         anchors.right: weatherContainer.left
         anchors.rightMargin: hoverDetector.containsMouse ? 8 : 0
         anchors.verticalCenter: parent.verticalCenter
@@ -155,21 +157,19 @@ Item {
         transformOrigin: Item.Right
         visible: opacity > 0
 
+        Behavior on anchors.rightMargin {
+            NumberAnimation {
+                duration: root.slideDuration
+                easing.type: Easing.OutCubic
+            }
+        }
         Behavior on opacity {
             NumberAnimation {
                 duration: root.slideDuration
                 easing.type: Easing.OutCubic
             }
         }
-
         Behavior on scale {
-            NumberAnimation {
-                duration: root.slideDuration
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        Behavior on anchors.rightMargin {
             NumberAnimation {
                 duration: root.slideDuration
                 easing.type: Easing.OutCubic
@@ -178,6 +178,7 @@ Item {
 
         Text {
             id: infoText
+
             anchors.centerIn: parent
             anchors.verticalCenter: parent.verticalCenter
             text: root.temperature + "󰔄"
@@ -193,6 +194,7 @@ Item {
 
     Item {
         id: weatherContainer
+
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         width: weatherText.width
@@ -215,6 +217,7 @@ Item {
 
     MouseArea {
         id: hoverDetector
+
         anchors.fill: parent
         hoverEnabled: true
         propagateComposedEvents: true

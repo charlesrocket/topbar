@@ -1,17 +1,18 @@
-import Quickshell.Services.SystemTray
-
 import QtQuick
 import QtQuick.Effects
+
+import Quickshell.Services.SystemTray
 
 import ".."
 
 Item {
     id: root
-    implicitWidth: row.width + 10
-    implicitHeight: iconSize + 4
 
     property color iconColor: Config.colors.fg
     property int iconSize: Config.general.fontSize
+
+    implicitWidth: row.width + 10
+    implicitHeight: iconSize + 4
 
     Rectangle {
         color: Config.colors.extraDark
@@ -22,6 +23,7 @@ Item {
 
         Row {
             id: row
+
             anchors.centerIn: parent
             spacing: 4
 
@@ -30,12 +32,13 @@ Item {
 
                 MouseArea {
                     id: trayElement
+
+                    required property SystemTrayItem modelData
+
                     width: root.iconSize
                     hoverEnabled: true
                     height: root.iconSize
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-                    required property SystemTrayItem modelData
 
                     onClicked: event => {
                         if (event.button === Qt.LeftButton)
@@ -49,6 +52,7 @@ Item {
 
                     Image {
                         id: icon
+
                         anchors.fill: parent
                         source: trayElement.modelData.icon
                         sourceSize: Qt.size(root.iconSize, root.iconSize)
@@ -59,6 +63,7 @@ Item {
                         layer.enabled: true
                         layer.smooth: true
                         layer.textureSize: Qt.size(root.iconSize * 2, root.iconSize * 2)
+
                         layer.effect: MultiEffect {
                             saturation: trayElement.containsMouse | trayElement.containsPress ? 0 : -1.0
                             colorization: trayElement.containsMouse | trayElement.containsPress ? 0 : 1.0

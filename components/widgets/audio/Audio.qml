@@ -1,7 +1,7 @@
-import Quickshell.Io
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell.Io
 
 import TopBar.OSS
 
@@ -24,6 +24,7 @@ RowLayout {
     // mic
     Unit {
         id: mic
+
         mic: true
         opacity: mic.control ? 1 : 0
         visible: opacity > 0
@@ -40,6 +41,7 @@ RowLayout {
     // speaker
     Unit {
         id: speaker
+
         opacity: speaker.control ? 1 : 0
         visible: opacity > 0
         snd: sound
@@ -52,8 +54,6 @@ RowLayout {
         }
 
         Connections {
-            target: speaker.control
-
             function onMutedChanged() {
                 sound.refresh();
 
@@ -68,10 +68,13 @@ RowLayout {
                 if (!speaker.menuAlias.show && Config.desktop.osd)
                     audioOSD.item.trigger();
             }
+
+            target: speaker.control
         }
 
         Loader {
             id: audioOSD
+
             active: Config.desktop.osd
             visible: audioOSD.active
             asynchronous: true
@@ -84,8 +87,6 @@ RowLayout {
         }
 
         IpcHandler {
-            target: "audio"
-
             function toggleMute(): void {
                 if (speaker.control) {
                     speaker.control.muted = !speaker.control.muted;
@@ -111,6 +112,8 @@ RowLayout {
                         audioOSD.item.trigger();
                 }
             }
+
+            target: "audio"
         }
     }
 }

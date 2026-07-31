@@ -1,22 +1,41 @@
+import QtQuick
+import QtQuick.Layouts
+
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 
-import QtQuick
-import QtQuick.Layouts
-
 import "bar" as Bar
-import "notifications"
 import "lockscreen"
+import "notifications"
 import "session"
 
 PanelWindow {
     id: root
 
-    anchors {
-        top: true
-        left: true
-        right: true
+    function lockScreen() {
+        States.barEnabled = false;
+        lock.locked = true;
+    }
+
+    function getAllVisibleItems() {
+        const items = [];
+
+        function collect(item) {
+            if (!item)
+                return;
+
+            items.push(item);
+
+            for (const child of item.children) {
+                if (child.visible) {
+                    collect(child);
+                }
+            }
+        }
+
+        collect(root.contentItem);
+        return items;
     }
 
     mask: itemsRegions
@@ -26,10 +45,28 @@ PanelWindow {
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "topbar"
 
+    anchors {
+        top: true
+        left: true
+        right: true
+    }
+
     ColAnim {}
 
     Rectangle {
         id: bar
+
+        function hidden(val) {
+            if (val) {
+                bar.y = -(Config.bar.height);
+                hideTimer.start();
+            } else {
+                States.barEnabled = true;
+                bar.y = Config.bar.padding;
+                bar.visible = true;
+            }
+        }
+
         y: Config.bar.padding
         anchors.horizontalCenter: parent.horizontalCenter
         implicitWidth: root.screen.width - Config.bar.padding * 2
@@ -53,6 +90,7 @@ PanelWindow {
         // startup animation
         transform: Translate {
             id: launchSequence
+
             y: -(root.implicitHeight)
 
             Behavior on y {
@@ -100,60 +138,53 @@ PanelWindow {
 
         Timer {
             id: hideTimer
+
             interval: Config.general.animDuration * 2
+
             onTriggered: {
                 bar.visible = false;
                 States.barEnabled = false;
-            }
-        }
-
-        function hidden(val) {
-            if (val) {
-                bar.y = -(Config.bar.height);
-                hideTimer.start();
-            } else {
-                States.barEnabled = true;
-                bar.y = Config.bar.padding;
-                bar.visible = true;
             }
         }
     }
 
     Region {
         id: itemsRegions
+
         regions: regions.instances
     }
 
     Variants {
         id: regions
+
         model: States.dropdownRevealed ? getAllVisibleItems() : root.contentItem.children
 
         delegate: Region {
             required property Item modelData
+
             item: modelData
         }
     }
 
     Connections {
-        target: States
-
         function onDropdownRevealedChanged() {
             regions.model = States.dropdownRevealed ? getAllVisibleItems() : root.contentItem.children;
             itemsRegions.changed();
         }
+
+        target: States
     }
 
     Connections {
-        target: launchSequence
         // post-start region refresh
         function onYChanged() {
             itemsRegions.changed();
         }
+
+        target: launchSequence
     }
 
     IpcHandler {
-        target: "bar"
-
         function launcher(): void {
             if (Config.desktop.launcher)
                 States.launcherPresent = true;
@@ -180,26 +211,34 @@ PanelWindow {
         function reveal(): void {
             bar.hidden(false);
         }
+
+        target: "bar"
     }
 
     Loader {
         id: notif
+
         active: Config.notifications.enabled
         visible: notif.active
+
         sourceComponent: Notifications {}
     }
 
     Loader {
         id: preferencesWindow
+
         active: States.preferencesWindowPresent
         visible: preferencesWindow.active
+
         sourceComponent: Preferences {}
     }
 
     Loader {
         id: launcher
+
         active: States.launcherPresent && Config.desktop.launcher
         visible: launcher.active
+
         sourceComponent: Launcher {}
     }
 
@@ -271,6 +310,7 @@ PanelWindow {
 
     Process {
         id: suspendProcess
+
         command: Config.session.commands.suspend
     }
 
@@ -329,30 +369,5 @@ PanelWindow {
                 context: lockContext
             }
         }
-    }
-
-    function lockScreen() {
-        States.barEnabled = false;
-        lock.locked = true;
-    }
-
-    function getAllVisibleItems() {
-        const items = [];
-
-        function collect(item) {
-            if (!item)
-                return;
-
-            items.push(item);
-
-            for (const child of item.children) {
-                if (child.visible) {
-                    collect(child);
-                }
-            }
-        }
-
-        collect(root.contentItem);
-        return items;
     }
 }

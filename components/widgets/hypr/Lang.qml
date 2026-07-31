@@ -13,6 +13,7 @@ Rectangle {
     property color colMain: Config.colors.fg
     property color colBorder: Qt.darker(Config.colors.accent, 1.5)
     property color colBackground: "transparent"
+    property string jsonBuffer: ""
 
     width: layoutText.width + 8
     height: layoutText.height
@@ -22,8 +23,8 @@ Rectangle {
 
     Text {
         id: layoutText
-        anchors.centerIn: parent
 
+        anchors.centerIn: parent
         text: {
             if (!root.currentLayout)
                 return "XX";
@@ -36,7 +37,6 @@ Rectangle {
             const firstWord = root.currentLayout.split(' ')[0];
             return firstWord.length <= 3 ? firstWord.toUpperCase() : firstWord.substring(0, 2).toUpperCase();
         }
-
         font.pixelSize: 12
         font.bold: true
         font.family: root.fontFamily
@@ -44,8 +44,6 @@ Rectangle {
     }
 
     Connections {
-        target: Hyprland
-
         function onRawEvent(event) {
             if (event.name === "activelayout") {
                 const parts = event.data.split(',');
@@ -55,12 +53,13 @@ Rectangle {
                 }
             }
         }
-    }
 
-    property string jsonBuffer: ""
+        target: Hyprland
+    }
 
     Process {
         id: initProc
+
         command: ["hyprctl", "-j", "devices"]
 
         stdout: SplitParser {
@@ -101,7 +100,6 @@ Rectangle {
                 root.jsonBuffer = "";
             }
         }
-
         Component.onCompleted: running = true
     }
 }

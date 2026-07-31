@@ -1,15 +1,20 @@
-import Quickshell
-import Quickshell.Wayland
-import TopBar.DWL
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell
+import Quickshell.Wayland
+
+import TopBar.DWL
 
 ShellRoot {
     Scope {
         Variants {
             model: Quickshell.screens
+
             PanelWindow {
                 required property var modelData
+                property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0 ? DwlIpc.outputForName(modelData.name) : null
+                property string currentLayout: dwlOutput ? dwlOutput.kbLayout : ""
 
                 screen: modelData
                 anchors.top: true
@@ -17,9 +22,6 @@ ShellRoot {
                 anchors.right: true
                 implicitHeight: 30
                 color: "#1e1e2e"
-
-                property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0 ? DwlIpc.outputForName(modelData.name) : null
-                property string currentLayout: dwlOutput ? dwlOutput.kbLayout : ""
 
                 RowLayout {
                     anchors.fill: parent
@@ -29,8 +31,10 @@ ShellRoot {
                     // Tag indicators
                     Repeater {
                         model: dwlOutput ? dwlOutput.tags : []
+
                         delegate: Rectangle {
                             required property DwlTag modelData
+
                             width: 22
                             height: 22
                             radius: 4
@@ -49,6 +53,7 @@ ShellRoot {
                             MouseArea {
                                 anchors.fill: parent
                                 acceptedButtons: Qt.LeftButton | Qt.RightButton
+
                                 // Left click: switch to tag
                                 // Right click: toggle tag on focused client
                                 onClicked: mouse => {
@@ -99,7 +104,6 @@ ShellRoot {
                             const firstWord = currentLayout.split(' ')[0];
                             return firstWord.length <= 3 ? firstWord : firstWord.substring(0, 2).toUpperCase();
                         }
-
                         font.pixelSize: 12
                         font.bold: true
                         color: "#f38ba8"

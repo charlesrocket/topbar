@@ -23,6 +23,7 @@ Item {
 
     Image {
         id: userFace
+
         source: Utils.expandPath("~/.face.icon")
         anchors.fill: parent
         visible: false
@@ -36,6 +37,7 @@ Item {
 
     MultiEffect {
         id: maskedImage
+
         source: userFace
         anchors.fill: parent
         maskEnabled: true
@@ -47,6 +49,7 @@ Item {
 
     Item {
         id: mask
+
         anchors.fill: parent
         layer.enabled: true
         //layer.smooth: true

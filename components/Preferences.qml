@@ -1,17 +1,34 @@
-import Quickshell
-
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import Quickshell
+
 FloatingWindow {
     id: root
+
+    property string version: System.version
+
+    function validateSection(obj, section, key, offset) {
+        var configCount = Utils.getPropertyCount(obj);
+
+        if (offset != null)
+            configCount -= offset;
+
+        if (configCount != section.children.length)
+            console.warn("Validation failed for " + key + " " + configCount + " != " + section.children.length);
+    }
+
     title: "Configuration"
     color: "transparent"
 
-    property string version: System.version
+    onClosed: {
+        States.preferencesWindowPresent = false;
+    }
+
     contentItem {
         focus: true
+
         Keys.onPressed: event => {
             if (event.key == Qt.Key_Escape) {
                 States.preferencesWindowPresent = false;
@@ -19,17 +36,13 @@ FloatingWindow {
         }
     }
 
-    onClosed: {
-        States.preferencesWindowPresent = false;
-    }
-
     MouseArea {
         anchors.fill: parent
+
         onClicked: States.preferencesWindowPresent = false
     }
 
     Rectangle {
-
         anchors.fill: parent
         color: Config.colors.bg
         radius: Config.general.cornerRadius
@@ -86,8 +99,6 @@ FloatingWindow {
                                 font.family: Config.general.fontFamily
                                 font.pixelSize: Config.general.fontSize
 
-                                onClicked: tabBar.currentIndex = index
-
                                 background: Rectangle {
                                     color: parent.checked ? Config.colors.passive : "transparent"
                                     radius: Config.general.cornerRadius
@@ -96,7 +107,6 @@ FloatingWindow {
                                         ColAnim {}
                                     }
                                 }
-
                                 contentItem: Text {
                                     text: parent.text
                                     font: parent.font
@@ -105,6 +115,8 @@ FloatingWindow {
                                     horizontalAlignment: Text.AlignRight
                                     leftPadding: 8
                                 }
+
+                                onClicked: tabBar.currentIndex = index
                             }
                         }
 
@@ -117,10 +129,12 @@ FloatingWindow {
                 // drives StackLayout currentIndex
                 TabBar {
                     id: tabBar
+
                     visible: false
 
                     Repeater {
                         model: 7
+
                         TabButton {}
                     }
                 }
@@ -142,6 +156,7 @@ FloatingWindow {
 
                     StackLayout {
                         id: stackLayout
+
                         currentIndex: tabBar.currentIndex
                         Layout.fillWidth: true
                         Layout.fillHeight: true
@@ -154,10 +169,15 @@ FloatingWindow {
 
                             GridLayout {
                                 id: generalSection
+
                                 width: parent.width
                                 columns: 1
                                 columnSpacing: 14
                                 rowSpacing: 14
+
+                                Component.onCompleted: {
+                                    root.validateSection(Config.general, generalSection, "Config.general", null);
+                                }
 
                                 SettingRow {
                                     label: "Locale"
@@ -228,10 +248,6 @@ FloatingWindow {
                                     targetProperty: "shadows"
                                     valueType: "bool"
                                 }
-
-                                Component.onCompleted: {
-                                    root.validateSection(Config.general, generalSection, "Config.general", null);
-                                }
                             }
                         }
 
@@ -243,10 +259,15 @@ FloatingWindow {
 
                             GridLayout {
                                 id: colorsSection
+
                                 width: parent.width
                                 columns: 2
                                 columnSpacing: 14
                                 rowSpacing: 14
+
+                                Component.onCompleted: {
+                                    root.validateSection(Config.colors, colorsSection, "Config.colors", null);
+                                }
 
                                 SettingRow {
                                     label: "Background"
@@ -345,10 +366,6 @@ FloatingWindow {
                                     targetProperty: "green"
                                     valueType: "color"
                                 }
-
-                                Component.onCompleted: {
-                                    root.validateSection(Config.colors, colorsSection, "Config.colors", null);
-                                }
                             }
                         }
 
@@ -360,11 +377,16 @@ FloatingWindow {
 
                             GridLayout {
                                 id: widgetsSection
+
                                 width: parent.width
                                 height: parent.height
                                 columns: 2
                                 columnSpacing: 14
                                 rowSpacing: 14
+
+                                Component.onCompleted: {
+                                    root.validateSection(Config.widgets, widgetsSection, "Config.widgets", null);
+                                }
 
                                 SettingRow {
                                     label: "Workspaces"
@@ -449,10 +471,6 @@ FloatingWindow {
                                     targetProperty: "battery"
                                     valueType: "bool"
                                 }
-
-                                Component.onCompleted: {
-                                    root.validateSection(Config.widgets, widgetsSection, "Config.widgets", null);
-                                }
                             }
                         }
 
@@ -470,10 +488,15 @@ FloatingWindow {
 
                                 GridLayout {
                                     id: barSection
+
                                     width: parent.width
                                     columns: 1
                                     columnSpacing: 14
                                     rowSpacing: 14
+
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.bar, barSection, "Config.bar", 1);
+                                    }
 
                                     SettingRow {
                                         label: "Height"
@@ -488,18 +511,19 @@ FloatingWindow {
                                         targetProperty: "padding"
                                         valueType: "int"
                                     }
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.bar, barSection, "Config.bar", 1);
-                                    }
                                 }
 
                                 GridLayout {
                                     id: barTitleSection
+
                                     width: parent.width
                                     columns: 1
                                     columnSpacing: 14
                                     rowSpacing: 14
+
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.bar.title, barTitleSection, "Config.bar.title", null);
+                                    }
 
                                     SettingRow {
                                         label: "Width"
@@ -513,10 +537,6 @@ FloatingWindow {
                                         targetObject: Config.bar.title
                                         targetProperty: "empty"
                                         valueType: "string"
-                                    }
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.bar.title, barTitleSection, "Config.bar.title", null);
                                     }
                                 }
                             }
@@ -534,8 +554,13 @@ FloatingWindow {
 
                                 ColumnLayout {
                                     id: notificationsSection
+
                                     width: parent.width
                                     spacing: 12
+
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.notifications, notificationsSection, "Config.notifications", null);
+                                    }
 
                                     SettingRow {
                                         label: "Enabled"
@@ -549,10 +574,6 @@ FloatingWindow {
                                         targetObject: Config.notifications
                                         targetProperty: "width"
                                         valueType: "int"
-                                    }
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.notifications, notificationsSection, "Config.notifications", null);
                                     }
                                 }
                             }
@@ -570,8 +591,13 @@ FloatingWindow {
 
                                 ColumnLayout {
                                     id: desktopSection
+
                                     width: parent.width
                                     spacing: 12
+
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.desktop, desktopSection, "Config.desktop", null);
+                                    }
 
                                     SettingRow {
                                         label: "Launcher"
@@ -586,10 +612,6 @@ FloatingWindow {
                                         targetProperty: "osd"
                                         valueType: "bool"
                                     }
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.desktop, desktopSection, "Config.desktop", null);
-                                    }
                                 }
                             }
                         }
@@ -602,10 +624,15 @@ FloatingWindow {
 
                             GridLayout {
                                 id: workspaceSection
+
                                 width: parent.width
                                 columns: 2
                                 columnSpacing: 14
                                 rowSpacing: 14
+
+                                Component.onCompleted: {
+                                    root.validateSection(Config.workspaces, workspaceSection, "Config.workspaces", null);
+                                }
 
                                 SettingRow {
                                     label: "Workspace 1"
@@ -676,10 +703,6 @@ FloatingWindow {
                                     targetProperty: "ten"
                                     valueType: "string"
                                 }
-
-                                Component.onCompleted: {
-                                    root.validateSection(Config.workspaces, workspaceSection, "Config.workspaces", null);
-                                }
                             }
                         }
 
@@ -691,8 +714,13 @@ FloatingWindow {
 
                             ColumnLayout {
                                 id: dashboardSection
+
                                 width: parent.width
                                 spacing: 12
+
+                                Component.onCompleted: {
+                                    root.validateSection(Config.dashboard, dashboardSection, "Config.dashboard", null);
+                                }
 
                                 SettingRow {
                                     label: "Disk"
@@ -701,14 +729,15 @@ FloatingWindow {
                                     valueType: "string"
                                 }
 
-                                Component.onCompleted: {
-                                    root.validateSection(Config.dashboard, dashboardSection, "Config.dashboard", null);
-                                }
-
                                 ColumnLayout {
                                     id: dashboardPlayerSection
+
                                     width: parent.width
                                     spacing: 12
+
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.dashboard.player, dashboardPlayerSection, "Config.dashboard.player", null);
+                                    }
 
                                     SettingRow {
                                         label: "Queue buttons"
@@ -723,10 +752,6 @@ FloatingWindow {
                                         targetProperty: "notifications"
                                         valueType: "bool"
                                     }
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.dashboard.player, dashboardPlayerSection, "Config.dashboard.player", null);
-                                    }
                                 }
                             }
                         }
@@ -739,10 +764,15 @@ FloatingWindow {
 
                             GridLayout {
                                 id: lockscreenSection
+
                                 width: parent.width
                                 columns: 2
                                 columnSpacing: 14
                                 rowSpacing: 14
+
+                                Component.onCompleted: {
+                                    root.validateSection(Config.lockscreen, lockscreenSection, "Config.lockscreen", null);
+                                }
 
                                 SettingRow {
                                     label: "Wallpaper"
@@ -792,10 +822,6 @@ FloatingWindow {
                                     targetProperty: "icon"
                                     valueType: "bool"
                                 }
-
-                                Component.onCompleted: {
-                                    root.validateSection(Config.lockscreen, lockscreenSection, "Config.lockscreen", null);
-                                }
                             }
                         }
 
@@ -832,11 +858,16 @@ FloatingWindow {
 
                                 GridLayout {
                                     id: sessionTimeoutsSection
+
                                     width: parent.width
                                     columns: 3
                                     rows: 1
                                     columnSpacing: 14
                                     rowSpacing: 14
+
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.session.commands, sessionCommandsSection, "Config.session.timeouts", null);
+                                    }
 
                                     SettingRow {
                                         label: "Lock"
@@ -858,10 +889,6 @@ FloatingWindow {
                                         targetProperty: "suspend"
                                         valueType: "int"
                                     }
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.session.commands, sessionCommandsSection, "Config.session.timeouts", null);
-                                    }
                                 }
 
                                 Text {
@@ -875,10 +902,15 @@ FloatingWindow {
 
                                 GridLayout {
                                     id: sessionCommandsSection
+
                                     width: parent.width
                                     columns: 2
                                     columnSpacing: 14
                                     rowSpacing: 14
+
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.session.commands, sessionCommandsSection, "Config.session.commands", null);
+                                    }
 
                                     SettingRow {
                                         label: "Lock"
@@ -921,10 +953,6 @@ FloatingWindow {
                                         targetProperty: "reboot"
                                         valueType: "string"
                                     }
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.session.commands, sessionCommandsSection, "Config.session.commands", null);
-                                    }
                                 }
                             }
                         }
@@ -945,6 +973,7 @@ FloatingWindow {
 
                             TextEdit {
                                 id: versionString
+
                                 anchors.centerIn: parent
                                 text: root.version
                                 font.family: Config.general.fontFamily
@@ -964,10 +993,15 @@ FloatingWindow {
                         // OK button
                         Rectangle {
                             id: button
+
                             color: Config.colors.passive
                             width: 60
                             height: 32
                             radius: Config.general.cornerRadius
+
+                            Behavior on color {
+                                ColAnim {}
+                            }
 
                             Text {
                                 anchors.centerIn: parent
@@ -980,13 +1014,10 @@ FloatingWindow {
                             MouseArea {
                                 anchors.fill: parent
                                 hoverEnabled: true
+
                                 onClicked: States.preferencesWindowPresent = false
                                 onEntered: button.color = Config.colors.accent
                                 onExited: button.color = Config.colors.passive
-                            }
-
-                            Behavior on color {
-                                ColAnim {}
                             }
                         }
                     }
@@ -997,14 +1028,15 @@ FloatingWindow {
 
     component SettingRow: RowLayout {
         id: settingRow
-        height: 32
-        Layout.fillWidth: true
-        spacing: 14
 
         required property string label
         required property var targetObject
         required property string targetProperty
         required property string valueType
+
+        height: 32
+        Layout.fillWidth: true
+        spacing: 14
 
         Item {
             Layout.fillWidth: true
@@ -1014,6 +1046,7 @@ FloatingWindow {
 
             Rectangle {
                 id: colorSwatch
+
                 visible: settingRow.valueType === "color"
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
@@ -1027,6 +1060,7 @@ FloatingWindow {
 
             TextField {
                 id: textField
+
                 visible: settingRow.valueType === "string" || settingRow.valueType === "int" || settingRow.valueType === "color"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
@@ -1037,14 +1071,6 @@ FloatingWindow {
                 color: Config.colors.fg
                 selectionColor: Config.colors.action
                 selectedTextColor: Config.colors.bg
-                Component.onCompleted: text = settingRow.targetObject[settingRow.targetProperty].toString()
-
-                onEditingFinished: {
-                    if (settingRow.valueType === "int")
-                        settingRow.targetObject[settingRow.targetProperty] = parseInt(text);
-                    else
-                        settingRow.targetObject[settingRow.targetProperty] = text;
-                }
 
                 background: Rectangle {
                     color: Config.colors.dark
@@ -1052,18 +1078,28 @@ FloatingWindow {
                     border.width: Config.general.borderWidth
                     radius: Config.general.cornerRadius
 
-                    Behavior on border.color { ColAnim {} }
+                    Behavior on border.color {
+                        ColAnim {}
+                    }
+                }
+
+                Component.onCompleted: text = settingRow.targetObject[settingRow.targetProperty].toString()
+                onEditingFinished: {
+                    if (settingRow.valueType === "int")
+                        settingRow.targetObject[settingRow.targetProperty] = parseInt(text);
+                    else
+                        settingRow.targetObject[settingRow.targetProperty] = text;
                 }
             }
 
             Switch {
                 id: boolSwitch
+
                 visible: settingRow.valueType === "bool"
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 implicitHeight: 24
                 checked: settingRow.targetObject[settingRow.targetProperty]
-                onToggled: settingRow.targetObject[settingRow.targetProperty] = checked
 
                 indicator: Rectangle {
                     implicitWidth: 48
@@ -1073,7 +1109,9 @@ FloatingWindow {
                     border.color: Config.colors.border
                     border.width: 1
 
-                    Behavior on color { ColAnim {} }
+                    Behavior on color {
+                        ColAnim {}
+                    }
 
                     Rectangle {
                         x: parent.parent.checked ? parent.width - width - 2 : 2
@@ -1084,10 +1122,14 @@ FloatingWindow {
                         color: Config.colors.fg
 
                         Behavior on x {
-                            NumberAnimation { duration: Config.general.animDuration }
+                            NumberAnimation {
+                                duration: Config.general.animDuration
+                            }
                         }
                     }
                 }
+
+                onToggled: settingRow.targetObject[settingRow.targetProperty] = checked
             }
         }
 
@@ -1101,15 +1143,5 @@ FloatingWindow {
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: false
         }
-    }
-
-    function validateSection(obj, section, key, offset) {
-        var configCount = Utils.getPropertyCount(obj);
-
-        if (offset != null)
-            configCount -= offset;
-
-        if (configCount != section.children.length)
-            console.warn("Validation failed for " + key + " " + configCount + " != " + section.children.length);
     }
 }

@@ -11,6 +11,7 @@ RowLayout {
 
     Loader {
         id: wrkspc
+
         active: Config.widgets.workspaces
         visible: wrkspc.active
         asynchronous: true

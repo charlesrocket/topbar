@@ -1,22 +1,24 @@
 //@ pragma UseQApplication
 //@ pragma NativeTextRendering
 
-import Quickshell
 import QtQuick
 
+import Quickshell
+
 ShellRoot {
+    Component.onCompleted: {
+        Quickshell.watchFiles = false;
+    }
+
     Panel {}
+
     Wallpaper {}
 
     Connections {
-        target: Quickshell
-
         function onLastWindowClosed() {
             Qt.quit();
         }
-    }
 
-    Component.onCompleted: {
-        Quickshell.watchFiles = false;
+        target: Quickshell
     }
 }

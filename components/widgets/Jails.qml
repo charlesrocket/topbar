@@ -1,5 +1,5 @@
-import QtQuick
 import QtQml
+import QtQuick
 
 import ".."
 
@@ -18,6 +18,13 @@ Item {
 
     implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0) + jailText.width
     implicitHeight: jailText.height
+
+    Behavior on implicitWidth {
+        NumberAnimation {
+            duration: root.slideDuration
+            easing.type: Easing.OutCubic
+        }
+    }
 
     onJailsChanged: flashAnimation.restart()
 
@@ -41,15 +48,9 @@ Item {
         }
     }
 
-    Behavior on implicitWidth {
-        NumberAnimation {
-            duration: root.slideDuration
-            easing.type: Easing.OutCubic
-        }
-    }
-
     Rectangle {
         id: infoContainer
+
         anchors.right: jailContainer.left
         anchors.rightMargin: hoverDetector.containsMouse ? 8 : 0
         anchors.verticalCenter: parent.verticalCenter
@@ -64,21 +65,19 @@ Item {
         transformOrigin: Item.Right
         visible: opacity > 0
 
+        Behavior on anchors.rightMargin {
+            NumberAnimation {
+                duration: root.slideDuration
+                easing.type: Easing.OutCubic
+            }
+        }
         Behavior on opacity {
             NumberAnimation {
                 duration: root.slideDuration
                 easing.type: Easing.OutCubic
             }
         }
-
         Behavior on scale {
-            NumberAnimation {
-                duration: root.slideDuration
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        Behavior on anchors.rightMargin {
             NumberAnimation {
                 duration: root.slideDuration
                 easing.type: Easing.OutCubic
@@ -87,6 +86,7 @@ Item {
 
         Text {
             id: infoText
+
             anchors.centerIn: parent
             anchors.verticalCenter: parent.verticalCenter
             text: root.jailCount
@@ -102,6 +102,7 @@ Item {
 
     Item {
         id: jailContainer
+
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         width: jailText.width
@@ -124,6 +125,7 @@ Item {
 
     MouseArea {
         id: hoverDetector
+
         anchors.fill: parent
         hoverEnabled: true
         propagateComposedEvents: true

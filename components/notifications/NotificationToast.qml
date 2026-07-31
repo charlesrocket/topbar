@@ -1,8 +1,8 @@
-import Quickshell.Services.Notifications
-import Quickshell.Widgets
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell.Services.Notifications
+import Quickshell.Widgets
 
 import ".."
 
@@ -13,14 +13,9 @@ Rectangle {
     property var notification: null
     property real hoverPauseStart: 0
     property int timeoutMs: ready && notification.expireTimeout > 0 ? notification.expireTimeout : 5000
-
-    signal dismissed
-    signal expired
-
     readonly property bool ready: notification !== null
     readonly property bool hasImage: ready && notification.image !== ""
     readonly property bool hasAppIcon: ready && notification.appIcon !== ""
-
     readonly property color urgencyColor: {
         if (!ready)
             return Config.colors.border;
@@ -35,22 +30,38 @@ Rectangle {
         }
     }
 
+    signal dismissed
+    signal expired
+
+    function dismiss() {
+        expireTimer.stop();
+        slideOutAnim.pendingDismiss = true;
+        slideOutAnim.start();
+    }
+
+    function expire() {
+        slideOutAnim.pendingDismiss = false;
+        slideOutAnim.start();
+    }
+
     implicitWidth: Config.notifications.width
     implicitHeight: bodyRow.implicitHeight + 24
-
     radius: Config.general.cornerRadius
     color: States.ecoMode ? Config.colors.bge : Config.colors.bg
     border.width: Config.general.borderWidth
     border.color: Config.colors.border
-    Component.onCompleted: slideInAnim.start()
 
     transform: Translate {
         id: slide
+
         x: Config.notifications.width
     }
 
+    Component.onCompleted: slideInAnim.start()
+
     NumberAnimation {
         id: slideInAnim
+
         target: slide
         property: "x"
         from: Config.notifications.width
@@ -61,6 +72,9 @@ Rectangle {
 
     NumberAnimation {
         id: slideOutAnim
+
+        property bool pendingDismiss: false
+
         target: slide
         property: "x"
         from: 0
@@ -74,21 +88,22 @@ Rectangle {
             else
                 root.expired();
         }
-
-        property bool pendingDismiss: false
     }
 
     // auto-expire timer
     Timer {
         id: expireTimer
+
         interval: root.timeoutMs
         running: root.ready
+
         onTriggered: root.expire()
     }
 
     // close button
     Rectangle {
         id: closeButtonCont
+
         opacity: 0
         implicitWidth: closeButton.implicitWidth + 16
         implicitHeight: closeButton.implicitHeight + 8
@@ -98,12 +113,6 @@ Rectangle {
         radius: Config.general.cornerRadius
         z: 1
 
-        anchors {
-            top: parent.top
-            right: parent.right
-            margins: 8
-        }
-
         Behavior on opacity {
             NumberAnimation {
                 duration: Config.general.animDuration
@@ -111,14 +120,22 @@ Rectangle {
             }
         }
 
+        anchors {
+            top: parent.top
+            right: parent.right
+            margins: 8
+        }
+
         MouseArea {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
+
             onClicked: root.dismiss()
         }
 
         Text {
             id: closeButton
+
             text: ""
             color: Qt.darker(Config.colors.fg, 1.3)
             font.pixelSize: 16
@@ -131,6 +148,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
+
                 onClicked: root.dismiss()
             }
         }
@@ -139,6 +157,7 @@ Rectangle {
     // content row
     RowLayout {
         id: bodyRow
+
         spacing: 6
 
         anchors {
@@ -154,6 +173,7 @@ Rectangle {
         // text content
         ColumnLayout {
             id: contentLayout
+
             Layout.fillWidth: true
             spacing: 6
 
@@ -167,12 +187,14 @@ Rectangle {
                 // app icon
                 Item {
                     id: iconContainer
+
                     visible: root.hasAppIcon && root.notification.appName
                     implicitWidth: 12
                     implicitHeight: 12
 
                     IconImage {
                         id: appIconImage
+
                         anchors.fill: parent
                         source: root.hasAppIcon ? root.notification.appIcon : ""
                         visible: root.hasAppIcon
@@ -248,6 +270,7 @@ Rectangle {
 
                 Repeater {
                     model: root.ready ? root.notification.actions : []
+
                     delegate: Rectangle {
                         required property var modelData
 
@@ -264,6 +287,7 @@ Rectangle {
 
                         Text {
                             id: label
+
                             anchors.centerIn: parent
                             text: parent.modelData.text
                             color: Config.colors.fg
@@ -274,6 +298,7 @@ Rectangle {
 
                         MouseArea {
                             id: buttonArea
+
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
@@ -292,22 +317,16 @@ Rectangle {
     // timeout progress bar
     Rectangle {
         id: progressBar
+
         height: 2
         radius: 2
         color: root.urgencyColor
         opacity: 0.9
         width: root.implicitWidth - Config.general.cornerRadius * 2
 
-        anchors {
-            bottom: parent.bottom
-            right: parent.right
-            leftMargin: 5
-            rightMargin: 5
-            bottomMargin: 3
-        }
-
         NumberAnimation on width {
             id: progressAnim
+
             target: progressBar
             property: "width"
             from: root.timeoutMs / root.timeoutMs * (root.implicitWidth - 2)
@@ -315,6 +334,14 @@ Rectangle {
             duration: root.timeoutMs
             running: expireTimer.running
             easing.type: Easing.Linear
+        }
+
+        anchors {
+            bottom: parent.bottom
+            right: parent.right
+            leftMargin: 5
+            rightMargin: 5
+            bottomMargin: 3
         }
     }
 
@@ -335,16 +362,5 @@ Rectangle {
                 progressAnim.restart();
             }
         }
-    }
-
-    function dismiss() {
-        expireTimer.stop();
-        slideOutAnim.pendingDismiss = true;
-        slideOutAnim.start();
-    }
-
-    function expire() {
-        slideOutAnim.pendingDismiss = false;
-        slideOutAnim.start();
     }
 }

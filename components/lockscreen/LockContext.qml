@@ -1,19 +1,17 @@
+import QtQuick
+
 import Quickshell
 import Quickshell.Services.Pam
 
-import QtQuick
-
 Scope {
     id: root
-
-    signal unlocked
-    signal failed
 
     property string currentText: ""
     property bool unlockInProgress: false
     property bool showFailure: false
 
-    onCurrentTextChanged: showFailure = false
+    signal unlocked
+    signal failed
 
     function tryUnlock() {
         if (currentText === "")
@@ -22,6 +20,8 @@ Scope {
         root.unlockInProgress = true;
         pam.start();
     }
+
+    onCurrentTextChanged: showFailure = false
 
     PamContext {
         id: pam
@@ -35,7 +35,6 @@ Scope {
                 this.respond(root.currentText);
             }
         }
-
         onCompleted: result => {
             if (result == PamResult.Success) {
                 root.unlocked();

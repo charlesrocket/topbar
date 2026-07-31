@@ -1,6 +1,6 @@
-import Quickshell.Services.UPower
-
 import QtQuick
+
+import Quickshell.Services.UPower
 
 import ".."
 
@@ -42,6 +42,7 @@ Item {
 
     Rectangle {
         id: infoContainer
+
         anchors.right: battContainer.left
         anchors.rightMargin: hoverDetector.containsMouse ? 8 : 0
         width: infoText.contentWidth + 10
@@ -53,21 +54,19 @@ Item {
         transformOrigin: Item.Right
         visible: opacity > 0
 
+        Behavior on anchors.rightMargin {
+            NumberAnimation {
+                duration: root.slideDuration
+                easing.type: Easing.OutCubic
+            }
+        }
         Behavior on opacity {
             NumberAnimation {
                 duration: root.slideDuration
                 easing.type: Easing.OutCubic
             }
         }
-
         Behavior on scale {
-            NumberAnimation {
-                duration: root.slideDuration
-                easing.type: Easing.OutCubic
-            }
-        }
-
-        Behavior on anchors.rightMargin {
             NumberAnimation {
                 duration: root.slideDuration
                 easing.type: Easing.OutCubic
@@ -76,6 +75,7 @@ Item {
 
         Text {
             id: infoText
+
             anchors.centerIn: parent
             text: ""
             color: root.colMain
@@ -90,6 +90,7 @@ Item {
 
     Item {
         id: battContainer
+
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         width: battText.width
@@ -100,7 +101,6 @@ Item {
 
             visible: UPower.onBattery || States.battery.isCharging || States.battery.isDischarging || States.battery.isEmpty || States.battery.isFullyCharged
             text: States.battery.device?.ready ? `${States.battery.getIcon()}` : ""
-
             color: {
                 if (States.battery.isCharging)
                     return root.colCharging;
@@ -111,30 +111,31 @@ Item {
                 return root.colMain;
             }
 
+            Behavior on color {
+                ColAnim {}
+            }
+
             font {
                 family: "Symbols Nerd Font"
                 pixelSize: root.fontSize
                 bold: true
             }
-
-            Behavior on color {
-                ColAnim {}
-            }
         }
     }
 
     Connections {
-        target: hoverDetector
-
         function onContainsMouseChanged() {
             if (hoverDetector.containsMouse) {
                 infoText.text = `${root.batteryInfo()}`;
             }
         }
+
+        target: hoverDetector
     }
 
     MouseArea {
         id: hoverDetector
+
         anchors.fill: parent
         hoverEnabled: true
         propagateComposedEvents: true

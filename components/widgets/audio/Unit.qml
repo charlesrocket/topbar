@@ -15,13 +15,7 @@ Item {
     property color colNormal: Config.colors.fg
     property color colPassive: Config.colors.passive
     property color colMuted: Config.colors.red
-
     required property var snd
-
-    implicitWidth: iconText.width
-    implicitHeight: Config.general.fontSize + 2
-    Layout.alignment: Qt.AlignVCenter
-
     readonly property var device: {
         if (!snd.devices)
             return null;
@@ -38,7 +32,6 @@ Item {
 
         return snd.defaultDevice;
     }
-
     property var control: {
         if (!device || !device.controls)
             return null;
@@ -65,7 +58,6 @@ Item {
 
         return device.master;
     }
-
     readonly property int volume: control ? control.left : 0
     readonly property bool muted: control ? control.muted : false
 
@@ -83,8 +75,13 @@ Item {
         }
     }
 
+    implicitWidth: iconText.width
+    implicitHeight: Config.general.fontSize + 2
+    Layout.alignment: Qt.AlignVCenter
+
     Text {
         id: iconText
+
         anchors.centerIn: parent
         Layout.alignment: Qt.AlignVCenter
         text: root.getVolumeIcon(root.volume, root.muted)
@@ -96,14 +93,12 @@ Item {
         Behavior on color {
             ColAnim {}
         }
-
         Behavior on opacity {
             NumberAnimation {
                 duration: Config.general.animDuration
                 easing.type: Easing.InOutQuad
             }
         }
-
         Behavior on scale {
             NumberAnimation {
                 duration: Config.general.animDuration
@@ -138,6 +133,7 @@ Item {
 
     MouseArea {
         id: hoverDetector
+
         anchors.fill: parent
         hoverEnabled: true
 
@@ -145,11 +141,9 @@ Item {
             snd.refresh();
             volumeMenu.show = true;
         }
-
         onExited: {
             volumeMenu.timer.start();
         }
-
         onClicked: {
             if (root.control) {
                 root.control.muted = !root.control.muted;
@@ -159,6 +153,7 @@ Item {
 
     Dropdown {
         id: volumeMenu
+
         boxParent: iconText
 
         Rectangle {
@@ -171,6 +166,7 @@ Item {
 
             ColumnLayout {
                 id: layout
+
                 anchors.centerIn: parent
                 anchors.margins: 12
                 spacing: 8
@@ -198,6 +194,7 @@ Item {
 
                     Rectangle {
                         id: sliderTrack
+
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
@@ -225,6 +222,7 @@ Item {
 
                     Rectangle {
                         id: sliderHandle
+
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: 12
                         height: 12
@@ -244,8 +242,6 @@ Item {
 
                     MouseArea {
                         id: sliderMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
 
                         function updateVolume(mouseY) {
                             if (root.control) {
@@ -256,10 +252,12 @@ Item {
                             }
                         }
 
+                        anchors.fill: parent
+                        hoverEnabled: true
+
                         onPressed: function (mouse) {
                             updateVolume(mouse.y);
                         }
-
                         onPositionChanged: function (mouse) {
                             if (pressed)
                                 updateVolume(mouse.y);
@@ -273,8 +271,8 @@ Item {
     Timer {
         interval: 200
         repeat: true
-        onTriggered: snd.refresh()
-
         running: snd.devices ? (hoverDetector.containsMouse || volumeMenu.show) : false
+
+        onTriggered: snd.refresh()
     }
 }

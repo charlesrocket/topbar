@@ -1,7 +1,7 @@
-import Quickshell
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell
 
 Scope {
     id: root
@@ -9,12 +9,18 @@ Scope {
     required property string icon
     required property bool muted
     required property int value
-
     property bool osdPresent: false
+
+    function trigger() {
+        root.osdPresent = true;
+        hideTimer.restart();
+    }
 
     Timer {
         id: hideTimer
+
         interval: 1200
+
         onTriggered: root.osdPresent = false
     }
 
@@ -28,6 +34,7 @@ Scope {
             implicitWidth: 300
             implicitHeight: 50
             color: "transparent"
+
             mask: Region {}
 
             Rectangle {
@@ -36,13 +43,13 @@ Scope {
                 color: Config.colors.bg
 
                 RowLayout {
+                    spacing: 8
+
                     anchors {
                         fill: parent
                         leftMargin: 15
                         rightMargin: 15
                     }
-
-                    spacing: 8
 
                     Text {
                         text: root.icon
@@ -74,10 +81,5 @@ Scope {
                 }
             }
         }
-    }
-
-    function trigger() {
-        root.osdPresent = true;
-        hideTimer.restart();
     }
 }

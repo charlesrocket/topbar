@@ -5,7 +5,6 @@ import ".."
 
 RowLayout {
     id: root
-    spacing: 6
 
     property int fontSize: Config.general.fontSize
     property color colBar: Config.colors.dark
@@ -15,6 +14,8 @@ RowLayout {
     property string mountPoint: "/"
     property int barWidth: 8
     property int barHeight: 14
+
+    spacing: 6
 
     RowLayout {
         spacing: 6
@@ -42,7 +43,6 @@ RowLayout {
                 anchors.margins: 1
                 height: System.cpuUsage * (parent.height - 2)
                 radius: 1
-
                 color: {
                     const pct = System.cpuUsage;
 
@@ -89,7 +89,6 @@ RowLayout {
                 anchors.margins: 1
                 height: System.memoryUsage * (parent.height - 2)
                 radius: 1
-
                 color: {
                     const pct = System.memoryUsage;
 
@@ -136,7 +135,6 @@ RowLayout {
                 anchors.margins: 1
                 height: System.diskUsage * (parent.height - 2)
                 radius: 1
-
                 color: {
                     const pct = System.diskUsage;
 

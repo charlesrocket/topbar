@@ -11,7 +11,6 @@ Rectangle {
     property color colMain: Config.colors.fg
     property color colBorder: Qt.darker(Config.colors.accent, 1.5)
     property color colBackground: "transparent"
-
     property DwlIpcOutput dwlOutput: States.dwlOutput
     property string currentLayout: dwlOutput ? dwlOutput.kbLayout : ""
 
@@ -23,8 +22,8 @@ Rectangle {
 
     Text {
         id: layoutText
-        anchors.centerIn: parent
 
+        anchors.centerIn: parent
         text: {
             if (!root.currentLayout)
                 return "XX";
@@ -37,7 +36,6 @@ Rectangle {
             const firstWord = root.currentLayout.split(' ')[0];
             return firstWord.length <= 3 ? firstWord.toUpperCase() : firstWord.substring(0, 2).toUpperCase();
         }
-
         font.pixelSize: 12
         font.bold: true
         font.family: root.fontFamily

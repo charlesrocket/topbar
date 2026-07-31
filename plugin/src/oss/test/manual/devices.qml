@@ -1,7 +1,7 @@
-import Quickshell
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell
 
 FloatingWindow {
     id: root
@@ -28,6 +28,7 @@ FloatingWindow {
 
     Rectangle {
         id: background
+
         anchors.fill: parent
         color: root.colBg
         radius: root.cornerRadius
@@ -60,12 +61,14 @@ FloatingWindow {
 
                 ListView {
                     id: deviceList
+
                     anchors.fill: parent
                     model: OSS.devices
                     spacing: 4
 
                     delegate: Rectangle {
                         required property var modelData
+
                         implicitWidth: deviceList.width
                         implicitHeight: 52
                         radius: 6
@@ -93,7 +96,6 @@ FloatingWindow {
 
                                     return "B";
                                 }
-
                                 horizontalAlignment: Text.AlignHCenter
                                 Layout.preferredWidth: 24
                                 font.pixelSize: root.fontSize + 8
@@ -133,6 +135,7 @@ FloatingWindow {
 
                         MouseArea {
                             id: mouseArea
+
                             anchors.fill: parent
                             hoverEnabled: true
 

@@ -1,7 +1,7 @@
-import Quickshell.Hyprland
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell.Hyprland
 
 import "../.."
 
@@ -15,7 +15,6 @@ RowLayout {
     property color colActive: Config.colors.accent
     property color colPassive: Qt.darker(Config.colors.passive, 1.5)
     property color colAction: Config.colors.action
-
     required property var names
 
     Repeater {
@@ -36,14 +35,14 @@ RowLayout {
             leftPadding: 4
             rightPadding: 4
 
+            Behavior on color {
+                ColAnim {}
+            }
+
             font {
                 family: root.fontFamily
                 pixelSize: root.fontSize
                 bold: true
-            }
-
-            Behavior on color {
-                ColAnim {}
             }
 
             MouseArea {

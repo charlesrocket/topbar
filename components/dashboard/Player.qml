@@ -1,14 +1,13 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell.Io
 
+import Quickshell.Io
 import Quickshell.Services.Mpris
 
 import ".."
 
 Item {
     id: root
-    anchors.fill: parent
 
     property real displayPosition: 0
     property bool playing: root.player?.playbackState == MprisPlaybackState.Playing
@@ -23,15 +22,38 @@ Item {
 
         return playerList[playerIndex] ?? null;
     }
-
     readonly property string album: player?.trackAlbum || "No album"
     readonly property string artist: player?.trackArtist || "Unknown artist"
     readonly property string title: player?.trackTitle || "No track"
     readonly property string artUrl: player?.trackArtUrl || ""
 
-    Connections {
-        target: root.player
+    function showTrackInfo() {
+        notify.command = ["notify-send", "-u", "low", "-i", root.artUrl, root.artist, root.title];
+        notify.running = true;
+    }
 
+    function nextPlayer() {
+        var playerList = Mpris.players.values;
+        if (playerList.length > 0) {
+            playerIndex = (playerIndex + 1) % playerList.length;
+        }
+    }
+
+    function previousPlayer() {
+        var playerList = Mpris.players.values;
+        if (playerList.length > 0) {
+            playerIndex = (playerIndex - 1 + playerList.length) % playerList.length;
+        }
+    }
+
+    anchors.fill: parent
+
+    onPlayerChanged: {
+        if (player)
+            root.displayPosition = player.position;
+    }
+
+    Connections {
         function onPositionChanged() {
             var p = root.player.position;
             if (p > 0 || root.player.playbackState === MprisPlaybackState.Stopped) {
@@ -43,27 +65,21 @@ Item {
             if (Config.dashboard.player.notifications)
                 root.showTrackInfo();
         }
+
+        target: root.player
     }
 
     Process {
         id: notify
+
         Component.onCompleted: notify.running = false
-    }
-
-    function showTrackInfo() {
-        notify.command = ["notify-send", "-u", "low", "-i", root.artUrl, root.artist,  root.title];
-        notify.running = true;
-    }
-
-    onPlayerChanged: {
-        if (player)
-            root.displayPosition = player.position;
     }
 
     Timer {
         running: root.playing
         interval: 1000
         repeat: true
+
         onTriggered: root.player?.positionChanged()
     }
 
@@ -125,8 +141,9 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: Mpris.players.values.length > 1
-                    onClicked: root.previousPlayer()
                     cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+                    onClicked: root.previousPlayer()
                 }
             }
 
@@ -171,8 +188,9 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: Mpris.players.values.length > 1
-                    onClicked: root.nextPlayer()
                     cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+                    onClicked: root.nextPlayer()
                 }
             }
         }
@@ -185,6 +203,7 @@ Item {
             // shuffle button
             Loader {
                 id: shuffle
+
                 active: Config.dashboard.player.queueButtons
                 visible: shuffle.active
                 anchors.verticalCenter: parent.verticalCenter
@@ -207,8 +226,9 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         enabled: player?.canControl || false
-                        onClicked: player.shuffle = !player.shuffle
                         cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+                        onClicked: player.shuffle = !player.shuffle
                     }
                 }
             }
@@ -216,12 +236,14 @@ Item {
             // album cover
             Loader {
                 id: coverWrapper
+
                 active: opacity > 0
                 visible: coverWrapper.active
                 anchors.verticalCenter: parent.verticalCenter
 
                 sourceComponent: Image {
                     id: cover
+
                     width: 120
                     height: 120
                     retainWhileLoading: false
@@ -251,6 +273,7 @@ Item {
             // repeat button
             Loader {
                 id: repeat
+
                 active: Config.dashboard.player.queueButtons
                 visible: repeat.active
                 anchors.verticalCenter: parent.verticalCenter
@@ -262,7 +285,6 @@ Item {
 
                     Text {
                         anchors.centerIn: parent
-
                         text: {
                             if (player?.loopState == MprisLoopState.Track) {
                                 return "󰑘";
@@ -272,7 +294,6 @@ Item {
                                 return "󰑗";
                             }
                         }
-
                         font.pixelSize: Config.general.fontSize / 0.6
                         font.family: "Symbols Nerd Font"
                         horizontalAlignment: Text.AlignHCenter
@@ -283,6 +304,8 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         enabled: player?.canControl || false
+                        cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+
                         onClicked: {
                             if (player?.loopState == MprisLoopState.None) {
                                 player.loopState = MprisLoopState.Playlist;
@@ -292,8 +315,6 @@ Item {
                                 player.loopState = MprisLoopState.None;
                             }
                         }
-
-                        cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
                     }
                 }
             }
@@ -400,8 +421,9 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: player?.canGoPrevious || false
-                    onClicked: player?.previous()
                     cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+                    onClicked: player?.previous()
                 }
             }
 
@@ -424,8 +446,9 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: player?.canTogglePlaying || false
-                    onClicked: player?.togglePlaying()
                     cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+                    onClicked: player?.togglePlaying()
                 }
             }
 
@@ -448,24 +471,11 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: player?.canGoNext || false
-                    onClicked: player?.next()
                     cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+                    onClicked: player?.next()
                 }
             }
-        }
-    }
-
-    function nextPlayer() {
-        var playerList = Mpris.players.values;
-        if (playerList.length > 0) {
-            playerIndex = (playerIndex + 1) % playerList.length;
-        }
-    }
-
-    function previousPlayer() {
-        var playerList = Mpris.players.values;
-        if (playerList.length > 0) {
-            playerIndex = (playerIndex - 1 + playerList.length) % playerList.length;
         }
     }
 }

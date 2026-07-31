@@ -16,8 +16,28 @@ Item {
     property string fontFamily: Config.general.fontFamily
     property int fontSize: Config.general.fontSize
     property bool hpConnected: snd.headphonesConnected
-
     required property var snd
+
+    function getActiveDeviceIcon() {
+        for (var i = 0; i < snd.devices.length; i++) {
+            const device = snd.devices[i];
+
+            if (device.isDefault) {
+                const mode = device.mode;
+
+                if (mode === 1 || mode === 3)
+                    return "󰓃";
+                if (mode === 2)
+                    return "󰍰";
+            }
+        }
+
+        return "󰤽";
+    }
+
+    function getCurrentIcon() {
+        return snd.headphonesConnected ? "󰋋" : root.getActiveDeviceIcon();
+    }
 
     implicitWidth: icon.implicitWidth
     implicitHeight: Config.general.fontSize + 2
@@ -25,16 +45,10 @@ Item {
 
     Text {
         id: icon
+
         color: root.colMain
         anchors.centerIn: parent
         Layout.alignment: Qt.AlignVCenter
-
-        font {
-            family: "Symbols Nerd Font"
-            pixelSize: Config.general.fontSize + 2
-            bold: true
-        }
-
         text: {
             if (root.hpConnected)
                 return "󰋋";
@@ -56,12 +70,18 @@ Item {
             ColAnim {}
         }
 
-        Connections {
-            target: snd
+        font {
+            family: "Symbols Nerd Font"
+            pixelSize: Config.general.fontSize + 2
+            bold: true
+        }
 
+        Connections {
             function onHeadphonesChanged(state) {
                 root.hpConnected = state;
             }
+
+            target: snd
         }
     }
 
@@ -72,7 +92,6 @@ Item {
         onEntered: {
             menu.show = true;
         }
-
         onExited: {
             menu.timer.start();
         }
@@ -80,10 +99,12 @@ Item {
 
     Dropdown {
         id: menu
+
         boxParent: icon
 
         Rectangle {
             id: devices
+
             color: "transparent"
             radius: root.cornerRadius
             implicitWidth: layout.implicitWidth + 26
@@ -91,6 +112,7 @@ Item {
 
             ColumnLayout {
                 id: layout
+
                 anchors.centerIn: parent
                 anchors.margins: 12
                 spacing: 8
@@ -115,6 +137,7 @@ Item {
 
                         RowLayout {
                             id: rowLayout
+
                             anchors.fill: parent
                             anchors.margins: 8
                             spacing: 10
@@ -127,7 +150,6 @@ Item {
                                         return "󰻃";
                                     return "󰤽";
                                 }
-
                                 horizontalAlignment: Text.AlignHCenter
                                 Layout.preferredWidth: 24
                                 color: root.colMain
@@ -162,6 +184,7 @@ Item {
 
                         MouseArea {
                             id: mouseArea
+
                             anchors.fill: parent
                             hoverEnabled: true
 
@@ -174,26 +197,5 @@ Item {
                 }
             }
         }
-    }
-
-    function getActiveDeviceIcon() {
-        for (var i = 0; i < snd.devices.length; i++) {
-            const device = snd.devices[i];
-
-            if (device.isDefault) {
-                const mode = device.mode;
-
-                if (mode === 1 || mode === 3)
-                    return "󰓃";
-                if (mode === 2)
-                    return "󰍰";
-            }
-        }
-
-        return "󰤽";
-    }
-
-    function getCurrentIcon() {
-        return snd.headphonesConnected ? "󰋋" : root.getActiveDeviceIcon();
     }
 }

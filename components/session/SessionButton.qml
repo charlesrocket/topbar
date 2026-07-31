@@ -1,6 +1,6 @@
-import Quickshell.Io
-
 import QtQuick
+
+import Quickshell.Io
 
 QtObject {
     id: button
@@ -8,7 +8,6 @@ QtObject {
     required property string command
     required property string text
     required property string icon
-
     property var keybind: null
 
     readonly property var process: Process {

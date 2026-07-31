@@ -15,14 +15,10 @@ Item {
     property color colAction: Config.colors.action
     property color colOffline: Config.colors.red
     property color colPassive: Config.colors.passive
-
     property bool isOnline: false
-
     property color colOnline: States.ecoMode ? root.colPassive : root.isOnline ? root.colFg : root.colOffline
-
     readonly property var devicesList: Networking.devices.values
     readonly property string uplinkIcon: hasActiveVpn ? "" : ""
-
     readonly property bool hasActiveVpn: {
         var devices = devicesList;
 
@@ -40,7 +36,6 @@ Item {
 
         return false;
     }
-
     readonly property var primaryDevice: {
         var devices = devicesList;
         if (devices.length === 0)
@@ -65,14 +60,12 @@ Item {
 
         return connectedDev || firstDev;
     }
-
     readonly property bool isPrimaryWifi: {
         if (!primaryDevice)
             return false;
 
         return primaryDevice.type === DeviceType.Wifi;
     }
-
     readonly property string ifIcon: {
         if (isPrimaryWifi)
             return "󰖩";
@@ -83,12 +76,6 @@ Item {
     implicitWidth: section.implicitWidth
     implicitHeight: section.implicitHeight
 
-    Process {
-        id: netifRestart
-        command: ["sh", "-c", "notify-send -u normal 'Reloading the network' ; doas service netif restart"]
-        Component.onCompleted: running = false
-    }
-
     Behavior on implicitWidth {
         NumberAnimation {
             duration: 250
@@ -97,7 +84,16 @@ Item {
     }
 
     Process {
+        id: netifRestart
+
+        command: ["sh", "-c", "notify-send -u normal 'Reloading the network' ; doas service netif restart"]
+
+        Component.onCompleted: running = false
+    }
+
+    Process {
         id: onlineCheck
+
         command: ["host", "-W", "1", "8.8.8.8"]
         running: !States.ecoMode
 
@@ -111,6 +107,7 @@ Item {
 
     Timer {
         id: tmr
+
         running: !States.ecoMode
 
         onTriggered: {
@@ -120,15 +117,16 @@ Item {
 
     RowLayout {
         id: section
+
         anchors.fill: parent
         spacing: 6
 
         Text {
             id: onlineIcon
-            text: root.uplinkIcon
 
             property bool isHovered: false
 
+            text: root.uplinkIcon
             color: root.colOnline
             font.family: "Symbols Nerd Font"
             font.pixelSize: root.fontSize
@@ -145,11 +143,9 @@ Item {
                 onEntered: {
                     onlineIcon.isHovered = true;
                 }
-
                 onExited: {
                     onlineIcon.isHovered = false;
                 }
-
                 onClicked: {
                     netifRestart.running = true;
                 }

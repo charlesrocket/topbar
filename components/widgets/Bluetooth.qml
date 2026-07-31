@@ -1,6 +1,6 @@
-import Quickshell.Bluetooth
-
 import QtQuick
+
+import Quickshell.Bluetooth
 
 import ".."
 
@@ -10,12 +10,10 @@ Text {
     property color colMain: Config.colors.fg
     property string fontFamily: "Symbols Nerd Font"
     property int fontSize: Config.general.fontSize
-
     readonly property bool hasAdapter: Bluetooth && Bluetooth.adapters && Bluetooth.adapters.length > 0
     readonly property var adapter: hasAdapter ? Bluetooth.adapters[0] : null
     readonly property bool powered: adapter ? adapter.powered : false
     readonly property bool connected: adapter && adapter.connectedDevices && adapter.connectedDevices.length > 0
-
     readonly property string connectedDeviceName: {
         if (connected && adapter && adapter.connectedDevices && adapter.connectedDevices.length > 0) {
             var device = adapter.connectedDevices[0];
@@ -32,7 +30,6 @@ Text {
             return "";
         return "";
     }
-
     color: root.colMain
 
     font {

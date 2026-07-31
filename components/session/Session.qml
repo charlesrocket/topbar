@@ -1,18 +1,18 @@
-import Quickshell
-import Quickshell.Wayland
-
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell
+import Quickshell.Wayland
 
 import ".."
 
 Loader {
     id: root
-    active: States.sessionPresent
 
     property color backgroundColor: Config.session.background
-
     default property list<SessionButton> buttons
+
+    active: States.sessionPresent
 
     sourceComponent: Variants {
         model: Quickshell.screens
@@ -29,6 +29,7 @@ Loader {
 
             contentItem {
                 focus: true
+
                 Keys.onPressed: event => {
                     if (event.key == Qt.Key_Escape) {
                         States.sessionPresent = false;
@@ -56,6 +57,7 @@ Loader {
 
                 MouseArea {
                     anchors.fill: parent
+
                     onClicked: States.sessionPresent = false
 
                     GridLayout {
@@ -68,13 +70,14 @@ Loader {
 
                         Repeater {
                             id: buttonRepeater
+
                             model: root.buttons
+
                             delegate: Rectangle {
                                 id: buttonRect
 
                                 required property SessionButton modelData
                                 required property int index
-
                                 readonly property int row: Math.floor(index / 3)
                                 readonly property int col: index % 3
                                 readonly property int totalRows: Math.ceil(root.buttons.length / 3)
@@ -88,7 +91,6 @@ Loader {
                                 topRightRadius: (row === 0 && col === 2) ? cornerRadius : 0
                                 bottomLeftRadius: (row === totalRows - 1 && col === 0) ? cornerRadius : 0
                                 bottomRightRadius: (row === totalRows - 1 && col === 2) ? cornerRadius : 0
-
                                 KeyNavigation.right: buttonRepeater.itemAt(index + 1)
                                 KeyNavigation.left: buttonRepeater.itemAt(index - 1)
                                 KeyNavigation.down: buttonRepeater.itemAt(index + 3)
@@ -98,12 +100,10 @@ Loader {
                                     States.sessionPresent = false;
                                     modelData.exec();
                                 }
-
                                 Keys.onEnterPressed: {
                                     States.sessionPresent = false;
                                     modelData.exec();
                                 }
-
                                 Component.onCompleted: {
                                     if (index === 0) {
                                         forceActiveFocus();
@@ -112,11 +112,12 @@ Loader {
 
                                 MouseArea {
                                     id: mouseArea
+
                                     anchors.fill: parent
                                     hoverEnabled: true
                                     cursorShape: Qt.PointingHandCursor
-                                    onEntered: buttonRect.forceActiveFocus()
 
+                                    onEntered: buttonRect.forceActiveFocus()
                                     onClicked: {
                                         States.sessionPresent = false;
                                         buttonRect.modelData.exec();
@@ -132,38 +133,40 @@ Loader {
 
                                         Text {
                                             id: icon
+
                                             color: (mouseArea.containsMouse || buttonRect.activeFocus) ? Config.colors.accent : Config.colors.fg
                                             font.pixelSize: 105
                                             font.family: "Symbols Nerd Font"
                                             text: `${buttonRect.modelData.icon}`
                                             focus: true
 
+                                            Behavior on color {
+                                                ColAnim {}
+                                            }
+
                                             anchors {
                                                 horizontalCenter: parent.horizontalCenter
                                                 top: parent.top
-                                            }
-
-                                            Behavior on color {
-                                                ColAnim {}
                                             }
                                         }
 
                                         Text {
                                             id: textLabel
+
                                             text: buttonRect.modelData.text
                                             color: (mouseArea.containsMouse || buttonRect.activeFocus) ? Config.colors.accent : Config.colors.fg
                                             font.pointSize: 14
                                             font.bold: true
                                             font.family: Config.general.fontFamily
 
+                                            Behavior on color {
+                                                ColAnim {}
+                                            }
+
                                             anchors {
                                                 top: icon.bottom
                                                 topMargin: 22
                                                 horizontalCenter: parent.horizontalCenter
-                                            }
-
-                                            Behavior on color {
-                                                ColAnim {}
                                             }
                                         }
                                     }

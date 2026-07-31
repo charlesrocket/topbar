@@ -69,15 +69,13 @@ Item {
                 locale: States.locale
 
                 delegate: Rectangle {
-                    implicitWidth: 32
-                    implicitHeight: 32
-
                     required property var model
-
                     property bool isCurrentMonth: model.month === root.month
                     property bool isToday: model.date.toDateString() === root.currentDate.toDateString()
                     property bool isSelected: model.date.toDateString() === root.selectedDate.toDateString()
 
+                    implicitWidth: 32
+                    implicitHeight: 32
                     color: isSelected ? Config.colors.accent : isToday ? Config.colors.fg : "transparent"
                     radius: height / 2
 
@@ -99,6 +97,7 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
+
                         onClicked: root.selectedDate = model.date
                     }
                 }

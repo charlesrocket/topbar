@@ -7,7 +7,6 @@ import "../.."
 
 RowLayout {
     id: root
-    spacing: 6
 
     property int animDuration: 250
     property int fontSize: Config.general.fontSize
@@ -17,8 +16,9 @@ RowLayout {
     property color colPassive: Qt.darker(Config.colors.passive, 1.5)
     property color colAction: Config.colors.action
     property DwlIpcOutput dwlOutput: States.dwlOutput
-
     required property var names
+
+    spacing: 6
 
     Repeater {
         model: dwlOutput ? dwlOutput.tags : []
@@ -28,7 +28,6 @@ RowLayout {
 
             required property int index
             required property DwlTag modelData
-
             property bool isHovered: false
 
             text: root.names[index]
@@ -38,14 +37,14 @@ RowLayout {
             leftPadding: 4
             rightPadding: 4
 
+            Behavior on color {
+                ColAnim {}
+            }
+
             font {
                 family: root.fontFamily
                 pixelSize: root.fontSize
                 bold: true
-            }
-
-            Behavior on color {
-                ColAnim {}
             }
 
             MouseArea {
@@ -69,14 +68,14 @@ RowLayout {
         leftPadding: 4
         rightPadding: 4
 
+        Behavior on color {
+            ColAnim {}
+        }
+
         font {
             family: root.fontFamily
             pixelSize: root.fontSize
             bold: true
-        }
-
-        Behavior on color {
-            ColAnim {}
         }
 
         MouseArea {

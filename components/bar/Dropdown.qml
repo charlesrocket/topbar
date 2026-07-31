@@ -9,10 +9,28 @@ Item {
     property alias timer: hideTimer
     property bool show: false
     property int offset: 0
-
     required property var boxParent
-
     default property alias content: contentArea.data
+
+    onShowChanged: {
+        if (show) {
+            States.dropdownOwner = root;
+
+            let barItem = root.parent;
+
+            while (barItem && barItem.parent && barItem.parent.parent) {
+                barItem = barItem.parent;
+            }
+
+            const mapped = root.boxParent.mapToItem(barItem, 0, 0);
+            const centerX = mapped.x - (dropdown.width / 2) + (root.boxParent.width / 2) - Config.bar.padding;
+
+            States.dropdownX = centerX;
+            States.dropdownWidth = dropdown.width + (Config.general.borderWidth * 2);
+            States.dropdownHeight = dropdown.height + (Config.general.borderWidth * 2);
+            States.dropdownY = dropdown.y;
+        }
+    }
 
     Item {
         id: dropdown
@@ -20,7 +38,6 @@ Item {
         visible: false
         width: contentArea.implicitWidth
         height: contentArea.implicitHeight
-
         x: {
             const mapped = root.boxParent.mapToItem(root.boxParent, 0, 0);
             return mapped.x + (root.boxParent.width / 2) - (dropdown.width / 2);
@@ -46,7 +63,6 @@ Item {
             const result = mapped.y + root.boxParent.height + (Config.bar.padding) - 1;
             return result;
         }
-
         opacity: 0
         scale: 0
         transformOrigin: Item.Top
@@ -73,11 +89,11 @@ Item {
                 }
             }
         ]
-
         transitions: [
             Transition {
                 from: "hidden"
                 to: "visible"
+
                 SequentialAnimation {
                     PropertyAction {
                         target: dropdown
@@ -148,6 +164,7 @@ Item {
 
         Shape {
             id: ramp
+
             preferredRendererType: Shape.CurveRenderer
             anchors.fill: parent
 
@@ -155,7 +172,6 @@ Item {
                 strokeColor: "transparent"
                 strokeWidth: Config.general.borderWidth > 0 ? Config.general.borderWidth : -1
                 fillColor: States.ecoMode ? Config.colors.bge : Config.colors.bg
-
                 startX: -(Config.general.cornerRadius * 2)
                 startY: 0
 
@@ -208,14 +224,15 @@ Item {
 
         Item {
             id: contentArea
-            z: 0
 
+            z: 0
             implicitWidth: children.length > 0 ? children[0].implicitWidth : 0
             implicitHeight: children.length > 0 ? children[0].implicitHeight : 0
         }
 
         HoverHandler {
             id: dropdownHover
+
             grabPermissions: PointerHandler.TakeOverForbidden
 
             onHoveredChanged: {
@@ -230,6 +247,7 @@ Item {
 
     Timer {
         id: hideTimer
+
         interval: 120
         repeat: false
 
@@ -241,26 +259,6 @@ Item {
 
             if (States.dashboardPresent)
                 States.dashboardPresent = false;
-        }
-    }
-
-    onShowChanged: {
-        if (show) {
-            States.dropdownOwner = root;
-
-            let barItem = root.parent;
-
-            while (barItem && barItem.parent && barItem.parent.parent) {
-                barItem = barItem.parent;
-            }
-
-            const mapped = root.boxParent.mapToItem(barItem, 0, 0);
-            const centerX = mapped.x - (dropdown.width / 2) + (root.boxParent.width / 2) - Config.bar.padding;
-
-            States.dropdownX = centerX;
-            States.dropdownWidth = dropdown.width + (Config.general.borderWidth * 2);
-            States.dropdownHeight = dropdown.height + (Config.general.borderWidth * 2);
-            States.dropdownY = dropdown.y;
         }
     }
 }

@@ -14,7 +14,6 @@ Rectangle {
     radius: root.frameRadius
     opacity: 0
     z: -1
-
     border.color: frameColor
 
     Behavior on opacity {
