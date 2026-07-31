@@ -1,5 +1,3 @@
-pragma ComponentBehavior: Bound
-
 import Quickshell.Services.SystemTray
 
 import QtQuick
