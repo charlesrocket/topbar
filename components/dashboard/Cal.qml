@@ -54,7 +54,7 @@ Item {
             }
 
             Rectangle {
-                height: 1
+                implicitHeight: 1
                 Layout.fillWidth: true
                 Layout.topMargin: 4
                 color: Config.colors.passive

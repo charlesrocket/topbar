@@ -128,8 +128,8 @@ Item {
             spacing: 10
 
             Rectangle {
-                width: 25
-                height: 25
+                implicitWidth: 25
+                implicitHeight: 25
                 color: "transparent"
 
                 Text {
@@ -175,8 +175,8 @@ Item {
             }
 
             Rectangle {
-                width: 25
-                height: 25
+                implicitWidth: 25
+                implicitHeight: 25
                 color: "transparent"
                 Layout.alignment: Qt.AlignVCenter
 

@@ -336,8 +336,8 @@ Rectangle {
 
             // mail
             Rectangle {
-                width: 270
-                height: 80
+                implicitWidth: 270
+                implicitHeight: 80
                 color: "transparent"
                 border.width: 1
                 border.color: Config.colors.passive

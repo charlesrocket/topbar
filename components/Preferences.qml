@@ -150,7 +150,7 @@ FloatingWindow {
                     Layout.fillWidth: false
                     Layout.fillHeight: true
                     radius: 1
-                    width: 1
+                    implicitWidth: 1
                     color: Config.colors.passive
                 }
 
@@ -503,7 +503,7 @@ FloatingWindow {
                                 GridLayout {
                                     id: barSection
 
-                                    width: parent.width
+                                    implicitWidth: parent.width
                                     columns: 1
                                     columnSpacing: 14
                                     rowSpacing: 14
@@ -532,7 +532,7 @@ FloatingWindow {
                                 GridLayout {
                                     id: barTitleSection
 
-                                    width: parent.width
+                                    implicitWidth: parent.width
                                     columns: 1
                                     columnSpacing: 14
                                     rowSpacing: 14
@@ -574,7 +574,7 @@ FloatingWindow {
                                 ColumnLayout {
                                     id: notificationsSection
 
-                                    width: parent.width
+                                    implicitWidth: parent.width
                                     spacing: 12
 
                                     Component.onCompleted: {
@@ -615,7 +615,7 @@ FloatingWindow {
                                 ColumnLayout {
                                     id: desktopSection
 
-                                    width: parent.width
+                                    implicitWidth: parent.width
                                     spacing: 12
 
                                     Component.onCompleted: {
@@ -764,7 +764,7 @@ FloatingWindow {
                                 ColumnLayout {
                                     id: dashboardPlayerSection
 
-                                    width: parent.width
+                                    implicitWidth: parent.width
                                     spacing: 12
 
                                     Component.onCompleted: {
@@ -875,7 +875,7 @@ FloatingWindow {
                                 spacing: 12
 
                                 ColumnLayout {
-                                    width: parent.width
+                                    implicitWidth: parent.width
                                     spacing: 12
 
                                     SettingRow {
@@ -898,7 +898,7 @@ FloatingWindow {
                                 GridLayout {
                                     id: sessionTimeoutsSection
 
-                                    width: parent.width
+                                    implicitWidth: parent.width
                                     columns: 3
                                     rows: 1
                                     columnSpacing: 14
@@ -946,7 +946,7 @@ FloatingWindow {
                                 GridLayout {
                                     id: sessionCommandsSection
 
-                                    width: parent.width
+                                    implicitWidth: parent.width
                                     columns: 2
                                     columnSpacing: 14
                                     rowSpacing: 14
@@ -1014,8 +1014,8 @@ FloatingWindow {
                             border.width: 1
                             border.color: Config.colors.passive
                             color: "transparent"
-                            width: versionString.width + 12
-                            height: versionString.height + 6
+                            implicitWidth: versionString.width + 12
+                            implicitHeight: versionString.height + 6
                             radius: Config.general.cornerRadius
 
                             TextEdit {
@@ -1042,8 +1042,8 @@ FloatingWindow {
                             id: button
 
                             color: Config.colors.passive
-                            width: 60
-                            height: 32
+                            implicitWidth: 60
+                            implicitHeight: 32
                             radius: Config.general.cornerRadius
 
                             Behavior on color {
