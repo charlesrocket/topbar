@@ -222,7 +222,6 @@ Item {
 
             text: root.icon
             color: root.colMain
-            font.bold: true
 
             font {
                 family: "Symbols Nerd Font"
