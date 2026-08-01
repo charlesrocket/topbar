@@ -89,7 +89,7 @@ FloatingWindow {
                         Repeater {
                             model: ["General", "Colors", "Widgets", "Bar",
                                 "Notifications", "Desktop", "Spaces",
-                                "Dashboard", "Lockscreen", "Session"]
+                                "Dashboard", "Lockscreen", "Session", "About"]
 
                             delegate: Button {
                                 required property var modelData
@@ -1002,6 +1002,15 @@ FloatingWindow {
                                     }
                                 }
                             }
+                        }
+
+                        // about page
+                        ScrollView {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            clip: true
+
+                            About {}
                         }
                     }
 

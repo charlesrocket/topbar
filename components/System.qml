@@ -40,6 +40,13 @@ Singleton {
                                      + "/topbar" || root.home
                                      + "/.config/topbar"
 
+    function getOsIcon() {
+        if (root.osId === "freebsd")
+            return "󰣠";
+        else
+            return "󰌽";
+    }
+
     onConfigDiskChanged: System.setDiskMountPoint(configDisk)
     onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000
 

@@ -23,13 +23,6 @@ Rectangle {
         return Config.colors.fg;
     }
 
-    function getOsIcon() {
-        if (System.id === "freebsd")
-            return "󰣠";
-        else
-            return "󰌽";
-    }
-
     anchors.fill: parent
     anchors.topMargin: Config.general.borderWidth > 0 ? 8 : 2
     anchors.bottomMargin: 8
@@ -101,15 +94,16 @@ Rectangle {
                                 Layout.preferredWidth: root.fontSize * 2
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
-                                text: root.getOsIcon()
+                                text: System.getOsIcon()
                             }
 
                             Text {
                                 color: Config.colors.fg
                                 font.family: Config.general.fontFamily
                                 font.pixelSize: root.fontSize
-                                text: `${System.prettyName || System.name}`
+                                text: `${System.osPrettyName || System.osName}`
                                 elide: Text.ElideRight
+                                Layout.minimumWidth: 186 // tmp
                                 Layout.maximumWidth: 220
                             }
                         }
@@ -133,25 +127,6 @@ Rectangle {
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }
-
-                            Text {
-                                color: Config.colors.fg
-                                font.family: "Symbols Nerd Font"
-                                Layout.preferredWidth: root.fontSize * 2
-                                font.pixelSize: root.fontSize * 1.3
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-                                text: ""
-                            }
-
-                            Text {
-                                color: Config.colors.fg
-                                font.pixelSize: root.fontSize
-                                font.family: Config.general.fontFamily
-                                text: System.cpuCores
-                                elide: Text.ElideRight
-                                Layout.maximumWidth: 220
-                            }
                         }
 
                         RowLayout {
@@ -170,25 +145,6 @@ Rectangle {
                                 font.family: Config.general.fontFamily
                                 font.pixelSize: root.fontSize
                                 text: System.shell
-                                elide: Text.ElideRight
-                                Layout.maximumWidth: 220
-                            }
-
-                            Text {
-                                color: Config.colors.fg
-                                font.family: "Symbols Nerd Font"
-                                Layout.preferredWidth: root.fontSize * 2
-                                font.pixelSize: root.fontSize * 1.3
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-                                text: ""
-                            }
-
-                            Text {
-                                color: Config.colors.fg
-                                font.pixelSize: root.fontSize
-                                font.family: Config.general.fontFamily
-                                text: System.diskMountPoint
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }
