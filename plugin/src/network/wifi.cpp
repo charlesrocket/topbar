@@ -15,7 +15,7 @@
 namespace topbar::network {
 
 namespace {
-Q_LOGGING_CATEGORY(logWifiNetwork, "topbar.wifinetwork");
+Q_LOGGING_CATEGORY(logWifiNetwork, "topbar.wifinetwork", QtInfoMsg);
 } // namespace
 
 WifiNetwork::WifiNetwork(QString ssid, QObject *parent)

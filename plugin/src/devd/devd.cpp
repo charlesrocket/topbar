@@ -15,7 +15,7 @@
 namespace topbar::devd {
 // NOLINTBEGIN(misc-include-cleaner)
 
-Q_LOGGING_CATEGORY(logDevd, "topbar.devd")
+Q_LOGGING_CATEGORY(logDevd, "topbar.devd", QtInfoMsg)
 
 Devd *Devd::dInstance = nullptr;
 

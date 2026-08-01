@@ -12,7 +12,7 @@
 namespace topbar::network {
 
 namespace {
-Q_LOGGING_CATEGORY(logNetworkDevice, "topbar.network.device");
+Q_LOGGING_CATEGORY(logNetworkDevice, "topbar.network.device", QtInfoMsg);
 } // namespace
 
 NetworkDevice::NetworkDevice(DeviceType::Enum type, QObject *parent)

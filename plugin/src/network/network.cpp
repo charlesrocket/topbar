@@ -15,7 +15,7 @@
 namespace topbar::network {
 
 namespace {
-Q_LOGGING_CATEGORY(logNetwork, "topbar.network");
+Q_LOGGING_CATEGORY(logNetwork, "topbar.network", QtInfoMsg);
 } // namespace
 
 Networking::Networking(QObject *parent) : QObject(parent) {

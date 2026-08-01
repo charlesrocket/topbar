@@ -33,7 +33,7 @@ template <typename T> bool floatEq(T a, T b) {
 
 namespace topbar::system {
 
-Q_LOGGING_CATEGORY(logSystem, "topbar.system")
+Q_LOGGING_CATEGORY(logSystem, "topbar.system", QtInfoMsg)
 
 System::System(QObject *parent)
     : QObject(parent), mPollTimer(new QTimer(this)) {

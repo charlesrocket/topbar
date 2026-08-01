@@ -90,7 +90,7 @@ bool isIgnoredInterface(const QString &ifname) {
 
 namespace topbar::network {
 
-Q_LOGGING_CATEGORY(logNetworkFreeBSD, "topbar.network.fbsd")
+Q_LOGGING_CATEGORY(logNetworkFreeBSD, "topbar.network.fbsd", QtInfoMsg)
 
 FreeBSDBackend::FreeBSDBackend(QObject *parent)
     : NetworkBackend(parent), bWifiEnabled(true), bWifiHardwareEnabled(true) {

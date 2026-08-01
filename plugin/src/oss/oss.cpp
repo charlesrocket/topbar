@@ -38,7 +38,7 @@
 
 namespace topbar::oss {
 
-Q_LOGGING_CATEGORY(logOSS, "topbar.oss")
+Q_LOGGING_CATEGORY(logOSS, "topbar.oss", QtInfoMsg)
 
 // OSSMixerControl Implementation
 OSSMixerControl::OSSMixerControl(
