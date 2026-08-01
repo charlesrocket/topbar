@@ -12,6 +12,7 @@ Rectangle {
     property string fontFamily: Config.general.fontFamily
     property var notification: null
     property real hoverPauseStart: 0
+    property real progressFraction: 1.0
     property int timeoutMs: ready && notification.expireTimeout > 0
                             ? notification.expireTimeout : 5000
     readonly property bool ready: notification !== null
@@ -46,7 +47,7 @@ Rectangle {
     }
 
     implicitWidth: Config.notifications.width
-    implicitHeight: bodyRow.implicitHeight + 12
+    implicitHeight: bodyRow.implicitHeight + (bodyRow.anchors.margins * 2)
     radius: Config.general.cornerRadius
     color: States.ecoMode ? Config.colors.bge : Config.colors.bg
     border.width: Config.general.borderWidth
@@ -89,6 +90,18 @@ Rectangle {
             else
                 root.expired();
         }
+    }
+
+    NumberAnimation {
+        id: progressAnim
+
+        target: root
+        property: "progressFraction"
+        from: 1.0
+        to: 0.0
+        duration: root.timeoutMs
+        running: expireTimer.running
+        easing.type: Easing.Linear
     }
 
     // auto-expire timer
@@ -165,10 +178,8 @@ Rectangle {
             left: parent.left
             right: parent.right
             top: parent.top
-            topMargin: 6
-            leftMargin: 12
-            rightMargin: 12
-            bottomMargin: 8
+            bottom: parent.bottom
+            margins: 8
         }
 
         // text content
@@ -317,36 +328,31 @@ Rectangle {
                 }
             }
         }
-    }
 
-    // timeout progress bar
-    Rectangle {
-        id: progressBar
+        // progress bar
+        Item {
+            id: progressBarContainer
 
-        height: 2
-        radius: 2
-        color: root.urgencyColor
-        opacity: 0.9
-        width: root.implicitWidth - Config.general.cornerRadius * 2
+            Layout.preferredWidth: 2
+            Layout.fillHeight: true
 
-        NumberAnimation on width {
-            id: progressAnim
+            Rectangle {
+                id: progressBar
 
-            target: progressBar
-            property: "width"
-            from: root.timeoutMs / root.timeoutMs * (root.implicitWidth - 2)
-            to: 0
-            duration: root.timeoutMs
-            running: expireTimer.running
-            easing.type: Easing.Linear
-        }
+                width: parent.width
+                radius: 2
+                color: root.urgencyColor
+                opacity: 0.9
+                anchors.bottom: parent.bottom
+                height: parent.height * root.progressFraction
 
-        anchors {
-            bottom: parent.bottom
-            right: parent.right
-            leftMargin: 5
-            rightMargin: 5
-            bottomMargin: 3
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: Config.general.animDuration
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+            }
         }
     }
 
@@ -354,15 +360,16 @@ Rectangle {
         onHoveredChanged: {
             if (hovered) {
                 closeButtonCont.opacity = 1;
+                progressBar.opacity = 0;
                 root.hoverPauseStart = Date.now();
-                root.timeoutMs = progressBar.width / (root.implicitWidth - 2)
-                        * root.timeoutMs;
+                root.timeoutMs = root.progressFraction * root.timeoutMs;
                 progressAnim.stop();
                 expireTimer.stop();
             } else {
                 closeButtonCont.opacity = 0;
+                progressBar.opacity = 0.9;
                 expireTimer.interval = root.timeoutMs;
-                progressAnim.from = progressBar.width;
+                progressAnim.from = root.progressFraction;
                 progressAnim.duration = root.timeoutMs;
                 expireTimer.restart();
                 progressAnim.restart();
