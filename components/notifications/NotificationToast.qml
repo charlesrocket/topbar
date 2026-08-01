@@ -46,7 +46,7 @@ Rectangle {
     }
 
     implicitWidth: Config.notifications.width
-    implicitHeight: bodyRow.implicitHeight + 24
+    implicitHeight: bodyRow.implicitHeight + 12
     radius: Config.general.cornerRadius
     color: States.ecoMode ? Config.colors.bge : Config.colors.bg
     border.width: Config.general.borderWidth
@@ -106,8 +106,8 @@ Rectangle {
         id: closeButtonCont
 
         opacity: 0
-        implicitWidth: closeButton.implicitWidth + 16
-        implicitHeight: closeButton.implicitHeight + 8
+        implicitWidth: closeButton.implicitWidth + 12
+        implicitHeight: closeButton.implicitHeight + 6
         color: Config.colors.bge
         border.width: 1
         border.color: Config.colors.accent
@@ -165,10 +165,10 @@ Rectangle {
             left: parent.left
             right: parent.right
             top: parent.top
-            topMargin: 12
+            topMargin: 6
             leftMargin: 12
             rightMargin: 12
-            bottomMargin: 12
+            bottomMargin: 8
         }
 
         // text content
