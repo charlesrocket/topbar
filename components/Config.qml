@@ -9,8 +9,7 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    readonly property string path: Quickshell.env("HOME")
-                                   + "/.config/topbar/settings.json"
+    readonly property string path: System.config + "/settings.json"
     property alias general: settings.general
     property alias bar: settings.bar
     property alias desktop: settings.desktop

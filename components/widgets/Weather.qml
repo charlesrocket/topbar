@@ -152,6 +152,7 @@ Item {
             var randomValue = Math.floor(Math.random() * (680000 - 100000)
                                          + 100000);
 
+
             updateTimer.interval = 1000000 + randomValue;
         }
     }

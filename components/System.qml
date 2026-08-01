@@ -15,9 +15,9 @@ Singleton {
     readonly property string version: Version.full
     readonly property Devd dev: Devd
 
-    property string id
-    property string name
-    property string prettyName
+    property string osId
+    property string osName
+    property string osPrettyName
 
     property real cpuTemp: System.cpuTemp
     property real pchTemp: System.pchTemp
@@ -38,6 +38,11 @@ Singleton {
     readonly property string desktop: Quickshell.env("XDG_CURRENT_DESKTOP").toLowerCase() || Quickshell.env("XDG_SESSION_DESKTOP").toLowerCase()
     readonly property string user: Quickshell.env("USER").toLowerCase()
     readonly property string shell: Quickshell.env("SHELL").split("/").pop().toLowerCase()
+    readonly property string home: Quickshell.env("HOME")
+    readonly property string config: Quickshell.env("XDG_CONFIG_HOME")
+                                     + "/topbar" || root.home
+                                     + "/.config/topbar"
+
 
     FileView {
         id: os
@@ -47,9 +52,9 @@ Singleton {
             const lines = text().split("\n");
             const fd = key => lines.find(l => l.startsWith(`${key}=`))?.split("=")[1].replace(/"/g, "") ?? "";
 
-            root.name = fd("NAME");
-            root.prettyName = fd("PRETTY_NAME");
-            root.id = fd("ID");
+            root.osName = fd("NAME");
+            root.osPrettyName = fd("PRETTY_NAME");
+            root.osId = fd("ID");
         }
     }
 }
