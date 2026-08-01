@@ -1,7 +1,7 @@
 import QtQml
 import QtQuick
 
-import ".."
+import qs
 
 Item {
     id: root

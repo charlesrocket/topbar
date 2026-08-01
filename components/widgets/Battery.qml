@@ -2,7 +2,7 @@ import QtQuick
 
 import Quickshell.Services.UPower
 
-import ".."
+import qs
 
 Item {
     id: root

@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 
-import "../widgets/dwl" as DWL
-import "../widgets/hypr" as Hypr
-import ".."
+import qs
+import qs.widgets.dwl as DWL
+import qs.widgets.hypr as Hypr
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3

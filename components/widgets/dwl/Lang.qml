@@ -2,7 +2,7 @@ import QtQuick
 
 import TopBar.DWL
 
-import "../.."
+import qs
 
 Rectangle {
     id: root

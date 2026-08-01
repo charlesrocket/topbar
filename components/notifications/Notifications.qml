@@ -5,7 +5,7 @@ import Quickshell
 import Quickshell.Services.Notifications
 import Quickshell.Wayland
 
-import ".."
+import qs
 
 Item {
     id: root

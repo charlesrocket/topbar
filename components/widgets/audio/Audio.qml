@@ -5,7 +5,7 @@ import Quickshell.Io
 
 import TopBar.OSS
 
-import "../.."
+import qs
 
 RowLayout {
     Layout.alignment: Qt.AlignVCenter

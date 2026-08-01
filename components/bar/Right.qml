@@ -4,11 +4,11 @@ import QtQuick.Layouts
 import Quickshell.Services.SystemTray
 import Quickshell.Services.UPower
 
-import "../widgets/audio"
-import "../widgets/dwl" as DWL
-import "../widgets/hypr" as Hypr
-import "../widgets"
-import ".."
+import qs
+import qs.widgets
+import qs.widgets.audio
+import qs.widgets.dwl as DWL
+import qs.widgets.hypr as Hypr
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3

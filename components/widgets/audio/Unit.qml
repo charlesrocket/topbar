@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 
-import "../../bar"
-import "../.."
+import qs
+import qs.bar
 
 Item {
     id: root

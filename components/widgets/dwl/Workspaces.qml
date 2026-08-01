@@ -3,7 +3,7 @@ import QtQuick.Layouts
 
 import TopBar.DWL
 
-import "../.."
+import qs
 
 RowLayout {
     id: root

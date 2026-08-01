@@ -3,7 +3,7 @@ import QtQuick.Layouts
 
 import Quickshell.Hyprland
 
-import "../.."
+import qs
 
 RowLayout {
     id: root

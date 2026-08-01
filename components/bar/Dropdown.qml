@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Shapes
 
-import ".."
+import qs
 
 Item {
     id: root

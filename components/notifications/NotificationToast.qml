@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import Quickshell.Services.Notifications
 import Quickshell.Widgets
 
-import ".."
+import qs
 
 Rectangle {
     id: root

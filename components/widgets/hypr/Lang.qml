@@ -3,7 +3,7 @@ import QtQuick
 import Quickshell.Hyprland
 import Quickshell.Io
 
-import "../.."
+import qs
 
 Rectangle {
     id: root

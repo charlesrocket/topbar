@@ -3,9 +3,9 @@ import QtQuick.Layouts
 
 import Quickshell.Wayland
 
-import "../bar"
-import "../dashboard"
-import ".."
+import qs
+import qs.bar
+import qs.dashboard
 
 Item {
     id: root

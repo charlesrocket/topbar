@@ -5,7 +5,7 @@ import Quickshell.Io
 
 import TopBar.Networking
 
-import ".."
+import qs
 
 Item {
     id: root

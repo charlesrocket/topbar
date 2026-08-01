@@ -3,7 +3,7 @@ import QtQuick.Effects
 
 import Quickshell.Services.SystemTray
 
-import ".."
+import qs
 
 Item {
     id: root

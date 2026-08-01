@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 
-import ".."
+import qs
 
 Loader {
     id: root

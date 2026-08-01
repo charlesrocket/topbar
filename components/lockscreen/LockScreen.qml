@@ -7,7 +7,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.UPower
 
-import ".."
+import qs
 
 Item {
     id: root

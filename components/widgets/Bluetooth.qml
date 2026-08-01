@@ -2,7 +2,7 @@ import QtQuick
 
 import Quickshell.Bluetooth
 
-import ".."
+import qs
 
 Text {
     id: root

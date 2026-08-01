@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 
-import ".."
+import qs
 
 RowLayout {
     id: root
