@@ -126,7 +126,8 @@ Item {
                         Layout.fillWidth: true
                         implicitWidth: rowLayout.implicitWidth + 16
                         implicitHeight: rowLayout.implicitHeight + 16
-                        color: mouseArea.containsMouse ? "#11ffffff" : "transparent"
+                        color: mouseArea.containsMouse ? "#11ffffff" :
+                                                         "transparent"
                         border.width: modelData.isDefault ? 2 : 0
                         border.color: root.colActive
                         radius: 6
@@ -163,7 +164,8 @@ Item {
                                 spacing: 2
 
                                 Text {
-                                    text: modelData.description || modelData.name
+                                    text: modelData.description
+                                          || modelData.name
                                     color: root.colMain
                                     font.family: root.fontFamily
                                     font.pixelSize: Config.general.fontSize
@@ -177,7 +179,9 @@ Item {
                                     color: root.colMain
                                     font.family: root.fontFamily
                                     font.pixelSize: Config.general.fontSize - 2
-                                    visible: modelData.description && modelData.description !== modelData.name
+                                    visible: modelData.description
+                                             && modelData.description
+                                             !== modelData.name
                                 }
                             }
                         }

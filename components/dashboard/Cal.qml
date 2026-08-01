@@ -71,12 +71,16 @@ Item {
                 delegate: Rectangle {
                     required property var model
                     property bool isCurrentMonth: model.month === root.month
-                    property bool isToday: model.date.toDateString() === root.currentDate.toDateString()
-                    property bool isSelected: model.date.toDateString() === root.selectedDate.toDateString()
+                    property bool isToday: model.date.toDateString()
+                                           === root.currentDate.toDateString()
+                    property bool isSelected: model.date.toDateString()
+                                              === root.selectedDate.toDateString(
+                                                  )
 
                     implicitWidth: 32
                     implicitHeight: 32
-                    color: isSelected ? Config.colors.accent : isToday ? Config.colors.fg : "transparent"
+                    color: isSelected ? Config.colors.accent : isToday
+                                        ? Config.colors.fg : "transparent"
                     radius: height / 2
 
                     Behavior on color {
@@ -90,7 +94,14 @@ Item {
                         text: model.day
                         font.family: Config.general.fontFamily
                         font.pixelSize: Config.general.fontSize
-                        color: parent.isSelected ? Config.colors.fg : parent.isToday ? Config.colors.extraDark : parent.isCurrentMonth ? Config.colors.fg : Qt.darker(Config.colors.fg, 1.7)
+                        color: parent.isSelected ? Config.colors.fg :
+                                                   parent.isToday
+                                                   ? Config.colors.extraDark :
+                                                     parent.isCurrentMonth
+                                                     ? Config.colors.fg :
+                                                       Qt.darker(
+                                                           Config.colors.fg,
+                                                           1.7)
                         font.bold: parent.isToday || parent.isSelected
                     }
 

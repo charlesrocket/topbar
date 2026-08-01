@@ -14,7 +14,8 @@ Item {
 
     property string fullName: ""
     readonly property string userName: Quickshell.env("USER")
-    readonly property bool defaultWallpaper: Config.lockscreen.wallpaper === States.defaultWallpaper
+    readonly property bool defaultWallpaper: Config.lockscreen.wallpaper
+                                             === States.defaultWallpaper
     required property LockContext context
 
     opacity: 0
@@ -146,11 +147,14 @@ Item {
                                         repeat: true
                                         triggeredOnStart: true
 
-                                        onTriggered: clockRect.currentTime = new Date()
+                                        onTriggered: clockRect.currentTime
+                                                     = new Date()
                                     }
 
                                     Text {
-                                        text: Qt.formatDateTime(clockRect.currentTime, "HH:mm")
+                                        text: Qt.formatDateTime(
+                                                  clockRect.currentTime,
+                                                  "HH:mm")
                                         font.pixelSize: 22
                                         color: Config.colors.fg
                                         font.family: "FiraCode Nerd Font"
@@ -166,7 +170,8 @@ Item {
                 Loader {
                     id: battery
 
-                    active: Config.lockscreen.battery && UPower.displayDevice.ready
+                    active: Config.lockscreen.battery
+                            && UPower.displayDevice.ready
                     visible: battery.active
                     asynchronous: true
 
@@ -290,7 +295,8 @@ Item {
                     Rectangle {
                         anchors.fill: parent
                         radius: Config.general.cornerRadius
-                        color: powerMouseArea.containsMouse ? Config.colors.fg : "transparent"
+                        color: powerMouseArea.containsMouse ? Config.colors.fg :
+                                                              "transparent"
 
                         Behavior on color {
                             ColAnim {}
@@ -302,7 +308,8 @@ Item {
                             font.pixelSize: 22
                             font.bold: true
                             anchors.centerIn: parent
-                            color: powerMouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
+                            color: powerMouseArea.containsMouse
+                                   ? Config.colors.accent : Config.colors.fg
 
                             Behavior on color {
                                 ColAnim {}
@@ -329,7 +336,8 @@ Item {
                     Rectangle {
                         anchors.fill: parent
                         radius: Config.general.cornerRadius
-                        color: sleepMouseArea.containsMouse ? Config.colors.fg : "transparent"
+                        color: sleepMouseArea.containsMouse ? Config.colors.fg :
+                                                              "transparent"
 
                         Behavior on color {
                             ColAnim {}
@@ -341,7 +349,8 @@ Item {
                             font.pixelSize: 22
                             font.bold: true
                             anchors.centerIn: parent
-                            color: sleepMouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
+                            color: sleepMouseArea.containsMouse
+                                   ? Config.colors.accent : Config.colors.fg
 
                             Behavior on color {
                                 ColAnim {}
@@ -368,7 +377,8 @@ Item {
                     Rectangle {
                         anchors.fill: parent
                         radius: Config.general.cornerRadius
-                        color: rebootMouseArea.containsMouse ? Config.colors.fg : "transparent"
+                        color: rebootMouseArea.containsMouse ? Config.colors.fg :
+                                                               "transparent"
 
                         Behavior on color {
                             ColAnim {}
@@ -380,7 +390,8 @@ Item {
                             font.pixelSize: 22
                             font.bold: true
                             anchors.centerIn: parent
-                            color: rebootMouseArea.containsMouse ? Config.colors.accent : Config.colors.fg
+                            color: rebootMouseArea.containsMouse
+                                   ? Config.colors.accent : Config.colors.fg
 
                             Behavior on color {
                                 ColAnim {}
@@ -525,7 +536,10 @@ Item {
                         color: Config.colors.bg
                         radius: Config.general.cornerRadius
                         border.width: 2
-                        border.color: Qt.rgba(Config.colors.accent.r, Config.colors.accent.g, Config.colors.accent.b, blinkBorder.borderOpacity)
+                        border.color: Qt.rgba(Config.colors.accent.r,
+                                              Config.colors.accent.g,
+                                              Config.colors.accent.b,
+                                              blinkBorder.borderOpacity)
 
                         SequentialAnimation {
                             id: blinkAnimation
@@ -565,8 +579,10 @@ Item {
 
                     Text {
                         anchors.centerIn: parent
-                        text: root.context.showFailure ? "INCORRECT PASSWORD" : "PASSWORD"
-                        color: root.context.showFailure ? Config.colors.red : Config.colors.fg
+                        text: root.context.showFailure ? "INCORRECT PASSWORD" :
+                                                         "PASSWORD"
+                        color: root.context.showFailure ? Config.colors.red :
+                                                          Config.colors.fg
                         opacity: root.context.showFailure ? 1 : 0.5
                         font.family: Config.general.fontFamily
                         font.bold: false

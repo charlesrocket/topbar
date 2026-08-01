@@ -107,7 +107,8 @@ FloatingWindow {
                                 spacing: 2
 
                                 Text {
-                                    text: modelData.description || modelData.name
+                                    text: modelData.description
+                                          || modelData.name
                                     font.family: root.fontFamily
                                     font.pixelSize: root.fontSize
                                     elide: Text.ElideRight
@@ -119,7 +120,9 @@ FloatingWindow {
                                     text: modelData.name
                                     font.family: root.fontFamily
                                     font.pixelSize: root.fontSize - 2
-                                    visible: modelData.description && modelData.description !== modelData.name
+                                    visible: modelData.description
+                                             && modelData.description
+                                             !== modelData.name
                                 }
                             }
 

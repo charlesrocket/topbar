@@ -29,13 +29,17 @@ Rectangle {
             if (!root.currentLayout)
                 return "XX";
 
-            if (root.currentLayout.includes('(') && root.currentLayout.includes(')')) {
+            if (root.currentLayout.includes('(') && root.currentLayout.includes(
+                        ')')) {
                 const match = root.currentLayout.match(/\(([^)]+)\)/);
-                return match ? match[1].toUpperCase() : root.currentLayout.substring(0, 2).toUpperCase();
+                return match ? match[1].toUpperCase() :
+                               root.currentLayout.substring(0, 2).toUpperCase();
             }
 
             const firstWord = root.currentLayout.split(' ')[0];
-            return firstWord.length <= 3 ? firstWord.toUpperCase() : firstWord.substring(0, 2).toUpperCase();
+            return firstWord.length <= 3 ? firstWord.toUpperCase() :
+                                           firstWord.substring(0, 2).toUpperCase(
+                                               );
         }
         font.pixelSize: 12
         font.bold: true
@@ -89,8 +93,10 @@ Rectangle {
                             }
                         }
 
-                        if (!root.currentLayout && devices.keyboards[0].active_keymap) {
-                            root.currentLayout = devices.keyboards[0].active_keymap;
+                        if (!root.currentLayout
+                                && devices.keyboards[0].active_keymap) {
+                            root.currentLayout
+                                    = devices.keyboards[0].active_keymap;
                         }
                     }
                 } catch (e) {

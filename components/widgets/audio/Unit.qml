@@ -230,7 +230,8 @@ Item {
                         color: root.muted ? root.colMuted : root.colNormal
                         border.width: 2
                         border.color: root.colNormal
-                        y: (sliderTrack.height - height) * (1 - root.volume / 100)
+                        y: (sliderTrack.height - height) * (1 - root.volume
+                                                            / 100)
 
                         Behavior on y {
                             NumberAnimation {
@@ -245,7 +246,11 @@ Item {
 
                         function updateVolume(mouseY) {
                             if (root.control) {
-                                var newVolume = Math.max(0, Math.min(100, Math.round((1 - mouseY / height) * 100)));
+                                var newVolume = Math.max(0, Math.min(100,
+                                                                     Math.round((
+                                                                                    1 - mouseY
+                                                                                    / height)
+                                                                                * 100)));
 
                                 root.control.left = newVolume;
                                 root.control.right = newVolume;
@@ -271,7 +276,8 @@ Item {
     Timer {
         interval: 200
         repeat: true
-        running: snd.devices ? (hoverDetector.containsMouse || volumeMenu.show) : false
+        running: snd.devices ? (hoverDetector.containsMouse || volumeMenu.show) :
+                               false
 
         onTriggered: snd.refresh()
     }

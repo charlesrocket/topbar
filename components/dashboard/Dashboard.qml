@@ -258,7 +258,11 @@ Rectangle {
                                 clip: true
 
                                 Rectangle {
-                                    readonly property real fraction: root.cpuTemp > 0 ? Math.min(root.cpuTemp / 100.0, 1.0) : 0.0
+                                    readonly property real fraction:
+                                        root.cpuTemp > 0 ? Math.min(
+                                                               root.cpuTemp
+                                                               / 100.0, 1.0) :
+                                                           0.0
 
                                     anchors.bottom: parent.bottom
                                     width: parent.width
@@ -285,7 +289,11 @@ Rectangle {
                                 clip: true
 
                                 Rectangle {
-                                    readonly property real fraction: root.pchTemp > 0 ? Math.min(root.pchTemp / 100.0, 1.0) : 0.0
+                                    readonly property real fraction:
+                                        root.pchTemp > 0 ? Math.min(
+                                                               root.pchTemp
+                                                               / 100.0, 1.0) :
+                                                           0.0
 
                                     anchors.bottom: parent.bottom
                                     width: parent.width
@@ -353,7 +361,8 @@ Rectangle {
 
                     // status
                     Text {
-                        text: root.mail || root.mailErr.replace(/\s+for\s+\S+[\s\S]*$/, "")
+                        text: root.mail || root.mailErr.replace(
+                                  /\s+for\s+\S+[\s\S]*$/, "")
                         color: Config.colors.fg
                         font.pixelSize: root.fontSize
                         font.family: Config.general.fontFamily

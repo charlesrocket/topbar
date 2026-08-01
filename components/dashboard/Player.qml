@@ -10,7 +10,8 @@ Item {
     id: root
 
     property real displayPosition: 0
-    property bool playing: root.player?.playbackState == MprisPlaybackState.Playing
+    property bool playing: root.player?.playbackState
+                           == MprisPlaybackState.Playing
     property int playerIndex: 0
     property var player: {
         var playerList = Mpris.players.values;
@@ -28,7 +29,8 @@ Item {
     readonly property string artUrl: player?.trackArtUrl || ""
 
     function showTrackInfo() {
-        notify.command = ["notify-send", "-u", "low", "-i", root.artUrl, root.artist, root.title];
+        notify.command = ["notify-send", "-u", "low", "-i", root.artUrl,
+                          root.artist, root.title];
         notify.running = true;
     }
 
@@ -42,7 +44,8 @@ Item {
     function previousPlayer() {
         var playerList = Mpris.players.values;
         if (playerList.length > 0) {
-            playerIndex = (playerIndex - 1 + playerList.length) % playerList.length;
+            playerIndex = (playerIndex - 1 + playerList.length)
+                    % playerList.length;
         }
     }
 
@@ -56,7 +59,8 @@ Item {
     Connections {
         function onPositionChanged() {
             var p = root.player.position;
-            if (p > 0 || root.player.playbackState === MprisPlaybackState.Stopped) {
+            if (p > 0 || root.player.playbackState
+                    === MprisPlaybackState.Stopped) {
                 root.displayPosition = p;
             }
         }
@@ -141,7 +145,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: Mpris.players.values.length > 1
-                    cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    cursorShape: enabled ? Qt.PointingHandCursor :
+                                           Qt.ArrowCursor
 
                     onClicked: root.previousPlayer()
                 }
@@ -188,7 +193,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: Mpris.players.values.length > 1
-                    cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    cursorShape: enabled ? Qt.PointingHandCursor :
+                                           Qt.ArrowCursor
 
                     onClicked: root.nextPlayer()
                 }
@@ -219,14 +225,16 @@ Item {
                         font.pixelSize: Config.general.fontSize / 0.6
                         font.family: "Symbols Nerd Font"
                         horizontalAlignment: Text.AlignHCenter
-                        color: player?.shuffle ? Config.colors.fg : Config.colors.fg
+                        color: player?.shuffle ? Config.colors.fg :
+                                                 Config.colors.fg
                         opacity: player?.shuffle ? 1.0 : 0.4
                     }
 
                     MouseArea {
                         anchors.fill: parent
                         enabled: player?.canControl || false
-                        cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                        cursorShape: enabled ? Qt.PointingHandCursor :
+                                               Qt.ArrowCursor
 
                         onClicked: player.shuffle = !player.shuffle
                     }
@@ -288,7 +296,8 @@ Item {
                         text: {
                             if (player?.loopState == MprisLoopState.Track) {
                                 return "󰑘";
-                            } else if (player?.loopState == MprisLoopState.Playlist) {
+                            } else if (player?.loopState
+                                       == MprisLoopState.Playlist) {
                                 return "󰑖";
                             } else {
                                 return "󰑗";
@@ -304,12 +313,14 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         enabled: player?.canControl || false
-                        cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                        cursorShape: enabled ? Qt.PointingHandCursor :
+                                               Qt.ArrowCursor
 
                         onClicked: {
                             if (player?.loopState == MprisLoopState.None) {
                                 player.loopState = MprisLoopState.Playlist;
-                            } else if (player?.loopState == MprisLoopState.Playlist) {
+                            } else if (player?.loopState
+                                       == MprisLoopState.Playlist) {
                                 player.loopState = MprisLoopState.Track;
                             } else {
                                 player.loopState = MprisLoopState.None;
@@ -371,13 +382,17 @@ Item {
                 width: parent.width / 1.1
                 height: 6
                 border.width: 1
-                border.color: (root.player !== null && root.player.positionSupported) ? Config.colors.fg : "transparent"
+                border.color: (root.player !== null
+                               && root.player.positionSupported)
+                              ? Config.colors.fg : "transparent"
                 color: Config.colors.extraDark
                 radius: 3
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 Rectangle {
-                    width: root.player?.lengthSupported ? (root.displayPosition / root.player.length) * parent.width : 0
+                    width: root.player?.lengthSupported ? (root.displayPosition
+                                                           / root.player.length)
+                                                          * parent.width : 0
                     height: parent.height
                     color: Config.colors.fg
                     radius: 3
@@ -385,7 +400,8 @@ Item {
 
                 MouseArea {
                     anchors.fill: parent
-                    enabled: (root.player?.canSeek && root.player?.lengthSupported) || false
+                    enabled: (root.player?.canSeek && root.player
+                              ?.lengthSupported) || false
 
                     onClicked: function (mouse) {
                         if (root.player?.lengthSupported) {
@@ -421,7 +437,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: player?.canGoPrevious || false
-                    cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    cursorShape: enabled ? Qt.PointingHandCursor :
+                                           Qt.ArrowCursor
 
                     onClicked: player?.previous()
                 }
@@ -446,7 +463,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: player?.canTogglePlaying || false
-                    cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    cursorShape: enabled ? Qt.PointingHandCursor :
+                                           Qt.ArrowCursor
 
                     onClicked: player?.togglePlaying()
                 }
@@ -471,7 +489,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     enabled: player?.canGoNext || false
-                    cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    cursorShape: enabled ? Qt.PointingHandCursor :
+                                           Qt.ArrowCursor
 
                     onClicked: player?.next()
                 }

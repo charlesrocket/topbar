@@ -69,7 +69,8 @@ Loader {
                         anchors.top: parent.top
                         height: contentColumn.implicitHeight + 32
                         radius: Config.general.cornerRadius * 2
-                        color: States.ecoMode ? Config.colors.bge : Config.colors.bg
+                        color: States.ecoMode ? Config.colors.bge :
+                                                Config.colors.bg
 
                         Behavior on height {
                             NumberAnimation {
@@ -92,7 +93,8 @@ Loader {
                                 Layout.fillWidth: true
                                 Layout.preferredHeight: 44
                                 radius: Config.general.cornerRadius
-                                color: States.ecoMode ? Config.colors.bge : Config.colors.bgl
+                                color: States.ecoMode ? Config.colors.bge :
+                                                        Config.colors.bgl
                                 border.color: Config.colors.accent
                                 border.width: 1
 
@@ -116,7 +118,8 @@ Loader {
                                         Layout.fillHeight: true
                                         placeholderText: "Search applications"
                                         font.family: Config.general.fontFamily
-                                        font.pixelSize: Config.general.fontSize + 2
+                                        font.pixelSize: Config.general.fontSize
+                                                        + 2
                                         font.bold: false
                                         color: Config.colors.fg
 
@@ -133,10 +136,14 @@ Loader {
                                         }
                                         Keys.onReturnPressed: {
                                             if (appList.count > 0) {
-                                                root.launchApp(appList.currentIndex >= 0 ? appList.currentIndex : 0);
+                                                root.launchApp(
+                                                            appList.currentIndex
+                                                            >= 0 ? appList.currentIndex :
+                                                                   0);
                                             }
                                         }
-                                        Keys.onEscapePressed: States.launcherPresent = false
+                                        Keys.onEscapePressed:
+                                            States.launcherPresent = false
                                         Keys.onDownPressed: {
                                             if (appList.count > 0) {
                                                 appList.incrementCurrentIndex();
@@ -151,7 +158,9 @@ Loader {
                                         Layout.preferredWidth: 24
                                         Layout.preferredHeight: 24
                                         radius: 12
-                                        color: clearButton.containsMouse ? Config.colors.accent : Config.colors.passive
+                                        color: clearButton.containsMouse
+                                               ? Config.colors.accent :
+                                                 Config.colors.passive
 
                                         Text {
                                             anchors.centerIn: parent
@@ -191,7 +200,9 @@ Loader {
                                     color: Config.colors.fg
                                     text: {
                                         var count = appList.count;
-                                        return count === 1 ? "1 application found" : count + " applications found";
+                                        return count === 1
+                                                ? "1 application found" : count
+                                                  + " applications found";
                                     }
                                 }
 
@@ -213,12 +224,15 @@ Loader {
                                 readonly property real targetHeight: {
                                     if (appList.count === 0)
                                         return 0;
-                                    var visibleItems = Math.min(appList.count, 5);
-                                    return (visibleItems * 64) + (visibleItems - 1) * 4 + 12;
+                                    var visibleItems = Math.min(appList.count,
+                                                                5);
+                                    return (visibleItems * 64) + (visibleItems
+                                                                  - 1) * 4 + 12;
                                 }
 
                                 visible: Layout.preferredHeight > 0
-                                color: States.ecoMode ? Config.colors.bge : Config.colors.bgl
+                                color: States.ecoMode ? Config.colors.bge :
+                                                        Config.colors.bgl
                                 radius: Config.general.cornerRadius
                                 clip: true
                                 Layout.fillWidth: true
@@ -226,7 +240,8 @@ Loader {
 
                                 Behavior on Layout.preferredHeight {
                                     NumberAnimation {
-                                        duration: Config.general.animDuration / 2
+                                        duration: Config.general.animDuration
+                                                  / 2
                                         easing.type: Easing.OutCubic
                                     }
                                 }
@@ -240,27 +255,48 @@ Loader {
                                     clip: true
                                     reuseItems: true
                                     model: {
-                                        var apps = DesktopEntries.applications.values;
-                                        var searchText = searchField.text.toLowerCase().trim();
+                                        var apps
+                                                = DesktopEntries.applications.values;
+                                        var searchText
+                                                = searchField.text.toLowerCase(
+                                                    ).trim();
 
                                         if (searchText.length === 0) {
                                             // idle state
                                             return [];
                                         }
 
-                                        var filtered = apps.filter(function (app) {
-                                            var name = (app.name || "").toLowerCase();
-                                            var description = (app.description || "").toLowerCase();
-                                            var comment = (app.comment || "").toLowerCase();
-                                            var genericName = (app.genericName || "").toLowerCase();
-                                            var exec = (app.exec || "").toLowerCase();
+                                        var filtered = apps.filter(function (
+                                            app) {
+                                            var name = (app.name
+                                                        || "").toLowerCase();
+                                            var description = (app.description
+                                                               || "").toLowerCase(
+                                                        );
+                                            var comment = (app.comment
+                                                           || "").toLowerCase();
+                                            var genericName = (app.genericName
+                                                               || "").toLowerCase(
+                                                        );
+                                            var exec = (app.exec
+                                                        || "").toLowerCase();
 
-                                            return name.includes(searchText) || description.includes(searchText) || comment.includes(searchText) || genericName.includes(searchText) || exec.includes(searchText);
+                                            return name.includes(searchText)
+                                                    || description.includes(
+                                                        searchText)
+                                                    || comment.includes(
+                                                        searchText)
+                                                    || genericName.includes(
+                                                        searchText)
+                                                    || exec.includes(
+                                                        searchText);
                                         });
 
                                         filtered.sort(function (a, b) {
-                                            var nameA = (a.name || "").toLowerCase();
-                                            var nameB = (b.name || "").toLowerCase();
+                                            var nameA = (a.name
+                                                         || "").toLowerCase();
+                                            var nameB = (b.name
+                                                         || "").toLowerCase();
 
                                             return nameA.localeCompare(nameB);
                                         });
@@ -288,7 +324,9 @@ Loader {
                                         width: appList.width
                                         height: 64
                                         color: "transparent"
-                                        border.width: delegateMouseArea.containsMouse ? 2 : 0
+                                        border.width:
+                                            delegateMouseArea.containsMouse ? 2 :
+                                                                              0
                                         border.color: Config.colors.accent
                                         radius: Config.general.cornerRadius
 
@@ -299,9 +337,12 @@ Loader {
                                             hoverEnabled: true
                                             cursorShape: Qt.PointingHandCursor
 
-                                            onEntered: appList.currentIndex = appDelegate.index
-                                            onClicked: root.launchApp(appDelegate.index)
-                                            onDoubleClicked: root.launchApp(appDelegate.index)
+                                            onEntered: appList.currentIndex
+                                                       = appDelegate.index
+                                            onClicked: root.launchApp(
+                                                           appDelegate.index)
+                                            onDoubleClicked: root.launchApp(
+                                                                 appDelegate.index)
                                         }
 
                                         RowLayout {
@@ -322,7 +363,10 @@ Loader {
                                                         if (!appDelegate.modelData.icon)
                                                             return "";
 
-                                                        var iconPath = Quickshell.iconPath(appDelegate.modelData.icon, false);
+                                                        var iconPath
+                                                                = Quickshell.iconPath(
+                                                                    appDelegate.modelData.icon,
+                                                                    false);
                                                         return iconPath || "";
                                                     }
                                                     sourceSize.width: 44
@@ -334,16 +378,21 @@ Loader {
                                                 // fallback
                                                 Rectangle {
                                                     anchors.fill: parent
-                                                    visible: appIcon.status !== Image.Ready
+                                                    visible: appIcon.status
+                                                             !== Image.Ready
                                                     color: Config.colors.accent
                                                     radius: Config.general.cornerRadius
 
                                                     Text {
                                                         anchors.centerIn: parent
-                                                        text: appDelegate.modelData.name ? appDelegate.modelData.name.charAt(0).toUpperCase() : "?"
+                                                        text: appDelegate.modelData.name
+                                                              ? appDelegate.modelData.name.charAt(
+                                                                    0).toUpperCase(
+                                                                    ) : "?"
                                                         font.pixelSize: 22
                                                         font.bold: true
-                                                        font.family: Config.general.fontFamily
+                                                        font.family:
+                                                            Config.general.fontFamily
                                                         color: Config.colors.fg
                                                     }
                                                 }
@@ -357,10 +406,12 @@ Loader {
 
                                                 Text {
                                                     Layout.fillWidth: true
-                                                    text: appDelegate.modelData.name || "Unknown"
+                                                    text: appDelegate.modelData.name
+                                                          || "Unknown"
                                                     font.pixelSize: 15
                                                     font.bold: true
-                                                    font.family: Config.general.fontFamily
+                                                    font.family:
+                                                        Config.general.fontFamily
                                                     color: Config.colors.fg
                                                     elide: Text.ElideRight
                                                     wrapMode: Text.NoWrap
@@ -368,10 +419,14 @@ Loader {
 
                                                 Text {
                                                     Layout.fillWidth: true
-                                                    text: appDelegate.modelData.description || appDelegate.modelData.comment || appDelegate.modelData.genericName || ""
+                                                    text: appDelegate.modelData.description
+                                                          || appDelegate.modelData.comment
+                                                          || appDelegate.modelData.genericName
+                                                          || ""
                                                     font.pixelSize: 12
                                                     font.bold: true
-                                                    font.family: Config.general.fontFamily
+                                                    font.family:
+                                                        Config.general.fontFamily
                                                     color: Config.colors.fg
                                                     elide: Text.ElideRight
                                                     opacity: 0.7
@@ -389,8 +444,10 @@ Loader {
                                         }
                                     }
                                     Keys.onDownPressed: incrementCurrentIndex()
-                                    Keys.onReturnPressed: root.launchApp(currentIndex)
-                                    Keys.onEscapePressed: States.launcherPresent = false
+                                    Keys.onReturnPressed: root.launchApp(
+                                                              currentIndex)
+                                    Keys.onEscapePressed:
+                                        States.launcherPresent = false
                                 }
                             }
                         }

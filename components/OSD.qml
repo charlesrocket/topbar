@@ -67,7 +67,8 @@ Scope {
                         color: Config.colors.passive
 
                         Rectangle {
-                            color: root.muted ? Config.colors.red : Config.colors.fg
+                            color: root.muted ? Config.colors.red :
+                                                Config.colors.fg
                             width: parent.width * (root.value / 100.0)
                             radius: parent.radius
 

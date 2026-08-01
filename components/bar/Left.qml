@@ -26,18 +26,22 @@ RowLayout {
             Loader {
                 asynchronous: true
                 sourceComponent: switch (System.desktop) {
-                case "mango":
-                    return dwl;
-                case "hyprland":
-                    return hypr;
-                }
+                                 case "mango":
+                                     return dwl;
+                                 case "hyprland":
+                                     return hypr;
+                                 }
             }
 
             Component {
                 id: dwl
 
                 DWL.Workspaces {
-                    names: [Config.workspaces.one, Config.workspaces.two, Config.workspaces.three, Config.workspaces.four, Config.workspaces.five, Config.workspaces.six, Config.workspaces.seven, Config.workspaces.eight, Config.workspaces.nine, Config.workspaces.ten]
+                    names: [Config.workspaces.one, Config.workspaces.two,
+                        Config.workspaces.three, Config.workspaces.four,
+                        Config.workspaces.five, Config.workspaces.six,
+                        Config.workspaces.seven, Config.workspaces.eight,
+                        Config.workspaces.nine, Config.workspaces.ten]
                 }
             }
 
@@ -45,7 +49,11 @@ RowLayout {
                 id: hypr
 
                 Hypr.Workspaces {
-                    names: [Config.workspaces.one, Config.workspaces.two, Config.workspaces.three, Config.workspaces.four, Config.workspaces.five, Config.workspaces.six, Config.workspaces.seven, Config.workspaces.eight, Config.workspaces.nine, Config.workspaces.ten]
+                    names: [Config.workspaces.one, Config.workspaces.two,
+                        Config.workspaces.three, Config.workspaces.four,
+                        Config.workspaces.five, Config.workspaces.six,
+                        Config.workspaces.seven, Config.workspaces.eight,
+                        Config.workspaces.nine, Config.workspaces.ten]
                 }
             }
         }

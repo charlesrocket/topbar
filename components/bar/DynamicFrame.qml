@@ -8,7 +8,8 @@ Shape {
 
     required property int barWidth
     required property int barHeight
-    property int sw: Config.general.borderWidth > 0 ? Config.general.borderWidth : 0
+    property int sw: Config.general.borderWidth > 0
+                     ? Config.general.borderWidth : 0
     property int cr: Config.general.cornerRadius
     property int ramp: cr * 2
 
@@ -57,19 +58,24 @@ Shape {
 
         // bottom edge right side, up to dropdown right ramp
         PathLine {
-            x: States.dropdownRevealed ? States.dropdownX + States.dropdownWidth + root.ramp : root.cr
+            x: States.dropdownRevealed ? States.dropdownX
+                                         + States.dropdownWidth + root.ramp :
+                                         root.cr
             y: bar.height
         }
 
         // dropdown gap
         PathMove {
-            x: States.dropdownRevealed ? States.dropdownX + States.dropdownWidth + root.ramp : root.cr
+            x: States.dropdownRevealed ? States.dropdownX
+                                         + States.dropdownWidth + root.ramp :
+                                         root.cr
             y: bar.height
         }
 
         // ramp into dropdown right side (curves down and left)
         PathArc {
-            x: States.dropdownRevealed ? States.dropdownX + States.dropdownWidth : root.cr
+            x: States.dropdownRevealed ? States.dropdownX
+                                         + States.dropdownWidth : root.cr
             y: States.dropdownRevealed ? bar.height + root.ramp : bar.height
             radiusX: root.ramp
             radiusY: root.ramp
@@ -78,14 +84,19 @@ Shape {
 
         // dropdown right edge down
         PathLine {
-            x: States.dropdownRevealed ? States.dropdownX + States.dropdownWidth : root.cr
-            y: States.dropdownRevealed ? bar.height + States.dropdownHeight - root.cr : bar.height
+            x: States.dropdownRevealed ? States.dropdownX
+                                         + States.dropdownWidth : root.cr
+            y: States.dropdownRevealed ? bar.height + States.dropdownHeight
+                                         - root.cr : bar.height
         }
 
         // dropdown bottom-right corner
         PathArc {
-            x: States.dropdownRevealed ? States.dropdownX + States.dropdownWidth - root.cr : root.cr
-            y: States.dropdownRevealed ? bar.height + States.dropdownHeight : bar.height
+            x: States.dropdownRevealed ? States.dropdownX
+                                         + States.dropdownWidth - root.cr :
+                                         root.cr
+            y: States.dropdownRevealed ? bar.height + States.dropdownHeight :
+                                         bar.height
             radiusX: root.cr
             radiusY: root.cr
             direction: PathArc.Clockwise
@@ -94,13 +105,15 @@ Shape {
         // dropdown bottom edge
         PathLine {
             x: States.dropdownRevealed ? States.dropdownX + root.cr : root.cr
-            y: States.dropdownRevealed ? bar.height + States.dropdownHeight : bar.height
+            y: States.dropdownRevealed ? bar.height + States.dropdownHeight :
+                                         bar.height
         }
 
         // dropdown bottom-left corner
         PathArc {
             x: States.dropdownRevealed ? States.dropdownX : root.cr
-            y: States.dropdownRevealed ? bar.height + States.dropdownHeight - root.cr : bar.height
+            y: States.dropdownRevealed ? bar.height + States.dropdownHeight
+                                         - root.cr : bar.height
             radiusX: root.cr
             radiusY: root.cr
             direction: PathArc.Clockwise

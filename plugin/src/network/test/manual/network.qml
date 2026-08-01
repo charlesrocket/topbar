@@ -18,14 +18,16 @@ Scope {
 
             color: contentItem.palette.window
 
-            Component.onCompleted: editorArea.text = JSON.stringify(nmSettings.read(), null, 2)
+            Component.onCompleted: editorArea.text = JSON.stringify(
+                                       nmSettings.read(), null, 2)
 
             ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: 10
 
                 Label {
-                    text: "Editing " + nmSettings?.id + " (" + nmSettings?.uuid + ")"
+                    text: "Editing " + nmSettings?.id + " (" + nmSettings?.uuid
+                          + ")"
                     font.bold: true
                     font.pointSize: 12
                 }
@@ -56,7 +58,9 @@ Scope {
                         text: "Reload"
 
                         onClicked: {
-                            editorArea.text = JSON.stringify(editorWindow.nmSettings.read(), null, 2);
+                            editorArea.text = JSON.stringify(
+                                        editorWindow.nmSettings.read(), null,
+                                        2);
                             statusLabel.text = "Reloaded";
                         }
                     }
@@ -97,7 +101,8 @@ Scope {
 
             ColumnLayout {
                 Label {
-                    text: `Networking (${NetworkBackendType.toString(Networking.backend)} backend)`
+                    text: `Networking (${NetworkBackendType.toString(
+                              Networking.backend)} backend)`
                     font.bold: true
                     font.pointSize: 12
                 }
@@ -109,13 +114,15 @@ Scope {
                     }
 
                     Label {
-                        text: `${NetworkConnectivity.toString(Networking.connectivity)}`
+                        text: `${NetworkConnectivity.toString(
+                                  Networking.connectivity)}`
                         visible: Networking.canCheckConnectivity
                     }
 
                     Button {
                         text: "Re-check"
-                        visible: Networking.canCheckConnectivity && Networking.connectivityCheckEnabled
+                        visible: Networking.canCheckConnectivity
+                                 && Networking.connectivityCheckEnabled
 
                         onClicked: Networking.checkConnectivity()
                     }
@@ -125,7 +132,8 @@ Scope {
                         checked: Networking.connectivityCheckEnabled
                         visible: Networking.canCheckConnectivity
 
-                        onClicked: Networking.connectivityCheckEnabled = !Networking.connectivityCheckEnabled
+                        onClicked: Networking.connectivityCheckEnabled =
+                                   !Networking.connectivityCheckEnabled
                     }
 
                     CheckBox {
@@ -149,7 +157,8 @@ Scope {
                         text: "Software"
                         checked: Networking.wifiEnabled
 
-                        onClicked: Networking.wifiEnabled = !Networking.wifiEnabled
+                        onClicked: Networking.wifiEnabled =
+                                   !Networking.wifiEnabled
                     }
 
                     CheckBox {
@@ -185,25 +194,29 @@ Scope {
                             }
 
                             Label {
-                                text: `(Type: ${DeviceType.toString(modelData.type)})`
+                                text: `(Type: ${DeviceType.toString(
+                                          modelData.type)})`
                             }
 
                             CheckBox {
                                 text: `Managed`
                                 checked: modelData.nmManaged
 
-                                onClicked: modelData.nmManaged = !modelData.nmManaged
+                                onClicked: modelData.nmManaged =
+                                           !modelData.nmManaged
                             }
                         }
 
                         RowLayout {
                             Label {
                                 text: ConnectionState.toString(modelData.state)
-                                color: modelData.connected ? palette.link : palette.placeholderText
+                                color: modelData.connected ? palette.link :
+                                                             palette.placeholderText
                             }
 
                             Button {
-                                visible: modelData.state == ConnectionState.Connected
+                                visible: modelData.state
+                                         == ConnectionState.Connected
                                 text: "Disconnect"
 
                                 onClicked: modelData.disconnect()
@@ -213,11 +226,13 @@ Scope {
                                 text: "Autoconnect"
                                 checked: modelData.autoconnect
 
-                                onClicked: modelData.autoconnect = !modelData.autoconnect
+                                onClicked: modelData.autoconnect =
+                                           !modelData.autoconnect
                             }
 
                             Label {
-                                text: `Mode: ${WifiDeviceMode.toString(modelData.mode)}`
+                                text: `Mode: ${WifiDeviceMode.toString(
+                                          modelData.mode)}`
                                 visible: modelData.type == DeviceType.Wifi
                             }
 
@@ -226,7 +241,8 @@ Scope {
                                 checked: modelData.scannerEnabled
                                 visible: modelData.type === DeviceType.Wifi
 
-                                onClicked: modelData.scannerEnabled = !modelData.scannerEnabled
+                                onClicked: modelData.scannerEnabled =
+                                           !modelData.scannerEnabled
                             }
                         }
 
@@ -234,12 +250,16 @@ Scope {
                             Layout.fillWidth: true
 
                             model: ScriptModel {
-                                values: [...modelData.networks.values].sort((a, b) => {
-                                    if (a.connected !== b.connected) {
-                                        return b.connected - a.connected;
-                                    }
-                                    return b.signalStrength - a.signalStrength;
-                                })
+                                values: [...modelData.networks.values].sort((a,
+                                                                             b) => {
+                                                                                 if (a.connected
+                                                                                         !== b.connected) {
+                                                                                     return b.connected
+                                                                                             - a.connected;
+                                                                                 }
+                                                                                 return b.signalStrength
+                                                                                         - a.signalStrength;
+                                                                             })
                             }
 
                             WrapperRectangle {
@@ -255,19 +275,22 @@ Scope {
                                 }
 
                                 Layout.fillWidth: true
-                                color: modelData.connected ? palette.highlight : palette.button
+                                color: modelData.connected ? palette.highlight :
+                                                             palette.button
                                 border.color: palette.mid
                                 border.width: 1
                                 margin: 5
 
                                 Connections {
                                     function onConnectionFailed(reason) {
-                                        failLoader.sourceComponent = failComponent;
+                                        failLoader.sourceComponent
+                                                = failComponent;
                                         failLoader.item.failReason = reason;
                                     }
 
                                     function onStateChanged() {
-                                        if (modelData.state == ConnectionState.Connecting) {
+                                        if (modelData.state
+                                                == ConnectionState.Connecting) {
                                             failLoader.sourceComponent = null;
                                         }
                                     }
@@ -282,11 +305,17 @@ Scope {
                                         property var failReason
 
                                         Label {
-                                            text: ConnectionFailReason.toString(failReason)
+                                            text: ConnectionFailReason.toString(
+                                                      failReason)
                                         }
 
                                         RowLayout {
-                                            visible: modelData.security === WifiSecurityType.WpaPsk || modelData.security === WifiSecurityType.Wpa2Psk || modelData.security === WifiSecurityType.Sae
+                                            visible: modelData.security
+                                                     === WifiSecurityType.WpaPsk
+                                                     || modelData.security
+                                                     === WifiSecurityType.Wpa2Psk
+                                                     || modelData.security
+                                                     === WifiSecurityType.Sae
 
                                             TextField {
                                                 id: pskField
@@ -299,8 +328,10 @@ Scope {
                                                 visible: pskField.visible
 
                                                 onClicked: {
-                                                    modelData.connectWithPsk(pskField.text);
-                                                    failLoader.sourceComponent = null;
+                                                    modelData.connectWithPsk(
+                                                                pskField.text);
+                                                    failLoader.sourceComponent
+                                                            = null;
                                                 }
                                             }
                                         }
@@ -308,7 +339,9 @@ Scope {
                                         Button {
                                             text: "Close"
 
-                                            onClicked: failLoader.sourceComponent = null
+                                            onClicked:
+                                                failLoader.sourceComponent
+                                                = null
                                         }
                                     }
                                 }
@@ -324,19 +357,22 @@ Scope {
                                             }
 
                                             Label {
-                                                text: modelData.known ? "Known" : ""
+                                                text: modelData.known ? "Known" :
+                                                                        ""
                                                 color: palette.placeholderText
                                             }
                                         }
 
                                         RowLayout {
                                             Label {
-                                                text: `Security: ${WifiSecurityType.toString(modelData.security)}`
+                                                text: `Security: 
+${WifiSecurityType.toString(modelData.security)}`
                                                 color: palette.placeholderText
                                             }
 
                                             Label {
-                                                text: `| Signal strength: ${Math.round(modelData.signalStrength * 100)}%`
+                                                text: `| Signal strength: 
+${Math.round(modelData.signalStrength * 100)}%`
                                                 color: palette.placeholderText
                                             }
                                         }
@@ -356,12 +392,16 @@ Scope {
                                             }
 
                                             Label {
-                                                text: ConnectionState.toString(modelData.state)
-                                                color: modelData.connected ? palette.link : palette.placeholderText
+                                                text: ConnectionState.toString(
+                                                          modelData.state)
+                                                color: modelData.connected
+                                                       ? palette.link :
+                                                         palette.placeholderText
                                             }
 
                                             RowLayout {
-                                                visible: modelData.nmSettings.length > 1
+                                                visible: modelData.nmSettings.length
+                                                         > 1
 
                                                 Label {
                                                     text: "Choose settings:"
@@ -370,7 +410,10 @@ Scope {
                                                 ComboBox {
                                                     id: settingsComboBox
 
-                                                    model: modelData.nmSettings.map(s => s?.read()?.connection?.id)
+                                                    model: modelData.nmSettings.map(
+                                                               s => s?.read()
+                                                                    ?.connection
+                                                                    ?.id)
                                                     currentIndex: 0
                                                 }
                                             }
@@ -381,7 +424,8 @@ Scope {
 
                                                 onClicked: {
                                                     if (chosenSettings)
-                                                        modelData.connectWithSettings(chosenSettings);
+                                                        modelData.connectWithSettings(
+                                                                    chosenSettings);
                                                     else
                                                         modelData.connect();
                                                 }
@@ -391,7 +435,8 @@ Scope {
                                                 text: "Disconnect"
                                                 visible: modelData.connected
 
-                                                onClicked: modelData.disconnect()
+                                                onClicked: modelData.disconnect(
+                                                               )
                                             }
 
                                             Button {
@@ -407,9 +452,11 @@ Scope {
 
                                                 onClicked: {
                                                     if (chosenSettings)
-                                                        editorComponent.createObject(null, {
-                                                            nmSettings: chosenSettings
-                                                        });
+                                                        editorComponent.createObject(
+                                                                    null, {
+                                                                        nmSettings:
+                                                                        chosenSettings
+                                                                    });
                                                 }
                                             }
                                         }

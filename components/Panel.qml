@@ -157,7 +157,8 @@ PanelWindow {
     Variants {
         id: regions
 
-        model: States.dropdownRevealed ? getAllVisibleItems() : root.contentItem.children
+        model: States.dropdownRevealed ? getAllVisibleItems() :
+                                         root.contentItem.children
 
         delegate: Region {
             required property Item modelData
@@ -168,7 +169,8 @@ PanelWindow {
 
     Connections {
         function onDropdownRevealedChanged() {
-            regions.model = States.dropdownRevealed ? getAllVisibleItems() : root.contentItem.children;
+            regions.model = States.dropdownRevealed ? getAllVisibleItems() :
+                                                      root.contentItem.children;
             itemsRegions.changed();
         }
 
@@ -186,31 +188,31 @@ PanelWindow {
 
     IpcHandler {
         function launcher(): void {
-            if (Config.desktop.launcher)
-                States.launcherPresent = true;
-            else
-                console.warn("Launcher disabled");
-        }
+        if (Config.desktop.launcher)
+        States.launcherPresent = true;
+        else
+        console.warn("Launcher disabled");
+    }
 
         function config(): void {
-            States.preferencesWindowPresent = true;
-        }
+                               States.preferencesWindowPresent = true;
+                           }
 
         function logout(): void {
-            States.sessionPresent = true;
-        }
+        States.sessionPresent = true;
+    }
 
         function lock(): void {
-            root.lockScreen();
-        }
+                             root.lockScreen();
+                         }
 
         function hide(): void {
-            bar.hidden(true);
-        }
+        bar.hidden(true);
+    }
 
         function reveal(): void {
-            bar.hidden(false);
-        }
+                               bar.hidden(false);
+                           }
 
         target: "bar"
     }
@@ -290,22 +292,22 @@ PanelWindow {
         id: dpmsOff
 
         command: switch (System.desktop) {
-        case "mango":
-            return ["mmsg", "-d", "disable_monitor"];
-        case "hyprland":
-            return ["hyprctl", "dispatch", "dpms", "off"];
-        }
+                 case "mango":
+                     return ["mmsg", "-d", "disable_monitor"];
+                 case "hyprland":
+                     return ["hyprctl", "dispatch", "dpms", "off"];
+                 }
     }
 
     Process {
         id: dpmsOn
 
         command: switch (System.desktop) {
-        case "mango":
-            return ["mmsg", "-d", "enable_monitor"];
-        case "hyprland":
-            return ["hyprctl", "dispatch", "dpms", "on"];
-        }
+                 case "mango":
+                     return ["mmsg", "-d", "enable_monitor"];
+                 case "hyprland":
+                     return ["hyprctl", "dispatch", "dpms", "on"];
+                 }
     }
 
     Process {

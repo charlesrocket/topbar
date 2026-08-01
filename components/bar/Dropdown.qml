@@ -23,11 +23,14 @@ Item {
             }
 
             const mapped = root.boxParent.mapToItem(barItem, 0, 0);
-            const centerX = mapped.x - (dropdown.width / 2) + (root.boxParent.width / 2) - Config.bar.padding;
+            const centerX = mapped.x - (dropdown.width / 2) + (root.boxParent.width
+                                                               / 2) - Config.bar.padding;
 
             States.dropdownX = centerX;
-            States.dropdownWidth = dropdown.width + (Config.general.borderWidth * 2);
-            States.dropdownHeight = dropdown.height + (Config.general.borderWidth * 2);
+            States.dropdownWidth = dropdown.width + (Config.general.borderWidth
+                                                     * 2);
+            States.dropdownHeight = dropdown.height + (
+                        Config.general.borderWidth * 2);
             States.dropdownY = dropdown.y;
         }
     }
@@ -55,12 +58,14 @@ Item {
             if (topItem) {
                 const boxToTop = root.boxParent.mapToItem(topItem, 0, 0);
                 const parentToTop = root.parent.mapToItem(topItem, 0, 0);
-                const result = boxToTop.y - parentToTop.y + root.boxParent.height + (Config.bar.padding) - 1;
+                const result = boxToTop.y - parentToTop.y
+                      + root.boxParent.height + (Config.bar.padding) - 1;
                 return result;
             }
 
             const mapped = root.boxParent.mapToItem(root.parent, 0, 0);
-            const result = mapped.y + root.boxParent.height + (Config.bar.padding) - 1;
+            const result = mapped.y + root.boxParent.height + (
+                      Config.bar.padding) - 1;
             return result;
         }
         opacity: 0
@@ -170,7 +175,8 @@ Item {
 
             ShapePath {
                 strokeColor: "transparent"
-                strokeWidth: Config.general.borderWidth > 0 ? Config.general.borderWidth : -1
+                strokeWidth: Config.general.borderWidth > 0
+                             ? Config.general.borderWidth : -1
                 fillColor: States.ecoMode ? Config.colors.bge : Config.colors.bg
                 startX: -(Config.general.cornerRadius * 2)
                 startY: 0

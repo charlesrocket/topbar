@@ -16,7 +16,8 @@ FloatingWindow {
             configCount -= offset;
 
         if (configCount != section.children.length)
-            console.warn("Validation failed for " + key + " " + configCount + " != " + section.children.length);
+            console.warn("Validation failed for " + key + " " + configCount
+                         + " != " + section.children.length);
     }
 
     title: "Configuration"
@@ -86,7 +87,9 @@ FloatingWindow {
                         spacing: 8
 
                         Repeater {
-                            model: ["General", "Colors", "Widgets", "Bar", "Notifications", "Desktop", "Spaces", "Dashboard", "Lockscreen", "Session"]
+                            model: ["General", "Colors", "Widgets", "Bar",
+                                "Notifications", "Desktop", "Spaces",
+                                "Dashboard", "Lockscreen", "Session"]
 
                             delegate: Button {
                                 required property var modelData
@@ -100,7 +103,9 @@ FloatingWindow {
                                 font.pixelSize: Config.general.fontSize
 
                                 background: Rectangle {
-                                    color: parent.checked ? Config.colors.passive : "transparent"
+                                    color: parent.checked
+                                           ? Config.colors.passive :
+                                             "transparent"
                                     radius: Config.general.cornerRadius
 
                                     Behavior on color {
@@ -110,7 +115,8 @@ FloatingWindow {
                                 contentItem: Text {
                                     text: parent.text
                                     font: parent.font
-                                    color: parent.checked ? Config.colors.fg : Config.colors.fg
+                                    color: parent.checked ? Config.colors.fg :
+                                                            Config.colors.fg
                                     verticalAlignment: Text.AlignVCenter
                                     horizontalAlignment: Text.AlignRight
                                     leftPadding: 8
@@ -176,7 +182,10 @@ FloatingWindow {
                                 rowSpacing: 14
 
                                 Component.onCompleted: {
-                                    root.validateSection(Config.general, generalSection, "Config.general", null);
+                                    root.validateSection(Config.general,
+                                                         generalSection,
+                                                         "Config.general",
+                                                         null);
                                 }
 
                                 SettingRow {
@@ -266,7 +275,9 @@ FloatingWindow {
                                 rowSpacing: 14
 
                                 Component.onCompleted: {
-                                    root.validateSection(Config.colors, colorsSection, "Config.colors", null);
+                                    root.validateSection(Config.colors,
+                                                         colorsSection,
+                                                         "Config.colors", null);
                                 }
 
                                 SettingRow {
@@ -385,7 +396,10 @@ FloatingWindow {
                                 rowSpacing: 14
 
                                 Component.onCompleted: {
-                                    root.validateSection(Config.widgets, widgetsSection, "Config.widgets", null);
+                                    root.validateSection(Config.widgets,
+                                                         widgetsSection,
+                                                         "Config.widgets",
+                                                         null);
                                 }
 
                                 SettingRow {
@@ -495,7 +509,9 @@ FloatingWindow {
                                     rowSpacing: 14
 
                                     Component.onCompleted: {
-                                        root.validateSection(Config.bar, barSection, "Config.bar", 1);
+                                        root.validateSection(Config.bar,
+                                                             barSection,
+                                                             "Config.bar", 1);
                                     }
 
                                     SettingRow {
@@ -522,7 +538,10 @@ FloatingWindow {
                                     rowSpacing: 14
 
                                     Component.onCompleted: {
-                                        root.validateSection(Config.bar.title, barTitleSection, "Config.bar.title", null);
+                                        root.validateSection(Config.bar.title,
+                                                             barTitleSection,
+                                                             "Config.bar.title",
+                                                             null);
                                     }
 
                                     SettingRow {
@@ -559,7 +578,11 @@ FloatingWindow {
                                     spacing: 12
 
                                     Component.onCompleted: {
-                                        root.validateSection(Config.notifications, notificationsSection, "Config.notifications", null);
+                                        root.validateSection(
+                                                    Config.notifications,
+                                                    notificationsSection,
+                                                    "Config.notifications",
+                                                    null);
                                     }
 
                                     SettingRow {
@@ -596,7 +619,10 @@ FloatingWindow {
                                     spacing: 12
 
                                     Component.onCompleted: {
-                                        root.validateSection(Config.desktop, desktopSection, "Config.desktop", null);
+                                        root.validateSection(Config.desktop,
+                                                             desktopSection,
+                                                             "Config.desktop",
+                                                             null);
                                     }
 
                                     SettingRow {
@@ -631,7 +657,10 @@ FloatingWindow {
                                 rowSpacing: 14
 
                                 Component.onCompleted: {
-                                    root.validateSection(Config.workspaces, workspaceSection, "Config.workspaces", null);
+                                    root.validateSection(Config.workspaces,
+                                                         workspaceSection,
+                                                         "Config.workspaces",
+                                                         null);
                                 }
 
                                 SettingRow {
@@ -719,7 +748,10 @@ FloatingWindow {
                                 spacing: 12
 
                                 Component.onCompleted: {
-                                    root.validateSection(Config.dashboard, dashboardSection, "Config.dashboard", null);
+                                    root.validateSection(Config.dashboard,
+                                                         dashboardSection,
+                                                         "Config.dashboard",
+                                                         null);
                                 }
 
                                 SettingRow {
@@ -736,7 +768,11 @@ FloatingWindow {
                                     spacing: 12
 
                                     Component.onCompleted: {
-                                        root.validateSection(Config.dashboard.player, dashboardPlayerSection, "Config.dashboard.player", null);
+                                        root.validateSection(
+                                                    Config.dashboard.player,
+                                                    dashboardPlayerSection,
+                                                    "Config.dashboard.player",
+                                                    null);
                                     }
 
                                     SettingRow {
@@ -771,7 +807,10 @@ FloatingWindow {
                                 rowSpacing: 14
 
                                 Component.onCompleted: {
-                                    root.validateSection(Config.lockscreen, lockscreenSection, "Config.lockscreen", null);
+                                    root.validateSection(Config.lockscreen,
+                                                         lockscreenSection,
+                                                         "Config.lockscreen",
+                                                         null);
                                 }
 
                                 SettingRow {
@@ -866,7 +905,11 @@ FloatingWindow {
                                     rowSpacing: 14
 
                                     Component.onCompleted: {
-                                        root.validateSection(Config.session.commands, sessionCommandsSection, "Config.session.timeouts", null);
+                                        root.validateSection(
+                                                    Config.session.commands,
+                                                    sessionCommandsSection,
+                                                    "Config.session.timeouts",
+                                                    null);
                                     }
 
                                     SettingRow {
@@ -909,7 +952,11 @@ FloatingWindow {
                                     rowSpacing: 14
 
                                     Component.onCompleted: {
-                                        root.validateSection(Config.session.commands, sessionCommandsSection, "Config.session.commands", null);
+                                        root.validateSection(
+                                                    Config.session.commands,
+                                                    sessionCommandsSection,
+                                                    "Config.session.commands",
+                                                    null);
                                     }
 
                                     SettingRow {
@@ -1015,7 +1062,8 @@ FloatingWindow {
                                 anchors.fill: parent
                                 hoverEnabled: true
 
-                                onClicked: States.preferencesWindowPresent = false
+                                onClicked: States.preferencesWindowPresent
+                                           = false
                                 onEntered: button.color = Config.colors.accent
                                 onExited: button.color = Config.colors.passive
                             }
@@ -1052,7 +1100,9 @@ FloatingWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 width: 40
                 height: 24
-                color: visible ? settingRow.targetObject[settingRow.targetProperty] : "transparent"
+                color: visible
+                       ? settingRow.targetObject[settingRow.targetProperty] :
+                         "transparent"
                 border.color: Config.colors.border
                 border.width: 1
                 radius: Config.general.cornerRadius
@@ -1061,10 +1111,13 @@ FloatingWindow {
             TextField {
                 id: textField
 
-                visible: settingRow.valueType === "string" || settingRow.valueType === "int" || settingRow.valueType === "color"
+                visible: settingRow.valueType === "string"
+                         || settingRow.valueType === "int"
+                         || settingRow.valueType === "color"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
-                anchors.left: settingRow.valueType === "color" ? colorSwatch.right : parent.left
+                anchors.left: settingRow.valueType === "color"
+                              ? colorSwatch.right : parent.left
                 anchors.leftMargin: settingRow.valueType === "color" ? 8 : 0
                 font.family: Config.general.fontFamily
                 font.pixelSize: Config.general.fontSize - 2
@@ -1074,7 +1127,8 @@ FloatingWindow {
 
                 background: Rectangle {
                     color: Config.colors.dark
-                    border.color: parent.activeFocus ? Config.colors.action : Config.colors.border
+                    border.color: parent.activeFocus ? Config.colors.action :
+                                                       Config.colors.border
                     border.width: Config.general.borderWidth
                     radius: Config.general.cornerRadius
 
@@ -1083,12 +1137,16 @@ FloatingWindow {
                     }
                 }
 
-                Component.onCompleted: text = settingRow.targetObject[settingRow.targetProperty].toString()
+                Component.onCompleted: text
+                                       = settingRow.targetObject[settingRow.targetProperty].toString(
+                                           )
                 onEditingFinished: {
                     if (settingRow.valueType === "int")
-                        settingRow.targetObject[settingRow.targetProperty] = parseInt(text);
+                        settingRow.targetObject[settingRow.targetProperty]
+                                = parseInt(text);
                     else
-                        settingRow.targetObject[settingRow.targetProperty] = text;
+                        settingRow.targetObject[settingRow.targetProperty]
+                                = text;
                 }
             }
 
@@ -1105,7 +1163,8 @@ FloatingWindow {
                     implicitWidth: 48
                     implicitHeight: 24
                     radius: 12
-                    color: parent.checked ? Config.colors.accent : Config.colors.passive
+                    color: parent.checked ? Config.colors.accent :
+                                            Config.colors.passive
                     border.color: Config.colors.border
                     border.width: 1
 
@@ -1129,7 +1188,8 @@ FloatingWindow {
                     }
                 }
 
-                onToggled: settingRow.targetObject[settingRow.targetProperty] = checked
+                onToggled: settingRow.targetObject[settingRow.targetProperty]
+                           = checked
             }
         }
 

@@ -44,7 +44,8 @@ Item {
     }
 
     Layout.alignment: Qt.AlignVCenter
-    implicitWidth: (hoverDetector.hovered ? dateContainer.width + 8 : 0) + clockText.width
+    implicitWidth: (hoverDetector.hovered ? dateContainer.width + 8 : 0)
+                   + clockText.width
     implicitHeight: clockText.height
 
     Behavior on implicitWidth {
@@ -71,7 +72,8 @@ Item {
     Process {
         id: hyprctlBatch
 
-        command: ["hyprctl", "--quiet", "--batch", "keyword animations:enabled false;keyword decoration:blur:enabled false;keyword decoration:shadow:enabled false;"]
+        command: ["hyprctl", "--quiet", "--batch",
+            "keyword animations:enabled false;keyword decoration:blur:enabled false;keyword decoration:shadow:enabled false;"]
 
         Component.onCompleted: running = false
     }
@@ -215,7 +217,8 @@ Item {
     Connections {
         function onHoveredChanged() {
             if (hoverDetector.hovered) {
-                dateText.text = Qt.formatDateTime(clock.date, "ddd dd MMMM yyyy");
+                dateText.text = Qt.formatDateTime(clock.date,
+                                                  "ddd dd MMMM yyyy");
             }
         }
 

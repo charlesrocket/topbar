@@ -31,7 +31,10 @@ RowLayout {
             property bool isHovered: false
 
             text: root.names[index]
-            color: isHovered ? root.colAction : button.modelData.active ? root.colActive : (button.modelData.clientCount > 0 ? root.colNormal : root.colPassive)
+            color: isHovered ? root.colAction : button.modelData.active
+                               ? root.colActive : (button.modelData.clientCount
+                                                   > 0 ? root.colNormal :
+                                                         root.colPassive)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             leftPadding: 4
@@ -64,7 +67,10 @@ RowLayout {
         property bool isHovered: false
 
         text: root.names[9]
-        color: isHovered ? root.colAction : (root.dwlOutput && root.dwlOutput.tags.every(t => t.active) ? root.colNormal : root.colPassive)
+        color: isHovered ? root.colAction : (root.dwlOutput
+                                             && root.dwlOutput.tags.every(t
+                                                                          => t.active)
+                                             ? root.colNormal : root.colPassive)
         leftPadding: 4
         rightPadding: 4
 

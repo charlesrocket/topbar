@@ -88,32 +88,34 @@ RowLayout {
 
         IpcHandler {
             function toggleMute(): void {
-                if (speaker.control) {
-                    speaker.control.muted = !speaker.control.muted;
-                }
+            if (speaker.control) {
+                speaker.control.muted = !speaker.control.muted;
+            }
             }
 
-            function volumeUp(): void {
-                if (speaker.control) {
-                    speaker.control.left = speaker.control.left + 5;
-                    speaker.control.right = speaker.control.right + 5;
+                function volumeUp(): void {
+                                         if (speaker.control) {
+                                             speaker.control.left
+                                             = speaker.control.left + 5;
+                                             speaker.control.right
+                                             = speaker.control.right + 5;
 
-                    if (Config.desktop.osd)
-                        audioOSD.item.trigger();
-                }
-            }
+                                             if (Config.desktop.osd)
+                                             audioOSD.item.trigger();
+                                         }
+                                     }
 
-            function volumeDown(): void {
+                function volumeDown(): void {
                 if (speaker.control) {
                     speaker.control.left = speaker.control.left - 5;
                     speaker.control.right = speaker.control.right - 5;
 
                     if (Config.desktop.osd)
-                        audioOSD.item.trigger();
+                    audioOSD.item.trigger();
+                }
+                }
+
+                    target: "audio"
                 }
             }
-
-            target: "audio"
         }
-    }
-}

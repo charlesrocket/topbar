@@ -16,7 +16,8 @@ Item {
     property var jails: System.jails
     property int jailCount: jails.length
 
-    implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0) + jailText.width
+    implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0)
+                   + jailText.width
     implicitHeight: jailText.height
 
     Behavior on implicitWidth {

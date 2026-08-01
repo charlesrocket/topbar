@@ -17,8 +17,16 @@ Item {
     property color colPassive: Qt.darker(Config.colors.passive, 1.5)
     property int animDuration: Config.general.animDuration
     property string emptyTitle: Config.bar.title.empty
-    property string fullTitle: ToplevelManager.activeToplevel ? ToplevelManager.activeToplevel.title : emptyTitle
-    property string displayText: fullTitle === root.emptyTitle ? fullTitle : (fullTitle.length > root.length ? fullTitle.substring(0, root.length - 3) + "..." : fullTitle)
+    property string fullTitle: ToplevelManager.activeToplevel
+                               ? ToplevelManager.activeToplevel.title :
+                                 emptyTitle
+    property string displayText: fullTitle === root.emptyTitle ? fullTitle : (
+                                                                     fullTitle.length
+                                                                     > root.length
+                                                                     ? fullTitle.substring(
+                                                                           0, root.length
+                                                                           - 3) + "..." :
+                                                                       fullTitle)
 
     Layout.alignment: Qt.AlignVCenter
     implicitHeight: Config.general.fontSize + 2
@@ -80,7 +88,8 @@ Item {
         opacity: 1
 
         font {
-            family: activeWindowTitle.text === root.emptyTitle ? "Symbols Nerd Font" : root.fontFamily
+            family: activeWindowTitle.text === root.emptyTitle
+                    ? "Symbols Nerd Font" : root.fontFamily
             pixelSize: root.fontSize
             bold: true
         }
@@ -98,7 +107,8 @@ Item {
         opacity: 0
 
         font {
-            family: newTitle.text === root.emptyTitle ? "Symbols Nerd Font" : root.fontFamily
+            family: newTitle.text === root.emptyTitle ? "Symbols Nerd Font" :
+                                                        root.fontFamily
             pixelSize: root.fontSize
             bold: true
         }
@@ -113,7 +123,8 @@ Item {
             color: "transparent"
             radius: Config.general.cornerRadius
             implicitWidth: layout.implicitWidth + 651
-            implicitHeight: layout.implicitHeight + (Config.general.borderWidth > 0 ? 424 : 420)
+            implicitHeight: layout.implicitHeight + (Config.general.borderWidth
+                                                     > 0 ? 424 : 420)
 
             ColumnLayout {
                 id: layout

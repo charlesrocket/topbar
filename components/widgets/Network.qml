@@ -16,7 +16,8 @@ Item {
     property color colOffline: Config.colors.red
     property color colPassive: Config.colors.passive
     property bool isOnline: false
-    property color colOnline: States.ecoMode ? root.colPassive : root.isOnline ? root.colFg : root.colOffline
+    property color colOnline: States.ecoMode ? root.colPassive : root.isOnline
+                                               ? root.colFg : root.colOffline
     readonly property var devicesList: Networking.devices.values
     readonly property string uplinkIcon: hasActiveVpn ? "" : ""
     readonly property bool hasActiveVpn: {
@@ -28,7 +29,8 @@ Item {
             if (dev && dev.connected && dev.name) {
                 var name = dev.name.toLowerCase();
 
-                if (name.startsWith("tun") || name.startsWith("tap") || name.startsWith("wg") || name.startsWith("ppp")) {
+                if (name.startsWith("tun") || name.startsWith("tap")
+                        || name.startsWith("wg") || name.startsWith("ppp")) {
                     return true;
                 }
             }
@@ -86,7 +88,8 @@ Item {
     Process {
         id: netifRestart
 
-        command: ["sh", "-c", "notify-send -u normal 'Reloading the network' ; doas service netif restart"]
+        command: ["sh", "-c",
+            "notify-send -u normal 'Reloading the network' ; doas service netif restart"]
 
         Component.onCompleted: running = false
     }

@@ -7,7 +7,8 @@ import Quickshell.Wayland
 Variants {
     id: root
 
-    readonly property bool defaultWallpaper: Config.general.wallpaper === States.defaultWallpaper
+    readonly property bool defaultWallpaper: Config.general.wallpaper
+                                             === States.defaultWallpaper
     property bool blurred: States.blurredBackground && Config.general.blur
 
     model: Quickshell.screens
@@ -34,7 +35,8 @@ Variants {
             anchors.fill: parent
             cache: false
             source: Utils.expandPath(Config.general.wallpaper)
-            fillMode: root.defaultWallpaper ? Image.Pad : Image.PreserveAspectCrop
+            fillMode: root.defaultWallpaper ? Image.Pad :
+                                              Image.PreserveAspectCrop
             opacity: 0
             layer.enabled: root.blurred
 

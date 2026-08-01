@@ -78,30 +78,43 @@ Item {
                         var weatherReq = new XMLHttpRequest();
                         weatherReq.timeout = 5000;
 
-                        var weatherUrl = "https://api.open-meteo.com/v1/forecast?" + "latitude=" + lat + "&longitude=" + lon + "&current_weather=true";
+                        var weatherUrl
+                                = "https://api.open-meteo.com/v1/forecast?"
+                                + "latitude=" + lat + "&longitude=" + lon
+                                + "&current_weather=true";
 
                         weatherReq.open("GET", weatherUrl, true);
                         weatherReq.onreadystatechange = function () {
                             if (weatherReq.readyState === XMLHttpRequest.DONE) {
                                 if (weatherReq.status === 200) {
                                     try {
-                                        var weatherData = JSON.parse(weatherReq.responseText);
-                                        var currentWeather = weatherData.current_weather;
+                                        var weatherData = JSON.parse(
+                                                    weatherReq.responseText);
+                                        var currentWeather
+                                                = weatherData.current_weather;
 
-                                        root.temperature = currentWeather.temperature;
-                                        root.icon = getWeatherIcon(currentWeather.weathercode, currentWeather.is_day === 1);
+                                        root.temperature
+                                                = currentWeather.temperature;
+                                        root.icon = getWeatherIcon(
+                                                    currentWeather.weathercode,
+                                                    currentWeather.is_day
+                                                    === 1);
                                     } catch (error) {
-                                        console.error("Failed to parse weather data:", error);
+                                        console.error(
+                                                    "Failed to parse weather data:",
+                                                    error);
                                     }
                                 } else {
-                                    console.error("Weather request failed:", weatherReq.status);
+                                    console.error("Weather request failed:",
+                                                  weatherReq.status);
                                 }
                             }
                         };
 
                         weatherReq.send();
                     } catch (error) {
-                        console.error("Failed to parse weather geo data:", error);
+                        console.error("Failed to parse weather geo data:",
+                                      error);
                     }
                 } else {
                     console.error("Weather geo request failed:", geoReq.status);
@@ -112,7 +125,8 @@ Item {
         geoReq.send();
     }
 
-    implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0) + weatherText.width
+    implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0)
+                   + weatherText.width
     implicitHeight: weatherText.height
 
     Behavior on implicitWidth {
@@ -135,7 +149,9 @@ Item {
 
         onTriggered: {
             root.fetchWeather();
-            var randomValue = Math.floor(Math.random() * (680000 - 100000) + 100000);
+            var randomValue = Math.floor(Math.random() * (680000 - 100000)
+                                         + 100000);
+
             updateTimer.interval = 1000000 + randomValue;
         }
     }

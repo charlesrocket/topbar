@@ -80,21 +80,32 @@ Loader {
                                 required property int index
                                 readonly property int row: Math.floor(index / 3)
                                 readonly property int col: index % 3
-                                readonly property int totalRows: Math.ceil(root.buttons.length / 3)
+                                readonly property int totalRows: Math.ceil(
+                                                                     root.buttons.length
+                                                                     / 3)
                                 readonly property int cornerRadius: 80
 
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
                                 color: Config.colors.bg
                                 focus: true
-                                topLeftRadius: (row === 0 && col === 0) ? cornerRadius : 0
-                                topRightRadius: (row === 0 && col === 2) ? cornerRadius : 0
-                                bottomLeftRadius: (row === totalRows - 1 && col === 0) ? cornerRadius : 0
-                                bottomRightRadius: (row === totalRows - 1 && col === 2) ? cornerRadius : 0
-                                KeyNavigation.right: buttonRepeater.itemAt(index + 1)
-                                KeyNavigation.left: buttonRepeater.itemAt(index - 1)
-                                KeyNavigation.down: buttonRepeater.itemAt(index + 3)
-                                KeyNavigation.up: buttonRepeater.itemAt(index - 3)
+                                topLeftRadius: (row === 0 && col === 0)
+                                               ? cornerRadius : 0
+                                topRightRadius: (row === 0 && col === 2)
+                                                ? cornerRadius : 0
+                                bottomLeftRadius: (row === totalRows - 1 && col
+                                                   === 0) ? cornerRadius : 0
+                                bottomRightRadius: (row === totalRows - 1
+                                                    && col === 2)
+                                                   ? cornerRadius : 0
+                                KeyNavigation.right: buttonRepeater.itemAt(
+                                                         index + 1)
+                                KeyNavigation.left: buttonRepeater.itemAt(index
+                                                                          - 1)
+                                KeyNavigation.down: buttonRepeater.itemAt(index
+                                                                          + 3)
+                                KeyNavigation.up: buttonRepeater.itemAt(index
+                                                                        - 3)
 
                                 Keys.onReturnPressed: {
                                     States.sessionPresent = false;
@@ -134,7 +145,10 @@ Loader {
                                         Text {
                                             id: icon
 
-                                            color: (mouseArea.containsMouse || buttonRect.activeFocus) ? Config.colors.accent : Config.colors.fg
+                                            color: (mouseArea.containsMouse
+                                                    || buttonRect.activeFocus)
+                                                   ? Config.colors.accent :
+                                                     Config.colors.fg
                                             font.pixelSize: 105
                                             font.family: "Symbols Nerd Font"
                                             text: `${buttonRect.modelData.icon}`
@@ -145,7 +159,8 @@ Loader {
                                             }
 
                                             anchors {
-                                                horizontalCenter: parent.horizontalCenter
+                                                horizontalCenter:
+                                                    parent.horizontalCenter
                                                 top: parent.top
                                             }
                                         }
@@ -154,10 +169,14 @@ Loader {
                                             id: textLabel
 
                                             text: buttonRect.modelData.text
-                                            color: (mouseArea.containsMouse || buttonRect.activeFocus) ? Config.colors.accent : Config.colors.fg
+                                            color: (mouseArea.containsMouse
+                                                    || buttonRect.activeFocus)
+                                                   ? Config.colors.accent :
+                                                     Config.colors.fg
                                             font.pointSize: 14
                                             font.bold: true
-                                            font.family: Config.general.fontFamily
+                                            font.family:
+                                                Config.general.fontFamily
 
                                             Behavior on color {
                                                 ColAnim {}
@@ -166,7 +185,8 @@ Loader {
                                             anchors {
                                                 top: icon.bottom
                                                 topMargin: 22
-                                                horizontalCenter: parent.horizontalCenter
+                                                horizontalCenter:
+                                                    parent.horizontalCenter
                                             }
                                         }
                                     }

@@ -23,14 +23,18 @@ Item {
 
     function batteryInfo() {
         if (States.battery.isDischarging)
-            return "󱐋 " + States.battery.percentage + "% " + secondsToHhMm(States.battery.device.timeToEmpty);
+            return "󱐋 " + States.battery.percentage + "% " + secondsToHhMm(
+                        States.battery.device.timeToEmpty);
         if (States.battery.isCharging)
-            return "󱐋 " + States.battery.percentage + "% " + secondsToHhMm(States.battery.device.timeToFull);
+            return "󱐋 " + States.battery.percentage + "% " + secondsToHhMm(
+                        States.battery.device.timeToFull);
         if (States.battery.isFullyCharged || States.battery.isEmpty)
-            return "󱐋 " + States.battery.percentage + "% " + Math.round(States.battery.device.energyCapacity) + " Wh";
+            return "󱐋 " + States.battery.percentage + "% " + Math.round(
+                        States.battery.device.energyCapacity) + " Wh";
     }
 
-    implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0) + battText.width
+    implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0)
+                   + battText.width
     implicitHeight: battText.height
 
     Behavior on implicitWidth {
@@ -99,8 +103,11 @@ Item {
         Text {
             id: battText
 
-            visible: UPower.onBattery || States.battery.isCharging || States.battery.isDischarging || States.battery.isEmpty || States.battery.isFullyCharged
-            text: States.battery.device?.ready ? `${States.battery.getIcon()}` : ""
+            visible: UPower.onBattery || States.battery.isCharging
+                     || States.battery.isDischarging || States.battery.isEmpty
+                     || States.battery.isFullyCharged
+            text: States.battery.device?.ready ? `${States.battery.getIcon()}` :
+                                                 ""
             color: {
                 if (States.battery.isCharging)
                     return root.colCharging;

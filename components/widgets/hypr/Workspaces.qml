@@ -25,11 +25,15 @@ RowLayout {
 
             required property int index
             property bool isHovered: false
-            property var ws: Hyprland.workspaces.values.find(w => w.id === index + 1)
-            property bool isActive: Hyprland.focusedWorkspace?.id === (index + 1)
+            property var ws: Hyprland.workspaces.values.find(w => w.id === index
+                                                                  + 1)
+            property bool isActive: Hyprland.focusedWorkspace?.id === (index
+                                                                       + 1)
 
             text: root.names[index]
-            color: isHovered ? root.colAction : isActive ? root.colActive : (ws ? root.colNormal : root.colPassive)
+            color: isHovered ? root.colAction : isActive ? root.colActive : (ws
+                                                                             ? root.colNormal :
+                                                                               root.colPassive)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             leftPadding: 4

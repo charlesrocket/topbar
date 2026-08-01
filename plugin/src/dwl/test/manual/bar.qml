@@ -13,8 +13,11 @@ ShellRoot {
 
             PanelWindow {
                 required property var modelData
-                property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0 ? DwlIpc.outputForName(modelData.name) : null
-                property string currentLayout: dwlOutput ? dwlOutput.kbLayout : ""
+                property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0
+                                                 ? DwlIpc.outputForName(
+                                                       modelData.name) : null
+                property string currentLayout: dwlOutput ? dwlOutput.kbLayout :
+                                                           ""
 
                 screen: modelData
                 anchors.top: true
@@ -38,8 +41,12 @@ ShellRoot {
                             width: 22
                             height: 22
                             radius: 4
-                            color: modelData.active ? "#89b4fa" : (modelData.clientCount > 0 ? "#313244" : "transparent")
-                            border.color: modelData.urgent ? "#f38ba8" : "transparent"
+                            color: modelData.active ? "#89b4fa" : (
+                                                          modelData.clientCount
+                                                          > 0 ? "#313244" :
+                                                                "transparent")
+                            border.color: modelData.urgent ? "#f38ba8" :
+                                                             "transparent"
                             border.width: 2
 
                             Text {
@@ -58,7 +65,8 @@ ShellRoot {
                                 // Right click: toggle tag on focused client
                                 onClicked: mouse => {
                                     if (mouse.button === Qt.RightButton)
-                                        dwlOutput.setClientTags(0xFFFFFFFF, 1 << modelData.index);
+                                        dwlOutput.setClientTags(0xFFFFFFFF, 1
+                                                                << modelData.index);
                                     else
                                         dwlOutput.setTags(1 << modelData.index);
                                 }
@@ -79,7 +87,8 @@ ShellRoot {
 
                             onClicked: {
                                 if (dwlOutput) {
-                                    const next = (dwlOutput.layoutIndex + 1) % DwlIpc.layouts.length;
+                                    const next = (dwlOutput.layoutIndex + 1)
+                                          % DwlIpc.layouts.length;
                                     dwlOutput.setLayout(next);
                                 }
                             }
@@ -96,13 +105,21 @@ ShellRoot {
                         text: {
                             if (!currentLayout)
                                 return "XX";
-                            if (currentLayout.includes('(') && currentLayout.includes(')')) {
-                                const match = currentLayout.match(/\(([^)]+)\)/);
-                                return match ? match[1] : currentLayout.substring(0, 2).toUpperCase();
+                            if (currentLayout.includes('(')
+                                    && currentLayout.includes(')')) {
+                                const match = currentLayout.match(
+                                          /\(([^)]+)\)/);
+                                return match ? match[1] :
+                                               currentLayout.substring(0,
+                                                                       2).toUpperCase(
+                                                   );
                             }
 
                             const firstWord = currentLayout.split(' ')[0];
-                            return firstWord.length <= 3 ? firstWord : firstWord.substring(0, 2).toUpperCase();
+                            return firstWord.length <= 3 ? firstWord :
+                                                           firstWord.substring(0,
+                                                                               2).toUpperCase(
+                                                               );
                         }
                         font.pixelSize: 12
                         font.bold: true
@@ -111,7 +128,8 @@ ShellRoot {
 
                     // Focused window title
                     Text {
-                        text: ToplevelManager.activeToplevel ? ToplevelManager.activeToplevel.title : ""
+                        text: ToplevelManager.activeToplevel
+                              ? ToplevelManager.activeToplevel.title : ""
                         color: "#cdd6f4"
                         font.pixelSize: 12
                         elide: Text.ElideRight

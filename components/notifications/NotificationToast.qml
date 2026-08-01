@@ -12,7 +12,8 @@ Rectangle {
     property string fontFamily: Config.general.fontFamily
     property var notification: null
     property real hoverPauseStart: 0
-    property int timeoutMs: ready && notification.expireTimeout > 0 ? notification.expireTimeout : 5000
+    property int timeoutMs: ready && notification.expireTimeout > 0
+                            ? notification.expireTimeout : 5000
     readonly property bool ready: notification !== null
     readonly property bool hasImage: ready && notification.image !== ""
     readonly property bool hasAppIcon: ready && notification.appIcon !== ""
@@ -203,7 +204,10 @@ Rectangle {
                 }
 
                 Text {
-                    text: root.ready ? (root.notification.appName === "notify-send" ? "" : root.notification.appName) : ""
+                    text: root.ready ? (root.notification.appName
+                                        === "notify-send" ? "" :
+                                                            root.notification.appName) :
+                                       ""
                     color: Qt.darker(Config.colors.fg, 1.3)
                     font.pixelSize: 14
                     font.family: root.fontFamily
@@ -278,7 +282,8 @@ Rectangle {
                         implicitHeight: label.implicitHeight + 10
                         radius: Config.general.cornerRadius
                         color: "transparent"
-                        border.color: buttonArea.containsMouse ? Config.colors.action : Config.colors.fg
+                        border.color: buttonArea.containsMouse
+                                      ? Config.colors.action : Config.colors.fg
                         border.width: 1
 
                         Behavior on border.color {
@@ -350,7 +355,8 @@ Rectangle {
             if (hovered) {
                 closeButtonCont.opacity = 1;
                 root.hoverPauseStart = Date.now();
-                root.timeoutMs = progressBar.width / (root.implicitWidth - 2) * root.timeoutMs;
+                root.timeoutMs = progressBar.width / (root.implicitWidth - 2)
+                        * root.timeoutMs;
                 progressAnim.stop();
                 expireTimer.stop();
             } else {

@@ -9,7 +9,8 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    readonly property string path: Quickshell.env("HOME") + "/.config/topbar/settings.json"
+    readonly property string path: Quickshell.env("HOME")
+                                   + "/.config/topbar/settings.json"
     property alias general: settings.general
     property alias bar: settings.bar
     property alias desktop: settings.desktop
@@ -147,8 +148,10 @@ Singleton {
             property JsonObject session: JsonObject {
                 property string background: "#aa202020"
                 property JsonObject commands: JsonObject {
-                    property string lock: "quickshell -c topbar ipc call bar lock"
-                    property string logout: "pkill mango | hyprctl dispatch exit"
+                    property string lock:
+                    "quickshell -c topbar ipc call bar lock"
+                    property string logout:
+                    "pkill mango | hyprctl dispatch exit"
                     property string suspend: "zzz"
                     property string hibernate: "acpiconf -s 4"
                     property string shutdown: "shutdown -p now"

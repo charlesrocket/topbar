@@ -83,7 +83,11 @@ RowLayout {
     }
 
     Separator {
-        visible: (bt.visible || netwrk.visible) && (sysTray.visible || localWeather.visible || lang.visible || time.visible || batt.visible)
+        visible: (bt.visible || netwrk.visible) && (sysTray.visible
+                                                    || localWeather.visible
+                                                    || lang.visible
+                                                    || time.visible
+                                                    || batt.visible)
     }
 
     // system tray
@@ -91,7 +95,8 @@ RowLayout {
         id: sysTray
 
         active: !States.ecoMode && Config.widgets.tray
-        visible: sysTray.active && SystemTray.items && SystemTray.items.values.length > 0
+        visible: sysTray.active && SystemTray.items
+                 && SystemTray.items.values.length > 0
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
 
@@ -131,11 +136,11 @@ RowLayout {
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
         sourceComponent: switch (System.desktop) {
-        case "mango":
-            return dwlLang;
-        case "hyprland":
-            return hyprLang;
-        }
+                         case "mango":
+                             return dwlLang;
+                         case "hyprland":
+                             return hyprLang;
+                         }
 
         Component {
             id: dwlLang

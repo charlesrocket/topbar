@@ -10,7 +10,8 @@ import TopBar.DWL
 
 Singleton {
     property PanelWindow barPanel: null
-    property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0 ? DwlIpc.outputs[0] : null
+    property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0
+                                     ? DwlIpc.outputs[0] : null
     property var locale: Qt.locale(Config.general.locale)
     property bool barEnabled: true
     property bool ecoMode: false
@@ -25,7 +26,9 @@ Singleton {
     property int dropdownY: 0
     property int dropdownHeight: 0
     property int dropdownWidth: 0
-    property bool fullScreen: ToplevelManager.activeToplevel ? ToplevelManager.activeToplevel.fullscreen : false
+    property bool fullScreen: ToplevelManager.activeToplevel
+                              ? ToplevelManager.activeToplevel.fullscreen :
+                                false
     property bool blurredBackground: {
         const output = DwlIpc.outputs.find(o => o.active);
         const activeTag = output?.tags.find(tag => tag.active);
@@ -34,10 +37,13 @@ Singleton {
     }
 
     // TODO add local
-    property string defaultWallpaper: "https://codeberg.org/charlesrocket/misc-files/raw/branch/trunk/puffy-red.png"
+    property string defaultWallpaper:
+    "https://codeberg.org/charlesrocket/misc-files/raw/branch/trunk/puffy-red.png"
     property var battery: QtObject {
         readonly property var device: UPower.displayDevice
-        readonly property int percentage: device?.ready ? Math.round(device.percentage * 100) : 0
+        readonly property int percentage: device?.ready ? Math.round(
+                                                              device.percentage
+                                                              * 100) : 0
         readonly property bool isCharging: device?.state === 1
         readonly property bool isDischarging: device?.state === 2
         readonly property bool isEmpty: device?.state === 3
