@@ -78,9 +78,8 @@ Item {
                 when: root.show
 
                 PropertyChanges {
-                    target: dropdown
-                    opacity: 1
-                    scale: 1
+                    dropdown.opacity: 1
+                    dropdown.scale: 1
                 }
             },
             State {
@@ -88,9 +87,8 @@ Item {
                 when: !root.show
 
                 PropertyChanges {
-                    target: dropdown
-                    opacity: 0
-                    scale: 0.65
+                    dropdown.opacity: 0
+                    dropdown.scale: 0.65
                 }
             }
         ]
