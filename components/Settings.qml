@@ -57,18 +57,6 @@ FloatingWindow {
             anchors.margins: 16
             spacing: 0
 
-            // header
-            Text {
-                text: "Configuration"
-                font.family: Config.general.fontFamily
-                font.pixelSize: Config.general.fontSize + 6
-                font.bold: true
-                color: Config.colors.fg
-                horizontalAlignment: Text.AlignHCenter
-                Layout.fillWidth: true
-                Layout.bottomMargin: 16
-            }
-
             // vertical tab bar + content
             RowLayout {
                 Layout.fillWidth: true
