@@ -11,6 +11,7 @@ FloatingWindow {
     id: root
 
     property string version: System.version
+    property int gap: 12
 
     function validateSection(obj, section, key, offset) {
         var configCount = Utils.getPropertyCount(obj);
@@ -78,9 +79,9 @@ FloatingWindow {
                         spacing: 8
 
                         Repeater {
-                            model: ["General", "Colors", "Widgets", "Bar",
-                                "Notifications", "Desktop", "Spaces",
-                                "Dashboard", "Lockscreen", "Session", "About"]
+                            model: ["General", "Colors", "Bar", "Notifications",
+                                "Desktop", "Spaces", "Dashboard", "Lockscreen",
+                                "Session", "About"]
 
                             delegate: Button {
                                 required property var modelData
@@ -166,13 +167,11 @@ FloatingWindow {
                             Layout.fillHeight: true
                             clip: true
 
-                            GridLayout {
+                            ColumnLayout {
                                 id: generalSection
 
                                 width: generalScroll.width
-                                columns: 2
-                                columnSpacing: 14
-                                rowSpacing: 14
+                                spacing: root.gap
 
                                 Component.onCompleted: {
                                     root.validateSection(Config.general,
@@ -186,13 +185,6 @@ FloatingWindow {
                                     targetObject: Config.general
                                     targetProperty: "locale"
                                     valueType: "string"
-                                }
-
-                                SettingRow {
-                                    label: "Config watch"
-                                    targetObject: Config.general
-                                    targetProperty: "configWatch"
-                                    valueType: "bool"
                                 }
 
                                 SettingRow {
@@ -250,6 +242,13 @@ FloatingWindow {
                                     targetProperty: "shadows"
                                     valueType: "bool"
                                 }
+
+                                SettingRow {
+                                    label: "Config watch"
+                                    targetObject: Config.general
+                                    targetProperty: "configWatch"
+                                    valueType: "bool"
+                                }
                             }
                         }
 
@@ -261,13 +260,11 @@ FloatingWindow {
                             Layout.fillHeight: true
                             clip: true
 
-                            GridLayout {
+                            ColumnLayout {
                                 id: colorsSection
 
                                 width: colorsScroll.width
-                                columns: 3
-                                columnSpacing: 14
-                                rowSpacing: 14
+                                spacing: root.gap
 
                                 Component.onCompleted: {
                                     root.validateSection(Config.colors,
@@ -375,115 +372,6 @@ FloatingWindow {
                             }
                         }
 
-                        // widgets
-                        ScrollView {
-                            id: widgetsScroll
-
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
-
-                            GridLayout {
-                                id: widgetsSection
-
-                                width: widgetsScroll.width
-                                columns: 3
-                                columnSpacing: 14
-                                rowSpacing: 14
-
-                                Component.onCompleted: {
-                                    root.validateSection(Config.widgets,
-                                                         widgetsSection,
-                                                         "Config.widgets",
-                                                         null);
-                                }
-
-                                SettingRow {
-                                    label: "Workspaces"
-                                    targetObject: Config.widgets
-                                    targetProperty: "workspaces"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Title"
-                                    targetObject: Config.widgets
-                                    targetProperty: "title"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Stats"
-                                    targetObject: Config.widgets
-                                    targetProperty: "stats"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Audio"
-                                    targetObject: Config.widgets
-                                    targetProperty: "audio"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Bluetooth"
-                                    targetObject: Config.widgets
-                                    targetProperty: "bluetooth"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Network"
-                                    targetObject: Config.widgets
-                                    targetProperty: "network"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Tray"
-                                    targetObject: Config.widgets
-                                    targetProperty: "tray"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Jails"
-                                    targetObject: Config.widgets
-                                    targetProperty: "jails"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Weather"
-                                    targetObject: Config.widgets
-                                    targetProperty: "weather"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Language"
-                                    targetObject: Config.widgets
-                                    targetProperty: "language"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Clock"
-                                    targetObject: Config.widgets
-                                    targetProperty: "clock"
-                                    valueType: "bool"
-                                }
-
-                                SettingRow {
-                                    label: "Battery"
-                                    targetObject: Config.widgets
-                                    targetProperty: "battery"
-                                    valueType: "bool"
-                                }
-                            }
-                        }
-
                         // bar
                         ScrollView {
                             id: barScroll
@@ -492,68 +380,177 @@ FloatingWindow {
                             Layout.fillHeight: true
                             clip: true
 
-                            GridLayout {
+                            ColumnLayout {
                                 width: barScroll.width
-                                columns: 3
-                                columnSpacing: 14
-                                rowSpacing: 14
+                                spacing: root.gap
 
-                                GridLayout {
-                                    id: barSection
+                                ColumnLayout {
+                                    width: parent.width
+                                    spacing: root.gap
 
-                                    implicitWidth: parent.width
-                                    columns: 1
-                                    columnSpacing: 14
-                                    rowSpacing: 14
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.bar,
-                                                             barSection,
-                                                             "Config.bar", 1);
+                                    SettingLabel {
+                                        label: "Layout"
                                     }
 
-                                    SettingRow {
-                                        label: "Height"
-                                        targetObject: Config.bar
-                                        targetProperty: "height"
-                                        valueType: "int"
+                                    ColumnLayout {
+                                        id: barSection
+
+                                        implicitWidth: parent.width
+                                        spacing: root.gap
+
+                                        Component.onCompleted: {
+                                            root.validateSection(Config.bar,
+                                                                 barSection,
+                                                                 "Config.bar",
+                                                                 2);
+                                        }
+
+                                        SettingRow {
+                                            label: "Height"
+                                            targetObject: Config.bar
+                                            targetProperty: "height"
+                                            valueType: "int"
+                                        }
+
+                                        SettingRow {
+                                            label: "Padding"
+                                            targetObject: Config.bar
+                                            targetProperty: "padding"
+                                            valueType: "int"
+                                        }
                                     }
 
-                                    SettingRow {
-                                        label: "Padding"
-                                        targetObject: Config.bar
-                                        targetProperty: "padding"
-                                        valueType: "int"
+                                    ColumnLayout {
+                                        id: barTitleSection
+
+                                        implicitWidth: parent.width
+                                        spacing: root.gap
+
+                                        Component.onCompleted: {
+                                            root.validateSection(
+                                                        Config.bar.title,
+                                                        barTitleSection,
+                                                        "Config.bar.title",
+                                                        null);
+                                        }
+
+                                        SettingRow {
+                                            label: "Width"
+                                            targetObject: Config.bar.title
+                                            targetProperty: "width"
+                                            valueType: "int"
+                                        }
+
+                                        SettingRow {
+                                            label: "Empty text"
+                                            targetObject: Config.bar.title
+                                            targetProperty: "empty"
+                                            valueType: "string"
+                                        }
                                     }
                                 }
 
-                                GridLayout {
-                                    id: barTitleSection
+                                SettingSeparator {}
 
-                                    implicitWidth: parent.width
-                                    columns: 1
-                                    columnSpacing: 14
-                                    rowSpacing: 14
+                                SettingLabel {
+                                    label: "Widgets"
+                                }
+
+                                ColumnLayout {
+                                    id: widgetsSection
+
+                                    width: parent.width
+                                    spacing: root.gap
 
                                     Component.onCompleted: {
-                                        root.validateSection(Config.bar.title,
-                                                             barTitleSection,
-                                                             "Config.bar.title",
+                                        root.validateSection(Config.bar.widgets,
+                                                             widgetsSection,
+                                                             "Config.bar.widgets",
                                                              null);
                                     }
 
                                     SettingRow {
-                                        label: "Width"
-                                        targetObject: Config.bar.title
-                                        targetProperty: "width"
-                                        valueType: "int"
+                                        label: "Workspaces"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "workspaces"
+                                        valueType: "bool"
                                     }
 
                                     SettingRow {
-                                        label: "Empty text"
-                                        targetObject: Config.bar.title
-                                        targetProperty: "empty"
-                                        valueType: "string"
+                                        label: "Title"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "title"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Stats"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "stats"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Audio"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "audio"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Bluetooth"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "bluetooth"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Network"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "network"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Tray"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "tray"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Jails"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "jails"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Weather"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "weather"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Language"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "language"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Clock"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "clock"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Battery"
+                                        targetObject: Config.bar.widgets
+                                        targetProperty: "battery"
+                                        valueType: "bool"
                                     }
                                 }
                             }
@@ -569,13 +566,13 @@ FloatingWindow {
 
                             ColumnLayout {
                                 width: parent.width
-                                spacing: 14
+                                spacing: root.gap
 
                                 ColumnLayout {
                                     id: notificationsSection
 
                                     implicitWidth: notificationsScroll.width
-                                    spacing: 14
+                                    spacing: root.gap
 
                                     Component.onCompleted: {
                                         root.validateSection(
@@ -612,13 +609,13 @@ FloatingWindow {
 
                             ColumnLayout {
                                 width: parent.width
-                                spacing: 14
+                                spacing: root.gap
 
                                 ColumnLayout {
                                     id: desktopSection
 
                                     implicitWidth: desktopScroll.width
-                                    spacing: 14
+                                    spacing: root.gap
 
                                     Component.onCompleted: {
                                         root.validateSection(Config.desktop,
@@ -652,13 +649,11 @@ FloatingWindow {
                             Layout.fillHeight: true
                             clip: true
 
-                            GridLayout {
+                            ColumnLayout {
                                 id: workspaceSection
 
                                 width: workspaceScroll.width
-                                columns: 3
-                                columnSpacing: 14
-                                rowSpacing: 14
+                                spacing: root.gap
 
                                 Component.onCompleted: {
                                     root.validateSection(Config.workspaces,
@@ -751,7 +746,7 @@ FloatingWindow {
                                 id: dashboardSection
 
                                 width: dashboardScroll.width
-                                spacing: 14
+                                spacing: root.gap
 
                                 Component.onCompleted: {
                                     root.validateSection(Config.dashboard,
@@ -771,7 +766,7 @@ FloatingWindow {
                                     id: dashboardPlayerSection
 
                                     implicitWidth: parent.width
-                                    spacing: 14
+                                    spacing: root.gap
 
                                     Component.onCompleted: {
                                         root.validateSection(
@@ -806,13 +801,11 @@ FloatingWindow {
                             Layout.fillHeight: true
                             clip: true
 
-                            GridLayout {
+                            ColumnLayout {
                                 id: lockscreenSection
 
                                 width: lockscreenScroll.width
-                                columns: 2
-                                columnSpacing: 14
-                                rowSpacing: 14
+                                spacing: root.gap
 
                                 Component.onCompleted: {
                                     root.validateSection(Config.lockscreen,
@@ -882,10 +875,10 @@ FloatingWindow {
 
                             ColumnLayout {
                                 width: sessionScroll.width
-                                spacing: 14
+                                spacing: root.gap
 
                                 ColumnLayout {
-                                    spacing: 14
+                                    spacing: root.gap
 
                                     SettingRow {
                                         label: "Background color"
@@ -895,13 +888,8 @@ FloatingWindow {
                                     }
                                 }
 
-                                Text {
-                                    text: "Timeouts"
-                                    font.family: Config.general.fontFamily
-                                    font.pixelSize: Config.general.fontSize + 2
-                                    font.bold: true
-                                    color: Config.colors.fg
-                                    Layout.topMargin: 16
+                                SettingLabel {
+                                    label: "Timeouts"
                                 }
 
                                 GridLayout {
@@ -942,13 +930,10 @@ FloatingWindow {
                                     }
                                 }
 
-                                Text {
-                                    text: "Commands"
-                                    font.family: Config.general.fontFamily
-                                    font.pixelSize: Config.general.fontSize + 2
-                                    font.bold: true
-                                    color: Config.colors.fg
-                                    Layout.topMargin: 16
+                                SettingSeparator {}
+
+                                SettingLabel {
+                                    label: "Commands"
                                 }
 
                                 GridLayout {
@@ -1043,7 +1028,6 @@ FloatingWindow {
                                 font.pixelSize: Config.general.fontSize
                                 font.bold: false
                                 color: Config.colors.fg
-                                Layout.topMargin: 16
                                 readOnly: true
                                 selectByMouse: true
                             }
@@ -1087,5 +1071,19 @@ FloatingWindow {
                 }
             }
         }
+    }
+
+    component SettingLabel: Text {
+        required property string label
+
+        text: label
+        font.family: Config.general.fontFamily
+        font.pixelSize: Config.general.fontSize + 2
+        font.bold: true
+        color: Config.colors.fg
+    }
+    component SettingSeparator: Item {
+        Layout.topMargin: 6
+        Layout.bottomMargin: 6
     }
 }

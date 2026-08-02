@@ -31,7 +31,7 @@ RowLayout {
 
     // fill
     Rectangle {
-        color: Config.colors.fg
+        color: Config.colors.dark
         visible: settingRow.valueType === "bool" || settingRow.valueType
                  === "color"
         implicitHeight: 2
@@ -103,6 +103,7 @@ RowLayout {
             color: Config.colors.fg
             implicitHeight: 24
             selectionColor: Config.colors.action
+            horizontalAlignment: Qt.AlignRight
             selectedTextColor: Config.colors.bg
 
             background: Rectangle {
@@ -166,6 +167,7 @@ RowLayout {
                     font.pixelSize: Config.general.fontSize - 2
                     color: Config.colors.fg
                     elide: Text.ElideMiddle
+                    horizontalAlignment: Qt.AlignRight
                     text: settingRow.targetObject[settingRow.targetProperty]
                           || qsTr("Select a file")
                 }
