@@ -17,7 +17,7 @@ Singleton {
     property bool ecoMode: false
     property bool sessionPresent: false
     property bool keepAwake: false
-    property bool preferencesWindowPresent: false
+    property bool settingsPresent: false
     property bool launcherPresent: false
     property bool dashboardPresent: false
     property bool dropdownRevealed: false

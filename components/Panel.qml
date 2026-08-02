@@ -194,8 +194,8 @@ PanelWindow {
         console.warn("Launcher disabled");
     }
 
-        function config(): void {
-                               States.preferencesWindowPresent = true;
+        function settings(): void {
+                               States.settingsPresent = true;
                            }
 
         function logout(): void {
@@ -227,12 +227,12 @@ PanelWindow {
     }
 
     Loader {
-        id: preferencesWindow
+        id: settingsWindow
 
-        active: States.preferencesWindowPresent
-        visible: preferencesWindow.active
+        active: States.settingsPresent
+        visible: settingsWindow.active
 
-        sourceComponent: Preferences {}
+        sourceComponent: Settings {}
     }
 
     Loader {

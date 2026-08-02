@@ -20,11 +20,11 @@ FloatingWindow {
                          + " != " + section.children.length);
     }
 
-    title: "Configuration"
+    title: "Settings"
     color: "transparent"
 
     onClosed: {
-        States.preferencesWindowPresent = false;
+        States.settingsPresent = false;
     }
 
     contentItem {
@@ -32,7 +32,7 @@ FloatingWindow {
 
         Keys.onPressed: event => {
             if (event.key == Qt.Key_Escape) {
-                States.preferencesWindowPresent = false;
+                States.settingsPresent = false;
             }
         }
     }
@@ -40,7 +40,7 @@ FloatingWindow {
     MouseArea {
         anchors.fill: parent
 
-        onClicked: States.preferencesWindowPresent = false
+        onClicked: States.settingsPresent = false
     }
 
     Rectangle {
@@ -1087,8 +1087,7 @@ FloatingWindow {
                                 anchors.fill: parent
                                 hoverEnabled: true
 
-                                onClicked: States.preferencesWindowPresent
-                                           = false
+                                onClicked: States.settingsPresent = false
                                 onEntered: button.color = Config.colors.accent
                                 onExited: button.color = Config.colors.passive
                             }
