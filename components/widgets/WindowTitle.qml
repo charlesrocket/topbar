@@ -3,8 +3,8 @@ import QtQuick.Layouts
 
 import Quickshell.Wayland
 
-import qs.core
 import qs.bar
+import qs.core
 import qs.dashboard
 
 Item {

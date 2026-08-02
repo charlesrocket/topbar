@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs
-import qs.core
 import qs.bar
+import qs.core
 
 Item {
     id: root
