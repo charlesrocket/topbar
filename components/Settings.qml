@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import Quickshell
@@ -264,7 +265,7 @@ FloatingWindow {
                                 id: colorsSection
 
                                 width: colorsScroll.width
-                                columns: 2
+                                columns: 3
                                 columnSpacing: 14
                                 rowSpacing: 14
 
@@ -1101,7 +1102,8 @@ FloatingWindow {
         spacing: 14
 
         Item {
-            Layout.fillWidth: settingRow.valueType !== "bool"
+            Layout.fillWidth: settingRow.valueType === "string"
+                              || settingRow.valueType === "int"
             Layout.minimumWidth: 48
             Layout.alignment: Qt.AlignRight
             implicitHeight: 32
@@ -1117,9 +1119,37 @@ FloatingWindow {
                 color: visible
                        ? settingRow.targetObject[settingRow.targetProperty] :
                          "transparent"
-                border.color: Config.colors.border
-                border.width: 1
+                border.color: colorMouseArea.containsMouse
+                              ? Config.colors.action : Config.colors.border
+                border.width: Config.general.borderWidth
                 radius: Config.general.cornerRadius
+
+                Behavior on border.color {
+                    ColAnim {}
+                }
+
+                MouseArea {
+                    id: colorMouseArea
+
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: colorDialog.open()
+                }
+
+                ColorDialog {
+                    id: colorDialog
+
+                    title: qsTr("Select %1").arg(settingRow.label)
+                    selectedColor:
+                        settingRow.targetObject[settingRow.targetProperty]
+                    options: ColorDialog.ShowAlphaChannel
+
+                    onAccepted:
+                        settingRow.targetObject[settingRow.targetProperty]
+                        = colorDialog.selectedColor
+                }
             }
 
             TextField {
@@ -1127,12 +1157,9 @@ FloatingWindow {
 
                 visible: settingRow.valueType === "string"
                          || settingRow.valueType === "int"
-                         || settingRow.valueType === "color"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
-                anchors.left: settingRow.valueType === "color"
-                              ? colorSwatch.right : parent.left
-                anchors.leftMargin: settingRow.valueType === "color" ? 8 : 0
+                anchors.left: parent.left
                 font.family: Config.general.fontFamily
                 font.pixelSize: Config.general.fontSize - 2
                 color: Config.colors.fg
@@ -1210,7 +1237,8 @@ FloatingWindow {
         // fill
         Rectangle {
             color: Config.colors.fg
-            visible: settingRow.valueType === "bool"
+            visible: settingRow.valueType === "bool" || settingRow.valueType
+                     === "color"
             implicitHeight: 2
             Layout.fillHeight: false
             Layout.fillWidth: true
