@@ -5,6 +5,7 @@ import Quickshell.Services.Notifications
 import Quickshell.Widgets
 
 import qs
+import qs.core
 
 Rectangle {
     id: root

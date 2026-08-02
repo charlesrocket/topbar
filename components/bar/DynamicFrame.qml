@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Shapes
 
-import qs
+import qs.core
 
 Shape {
     id: root

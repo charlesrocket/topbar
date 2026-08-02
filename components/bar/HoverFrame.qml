@@ -1,6 +1,6 @@
 import QtQuick
 
-import qs
+import qs.core
 
 Rectangle {
     id: root

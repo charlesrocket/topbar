@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import Quickshell.Io
 
 import qs
+import qs.core
 
 Rectangle {
     id: root

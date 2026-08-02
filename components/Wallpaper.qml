@@ -4,6 +4,8 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
 
+import qs.core
+
 Variants {
     id: root
 

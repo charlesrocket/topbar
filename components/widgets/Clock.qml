@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 
 import qs
+import qs.core
 
 Item {
     id: root

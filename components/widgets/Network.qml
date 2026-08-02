@@ -6,6 +6,7 @@ import Quickshell.Io
 import TopBar.Networking
 
 import qs
+import qs.core
 
 Item {
     id: root

@@ -5,6 +5,8 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 
+import qs.core
+
 Loader {
     property color backgroundColor: "transparent"
 

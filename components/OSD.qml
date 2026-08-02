@@ -3,6 +3,8 @@ import QtQuick.Layouts
 
 import Quickshell
 
+import qs.core
+
 Scope {
     id: root
 

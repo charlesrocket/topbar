@@ -2,7 +2,7 @@ import QtQuick
 
 import TopBar.DWL
 
-import qs
+import qs.core
 
 Rectangle {
     id: root

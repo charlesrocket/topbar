@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import Quickshell.Hyprland
 
 import qs
+import qs.core
 
 RowLayout {
     id: root

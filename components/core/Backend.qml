@@ -4,6 +4,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 
+import qs
 import qs.lockscreen
 import qs.notifications
 import qs.session

@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import Quickshell.Io
 import Quickshell.Services.Mpris
 
-import qs
+import qs.core
 
 Item {
     id: root

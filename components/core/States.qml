@@ -8,6 +8,8 @@ import Quickshell.Wayland
 
 import TopBar.DWL
 
+import qs.core
+
 Singleton {
     property PanelWindow barPanel: null
     property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0

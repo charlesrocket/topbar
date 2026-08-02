@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 
+import qs.core
 import qs.bar as Bar
 
 PanelWindow {

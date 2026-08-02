@@ -6,6 +6,8 @@ import Quickshell
 
 import TopBar
 
+import qs.core
+
 ColumnLayout {
     id: root
 

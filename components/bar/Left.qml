@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 
-import qs
+import qs.core
 import qs.widgets.dwl as DWL
 import qs.widgets.hypr as Hypr
 

@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Wayland
 
 import qs
+import qs.core
 
 Loader {
     id: root

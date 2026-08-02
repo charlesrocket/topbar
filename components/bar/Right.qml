@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import Quickshell.Services.SystemTray
 import Quickshell.Services.UPower
 
-import qs
+import qs.core
 import qs.widgets
 import qs.widgets.audio
 import qs.widgets.dwl as DWL

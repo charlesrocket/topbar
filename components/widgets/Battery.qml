@@ -3,6 +3,7 @@ import QtQuick
 import Quickshell.Services.UPower
 
 import qs
+import qs.core
 
 Item {
     id: root

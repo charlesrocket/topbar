@@ -6,6 +6,7 @@ import Quickshell.Io
 import TopBar.OSS
 
 import qs
+import qs.core
 
 RowLayout {
     Layout.alignment: Qt.AlignVCenter

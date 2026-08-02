@@ -4,6 +4,8 @@ import QtQuick.Layouts
 
 import Quickshell
 
+import qs.core
+
 FloatingWindow {
     id: root
 

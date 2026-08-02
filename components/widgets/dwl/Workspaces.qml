@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import TopBar.DWL
 
 import qs
+import qs.core
 
 RowLayout {
     id: root
