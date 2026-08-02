@@ -139,7 +139,7 @@ FloatingWindow {
                     visible: false
 
                     Repeater {
-                        model: 7
+                        model: 10
 
                         TabButton {}
                     }
@@ -169,6 +169,8 @@ FloatingWindow {
 
                         // general
                         ScrollView {
+                            id: generalScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
@@ -176,8 +178,8 @@ FloatingWindow {
                             GridLayout {
                                 id: generalSection
 
-                                width: parent.width
-                                columns: 1
+                                width: generalScroll.width
+                                columns: 2
                                 columnSpacing: 14
                                 rowSpacing: 14
 
@@ -262,6 +264,8 @@ FloatingWindow {
 
                         // colors
                         ScrollView {
+                            id: colorsScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
@@ -269,7 +273,7 @@ FloatingWindow {
                             GridLayout {
                                 id: colorsSection
 
-                                width: parent.width
+                                width: colorsScroll.width
                                 columns: 2
                                 columnSpacing: 14
                                 rowSpacing: 14
@@ -382,6 +386,8 @@ FloatingWindow {
 
                         // widgets
                         ScrollView {
+                            id: widgetsScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
@@ -389,9 +395,8 @@ FloatingWindow {
                             GridLayout {
                                 id: widgetsSection
 
-                                width: parent.width
-                                height: parent.height
-                                columns: 2
+                                width: widgetsScroll.width
+                                columns: 3
                                 columnSpacing: 14
                                 rowSpacing: 14
 
@@ -490,13 +495,15 @@ FloatingWindow {
 
                         // bar
                         ScrollView {
+                            id: barScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
 
                             GridLayout {
-                                width: parent.width
-                                columns: 2
+                                width: barScroll.width
+                                columns: 3
                                 columnSpacing: 14
                                 rowSpacing: 14
 
@@ -563,6 +570,8 @@ FloatingWindow {
 
                         // notifications
                         ScrollView {
+                            id: notificationsScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
@@ -574,7 +583,7 @@ FloatingWindow {
                                 ColumnLayout {
                                     id: notificationsSection
 
-                                    implicitWidth: parent.width
+                                    implicitWidth: notificationsScroll.width
                                     spacing: 12
 
                                     Component.onCompleted: {
@@ -604,6 +613,8 @@ FloatingWindow {
 
                         // desktop
                         ScrollView {
+                            id: desktopScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
@@ -615,7 +626,7 @@ FloatingWindow {
                                 ColumnLayout {
                                     id: desktopSection
 
-                                    implicitWidth: parent.width
+                                    implicitWidth: desktopScroll.width
                                     spacing: 12
 
                                     Component.onCompleted: {
@@ -644,6 +655,8 @@ FloatingWindow {
 
                         // workspaces
                         ScrollView {
+                            id: workspaceScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
@@ -651,8 +664,8 @@ FloatingWindow {
                             GridLayout {
                                 id: workspaceSection
 
-                                width: parent.width
-                                columns: 2
+                                width: workspaceScroll.width
+                                columns: 3
                                 columnSpacing: 14
                                 rowSpacing: 14
 
@@ -737,6 +750,8 @@ FloatingWindow {
 
                         // dashboard
                         ScrollView {
+                            id: dashboardScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
@@ -744,7 +759,7 @@ FloatingWindow {
                             ColumnLayout {
                                 id: dashboardSection
 
-                                width: parent.width
+                                width: dashboardScroll.width
                                 spacing: 12
 
                                 Component.onCompleted: {
@@ -794,6 +809,8 @@ FloatingWindow {
 
                         // lockscreen
                         ScrollView {
+                            id: lockscreenScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
@@ -801,7 +818,7 @@ FloatingWindow {
                             GridLayout {
                                 id: lockscreenSection
 
-                                width: parent.width
+                                width: lockscreenScroll.width
                                 columns: 2
                                 columnSpacing: 14
                                 rowSpacing: 14
@@ -866,16 +883,17 @@ FloatingWindow {
 
                         // session
                         ScrollView {
+                            id: sessionScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
 
                             ColumnLayout {
-                                width: parent.width
+                                width: sessionScroll.width
                                 spacing: 12
 
                                 ColumnLayout {
-                                    implicitWidth: parent.width
                                     spacing: 12
 
                                     SettingRow {
@@ -898,7 +916,6 @@ FloatingWindow {
                                 GridLayout {
                                     id: sessionTimeoutsSection
 
-                                    implicitWidth: parent.width
                                     columns: 3
                                     rows: 1
                                     columnSpacing: 14
@@ -946,7 +963,6 @@ FloatingWindow {
                                 GridLayout {
                                     id: sessionCommandsSection
 
-                                    implicitWidth: parent.width
                                     columns: 2
                                     columnSpacing: 14
                                     rowSpacing: 14
@@ -1096,8 +1112,8 @@ FloatingWindow {
         spacing: 14
 
         Item {
-            Layout.fillWidth: true
-            Layout.preferredWidth: 120
+            Layout.fillWidth: settingRow.valueType !== "bool"
+            Layout.minimumWidth: 48
             Layout.alignment: Qt.AlignRight
             implicitHeight: 32
 
@@ -1202,6 +1218,15 @@ FloatingWindow {
             }
         }
 
+        // fill
+        Rectangle {
+            color: Config.colors.fg
+            visible: settingRow.valueType === "bool"
+            implicitHeight: 2
+            Layout.fillHeight: false
+            Layout.fillWidth: true
+        }
+
         Text {
             text: settingRow.label
             font.family: Config.general.fontFamily
@@ -1209,7 +1234,6 @@ FloatingWindow {
             color: Config.colors.fg
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
-            Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: false
         }
     }
