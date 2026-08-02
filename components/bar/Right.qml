@@ -23,7 +23,7 @@ RowLayout {
     Loader {
         id: stats
 
-        active: !States.ecoMode && Config.widgets.stats
+        active: !States.ecoMode && Config.bar.widgets.stats
         visible: stats.active
         asynchronous: true
 
@@ -38,7 +38,7 @@ RowLayout {
     Loader {
         id: audio
 
-        active: Config.widgets.audio
+        active: Config.bar.widgets.audio
         visible: audio.active
         asynchronous: true
         Layout.alignment: Qt.AlignVCenter
@@ -62,7 +62,7 @@ RowLayout {
     Loader {
         id: bt
 
-        active: !States.ecoMode && Config.widgets.bluetooth
+        active: !States.ecoMode && Config.bar.widgets.bluetooth
         visible: bt.active
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
@@ -74,7 +74,7 @@ RowLayout {
     Loader {
         id: netwrk
 
-        active: Config.widgets.network
+        active: Config.bar.widgets.network
         visible: netwrk.active
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
@@ -94,7 +94,7 @@ RowLayout {
     Loader {
         id: sysTray
 
-        active: !States.ecoMode && Config.widgets.tray
+        active: !States.ecoMode && Config.bar.widgets.tray
         visible: sysTray.active && SystemTray.items
                  && SystemTray.items.values.length > 0
         Layout.alignment: Qt.AlignVCenter
@@ -107,7 +107,7 @@ RowLayout {
     Loader {
         id: localWeather
 
-        active: !States.ecoMode && Config.widgets.weather
+        active: !States.ecoMode && Config.bar.widgets.weather
         visible: localWeather.active
         asynchronous: true
         Layout.rightMargin: 2
@@ -119,7 +119,7 @@ RowLayout {
     Loader {
         id: jails
 
-        active: System.jails.length > 0 && Config.widgets.jails
+        active: System.jails.length > 0 && Config.bar.widgets.jails
         visible: jails.active
         asynchronous: true
         Layout.rightMargin: 2
@@ -131,7 +131,7 @@ RowLayout {
     Loader {
         id: lang
 
-        active: Config.widgets.language
+        active: Config.bar.widgets.language
         visible: lang.active
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
@@ -169,7 +169,7 @@ RowLayout {
     Loader {
         id: time
 
-        active: Config.widgets.clock
+        active: Config.bar.widgets.clock
         visible: time.active
         asynchronous: true
         Layout.alignment: Qt.AlignVCenter
@@ -186,7 +186,8 @@ RowLayout {
     Loader {
         id: batt
 
-        active: (UPower.displayDevice.ready && Config.widgets.battery) || false
+        active: (UPower.displayDevice.ready && Config.bar.widgets.battery)
+                || false
         visible: batt.active
         asynchronous: true
 

@@ -13,7 +13,7 @@ RowLayout {
     Loader {
         id: title
 
-        active: Config.widgets.title
+        active: Config.bar.widgets.title
         visible: title.active
         asynchronous: true
         Layout.alignment: Qt.AlignVCenter

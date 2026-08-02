@@ -17,7 +17,6 @@ Singleton {
     property alias desktop: settings.desktop
     property alias dashboard: settings.dashboard
     property alias notifications: settings.notifications
-    property alias widgets: settings.widgets
     property alias lockscreen: settings.lockscreen
     property alias session: settings.session
     property alias workspaces: settings.workspaces
@@ -95,6 +94,22 @@ Singleton {
                     property int width: 400
                     property string empty: ""
                 }
+
+                // widgets
+                property JsonObject widgets: JsonObject {
+                    property bool workspaces: true
+                    property bool title: true
+                    property bool stats: false
+                    property bool audio: true
+                    property bool bluetooth: false
+                    property bool network: false
+                    property bool tray: false
+                    property bool jails: true
+                    property bool weather: true
+                    property bool language: false
+                    property bool clock: true
+                    property bool battery: true
+                }
             }
 
             // desktop
@@ -116,22 +131,6 @@ Singleton {
             property JsonObject notifications: JsonObject {
                 property bool enabled: true
                 property int width: 300
-            }
-
-            // widgets
-            property JsonObject widgets: JsonObject {
-                property bool workspaces: true
-                property bool title: true
-                property bool stats: false
-                property bool audio: true
-                property bool bluetooth: false
-                property bool network: false
-                property bool tray: false
-                property bool jails: true
-                property bool weather: true
-                property bool language: false
-                property bool clock: true
-                property bool battery: true
             }
 
             // lockscreen

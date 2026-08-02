@@ -12,7 +12,7 @@ RowLayout {
     Loader {
         id: wrkspc
 
-        active: Config.widgets.workspaces
+        active: Config.bar.widgets.workspaces
         visible: wrkspc.active
         asynchronous: true
         Layout.alignment: Qt.AlignVCenter
