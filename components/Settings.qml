@@ -234,7 +234,7 @@ FloatingWindow {
                                     label: "Wallpaper"
                                     targetObject: Config.general
                                     targetProperty: "wallpaper"
-                                    valueType: "string"
+                                    valueType: "path"
                                 }
 
                                 SettingRow {
@@ -569,13 +569,13 @@ FloatingWindow {
 
                             ColumnLayout {
                                 width: parent.width
-                                spacing: 12
+                                spacing: 14
 
                                 ColumnLayout {
                                     id: notificationsSection
 
                                     implicitWidth: notificationsScroll.width
-                                    spacing: 12
+                                    spacing: 14
 
                                     Component.onCompleted: {
                                         root.validateSection(
@@ -612,13 +612,13 @@ FloatingWindow {
 
                             ColumnLayout {
                                 width: parent.width
-                                spacing: 12
+                                spacing: 14
 
                                 ColumnLayout {
                                     id: desktopSection
 
                                     implicitWidth: desktopScroll.width
-                                    spacing: 12
+                                    spacing: 14
 
                                     Component.onCompleted: {
                                         root.validateSection(Config.desktop,
@@ -751,7 +751,7 @@ FloatingWindow {
                                 id: dashboardSection
 
                                 width: dashboardScroll.width
-                                spacing: 12
+                                spacing: 14
 
                                 Component.onCompleted: {
                                     root.validateSection(Config.dashboard,
@@ -771,7 +771,7 @@ FloatingWindow {
                                     id: dashboardPlayerSection
 
                                     implicitWidth: parent.width
-                                    spacing: 12
+                                    spacing: 14
 
                                     Component.onCompleted: {
                                         root.validateSection(
@@ -825,7 +825,7 @@ FloatingWindow {
                                     label: "Wallpaper"
                                     targetObject: Config.lockscreen
                                     targetProperty: "wallpaper"
-                                    valueType: "string"
+                                    valueType: "path"
                                 }
 
                                 SettingRow {
@@ -882,10 +882,10 @@ FloatingWindow {
 
                             ColumnLayout {
                                 width: sessionScroll.width
-                                spacing: 12
+                                spacing: 14
 
                                 ColumnLayout {
-                                    spacing: 12
+                                    spacing: 14
 
                                     SettingRow {
                                         label: "Background color"
@@ -900,7 +900,7 @@ FloatingWindow {
                                     font.family: Config.general.fontFamily
                                     font.pixelSize: Config.general.fontSize + 2
                                     font.bold: true
-                                    color: Config.colors.accent
+                                    color: Config.colors.fg
                                     Layout.topMargin: 16
                                 }
 
@@ -947,7 +947,7 @@ FloatingWindow {
                                     font.family: Config.general.fontFamily
                                     font.pixelSize: Config.general.fontSize + 2
                                     font.bold: true
-                                    color: Config.colors.accent
+                                    color: Config.colors.fg
                                     Layout.topMargin: 16
                                 }
 
@@ -1101,9 +1101,11 @@ FloatingWindow {
         Layout.fillWidth: true
         spacing: 14
 
+        // control element
         Item {
             Layout.fillWidth: settingRow.valueType === "string"
                               || settingRow.valueType === "int"
+                              || settingRow.valueType === "path"
             Layout.minimumWidth: 48
             Layout.alignment: Qt.AlignRight
             implicitHeight: 32
@@ -1115,7 +1117,7 @@ FloatingWindow {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 width: 40
-                height: 24
+                implicitHeight: 24
                 color: visible
                        ? settingRow.targetObject[settingRow.targetProperty] :
                          "transparent"
@@ -1163,6 +1165,7 @@ FloatingWindow {
                 font.family: Config.general.fontFamily
                 font.pixelSize: Config.general.fontSize - 2
                 color: Config.colors.fg
+                implicitHeight: 24
                 selectionColor: Config.colors.action
                 selectedTextColor: Config.colors.bg
 
@@ -1178,9 +1181,10 @@ FloatingWindow {
                     }
                 }
 
-                Component.onCompleted: text
-                                       = settingRow.targetObject[settingRow.targetProperty].toString(
-                                           )
+                Component.onCompleted: {
+                    text = settingRow.targetObject[settingRow.targetProperty].toString(
+                                );
+                }
                 onEditingFinished: {
                     if (settingRow.valueType === "int")
                         settingRow.targetObject[settingRow.targetProperty]
@@ -1188,6 +1192,90 @@ FloatingWindow {
                     else
                         settingRow.targetObject[settingRow.targetProperty]
                                 = text;
+                }
+            }
+
+            Loader {
+                id: pathLoader
+
+                active: settingRow.valueType === "path"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.left: parent.left
+
+                //height: 32
+
+                sourceComponent: Rectangle {
+                    id: pathField
+
+                    implicitHeight: 24
+                    color: Config.colors.dark
+                    border.color: pathMouseArea.containsMouse
+                                  ? Config.colors.action : Config.colors.border
+                    border.width: Config.general.borderWidth
+                    radius: Config.general.cornerRadius
+
+                    Behavior on border.color {
+                        ColAnim {}
+                    }
+
+                    Text {
+                        id: pathText
+
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: 8
+                        anchors.rightMargin: 8
+                        font.family: Config.general.fontFamily
+                        font.pixelSize: Config.general.fontSize - 2
+                        color: Config.colors.fg
+                        elide: Text.ElideMiddle
+                        text: settingRow.targetObject[settingRow.targetProperty]
+                              || qsTr("Select a file")
+                    }
+
+                    MouseArea {
+                        id: pathMouseArea
+
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: pathDialog.open()
+                    }
+
+                    FileDialog {
+                        id: pathDialog
+
+                        title: qsTr("Select %1").arg(
+                                   settingRow.label.toLowerCase())
+
+                        // set on creation instead of live bindings
+                        // TODO use StandardPaths
+                        Component.onCompleted: {
+                            var current
+                                    = settingRow.targetObject[settingRow.targetProperty];
+
+                            if (typeof current === "string" && current.length
+                                    > 0) {
+                                var idx = current.lastIndexOf("/");
+                                var dir = idx >= 0 ? current.substring(0, idx) :
+                                                     "";
+
+                                if (dir.length > 0)
+                                    currentFolder = "file://" + dir;
+                            }
+                        }
+                        onAccepted: {
+                            // sanitize path
+                            var path = selectedFile.toString().replace(
+                                        /^file:\/{2,3}/, "/");
+
+                            settingRow.targetObject[settingRow.targetProperty]
+                                    = decodeURIComponent(path);
+                        }
+                    }
                 }
             }
 
@@ -1244,6 +1332,7 @@ FloatingWindow {
             Layout.fillWidth: true
         }
 
+        // label
         Text {
             text: settingRow.label
             font.family: Config.general.fontFamily
