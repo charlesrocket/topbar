@@ -5,10 +5,10 @@ import Quickshell.Io
 import Quickshell.Wayland
 
 import qs
-import qs.settings
 import qs.lockscreen
 import qs.notifications
 import qs.session
+import qs.settings
 
 Scope {
     id: root
@@ -71,7 +71,7 @@ Scope {
     Session {
         SessionButton {
             command: Config.session.commands.lock
-            keybind: Qt.Key_K
+            keybind: Qt.Key_L
             text: "Lock"
             icon: ""
         }
