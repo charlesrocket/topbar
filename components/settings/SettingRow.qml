@@ -18,13 +18,34 @@ RowLayout {
     Layout.fillWidth: true
     spacing: 14
 
+    // label
+    Text {
+        text: settingRow.label
+        font.family: Config.general.fontFamily
+        font.pixelSize: Config.general.fontSize
+        color: Config.colors.fg
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignLeft
+        Layout.fillWidth: false
+    }
+
+    // fill
+    Rectangle {
+        color: Config.colors.fg
+        visible: settingRow.valueType === "bool" || settingRow.valueType
+                 === "color"
+        implicitHeight: 2
+        Layout.fillHeight: false
+        Layout.fillWidth: true
+    }
+
     // control element
     Item {
         Layout.fillWidth: settingRow.valueType === "string"
                           || settingRow.valueType === "int"
                           || settingRow.valueType === "path"
         Layout.minimumWidth: 48
-        Layout.alignment: Qt.AlignRight
+        Layout.alignment: Qt.AlignLeft
         implicitHeight: 32
 
         Rectangle {
@@ -231,26 +252,5 @@ RowLayout {
             onToggled: settingRow.targetObject[settingRow.targetProperty]
                        = checked
         }
-    }
-
-    // fill
-    Rectangle {
-        color: Config.colors.fg
-        visible: settingRow.valueType === "bool" || settingRow.valueType
-                 === "color"
-        implicitHeight: 2
-        Layout.fillHeight: false
-        Layout.fillWidth: true
-    }
-
-    // label
-    Text {
-        text: settingRow.label
-        font.family: Config.general.fontFamily
-        font.pixelSize: Config.general.fontSize
-        color: Config.colors.fg
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignLeft
-        Layout.fillWidth: false
     }
 }
