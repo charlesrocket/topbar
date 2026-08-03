@@ -13,36 +13,62 @@ ColumnLayout {
     spacing: 8
 
     RowLayout {
+        Layout.topMargin: 100
+        Layout.alignment: Qt.AlignHCenter
+
         Text {
             color: Config.colors.fg
-            verticalAlignment: Qt.AlignVCenter
             font.family: Config.general.fontFamily
             font.pixelSize: Config.general.fontSize * 2
             font.bold: true
             text: "TopBar"
         }
-
-        Text {
-            color: Config.colors.fg
-            font.family: Config.general.fontFamily
-            font.pixelSize: Config.general.fontSize * 2
-            font.bold: true
-            text: Version.major + "." + Version.minor
-        }
-    }
-
-    Text {
-        color: Config.colors.fg
-        verticalAlignment: Qt.AlignVCenter
-        visible: Version.distributor != "Unset"
-        font.family: Config.general.fontFamily
-        font.pixelSize: Config.general.fontSize * 1.2
-        font.bold: false
-        font.italic: true
-        text: Version.distributor
     }
 
     RowLayout {
+        Layout.alignment: Qt.AlignHCenter
+
+        Rectangle {
+            border.width: 1
+            border.color: Config.colors.passive
+            color: "transparent"
+            implicitWidth: versionString.width + 12
+            implicitHeight: versionString.height + 6
+            radius: Config.general.cornerRadius
+
+            TextEdit {
+                id: versionString
+
+                anchors.centerIn: parent
+                text: Version.full
+                font.family: Config.general.fontFamily
+                font.pixelSize: Config.general.fontSize
+                font.bold: false
+                color: Config.colors.fg
+                readOnly: true
+                selectByMouse: true
+            }
+        }
+    }
+
+    RowLayout {
+        Layout.alignment: Qt.AlignHCenter
+
+        Text {
+            color: Config.colors.fg
+            verticalAlignment: Qt.AlignVCenter
+            visible: Version.distributor != "Unset"
+            font.family: Config.general.fontFamily
+            font.pixelSize: Config.general.fontSize * 1.2
+            font.bold: false
+            font.italic: true
+            text: Version.distributor
+        }
+    }
+
+    RowLayout {
+        Layout.alignment: Qt.AlignHCenter
+
         Text {
             color: Config.colors.fg
             font.family: Config.general.fontFamily
