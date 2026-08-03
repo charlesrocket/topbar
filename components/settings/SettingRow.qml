@@ -13,6 +13,7 @@ RowLayout {
     required property var targetObject
     required property string targetProperty
     required property string valueType
+    property int rowWidth: 100
     property bool first
     property bool last
     property real sliderFrom: 0
@@ -26,15 +27,17 @@ RowLayout {
     SettingRect {
         id: rowRect
 
-        property bool controlFillsWidth: root.valueType === "string"
-                                         || root.valueType === "int"
-                                         || root.valueType === "path"
-                                         || root.valueType === "font"
-
         first: root.first
         last: root.last
         Layout.fillHeight: true
         Layout.fillWidth: true
+
+        HoverHandler {
+            id: mouse
+
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+            cursorShape: Qt.PointingHandCursor
+        }
 
         // label
         Text {
@@ -57,13 +60,12 @@ RowLayout {
 
             color: Config.colors.fg
             opacity: 0.6
-            visible: root.valueType === "bool" || root.valueType === "color"
             implicitHeight: 2
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: labelText.right
-            anchors.leftMargin: 14
+            anchors.leftMargin: 12
             anchors.right: controlItem.left
-            anchors.rightMargin: 14
+            anchors.rightMargin: 12
         }
 
         // control element
@@ -71,14 +73,32 @@ RowLayout {
             id: controlItem
 
             anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: 12
             anchors.right: parent.right
             anchors.rightMargin: 12
-            anchors.left: rowRect.controlFillsWidth ? labelText.right :
-                                                      undefined
-            anchors.leftMargin: rowRect.controlFillsWidth ? 14 : 0
-            width: rowRect.controlFillsWidth ? undefined : Math.max(48,
-                                                                    implicitWidth)
+            width: (mouse.hovered && (root.valueType === "string"
+                                      || root.valueType === "int"))
+                   ? rowRect.width / 2 : (root.valueType === "color"
+                                          || root.valueType === "bool") ? 40 :
+                                                                          root.rowWidth
             implicitHeight: 32
+
+            Behavior on width {
+                NumberAnimation {
+                    duration: Config.general.animDuration * 2
+                    easing.type: Easing.OutQuint
+                }
+            }
+            states: State {
+                name: "expanded"
+                when: mouse.hovered && (root.valueType === "string"
+                                        || root.valueType === "int")
+
+                PropertyChanges {
+                    target: controlItem
+                    width: 400
+                }
+            }
 
             Rectangle {
                 id: colorSwatch
@@ -130,12 +150,12 @@ RowLayout {
                 anchors.left: parent.left
                 font.family: Config.general.fontFamily
                 font.pixelSize: Config.general.fontSize - 2
-                color: Config.colors.fg
                 implicitHeight: 24
                 selectionColor: Config.colors.action
-                horizontalAlignment: Qt.AlignRight
+                horizontalAlignment: Text.AlignHCenter
                 selectedTextColor: States.ecoMode ? Config.colors.bge :
                                                     Config.colors.bg
+                color: activeFocus ? Config.colors.fg : "transparent"
 
                 background: Rectangle {
                     color: Config.colors.dark
@@ -154,6 +174,22 @@ RowLayout {
                 }
                 onEditingFinished: {
                     root.targetObject[root.targetProperty] = text;
+                }
+
+                Text {
+                    id: elidedText
+
+                    z: 1
+                    anchors.fill: parent
+                    anchors.margins: 6
+                    text: textField.text
+                    elide: Text.ElideLeft
+                    font: textField.font
+                    color: Config.colors.fg
+                    horizontalAlignment: textField.horizontalAlignment
+                    verticalAlignment: Text.AlignVCenter
+                    visible: !textField.activeFocus
+                    enabled: false
                 }
             }
 
@@ -265,7 +301,7 @@ RowLayout {
                         font.family: Config.general.fontFamily
                         font.pixelSize: Config.general.fontSize - 2
                         color: Config.colors.fg
-                        elide: Text.ElideMiddle
+                        elide: Text.ElideLeft
                         horizontalAlignment: Qt.AlignRight
                         text: root.targetObject[root.targetProperty] || qsTr(
                                   "Select a file")
@@ -344,7 +380,7 @@ RowLayout {
                         font.family: Config.general.fontFamily
                         font.pixelSize: Config.general.fontSize - 2
                         color: Config.colors.fg
-                        elide: Text.ElideMiddle
+                        elide: Text.ElideLeft
                         horizontalAlignment: Qt.AlignRight
                         text: root.targetObject[root.targetProperty] || qsTr(
                                   "Select a font")
