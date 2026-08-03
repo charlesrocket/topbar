@@ -23,6 +23,7 @@ FloatingWindow {
                          + " != " + section.children.length);
     }
 
+    minimumSize: "900x700"
     title: "Settings"
     color: "transparent"
 
