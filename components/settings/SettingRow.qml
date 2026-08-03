@@ -262,8 +262,9 @@ RowLayout {
                     text: Math.round(intSlider.value)
                     font.family: Config.general.fontFamily
                     font.pixelSize: Config.general.fontSize - 2
+                    font.bold: true
                     color: Config.colors.fg
-                    horizontalAlignment: Text.AlignRight
+                    horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                 }
             }
@@ -296,8 +297,8 @@ RowLayout {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.leftMargin: 8
-                        anchors.rightMargin: 8
+                        anchors.leftMargin: 12
+                        anchors.rightMargin: 12
                         font.family: Config.general.fontFamily
                         font.pixelSize: Config.general.fontSize - 2
                         color: Config.colors.fg
@@ -375,8 +376,8 @@ RowLayout {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.leftMargin: 8
-                        anchors.rightMargin: 8
+                        anchors.leftMargin: 12
+                        anchors.rightMargin: 12
                         font.family: Config.general.fontFamily
                         font.pixelSize: Config.general.fontSize - 2
                         color: Config.colors.fg
