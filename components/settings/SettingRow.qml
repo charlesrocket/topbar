@@ -26,6 +26,7 @@ RowLayout {
         property bool controlFillsWidth: root.valueType === "string"
                                          || root.valueType === "int"
                                          || root.valueType === "path"
+                                         || root.valueType === "font"
 
         first: root.first
         last: root.last
@@ -230,6 +231,75 @@ RowLayout {
 
                             root.targetObject[root.targetProperty]
                                     = decodeURIComponent(path);
+                        }
+                    }
+                }
+            }
+
+            Loader {
+                id: fontLoader
+
+                active: root.valueType === "font"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.left: parent.left
+
+                sourceComponent: Rectangle {
+                    id: fontField
+
+                    implicitHeight: 24
+                    color: Config.colors.dark
+                    border.color: fontMouseArea.containsMouse
+                                  ? Config.colors.action : Config.colors.border
+                    border.width: Config.general.borderWidth
+                    radius: Config.general.cornerRadius
+
+                    Behavior on border.color {
+                        ColAnim {}
+                    }
+
+                    Text {
+                        id: fontText
+
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: 8
+                        anchors.rightMargin: 8
+                        font.family: Config.general.fontFamily
+                        font.pixelSize: Config.general.fontSize - 2
+                        color: Config.colors.fg
+                        elide: Text.ElideMiddle
+                        horizontalAlignment: Qt.AlignRight
+                        text: root.targetObject[root.targetProperty] || qsTr(
+                                  "Select a font")
+                    }
+
+                    MouseArea {
+                        id: fontMouseArea
+
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: fontDialog.open()
+                    }
+
+                    FontDialog {
+                        id: fontDialog
+
+                        title: qsTr("Select %1").arg(root.label.toLowerCase())
+
+                        Component.onCompleted: {
+                            var current
+                                    = root.targetObject[root.targetProperty];
+                            if (typeof current === "string" && current.length
+                                    > 0)
+                                currentFont.family = current;
+                        }
+                        onAccepted: {
+                            root.targetObject[root.targetProperty]
+                                    = fontDialog.selectedFont.family;
                         }
                     }
                 }

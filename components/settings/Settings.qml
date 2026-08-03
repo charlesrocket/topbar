@@ -191,7 +191,7 @@ FloatingWindow {
                                     label: "Font family"
                                     targetObject: Config.general
                                     targetProperty: "fontFamily"
-                                    valueType: "string"
+                                    valueType: "font"
                                 }
 
                                 SettingRow {
