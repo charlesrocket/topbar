@@ -10,8 +10,7 @@ import qs.core
 FloatingWindow {
     id: root
 
-    property string version: System.version
-    property int gap: 12
+    property int gap: 6
 
     function validateSection(obj, section, key, offset) {
         var configCount = Utils.getPropertyCount(obj);
@@ -185,6 +184,7 @@ FloatingWindow {
                                     targetObject: Config.general
                                     targetProperty: "locale"
                                     valueType: "string"
+                                    first: true
                                 }
 
                                 SettingRow {
@@ -248,6 +248,7 @@ FloatingWindow {
                                     targetObject: Config.general
                                     targetProperty: "configWatch"
                                     valueType: "bool"
+                                    last: true
                                 }
                             }
                         }
@@ -277,6 +278,7 @@ FloatingWindow {
                                     targetObject: Config.colors
                                     targetProperty: "bg"
                                     valueType: "color"
+                                    first: true
                                 }
 
                                 SettingRow {
@@ -368,6 +370,7 @@ FloatingWindow {
                                     targetObject: Config.colors
                                     targetProperty: "green"
                                     valueType: "color"
+                                    last: true
                                 }
                             }
                         }
@@ -410,6 +413,7 @@ FloatingWindow {
                                             targetObject: Config.bar
                                             targetProperty: "height"
                                             valueType: "int"
+                                            first: true
                                         }
 
                                         SettingRow {
@@ -417,6 +421,7 @@ FloatingWindow {
                                             targetObject: Config.bar
                                             targetProperty: "padding"
                                             valueType: "int"
+                                            last: true
                                         }
                                     }
 
@@ -439,6 +444,7 @@ FloatingWindow {
                                             targetObject: Config.bar.title
                                             targetProperty: "width"
                                             valueType: "int"
+                                            first: true
                                         }
 
                                         SettingRow {
@@ -446,6 +452,7 @@ FloatingWindow {
                                             targetObject: Config.bar.title
                                             targetProperty: "empty"
                                             valueType: "string"
+                                            last: true
                                         }
                                     }
                                 }
@@ -474,6 +481,7 @@ FloatingWindow {
                                         targetObject: Config.bar.widgets
                                         targetProperty: "workspaces"
                                         valueType: "bool"
+                                        first: true
                                     }
 
                                     SettingRow {
@@ -551,6 +559,7 @@ FloatingWindow {
                                         targetObject: Config.bar.widgets
                                         targetProperty: "battery"
                                         valueType: "bool"
+                                        last: true
                                     }
                                 }
                             }
@@ -587,6 +596,7 @@ FloatingWindow {
                                         targetObject: Config.notifications
                                         targetProperty: "enabled"
                                         valueType: "bool"
+                                        first: true
                                     }
 
                                     SettingRow {
@@ -594,6 +604,7 @@ FloatingWindow {
                                         targetObject: Config.notifications
                                         targetProperty: "width"
                                         valueType: "int"
+                                        last: true
                                     }
                                 }
                             }
@@ -629,6 +640,7 @@ FloatingWindow {
                                         targetObject: Config.desktop
                                         targetProperty: "launcher"
                                         valueType: "bool"
+                                        first: true
                                     }
 
                                     SettingRow {
@@ -636,6 +648,7 @@ FloatingWindow {
                                         targetObject: Config.desktop
                                         targetProperty: "osd"
                                         valueType: "bool"
+                                        last: true
                                     }
                                 }
                             }
@@ -667,6 +680,7 @@ FloatingWindow {
                                     targetObject: Config.workspaces
                                     targetProperty: "one"
                                     valueType: "string"
+                                    first: true
                                 }
 
                                 SettingRow {
@@ -730,6 +744,7 @@ FloatingWindow {
                                     targetObject: Config.workspaces
                                     targetProperty: "ten"
                                     valueType: "string"
+                                    last: true
                                 }
                             }
                         }
@@ -760,6 +775,8 @@ FloatingWindow {
                                     targetObject: Config.dashboard
                                     targetProperty: "disk"
                                     valueType: "string"
+                                    first: true
+                                    last: true
                                 }
 
                                 ColumnLayout {
@@ -781,6 +798,7 @@ FloatingWindow {
                                         targetObject: Config.dashboard.player
                                         targetProperty: "queueButtons"
                                         valueType: "bool"
+                                        first: true
                                     }
 
                                     SettingRow {
@@ -788,6 +806,7 @@ FloatingWindow {
                                         targetObject: Config.dashboard.player
                                         targetProperty: "notifications"
                                         valueType: "bool"
+                                        last: true
                                     }
                                 }
                             }
@@ -819,6 +838,7 @@ FloatingWindow {
                                     targetObject: Config.lockscreen
                                     targetProperty: "wallpaper"
                                     valueType: "path"
+                                    first: true
                                 }
 
                                 SettingRow {
@@ -861,6 +881,7 @@ FloatingWindow {
                                     targetObject: Config.lockscreen
                                     targetProperty: "icon"
                                     valueType: "bool"
+                                    last: true
                                 }
                             }
                         }
@@ -885,20 +906,21 @@ FloatingWindow {
                                         targetObject: Config.session
                                         targetProperty: "background"
                                         valueType: "color"
+                                        first: true
+                                        last: true
                                     }
                                 }
+
+                                SettingSeparator {}
 
                                 SettingLabel {
                                     label: "Timeouts"
                                 }
 
-                                GridLayout {
+                                ColumnLayout {
                                     id: sessionTimeoutsSection
 
-                                    columns: 3
-                                    rows: 1
-                                    columnSpacing: 14
-                                    rowSpacing: 14
+                                    spacing: root.gap
 
                                     Component.onCompleted: {
                                         root.validateSection(
@@ -913,6 +935,7 @@ FloatingWindow {
                                         targetObject: Config.session.timeouts
                                         targetProperty: "lock"
                                         valueType: "int"
+                                        first: true
                                     }
 
                                     SettingRow {
@@ -927,6 +950,7 @@ FloatingWindow {
                                         targetObject: Config.session.timeouts
                                         targetProperty: "suspend"
                                         valueType: "int"
+                                        last: true
                                     }
                                 }
 
@@ -936,12 +960,10 @@ FloatingWindow {
                                     label: "Commands"
                                 }
 
-                                GridLayout {
+                                ColumnLayout {
                                     id: sessionCommandsSection
 
-                                    columns: 2
-                                    columnSpacing: 14
-                                    rowSpacing: 14
+                                    spacing: root.gap
 
                                     Component.onCompleted: {
                                         root.validateSection(
@@ -956,6 +978,7 @@ FloatingWindow {
                                         targetObject: Config.session.commands
                                         targetProperty: "lock"
                                         valueType: "string"
+                                        first: true
                                     }
 
                                     SettingRow {
@@ -991,6 +1014,7 @@ FloatingWindow {
                                         targetObject: Config.session.commands
                                         targetProperty: "reboot"
                                         valueType: "string"
+                                        last: true
                                     }
                                 }
                             }
@@ -998,73 +1022,13 @@ FloatingWindow {
 
                         // about page
                         ScrollView {
+                            id: aboutScroll
+
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            clip: true
 
-                            About {}
-                        }
-                    }
-
-                    // buttons
-                    RowLayout {
-                        Layout.fillWidth: true
-                        spacing: 8
-
-                        Rectangle {
-                            border.width: 1
-                            border.color: Config.colors.passive
-                            color: "transparent"
-                            implicitWidth: versionString.width + 12
-                            implicitHeight: versionString.height + 6
-                            radius: Config.general.cornerRadius
-
-                            TextEdit {
-                                id: versionString
-
-                                anchors.centerIn: parent
-                                text: root.version
-                                font.family: Config.general.fontFamily
-                                font.pixelSize: Config.general.fontSize
-                                font.bold: false
-                                color: Config.colors.fg
-                                readOnly: true
-                                selectByMouse: true
-                            }
-                        }
-
-                        Item {
-                            Layout.fillWidth: true
-                        }
-
-                        // OK button
-                        Rectangle {
-                            id: button
-
-                            color: Config.colors.passive
-                            implicitWidth: 60
-                            implicitHeight: 32
-                            radius: Config.general.cornerRadius
-
-                            Behavior on color {
-                                ColAnim {}
-                            }
-
-                            Text {
-                                anchors.centerIn: parent
-                                color: Config.colors.fg
-                                font.family: Config.general.fontFamily
-                                font.pixelSize: Config.general.fontSize
-                                text: "OK"
-                            }
-
-                            MouseArea {
-                                anchors.fill: parent
-                                hoverEnabled: true
-
-                                onClicked: States.settingsPresent = false
-                                onEntered: button.color = Config.colors.accent
-                                onExited: button.color = Config.colors.passive
+                            About {
+                                width: aboutScroll.width
                             }
                         }
                     }
@@ -1078,6 +1042,7 @@ FloatingWindow {
 
         text: label
         font.family: Config.general.fontFamily
+        Layout.bottomMargin: 6
         font.pixelSize: Config.general.fontSize + 2
         font.bold: true
         color: Config.colors.fg
