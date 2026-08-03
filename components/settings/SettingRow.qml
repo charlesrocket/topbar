@@ -15,6 +15,9 @@ RowLayout {
     required property string valueType
     property bool first
     property bool last
+    property real sliderFrom: 0
+    property real sliderTo: 100
+    property real sliderStepSize: 1
 
     height: 32
     Layout.fillWidth: true
@@ -121,7 +124,7 @@ RowLayout {
             TextField {
                 id: textField
 
-                visible: root.valueType === "string" || root.valueType === "int"
+                visible: root.valueType === "string"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
                 anchors.left: parent.left
@@ -150,10 +153,82 @@ RowLayout {
                     text = root.targetObject[root.targetProperty].toString();
                 }
                 onEditingFinished: {
-                    if (root.valueType === "int")
-                        root.targetObject[root.targetProperty] = parseInt(text);
-                    else
-                        root.targetObject[root.targetProperty] = text;
+                    root.targetObject[root.targetProperty] = text;
+                }
+            }
+
+            RowLayout {
+                id: intSliderRow
+
+                visible: root.valueType === "int"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.left: parent.left
+                spacing: 10
+
+                Slider {
+                    id: intSlider
+
+                    Layout.fillWidth: true
+                    from: root.sliderFrom
+                    to: root.sliderTo
+                    stepSize: root.sliderStepSize
+                    live: true
+
+                    background: Rectangle {
+                        x: intSlider.leftPadding
+                        y: intSlider.topPadding + intSlider.availableHeight / 2
+                           - height / 2
+                        width: intSlider.availableWidth
+                        implicitHeight: 4
+                        height: implicitHeight
+                        radius: 2
+                        color: Config.colors.passive
+
+                        Rectangle {
+                            width: intSlider.visualPosition * parent.width
+                            height: parent.height
+                            radius: 2
+                            color: Config.colors.accent
+                        }
+                    }
+                    handle: Rectangle {
+                        x: intSlider.leftPadding + intSlider.visualPosition * (
+                               intSlider.availableWidth - width)
+                        y: intSlider.topPadding + intSlider.availableHeight / 2
+                           - height / 2
+                        implicitWidth: 20
+                        implicitHeight: 20
+                        radius: 10
+                        color: Config.colors.fg
+                        border.color: intSlider.pressed ? Config.colors.action :
+                                                          Config.colors.border
+                        border.width: Config.general.borderWidth
+
+                        Behavior on border.color {
+                            ColAnim {}
+                        }
+                    }
+
+                    Component.onCompleted: {
+                        value = root.targetObject[root.targetProperty];
+                    }
+                    onMoved: {
+                        root.targetObject[root.targetProperty] = Math.round(
+                                    value);
+                    }
+                }
+
+                Text {
+                    id: intValueText
+
+                    Layout.preferredWidth: 30
+                    text: Math.round(intSlider.value)
+                    font.family: Config.general.fontFamily
+                    font.pixelSize: Config.general.fontSize - 2
+                    color: Config.colors.fg
+                    horizontalAlignment: Text.AlignRight
+                    verticalAlignment: Text.AlignVCenter
                 }
             }
 

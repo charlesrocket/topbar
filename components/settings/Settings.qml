@@ -199,6 +199,9 @@ FloatingWindow {
                                     targetObject: Config.general
                                     targetProperty: "fontSize"
                                     valueType: "int"
+                                    sliderFrom: 2
+                                    sliderTo: 65
+                                    sliderStepSize: 1
                                 }
 
                                 SettingRow {
@@ -206,6 +209,9 @@ FloatingWindow {
                                     targetObject: Config.general
                                     targetProperty: "borderWidth"
                                     valueType: "int"
+                                    sliderFrom: 0
+                                    sliderTo: 50
+                                    sliderStepSize: 1
                                 }
 
                                 SettingRow {
@@ -213,6 +219,9 @@ FloatingWindow {
                                     targetObject: Config.general
                                     targetProperty: "cornerRadius"
                                     valueType: "int"
+                                    sliderFrom: 0
+                                    sliderTo: 20
+                                    sliderStepSize: 1
                                 }
 
                                 SettingRow {
@@ -220,6 +229,9 @@ FloatingWindow {
                                     targetObject: Config.general
                                     targetProperty: "animDuration"
                                     valueType: "int"
+                                    sliderFrom: 0
+                                    sliderTo: 1000
+                                    sliderStepSize: 1
                                 }
 
                                 SettingRow {
@@ -413,6 +425,9 @@ FloatingWindow {
                                             targetObject: Config.bar
                                             targetProperty: "height"
                                             valueType: "int"
+                                            sliderFrom: 8
+                                            sliderTo: 100
+                                            sliderStepSize: 1
                                             first: true
                                         }
 
@@ -421,6 +436,9 @@ FloatingWindow {
                                             targetObject: Config.bar
                                             targetProperty: "padding"
                                             valueType: "int"
+                                            sliderFrom: 0
+                                            sliderTo: 32
+                                            sliderStepSize: 1
                                             last: true
                                         }
                                     }
@@ -444,11 +462,14 @@ FloatingWindow {
                                             targetObject: Config.bar.title
                                             targetProperty: "width"
                                             valueType: "int"
+                                            sliderFrom: 120
+                                            sliderTo: 2000
+                                            sliderStepSize: 1
                                             first: true
                                         }
 
                                         SettingRow {
-                                            label: "Empty text"
+                                            label: "Placeholder"
                                             targetObject: Config.bar.title
                                             targetProperty: "empty"
                                             valueType: "string"
@@ -456,8 +477,6 @@ FloatingWindow {
                                         }
                                     }
                                 }
-
-                                SettingSeparator {}
 
                                 SettingLabel {
                                     label: "Widgets"
@@ -604,6 +623,9 @@ FloatingWindow {
                                         targetObject: Config.notifications
                                         targetProperty: "width"
                                         valueType: "int"
+                                        sliderFrom: 10
+                                        sliderTo: 1000
+                                        sliderStepSize: 1
                                         last: true
                                     }
                                 }
@@ -911,8 +933,6 @@ FloatingWindow {
                                     }
                                 }
 
-                                SettingSeparator {}
-
                                 SettingLabel {
                                     label: "Timeouts"
                                 }
@@ -935,6 +955,9 @@ FloatingWindow {
                                         targetObject: Config.session.timeouts
                                         targetProperty: "lock"
                                         valueType: "int"
+                                        sliderFrom: 1
+                                        sliderTo: 10000
+                                        sliderStepSize: 1
                                         first: true
                                     }
 
@@ -942,6 +965,9 @@ FloatingWindow {
                                         label: "Display"
                                         targetObject: Config.session.timeouts
                                         targetProperty: "display"
+                                        sliderFrom: 3
+                                        sliderTo: 10000
+                                        sliderStepSize: 1
                                         valueType: "int"
                                     }
 
@@ -950,11 +976,12 @@ FloatingWindow {
                                         targetObject: Config.session.timeouts
                                         targetProperty: "suspend"
                                         valueType: "int"
+                                        sliderFrom: 5
+                                        sliderTo: 10000
+                                        sliderStepSize: 1
                                         last: true
                                     }
                                 }
-
-                                SettingSeparator {}
 
                                 SettingLabel {
                                     label: "Commands"
@@ -1042,13 +1069,10 @@ FloatingWindow {
 
         text: label
         font.family: Config.general.fontFamily
+        Layout.topMargin: 6
         Layout.bottomMargin: 6
         font.pixelSize: Config.general.fontSize + 2
         font.bold: true
         color: Config.colors.fg
-    }
-    component SettingSeparator: Item {
-        Layout.topMargin: 6
-        Layout.bottomMargin: 6
     }
 }
