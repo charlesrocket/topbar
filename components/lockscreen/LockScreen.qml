@@ -103,7 +103,8 @@ Item {
 
                         width: clockRow.implicitWidth + 22
                         height: clockRow.implicitHeight + 12
-                        color: Config.colors.bg
+                        color: States.ecoMode ? Config.colors.bge :
+                                                Config.colors.bg
                         radius: Config.general.cornerRadius
 
                         Loader {
@@ -181,7 +182,8 @@ Item {
 
                         width: battRow.implicitWidth + 22
                         height: battRow.implicitHeight + 12
-                        color: Config.colors.bg
+                        color: States.ecoMode ? Config.colors.bge :
+                                                Config.colors.bg
                         radius: Config.general.cornerRadius
 
                         Loader {
@@ -264,7 +266,7 @@ Item {
 
             width: buttonsRow.implicitWidth + 18
             height: buttonsRow.implicitHeight + 12
-            color: Config.colors.bg
+            color: States.ecoMode ? Config.colors.bge : Config.colors.bg
             radius: Config.general.cornerRadius
 
             Loader {
@@ -475,7 +477,7 @@ Item {
 
                     implicitWidth: usernameText.implicitWidth + 20
                     implicitHeight: usernameText.implicitHeight + 12
-                    color: Config.colors.bg
+                    color: States.ecoMode ? Config.colors.bge : Config.colors.bg
                     radius: Config.general.cornerRadius
 
                     //border.width: 1
@@ -534,7 +536,8 @@ Item {
 
                         property real borderOpacity: 0
 
-                        color: Config.colors.bg
+                        color: States.ecoMode ? Config.colors.bge :
+                                                Config.colors.bg
                         radius: Config.general.cornerRadius
                         border.width: 2
                         border.color: Qt.rgba(Config.colors.accent.r,

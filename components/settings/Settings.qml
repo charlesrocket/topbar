@@ -49,7 +49,7 @@ FloatingWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: Config.colors.bg
+        color: States.ecoMode ? Config.colors.bge : Config.colors.bg
         radius: Config.general.cornerRadius
 
         MouseArea {

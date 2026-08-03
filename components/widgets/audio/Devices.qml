@@ -8,7 +8,7 @@ import qs.core
 Item {
     id: root
 
-    property color colBg: Config.colors.bg
+    property color colBg: States.ecoMode ? Config.colors.bge : Config.colors.bg
     property color colMain: Config.colors.fg
     property color colDecor: Config.colors.passive
     property color colActive: Config.colors.accent

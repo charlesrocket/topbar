@@ -104,7 +104,8 @@ RowLayout {
             implicitHeight: 24
             selectionColor: Config.colors.action
             horizontalAlignment: Qt.AlignRight
-            selectedTextColor: Config.colors.bg
+            selectedTextColor: States.ecoMode ? Config.colors.bge :
+                                                Config.colors.bg
 
             background: Rectangle {
                 color: Config.colors.dark

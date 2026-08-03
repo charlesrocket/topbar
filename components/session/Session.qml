@@ -88,7 +88,8 @@ Loader {
 
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
-                                color: Config.colors.bg
+                                color: States.ecoMode ? Config.colors.bge :
+                                                        Config.colors.bg
                                 focus: true
                                 topLeftRadius: (row === 0 && col === 0)
                                                ? cornerRadius : 0
