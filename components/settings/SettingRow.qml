@@ -36,7 +36,6 @@ RowLayout {
             id: mouse
 
             acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-            cursorShape: Qt.PointingHandCursor
         }
 
         // label
@@ -124,7 +123,6 @@ RowLayout {
 
                     anchors.fill: parent
                     hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
 
                     onClicked: colorDialog.open()
                 }
@@ -313,7 +311,6 @@ RowLayout {
 
                         anchors.fill: parent
                         hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
 
                         onClicked: pathDialog.open()
                     }
@@ -392,7 +389,6 @@ RowLayout {
 
                         anchors.fill: parent
                         hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
 
                         onClicked: fontDialog.open()
                     }
