@@ -191,20 +191,17 @@ FloatingWindow {
                     Layout.fillHeight: true
                     spacing: 8
 
-                    StackLayout {
+                    SwipeView {
                         id: stackLayout
 
                         currentIndex: tabBar.currentIndex
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+                        clip: true
 
                         // general
                         FadingScrollView {
                             id: generalScroll
-
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
 
                             ColumnLayout {
                                 id: generalSection
@@ -308,10 +305,6 @@ FloatingWindow {
                         // colors
                         FadingScrollView {
                             id: colorsScroll
-
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
 
                             ColumnLayout {
                                 id: colorsSection
@@ -430,10 +423,6 @@ FloatingWindow {
                         // bar
                         FadingScrollView {
                             id: barScroll
-
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
 
                             ColumnLayout {
                                 width: barScroll.scrollView.width
@@ -628,10 +617,6 @@ FloatingWindow {
                         FadingScrollView {
                             id: notificationsScroll
 
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
-
                             ColumnLayout {
                                 width: notificationsScroll.scrollView.width
                                 spacing: root.gap
@@ -676,10 +661,6 @@ FloatingWindow {
                         FadingScrollView {
                             id: desktopScroll
 
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
-
                             ColumnLayout {
                                 width: desktopScroll.scrollView.width
                                 spacing: root.gap
@@ -719,10 +700,6 @@ FloatingWindow {
                         // workspaces
                         FadingScrollView {
                             id: workspaceScroll
-
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
 
                             ColumnLayout {
                                 id: workspaceSection
@@ -815,10 +792,6 @@ FloatingWindow {
                         FadingScrollView {
                             id: dashboardScroll
 
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
-
                             ColumnLayout {
                                 id: dashboardSection
 
@@ -877,10 +850,6 @@ FloatingWindow {
                         // lockscreen
                         FadingScrollView {
                             id: lockscreenScroll
-
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
 
                             ColumnLayout {
                                 id: lockscreenSection
@@ -951,10 +920,6 @@ FloatingWindow {
                         // session
                         FadingScrollView {
                             id: sessionScroll
-
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
-                            clip: true
 
                             ColumnLayout {
                                 width: sessionScroll.scrollView.width
@@ -1090,9 +1055,6 @@ FloatingWindow {
                         // about page
                         FadingScrollView {
                             id: aboutScroll
-
-                            Layout.fillWidth: true
-                            Layout.fillHeight: true
 
                             About {
                                 width: aboutScroll.scrollView.width
