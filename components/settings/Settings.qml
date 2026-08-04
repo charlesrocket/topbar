@@ -4,6 +4,8 @@ import QtQuick.Layouts
 
 import Quickshell
 
+import TopBar
+
 import qs
 import qs.core
 
@@ -58,68 +60,114 @@ FloatingWindow {
 
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 16
+            anchors.margins: 12
             spacing: 0
 
             // vertical tab bar + content
             RowLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                spacing: 16
+                spacing: 12
 
                 // tab bar
                 Rectangle {
                     color: "transparent"
                     radius: Config.general.cornerRadius
-                    Layout.preferredWidth: 130
+                    Layout.preferredWidth: 186
                     Layout.fillHeight: true
 
                     ColumnLayout {
                         anchors.fill: parent
-                        spacing: 8
 
-                        Repeater {
-                            model: ["General", "Colors", "Bar", "Notifications",
-                                "Desktop", "Spaces", "Dashboard", "Lockscreen",
-                                "Session", "About"]
+                        Rectangle {
+                            color: Qt.darker(Config.colors.extraDark, 1.1)
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            radius: Config.general.cornerRadius
 
-                            delegate: Button {
-                                required property var modelData
-                                required property int index
+                            ColumnLayout {
+                                anchors.fill: parent
+                                anchors.margins: 12
+                                spacing: 4
 
-                                Layout.fillWidth: true
-                                checkable: true
-                                checked: tabBar.currentIndex === index
-                                text: modelData
-                                font.family: Config.general.fontFamily
-                                font.pixelSize: Config.general.fontSize
+                                Row {
+                                    spacing: 6
+                                    Layout.bottomMargin: 12
+                                    Layout.alignment: Qt.AlignLeft
 
-                                background: Rectangle {
-                                    color: parent.checked
-                                           ? Config.colors.passive :
-                                             "transparent"
-                                    radius: Config.general.cornerRadius
+                                    Text {
+                                        id: header
 
-                                    Behavior on color {
-                                        ColAnim {}
+                                        color: Config.colors.fg
+                                        font.family: Config.general.fontFamily
+                                        font.pixelSize: 20
+                                        font.bold: true
+                                        text: "TopBar"
+                                    }
+
+                                    Text {
+                                        color: Qt.rgba(header.color.r,
+                                                       header.color.g,
+                                                       header.color.b, 0.5)
+                                        font.family: header.font.family
+                                        font.pixelSize: 16
+                                        anchors.baseline: header.baseline
+                                        text: Version.major + "."
+                                              + Version.minor
                                     }
                                 }
-                                contentItem: Text {
-                                    text: parent.text
-                                    font: parent.font
-                                    color: parent.checked ? Config.colors.fg :
-                                                            Config.colors.fg
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignRight
-                                    leftPadding: 8
+
+                                Repeater {
+                                    model: ["General", "Colors", "Bar",
+                                        "Notifications", "Desktop", "Spaces",
+                                        "Dashboard", "Lockscreen", "Session",
+                                        "About"]
+
+                                    delegate: Button {
+                                        id: tabButton
+
+                                        required property var modelData
+                                        required property int index
+
+                                        Layout.fillWidth: true
+                                        Layout.preferredHeight: 36
+                                        checked: tabBar.currentIndex === index
+
+                                        background: Rectangle {
+                                            radius: Config.general.cornerRadius
+                                            color: tabButton.checked
+                                                   ? Config.colors.accent : (
+                                                         tabButton.hovered
+                                                         ? Qt.rgba(1, 1, 1,
+                                                                   0.05) : "transparent")
+
+                                            Behavior on color {
+                                                ColAnim {}
+                                            }
+                                        }
+                                        contentItem: Text {
+                                            text: tabButton.modelData
+                                            font.family:
+                                                Config.general.fontFamily
+                                            font.pixelSize:
+                                                Config.general.fontSize
+                                            font.bold: tabButton.checked
+                                            color: tabButton.checked
+                                                   ? Config.colors.bge :
+                                                     Config.colors.fg
+                                            leftPadding: 12
+                                            verticalAlignment: Text.AlignVCenter
+                                            horizontalAlignment: Text.AlignLeft
+                                        }
+
+                                        onClicked: tabBar.currentIndex = index
+                                    }
                                 }
 
-                                onClicked: tabBar.currentIndex = index
+                                Item {
+                                    Layout.fillHeight: true
+                                }
                             }
-                        }
-
-                        Item {
-                            Layout.fillHeight: true
                         }
                     }
                 }
@@ -137,15 +185,6 @@ FloatingWindow {
                     }
                 }
 
-                // separator
-                Rectangle {
-                    Layout.fillWidth: false
-                    Layout.fillHeight: true
-                    radius: 1
-                    implicitWidth: 1
-                    color: Config.colors.passive
-                }
-
                 // content
                 ColumnLayout {
                     Layout.fillWidth: true
@@ -160,7 +199,7 @@ FloatingWindow {
                         Layout.fillHeight: true
 
                         // general
-                        ScrollView {
+                        FadingScrollView {
                             id: generalScroll
 
                             Layout.fillWidth: true
@@ -170,7 +209,7 @@ FloatingWindow {
                             ColumnLayout {
                                 id: generalSection
 
-                                width: generalScroll.width
+                                width: generalScroll.scrollView.width
                                 spacing: root.gap
 
                                 Component.onCompleted: {
@@ -267,7 +306,7 @@ FloatingWindow {
                         }
 
                         // colors
-                        ScrollView {
+                        FadingScrollView {
                             id: colorsScroll
 
                             Layout.fillWidth: true
@@ -277,7 +316,7 @@ FloatingWindow {
                             ColumnLayout {
                                 id: colorsSection
 
-                                width: colorsScroll.width
+                                width: colorsScroll.scrollView.width
                                 spacing: root.gap
 
                                 Component.onCompleted: {
@@ -389,7 +428,7 @@ FloatingWindow {
                         }
 
                         // bar
-                        ScrollView {
+                        FadingScrollView {
                             id: barScroll
 
                             Layout.fillWidth: true
@@ -397,7 +436,7 @@ FloatingWindow {
                             clip: true
 
                             ColumnLayout {
-                                width: barScroll.width
+                                width: barScroll.scrollView.width
                                 spacing: root.gap
 
                                 ColumnLayout {
@@ -586,7 +625,7 @@ FloatingWindow {
                         }
 
                         // notifications
-                        ScrollView {
+                        FadingScrollView {
                             id: notificationsScroll
 
                             Layout.fillWidth: true
@@ -594,7 +633,7 @@ FloatingWindow {
                             clip: true
 
                             ColumnLayout {
-                                width: parent.width
+                                width: notificationsScroll.scrollView.width
                                 spacing: root.gap
 
                                 ColumnLayout {
@@ -634,7 +673,7 @@ FloatingWindow {
                         }
 
                         // desktop
-                        ScrollView {
+                        FadingScrollView {
                             id: desktopScroll
 
                             Layout.fillWidth: true
@@ -642,7 +681,7 @@ FloatingWindow {
                             clip: true
 
                             ColumnLayout {
-                                width: parent.width
+                                width: desktopScroll.scrollView.width
                                 spacing: root.gap
 
                                 ColumnLayout {
@@ -678,7 +717,7 @@ FloatingWindow {
                         }
 
                         // workspaces
-                        ScrollView {
+                        FadingScrollView {
                             id: workspaceScroll
 
                             Layout.fillWidth: true
@@ -688,7 +727,7 @@ FloatingWindow {
                             ColumnLayout {
                                 id: workspaceSection
 
-                                width: workspaceScroll.width
+                                width: workspaceScroll.scrollView.width
                                 spacing: root.gap
 
                                 Component.onCompleted: {
@@ -773,7 +812,7 @@ FloatingWindow {
                         }
 
                         // dashboard
-                        ScrollView {
+                        FadingScrollView {
                             id: dashboardScroll
 
                             Layout.fillWidth: true
@@ -783,7 +822,7 @@ FloatingWindow {
                             ColumnLayout {
                                 id: dashboardSection
 
-                                width: dashboardScroll.width
+                                width: dashboardScroll.scrollView.width
                                 spacing: root.gap
 
                                 Component.onCompleted: {
@@ -836,7 +875,7 @@ FloatingWindow {
                         }
 
                         // lockscreen
-                        ScrollView {
+                        FadingScrollView {
                             id: lockscreenScroll
 
                             Layout.fillWidth: true
@@ -846,7 +885,7 @@ FloatingWindow {
                             ColumnLayout {
                                 id: lockscreenSection
 
-                                width: lockscreenScroll.width
+                                width: lockscreenScroll.scrollView.width
                                 spacing: root.gap
 
                                 Component.onCompleted: {
@@ -910,7 +949,7 @@ FloatingWindow {
                         }
 
                         // session
-                        ScrollView {
+                        FadingScrollView {
                             id: sessionScroll
 
                             Layout.fillWidth: true
@@ -918,7 +957,7 @@ FloatingWindow {
                             clip: true
 
                             ColumnLayout {
-                                width: sessionScroll.width
+                                width: sessionScroll.scrollView.width
                                 spacing: root.gap
 
                                 ColumnLayout {
@@ -1049,14 +1088,14 @@ FloatingWindow {
                         }
 
                         // about page
-                        ScrollView {
+                        FadingScrollView {
                             id: aboutScroll
 
                             Layout.fillWidth: true
                             Layout.fillHeight: true
 
                             About {
-                                width: aboutScroll.width
+                                width: aboutScroll.scrollView.width
                             }
                         }
                     }
