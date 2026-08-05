@@ -24,6 +24,8 @@ Singleton {
     property real diskUsage: System.diskUsage
     property string diskMountPoint: System.diskMountPoint
     property real memoryUsage: System.memoryUsage
+    property var cpu: System.cpu
+    property var gpu: System.gpu
     property var jails: System.jails
     property int jailCount: System.jails.length
     readonly property bool ecoMode: States.ecoMode
