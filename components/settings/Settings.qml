@@ -172,7 +172,7 @@ FloatingWindow {
                     }
                 }
 
-                // drives StackLayout currentIndex
+                // drives SwipeView currentIndex
                 TabBar {
                     id: tabBar
 
@@ -192,872 +192,945 @@ FloatingWindow {
                     spacing: 8
 
                     SwipeView {
-                        id: stackLayout
-
                         currentIndex: tabBar.currentIndex
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+                        orientation: Qt.Vertical
+                        interactive: false
                         clip: true
 
                         // general
-                        FadingScrollView {
-                            id: generalScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            ColumnLayout {
-                                id: generalSection
+                            sourceComponent: FadingScrollView {
+                                id: generalScroll
 
-                                width: generalScroll.scrollView.width
-                                spacing: root.gap
+                                ColumnLayout {
+                                    id: generalSection
 
-                                Component.onCompleted: {
-                                    root.validateSection(Config.general,
-                                                         generalSection,
-                                                         "Config.general",
-                                                         null);
-                                }
+                                    width: generalScroll.scrollView.width
+                                    spacing: root.gap
 
-                                SettingRow {
-                                    label: "Locale"
-                                    targetObject: Config.general
-                                    targetProperty: "locale"
-                                    valueType: "string"
-                                    first: true
-                                }
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.general,
+                                                             generalSection,
+                                                             "Config.general",
+                                                             null);
+                                    }
 
-                                SettingRow {
-                                    label: "Font family"
-                                    targetObject: Config.general
-                                    targetProperty: "fontFamily"
-                                    valueType: "font"
-                                }
+                                    SettingRow {
+                                        label: "Locale"
+                                        targetObject: Config.general
+                                        targetProperty: "locale"
+                                        valueType: "string"
+                                        first: true
+                                    }
 
-                                SettingRow {
-                                    label: "Font Size"
-                                    targetObject: Config.general
-                                    targetProperty: "fontSize"
-                                    valueType: "int"
-                                    sliderFrom: 2
-                                    sliderTo: 65
-                                    sliderStepSize: 1
-                                }
+                                    SettingRow {
+                                        label: "Font family"
+                                        targetObject: Config.general
+                                        targetProperty: "fontFamily"
+                                        valueType: "font"
+                                    }
 
-                                SettingRow {
-                                    label: "Border width"
-                                    targetObject: Config.general
-                                    targetProperty: "borderWidth"
-                                    valueType: "int"
-                                    sliderFrom: 0
-                                    sliderTo: 50
-                                    sliderStepSize: 1
-                                }
+                                    SettingRow {
+                                        label: "Font Size"
+                                        targetObject: Config.general
+                                        targetProperty: "fontSize"
+                                        valueType: "int"
+                                        sliderFrom: 2
+                                        sliderTo: 65
+                                        sliderStepSize: 1
+                                    }
 
-                                SettingRow {
-                                    label: "Corner radius"
-                                    targetObject: Config.general
-                                    targetProperty: "cornerRadius"
-                                    valueType: "int"
-                                    sliderFrom: 0
-                                    sliderTo: 20
-                                    sliderStepSize: 1
-                                }
+                                    SettingRow {
+                                        label: "Border width"
+                                        targetObject: Config.general
+                                        targetProperty: "borderWidth"
+                                        valueType: "int"
+                                        sliderFrom: 0
+                                        sliderTo: 50
+                                        sliderStepSize: 1
+                                    }
 
-                                SettingRow {
-                                    label: "Animation duration"
-                                    targetObject: Config.general
-                                    targetProperty: "animDuration"
-                                    valueType: "int"
-                                    sliderFrom: 0
-                                    sliderTo: 1000
-                                    sliderStepSize: 1
-                                }
+                                    SettingRow {
+                                        label: "Corner radius"
+                                        targetObject: Config.general
+                                        targetProperty: "cornerRadius"
+                                        valueType: "int"
+                                        sliderFrom: 0
+                                        sliderTo: 20
+                                        sliderStepSize: 1
+                                    }
 
-                                SettingRow {
-                                    label: "Wallpaper"
-                                    targetObject: Config.general
-                                    targetProperty: "wallpaper"
-                                    valueType: "path"
-                                }
+                                    SettingRow {
+                                        label: "Animation duration"
+                                        targetObject: Config.general
+                                        targetProperty: "animDuration"
+                                        valueType: "int"
+                                        sliderFrom: 0
+                                        sliderTo: 1000
+                                        sliderStepSize: 1
+                                    }
 
-                                SettingRow {
-                                    label: "Blur"
-                                    targetObject: Config.general
-                                    targetProperty: "blur"
-                                    valueType: "bool"
-                                }
+                                    SettingRow {
+                                        label: "Wallpaper"
+                                        targetObject: Config.general
+                                        targetProperty: "wallpaper"
+                                        valueType: "path"
+                                    }
 
-                                SettingRow {
-                                    label: "Shadows"
-                                    targetObject: Config.general
-                                    targetProperty: "shadows"
-                                    valueType: "bool"
-                                }
+                                    SettingRow {
+                                        label: "Blur"
+                                        targetObject: Config.general
+                                        targetProperty: "blur"
+                                        valueType: "bool"
+                                    }
 
-                                SettingRow {
-                                    label: "Config watch"
-                                    targetObject: Config.general
-                                    targetProperty: "configWatch"
-                                    valueType: "bool"
-                                    last: true
+                                    SettingRow {
+                                        label: "Shadows"
+                                        targetObject: Config.general
+                                        targetProperty: "shadows"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Config watch"
+                                        targetObject: Config.general
+                                        targetProperty: "configWatch"
+                                        valueType: "bool"
+                                        last: true
+                                    }
                                 }
                             }
                         }
 
                         // colors
-                        FadingScrollView {
-                            id: colorsScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            ColumnLayout {
-                                id: colorsSection
+                            sourceComponent: FadingScrollView {
+                                id: colorsScroll
 
-                                width: colorsScroll.scrollView.width
-                                spacing: root.gap
+                                ColumnLayout {
+                                    id: colorsSection
 
-                                Component.onCompleted: {
-                                    root.validateSection(Config.colors,
-                                                         colorsSection,
-                                                         "Config.colors", null);
-                                }
+                                    width: colorsScroll.scrollView.width
+                                    spacing: root.gap
 
-                                SettingRow {
-                                    label: "Background"
-                                    targetObject: Config.colors
-                                    targetProperty: "bg"
-                                    valueType: "color"
-                                    first: true
-                                }
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.colors,
+                                                             colorsSection,
+                                                             "Config.colors",
+                                                             null);
+                                    }
 
-                                SettingRow {
-                                    label: "Background eco"
-                                    targetObject: Config.colors
-                                    targetProperty: "bge"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Background"
+                                        targetObject: Config.colors
+                                        targetProperty: "bg"
+                                        valueType: "color"
+                                        first: true
+                                    }
 
-                                SettingRow {
-                                    label: "Background light"
-                                    targetObject: Config.colors
-                                    targetProperty: "bgl"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Background eco"
+                                        targetObject: Config.colors
+                                        targetProperty: "bge"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Foreground"
-                                    targetObject: Config.colors
-                                    targetProperty: "fg"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Background light"
+                                        targetObject: Config.colors
+                                        targetProperty: "bgl"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Border"
-                                    targetObject: Config.colors
-                                    targetProperty: "border"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Foreground"
+                                        targetObject: Config.colors
+                                        targetProperty: "fg"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Passive"
-                                    targetObject: Config.colors
-                                    targetProperty: "passive"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Border"
+                                        targetObject: Config.colors
+                                        targetProperty: "border"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Dark"
-                                    targetObject: Config.colors
-                                    targetProperty: "dark"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Passive"
+                                        targetObject: Config.colors
+                                        targetProperty: "passive"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Extra Dark"
-                                    targetObject: Config.colors
-                                    targetProperty: "extraDark"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Dark"
+                                        targetObject: Config.colors
+                                        targetProperty: "dark"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Action"
-                                    targetObject: Config.colors
-                                    targetProperty: "action"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Extra Dark"
+                                        targetObject: Config.colors
+                                        targetProperty: "extraDark"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Accent"
-                                    targetObject: Config.colors
-                                    targetProperty: "accent"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Action"
+                                        targetObject: Config.colors
+                                        targetProperty: "action"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Red"
-                                    targetObject: Config.colors
-                                    targetProperty: "red"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Accent"
+                                        targetObject: Config.colors
+                                        targetProperty: "accent"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Yellow"
-                                    targetObject: Config.colors
-                                    targetProperty: "yellow"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Red"
+                                        targetObject: Config.colors
+                                        targetProperty: "red"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Purple"
-                                    targetObject: Config.colors
-                                    targetProperty: "purple"
-                                    valueType: "color"
-                                }
+                                    SettingRow {
+                                        label: "Yellow"
+                                        targetObject: Config.colors
+                                        targetProperty: "yellow"
+                                        valueType: "color"
+                                    }
 
-                                SettingRow {
-                                    label: "Green"
-                                    targetObject: Config.colors
-                                    targetProperty: "green"
-                                    valueType: "color"
-                                    last: true
+                                    SettingRow {
+                                        label: "Purple"
+                                        targetObject: Config.colors
+                                        targetProperty: "purple"
+                                        valueType: "color"
+                                    }
+
+                                    SettingRow {
+                                        label: "Green"
+                                        targetObject: Config.colors
+                                        targetProperty: "green"
+                                        valueType: "color"
+                                        last: true
+                                    }
                                 }
                             }
                         }
 
                         // bar
-                        FadingScrollView {
-                            id: barScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            ColumnLayout {
-                                width: barScroll.scrollView.width
-                                spacing: root.gap
+                            sourceComponent: FadingScrollView {
+                                id: barScroll
 
                                 ColumnLayout {
-                                    width: parent.width
+                                    width: barScroll.scrollView.width
                                     spacing: root.gap
 
-                                    SettingLabel {
-                                        label: "Layout"
-                                    }
-
                                     ColumnLayout {
-                                        id: barSection
-
-                                        implicitWidth: parent.width
+                                        width: parent.width
                                         spacing: root.gap
 
-                                        Component.onCompleted: {
-                                            root.validateSection(Config.bar,
-                                                                 barSection,
-                                                                 "Config.bar",
-                                                                 2);
+                                        SettingLabel {
+                                            label: "Layout"
                                         }
 
-                                        SettingRow {
-                                            label: "Height"
-                                            targetObject: Config.bar
-                                            targetProperty: "height"
-                                            valueType: "int"
-                                            sliderFrom: 8
-                                            sliderTo: 100
-                                            sliderStepSize: 1
-                                            first: true
+                                        ColumnLayout {
+                                            id: barSection
+
+                                            implicitWidth: parent.width
+                                            spacing: root.gap
+
+                                            Component.onCompleted: {
+                                                root.validateSection(Config.bar,
+                                                                     barSection,
+                                                                     "Config.bar",
+                                                                     2);
+                                            }
+
+                                            SettingRow {
+                                                label: "Height"
+                                                targetObject: Config.bar
+                                                targetProperty: "height"
+                                                valueType: "int"
+                                                sliderFrom: 8
+                                                sliderTo: 100
+                                                sliderStepSize: 1
+                                                first: true
+                                            }
+
+                                            SettingRow {
+                                                label: "Padding"
+                                                targetObject: Config.bar
+                                                targetProperty: "padding"
+                                                valueType: "int"
+                                                sliderFrom: 0
+                                                sliderTo: 32
+                                                sliderStepSize: 1
+                                                last: true
+                                            }
                                         }
 
-                                        SettingRow {
-                                            label: "Padding"
-                                            targetObject: Config.bar
-                                            targetProperty: "padding"
-                                            valueType: "int"
-                                            sliderFrom: 0
-                                            sliderTo: 32
-                                            sliderStepSize: 1
-                                            last: true
+                                        ColumnLayout {
+                                            id: barTitleSection
+
+                                            implicitWidth: parent.width
+                                            spacing: root.gap
+
+                                            Component.onCompleted: {
+                                                root.validateSection(
+                                                            Config.bar.title,
+                                                            barTitleSection,
+                                                            "Config.bar.title",
+                                                            null);
+                                            }
+
+                                            SettingRow {
+                                                label: "Width"
+                                                targetObject: Config.bar.title
+                                                targetProperty: "width"
+                                                valueType: "int"
+                                                sliderFrom: 120
+                                                sliderTo: 2000
+                                                sliderStepSize: 1
+                                                first: true
+                                            }
+
+                                            SettingRow {
+                                                label: "Placeholder"
+                                                targetObject: Config.bar.title
+                                                targetProperty: "empty"
+                                                valueType: "string"
+                                                last: true
+                                            }
                                         }
                                     }
 
-                                    ColumnLayout {
-                                        id: barTitleSection
+                                    SettingLabel {
+                                        label: "Widgets"
+                                    }
 
-                                        implicitWidth: parent.width
+                                    ColumnLayout {
+                                        id: widgetsSection
+
+                                        width: parent.width
                                         spacing: root.gap
 
                                         Component.onCompleted: {
                                             root.validateSection(
-                                                        Config.bar.title,
-                                                        barTitleSection,
-                                                        "Config.bar.title",
+                                                        Config.bar.widgets,
+                                                        widgetsSection,
+                                                        "Config.bar.widgets",
                                                         null);
                                         }
 
                                         SettingRow {
-                                            label: "Width"
-                                            targetObject: Config.bar.title
-                                            targetProperty: "width"
-                                            valueType: "int"
-                                            sliderFrom: 120
-                                            sliderTo: 2000
-                                            sliderStepSize: 1
+                                            label: "Workspaces"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "workspaces"
+                                            valueType: "bool"
                                             first: true
                                         }
 
                                         SettingRow {
-                                            label: "Placeholder"
-                                            targetObject: Config.bar.title
-                                            targetProperty: "empty"
-                                            valueType: "string"
+                                            label: "Title"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "title"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Stats"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "stats"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Audio"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "audio"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Bluetooth"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "bluetooth"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Network"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "network"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Tray"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "tray"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Jails"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "jails"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Weather"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "weather"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Language"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "language"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Clock"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "clock"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Battery"
+                                            targetObject: Config.bar.widgets
+                                            targetProperty: "battery"
+                                            valueType: "bool"
                                             last: true
                                         }
-                                    }
-                                }
-
-                                SettingLabel {
-                                    label: "Widgets"
-                                }
-
-                                ColumnLayout {
-                                    id: widgetsSection
-
-                                    width: parent.width
-                                    spacing: root.gap
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.bar.widgets,
-                                                             widgetsSection,
-                                                             "Config.bar.widgets",
-                                                             null);
-                                    }
-
-                                    SettingRow {
-                                        label: "Workspaces"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "workspaces"
-                                        valueType: "bool"
-                                        first: true
-                                    }
-
-                                    SettingRow {
-                                        label: "Title"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "title"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Stats"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "stats"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Audio"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "audio"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Bluetooth"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "bluetooth"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Network"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "network"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Tray"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "tray"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Jails"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "jails"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Weather"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "weather"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Language"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "language"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Clock"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "clock"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Battery"
-                                        targetObject: Config.bar.widgets
-                                        targetProperty: "battery"
-                                        valueType: "bool"
-                                        last: true
                                     }
                                 }
                             }
                         }
 
                         // notifications
-                        FadingScrollView {
-                            id: notificationsScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            ColumnLayout {
-                                width: notificationsScroll.scrollView.width
-                                spacing: root.gap
+                            sourceComponent: FadingScrollView {
+                                id: notificationsScroll
 
                                 ColumnLayout {
-                                    id: notificationsSection
-
-                                    implicitWidth: notificationsScroll.width
+                                    width: notificationsScroll.scrollView.width
                                     spacing: root.gap
 
-                                    Component.onCompleted: {
-                                        root.validateSection(
-                                                    Config.notifications,
-                                                    notificationsSection,
-                                                    "Config.notifications",
-                                                    null);
-                                    }
+                                    ColumnLayout {
+                                        id: notificationsSection
 
-                                    SettingRow {
-                                        label: "Enabled"
-                                        targetObject: Config.notifications
-                                        targetProperty: "enabled"
-                                        valueType: "bool"
-                                        first: true
-                                    }
+                                        implicitWidth: notificationsScroll.width
+                                        spacing: root.gap
 
-                                    SettingRow {
-                                        label: "Width"
-                                        targetObject: Config.notifications
-                                        targetProperty: "width"
-                                        valueType: "int"
-                                        sliderFrom: 10
-                                        sliderTo: 1000
-                                        sliderStepSize: 1
-                                        last: true
+                                        Component.onCompleted: {
+                                            root.validateSection(
+                                                        Config.notifications,
+                                                        notificationsSection,
+                                                        "Config.notifications",
+                                                        null);
+                                        }
+
+                                        SettingRow {
+                                            label: "Enabled"
+                                            targetObject: Config.notifications
+                                            targetProperty: "enabled"
+                                            valueType: "bool"
+                                            first: true
+                                        }
+
+                                        SettingRow {
+                                            label: "Width"
+                                            targetObject: Config.notifications
+                                            targetProperty: "width"
+                                            valueType: "int"
+                                            sliderFrom: 10
+                                            sliderTo: 1000
+                                            sliderStepSize: 1
+                                            last: true
+                                        }
                                     }
                                 }
                             }
                         }
 
                         // desktop
-                        FadingScrollView {
-                            id: desktopScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            ColumnLayout {
-                                width: desktopScroll.scrollView.width
-                                spacing: root.gap
+                            sourceComponent: FadingScrollView {
+                                id: desktopScroll
 
                                 ColumnLayout {
-                                    id: desktopSection
-
-                                    implicitWidth: desktopScroll.width
+                                    width: desktopScroll.scrollView.width
                                     spacing: root.gap
 
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.desktop,
-                                                             desktopSection,
-                                                             "Config.desktop",
-                                                             null);
-                                    }
+                                    ColumnLayout {
+                                        id: desktopSection
 
-                                    SettingRow {
-                                        label: "Launcher"
-                                        targetObject: Config.desktop
-                                        targetProperty: "launcher"
-                                        valueType: "bool"
-                                        first: true
-                                    }
+                                        implicitWidth: desktopScroll.width
+                                        spacing: root.gap
 
-                                    SettingRow {
-                                        label: "OSD"
-                                        targetObject: Config.desktop
-                                        targetProperty: "osd"
-                                        valueType: "bool"
-                                        last: true
+                                        Component.onCompleted: {
+                                            root.validateSection(Config.desktop,
+                                                                 desktopSection,
+                                                                 "Config.desktop",
+                                                                 null);
+                                        }
+
+                                        SettingRow {
+                                            label: "Launcher"
+                                            targetObject: Config.desktop
+                                            targetProperty: "launcher"
+                                            valueType: "bool"
+                                            first: true
+                                        }
+
+                                        SettingRow {
+                                            label: "OSD"
+                                            targetObject: Config.desktop
+                                            targetProperty: "osd"
+                                            valueType: "bool"
+                                            last: true
+                                        }
                                     }
                                 }
                             }
                         }
 
                         // workspaces
-                        FadingScrollView {
-                            id: workspaceScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            ColumnLayout {
-                                id: workspaceSection
+                            sourceComponent: FadingScrollView {
+                                id: workspaceScroll
 
-                                width: workspaceScroll.scrollView.width
-                                spacing: root.gap
+                                ColumnLayout {
+                                    id: workspaceSection
 
-                                Component.onCompleted: {
-                                    root.validateSection(Config.workspaces,
-                                                         workspaceSection,
-                                                         "Config.workspaces",
-                                                         null);
-                                }
+                                    width: workspaceScroll.scrollView.width
+                                    spacing: root.gap
 
-                                SettingRow {
-                                    label: "Workspace 1"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "one"
-                                    valueType: "string"
-                                    first: true
-                                }
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.workspaces,
+                                                             workspaceSection,
+                                                             "Config.workspaces",
+                                                             null);
+                                    }
 
-                                SettingRow {
-                                    label: "Workspace 2"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "two"
-                                    valueType: "string"
-                                }
+                                    SettingRow {
+                                        label: "Workspace 1"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "one"
+                                        valueType: "string"
+                                        first: true
+                                    }
 
-                                SettingRow {
-                                    label: "Workspace 3"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "three"
-                                    valueType: "string"
-                                }
+                                    SettingRow {
+                                        label: "Workspace 2"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "two"
+                                        valueType: "string"
+                                    }
 
-                                SettingRow {
-                                    label: "Workspace 4"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "four"
-                                    valueType: "string"
-                                }
+                                    SettingRow {
+                                        label: "Workspace 3"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "three"
+                                        valueType: "string"
+                                    }
 
-                                SettingRow {
-                                    label: "Workspace 5"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "five"
-                                    valueType: "string"
-                                }
+                                    SettingRow {
+                                        label: "Workspace 4"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "four"
+                                        valueType: "string"
+                                    }
 
-                                SettingRow {
-                                    label: "Workspace 6"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "six"
-                                    valueType: "string"
-                                }
+                                    SettingRow {
+                                        label: "Workspace 5"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "five"
+                                        valueType: "string"
+                                    }
 
-                                SettingRow {
-                                    label: "Workspace 7"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "seven"
-                                    valueType: "string"
-                                }
+                                    SettingRow {
+                                        label: "Workspace 6"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "six"
+                                        valueType: "string"
+                                    }
 
-                                SettingRow {
-                                    label: "Workspace 8"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "eight"
-                                    valueType: "string"
-                                }
+                                    SettingRow {
+                                        label: "Workspace 7"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "seven"
+                                        valueType: "string"
+                                    }
 
-                                SettingRow {
-                                    label: "Workspace 9"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "nine"
-                                    valueType: "string"
-                                }
+                                    SettingRow {
+                                        label: "Workspace 8"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "eight"
+                                        valueType: "string"
+                                    }
 
-                                SettingRow {
-                                    label: "Workspace 10"
-                                    targetObject: Config.workspaces
-                                    targetProperty: "ten"
-                                    valueType: "string"
-                                    last: true
+                                    SettingRow {
+                                        label: "Workspace 9"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "nine"
+                                        valueType: "string"
+                                    }
+
+                                    SettingRow {
+                                        label: "Workspace 10"
+                                        targetObject: Config.workspaces
+                                        targetProperty: "ten"
+                                        valueType: "string"
+                                        last: true
+                                    }
                                 }
                             }
                         }
 
                         // dashboard
-                        FadingScrollView {
-                            id: dashboardScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            ColumnLayout {
-                                id: dashboardSection
-
-                                width: dashboardScroll.scrollView.width
-                                spacing: root.gap
-
-                                Component.onCompleted: {
-                                    root.validateSection(Config.dashboard,
-                                                         dashboardSection,
-                                                         "Config.dashboard",
-                                                         null);
-                                }
-
-                                SettingRow {
-                                    label: "Disk"
-                                    targetObject: Config.dashboard
-                                    targetProperty: "disk"
-                                    valueType: "string"
-                                    first: true
-                                    last: true
-                                }
+                            sourceComponent: FadingScrollView {
+                                id: dashboardScroll
 
                                 ColumnLayout {
-                                    id: dashboardPlayerSection
+                                    id: dashboardSection
 
-                                    implicitWidth: parent.width
+                                    width: dashboardScroll.scrollView.width
                                     spacing: root.gap
 
                                     Component.onCompleted: {
-                                        root.validateSection(
-                                                    Config.dashboard.player,
-                                                    dashboardPlayerSection,
-                                                    "Config.dashboard.player",
-                                                    null);
+                                        root.validateSection(Config.dashboard,
+                                                             dashboardSection,
+                                                             "Config.dashboard",
+                                                             null);
                                     }
 
                                     SettingRow {
-                                        label: "Queue buttons"
-                                        targetObject: Config.dashboard.player
-                                        targetProperty: "queueButtons"
-                                        valueType: "bool"
+                                        label: "Disk"
+                                        targetObject: Config.dashboard
+                                        targetProperty: "disk"
+                                        valueType: "string"
                                         first: true
+                                        last: true
                                     }
 
-                                    SettingRow {
-                                        label: "Track notifications"
-                                        targetObject: Config.dashboard.player
-                                        targetProperty: "notifications"
-                                        valueType: "bool"
-                                        last: true
+                                    ColumnLayout {
+                                        id: dashboardPlayerSection
+
+                                        implicitWidth: parent.width
+                                        spacing: root.gap
+
+                                        Component.onCompleted: {
+                                            root.validateSection(
+                                                        Config.dashboard.player,
+                                                        dashboardPlayerSection,
+                                                        "Config.dashboard.player",
+                                                        null);
+                                        }
+
+                                        SettingRow {
+                                            label: "Queue buttons"
+                                            targetObject:
+                                                Config.dashboard.player
+                                            targetProperty: "queueButtons"
+                                            valueType: "bool"
+                                            first: true
+                                        }
+
+                                        SettingRow {
+                                            label: "Track notifications"
+                                            targetObject:
+                                                Config.dashboard.player
+                                            targetProperty: "notifications"
+                                            valueType: "bool"
+                                            last: true
+                                        }
                                     }
                                 }
                             }
                         }
 
                         // lockscreen
-                        FadingScrollView {
-                            id: lockscreenScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            ColumnLayout {
-                                id: lockscreenSection
+                            sourceComponent: FadingScrollView {
+                                id: lockscreenScroll
 
-                                width: lockscreenScroll.scrollView.width
-                                spacing: root.gap
+                                ColumnLayout {
+                                    id: lockscreenSection
 
-                                Component.onCompleted: {
-                                    root.validateSection(Config.lockscreen,
-                                                         lockscreenSection,
-                                                         "Config.lockscreen",
-                                                         null);
-                                }
+                                    width: lockscreenScroll.scrollView.width
+                                    spacing: root.gap
 
-                                SettingRow {
-                                    label: "Wallpaper"
-                                    targetObject: Config.lockscreen
-                                    targetProperty: "wallpaper"
-                                    valueType: "path"
-                                    first: true
-                                }
+                                    Component.onCompleted: {
+                                        root.validateSection(Config.lockscreen,
+                                                             lockscreenSection,
+                                                             "Config.lockscreen",
+                                                             null);
+                                    }
 
-                                SettingRow {
-                                    label: "Buttons"
-                                    targetObject: Config.lockscreen
-                                    targetProperty: "buttons"
-                                    valueType: "bool"
-                                }
+                                    SettingRow {
+                                        label: "Wallpaper"
+                                        targetObject: Config.lockscreen
+                                        targetProperty: "wallpaper"
+                                        valueType: "path"
+                                        first: true
+                                    }
 
-                                SettingRow {
-                                    label: "Clock"
-                                    targetObject: Config.lockscreen
-                                    targetProperty: "clock"
-                                    valueType: "bool"
-                                }
+                                    SettingRow {
+                                        label: "Buttons"
+                                        targetObject: Config.lockscreen
+                                        targetProperty: "buttons"
+                                        valueType: "bool"
+                                    }
 
-                                SettingRow {
-                                    label: "Battery"
-                                    targetObject: Config.lockscreen
-                                    targetProperty: "battery"
-                                    valueType: "bool"
-                                }
+                                    SettingRow {
+                                        label: "Clock"
+                                        targetObject: Config.lockscreen
+                                        targetProperty: "clock"
+                                        valueType: "bool"
+                                    }
 
-                                SettingRow {
-                                    label: "Shadows"
-                                    targetObject: Config.lockscreen
-                                    targetProperty: "shadows"
-                                    valueType: "bool"
-                                }
+                                    SettingRow {
+                                        label: "Battery"
+                                        targetObject: Config.lockscreen
+                                        targetProperty: "battery"
+                                        valueType: "bool"
+                                    }
 
-                                SettingRow {
-                                    label: "Show username"
-                                    targetObject: Config.lockscreen
-                                    targetProperty: "username"
-                                    valueType: "bool"
-                                }
+                                    SettingRow {
+                                        label: "Shadows"
+                                        targetObject: Config.lockscreen
+                                        targetProperty: "shadows"
+                                        valueType: "bool"
+                                    }
 
-                                SettingRow {
-                                    label: "Show icon"
-                                    targetObject: Config.lockscreen
-                                    targetProperty: "icon"
-                                    valueType: "bool"
-                                    last: true
+                                    SettingRow {
+                                        label: "Show username"
+                                        targetObject: Config.lockscreen
+                                        targetProperty: "username"
+                                        valueType: "bool"
+                                    }
+
+                                    SettingRow {
+                                        label: "Show icon"
+                                        targetObject: Config.lockscreen
+                                        targetProperty: "icon"
+                                        valueType: "bool"
+                                        last: true
+                                    }
                                 }
                             }
                         }
 
                         // session
-                        FadingScrollView {
-                            id: sessionScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            ColumnLayout {
-                                width: sessionScroll.scrollView.width
-                                spacing: root.gap
-
-                                ColumnLayout {
-                                    spacing: root.gap
-
-                                    SettingRow {
-                                        label: "Background color"
-                                        targetObject: Config.session
-                                        targetProperty: "background"
-                                        valueType: "color"
-                                        first: true
-                                        last: true
-                                    }
-                                }
-
-                                SettingLabel {
-                                    label: "Timeouts"
-                                }
+                            sourceComponent: FadingScrollView {
+                                id: sessionScroll
 
                                 ColumnLayout {
-                                    id: sessionTimeoutsSection
-
+                                    width: sessionScroll.scrollView.width
                                     spacing: root.gap
 
-                                    Component.onCompleted: {
-                                        root.validateSection(
-                                                    Config.session.commands,
-                                                    sessionCommandsSection,
-                                                    "Config.session.timeouts",
-                                                    null);
+                                    ColumnLayout {
+                                        spacing: root.gap
+
+                                        SettingRow {
+                                            label: "Background color"
+                                            targetObject: Config.session
+                                            targetProperty: "background"
+                                            valueType: "color"
+                                            first: true
+                                            last: true
+                                        }
                                     }
 
-                                    SettingRow {
-                                        label: "Lock"
-                                        targetObject: Config.session.timeouts
-                                        targetProperty: "lock"
-                                        valueType: "int"
-                                        sliderFrom: 1
-                                        sliderTo: 10000
-                                        sliderStepSize: 1
-                                        first: true
+                                    SettingLabel {
+                                        label: "Timeouts"
                                     }
 
-                                    SettingRow {
-                                        label: "Display"
-                                        targetObject: Config.session.timeouts
-                                        targetProperty: "display"
-                                        sliderFrom: 3
-                                        sliderTo: 10000
-                                        sliderStepSize: 1
-                                        valueType: "int"
+                                    ColumnLayout {
+                                        id: sessionTimeoutsSection
+
+                                        spacing: root.gap
+
+                                        Component.onCompleted: {
+                                            root.validateSection(
+                                                        Config.session.commands,
+                                                        sessionCommandsSection,
+                                                        "Config.session.timeouts",
+                                                        null);
+                                        }
+
+                                        SettingRow {
+                                            label: "Lock"
+                                            targetObject:
+                                                Config.session.timeouts
+                                            targetProperty: "lock"
+                                            valueType: "int"
+                                            sliderFrom: 1
+                                            sliderTo: 10000
+                                            sliderStepSize: 1
+                                            first: true
+                                        }
+
+                                        SettingRow {
+                                            label: "Display"
+                                            targetObject:
+                                                Config.session.timeouts
+                                            targetProperty: "display"
+                                            sliderFrom: 3
+                                            sliderTo: 10000
+                                            sliderStepSize: 1
+                                            valueType: "int"
+                                        }
+
+                                        SettingRow {
+                                            label: "Suspend"
+                                            targetObject:
+                                                Config.session.timeouts
+                                            targetProperty: "suspend"
+                                            valueType: "int"
+                                            sliderFrom: 5
+                                            sliderTo: 10000
+                                            sliderStepSize: 1
+                                            last: true
+                                        }
                                     }
 
-                                    SettingRow {
-                                        label: "Suspend"
-                                        targetObject: Config.session.timeouts
-                                        targetProperty: "suspend"
-                                        valueType: "int"
-                                        sliderFrom: 5
-                                        sliderTo: 10000
-                                        sliderStepSize: 1
-                                        last: true
-                                    }
-                                }
-
-                                SettingLabel {
-                                    label: "Commands"
-                                }
-
-                                ColumnLayout {
-                                    id: sessionCommandsSection
-
-                                    spacing: root.gap
-
-                                    Component.onCompleted: {
-                                        root.validateSection(
-                                                    Config.session.commands,
-                                                    sessionCommandsSection,
-                                                    "Config.session.commands",
-                                                    null);
+                                    SettingLabel {
+                                        label: "Commands"
                                     }
 
-                                    SettingRow {
-                                        label: "Lock"
-                                        targetObject: Config.session.commands
-                                        targetProperty: "lock"
-                                        valueType: "string"
-                                        first: true
-                                    }
+                                    ColumnLayout {
+                                        id: sessionCommandsSection
 
-                                    SettingRow {
-                                        label: "Logout"
-                                        targetObject: Config.session.commands
-                                        targetProperty: "logout"
-                                        valueType: "string"
-                                    }
+                                        spacing: root.gap
 
-                                    SettingRow {
-                                        label: "Suspend"
-                                        targetObject: Config.session.commands
-                                        targetProperty: "suspend"
-                                        valueType: "string"
-                                    }
+                                        Component.onCompleted: {
+                                            root.validateSection(
+                                                        Config.session.commands,
+                                                        sessionCommandsSection,
+                                                        "Config.session.commands",
+                                                        null);
+                                        }
 
-                                    SettingRow {
-                                        label: "Hibernate"
-                                        targetObject: Config.session.commands
-                                        targetProperty: "hibernate"
-                                        valueType: "string"
-                                    }
+                                        SettingRow {
+                                            label: "Lock"
+                                            targetObject:
+                                                Config.session.commands
+                                            targetProperty: "lock"
+                                            valueType: "string"
+                                            first: true
+                                        }
 
-                                    SettingRow {
-                                        label: "Shutdown"
-                                        targetObject: Config.session.commands
-                                        targetProperty: "shutdown"
-                                        valueType: "string"
-                                    }
+                                        SettingRow {
+                                            label: "Logout"
+                                            targetObject:
+                                                Config.session.commands
+                                            targetProperty: "logout"
+                                            valueType: "string"
+                                        }
 
-                                    SettingRow {
-                                        label: "Reboot"
-                                        targetObject: Config.session.commands
-                                        targetProperty: "reboot"
-                                        valueType: "string"
-                                        last: true
+                                        SettingRow {
+                                            label: "Suspend"
+                                            targetObject:
+                                                Config.session.commands
+                                            targetProperty: "suspend"
+                                            valueType: "string"
+                                        }
+
+                                        SettingRow {
+                                            label: "Hibernate"
+                                            targetObject:
+                                                Config.session.commands
+                                            targetProperty: "hibernate"
+                                            valueType: "string"
+                                        }
+
+                                        SettingRow {
+                                            label: "Shutdown"
+                                            targetObject:
+                                                Config.session.commands
+                                            targetProperty: "shutdown"
+                                            valueType: "string"
+                                        }
+
+                                        SettingRow {
+                                            label: "Reboot"
+                                            targetObject:
+                                                Config.session.commands
+                                            targetProperty: "reboot"
+                                            valueType: "string"
+                                            last: true
+                                        }
                                     }
                                 }
                             }
                         }
 
                         // about page
-                        FadingScrollView {
-                            id: aboutScroll
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
 
-                            About {
-                                width: aboutScroll.scrollView.width
+                            sourceComponent: FadingScrollView {
+                                id: aboutScroll
+
+                                About {
+                                    width: aboutScroll.scrollView.width
+                                }
                             }
                         }
                     }
