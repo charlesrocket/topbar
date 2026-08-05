@@ -226,15 +226,29 @@ void System::updateMemory() {
     auto laundryPages = 0u;
 
     size = sizeof(activePages);
-    sysctlbyname("vm.stats.vm.v_active_count", &activePages, &size, nullptr, 0);
+    if (sysctlbyname(
+            "vm.stats.vm.v_active_count", &activePages, &size, nullptr, 0
+        )
+        < 0) {
+        qCWarning(logSystem) << "Failed to read vm.stats.vm.v_active_count";
+        return;
+    }
 
     size = sizeof(wiredPages);
-    sysctlbyname("vm.stats.vm.v_wire_count", &wiredPages, &size, nullptr, 0);
+    if (sysctlbyname("vm.stats.vm.v_wire_count", &wiredPages, &size, nullptr, 0)
+        < 0) {
+        qCWarning(logSystem) << "Failed to read vm.stats.vm.v_wire_count";
+        return;
+    }
 
     size = sizeof(laundryPages);
-    sysctlbyname(
-        "vm.stats.vm.v_laundry_count", &laundryPages, &size, nullptr, 0
-    );
+    if (sysctlbyname(
+            "vm.stats.vm.v_laundry_count", &laundryPages, &size, nullptr, 0
+        )
+        < 0) {
+        qCWarning(logSystem) << "Failed to read vm.stats.vm.v_laundry_count";
+        return;
+    }
 
     const auto usedPages = activePages + wiredPages + laundryPages;
 
