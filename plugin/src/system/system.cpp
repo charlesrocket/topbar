@@ -270,7 +270,6 @@ void System::updateDisk() {
 
     // statvfs(2): f_blocks is total blocks, f_bfree is free blocks (incl. root
     // reserved), f_bavail is free blocks available to unprivileged processes.
-    // We use f_bavail so the bar reflects what the user can actually use.
     if (statvfs(this->mDiskMountPoint.toLocal8Bit().constData(), &st) != 0) {
         qCWarning(logSystem) << "statvfs failed for" << this->mDiskMountPoint;
         return;
@@ -278,9 +277,25 @@ void System::updateDisk() {
 
     if (st.f_blocks == 0) { return; }
 
-    // Usable total = f_blocks - (f_bfree - f_bavail)  [root-reserved blocks]
+    // usable total = f_blocks - (f_bfree - f_bavail) [root-reserved blocks]
+    // we use f_bavail so the value reflects what the user can actually use
     const auto total =
         static_cast<float>(st.f_blocks - (st.f_bfree - st.f_bavail));
+
+    // guard against non-positive denominator
+    // (filesystem corruption/fully reserved volume)
+    if (total <= 0.0f) {
+        constexpr float full = 1.0f;
+        if (!floatEq(this->mDiskUsage, full)) {
+            this->mDiskUsage = full;
+            emit this->diskUsageChanged();
+        }
+
+        qCDebug(logSystem)
+            << "Total usable disk blocks is non-positive";
+
+        return;
+    }
 
     const auto avail = static_cast<float>(st.f_bavail);
     const auto newUsage = std::clamp(1.0f - avail / total, 0.0f, 1.0f);
