@@ -46,7 +46,7 @@ System::System(QObject *parent)
 
     this->detectCores();
 
-    this->mPrevTicks.resize(qsizetype{this->mCpuCores} * K_CPU_STATES, 0);
+    this->mPrevTicks.resize(qsizetype{this->mCpuCores} * CPUSTATES, 0);
     this->mPollTimer->setInterval(3000);
     this->mPollTimer->setSingleShot(false);
 
@@ -142,9 +142,9 @@ void System::detectCores() {
 #ifdef __FreeBSD__
 void System::updateCpu() {
     const auto wantedBytes =
-        static_cast<size_t>(this->mCpuCores * K_CPU_STATES) * sizeof(qint64);
+        static_cast<size_t>(this->mCpuCores * CPUSTATES) * sizeof(qint64);
 
-    auto ticks = QVector<qint64>(this->mCpuCores * K_CPU_STATES, 0);
+    auto ticks = QVector<qint64>(this->mCpuCores * CPUSTATES, 0);
     auto returnedBytes = wantedBytes;
 
     if (sysctlbyname("kern.cp_times", ticks.data(), &returnedBytes, nullptr, 0)
@@ -154,7 +154,7 @@ void System::updateCpu() {
     }
 
     const auto validCores =
-        static_cast<int>(returnedBytes / sizeof(qint64)) / K_CPU_STATES;
+        static_cast<int>(returnedBytes / sizeof(qint64)) / CPUSTATES;
 
     if (validCores <= 0) { return; }
 
@@ -168,12 +168,12 @@ void System::updateCpu() {
     qint64 idleDelta = 0;
 
     for (auto core = 0; core < validCores; core++) {
-        const auto base = core * K_CPU_STATES;
+        const auto base = core * CPUSTATES;
 
         qint64 coreTotalDelta = 0;
         qint64 coreIdleDelta = 0;
 
-        for (auto state = 0; state < K_CPU_STATES; state++) {
+        for (auto state = 0; state < CPUSTATES; state++) {
             const auto delta =
                 ticks[base + state] - this->mPrevTicks[base + state];
 
@@ -184,7 +184,7 @@ void System::updateCpu() {
             }
 
             coreTotalDelta += delta;
-            if (state == 4) { coreIdleDelta = delta; } // CP_IDLE
+            if (state == CP_IDLE) { coreIdleDelta = delta; }
         }
 
         totalDelta += coreTotalDelta;
