@@ -40,6 +40,10 @@ Q_LOGGING_CATEGORY(logSystem, "topbar.system", QtInfoMsg)
 
 System::System(QObject *parent)
     : QObject(parent), mPollTimer(new QTimer(this)) {
+#ifdef __linux__
+    qCWarning(logSystem) << "Linux support is limited";
+#endif
+
     this->detectCores();
 
     this->mPrevTicks.resize(qsizetype{this->mCpuCores} * K_CPU_STATES, 0);
