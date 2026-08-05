@@ -47,6 +47,10 @@ Singleton {
             return "󰌽";
     }
 
+    function uptime() {
+        return System.uptime();
+    }
+
     onConfigDiskChanged: System.setDiskMountPoint(configDisk)
     onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000
 

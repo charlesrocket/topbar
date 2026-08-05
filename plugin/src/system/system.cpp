@@ -12,10 +12,13 @@
 
 // clang-format off
 #ifdef __FreeBSD__
+#include <qtypes.h>
 #include <sys/param.h>
 #include <sys/jail.h>
 #include <sys/statvfs.h>
 #include <sys/sysctl.h>
+#include <sys/resource.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/uio.h>
 #endif
@@ -90,6 +93,33 @@ void System::poll() {
     this->updateTemperatures();
     this->updateJails();
 }
+
+#ifdef __FreeBSD__
+QString System::uptime() {
+    struct timeval boottime{};
+    auto size = sizeof(boottime);
+
+    if (sysctlbyname("kern.boottime", &boottime, &size, nullptr, 0) < 0) {
+        qCWarning(logSystem) << "Failed to read kern.boottime";
+        return QString();
+    }
+
+    const auto now = time(nullptr);
+
+    if (boottime.tv_sec <= 0 || now < boottime.tv_sec) {
+        qCWarning(logSystem) << "Invalid boottime reading";
+        return QString();
+    }
+
+    const qint64 totalSeconds = static_cast<qint64>(now - boottime.tv_sec);
+    const qint64 hours = totalSeconds / 3600;
+    const int minutes = static_cast<int>((totalSeconds % 3600) / 60);
+
+    return QString("%1:%2")
+        .arg(hours, 2, 10, QChar('0'))
+        .arg(minutes, 2, 10, QChar('0'));
+}
+#endif
 
 #ifdef __FreeBSD__
 void System::detectCores() {
