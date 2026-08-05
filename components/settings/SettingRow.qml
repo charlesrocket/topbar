@@ -76,6 +76,8 @@ RowLayout {
             anchors.right: parent.right
             anchors.rightMargin: 12
             width: (mouse.hovered && (root.valueType === "string"
+                                      || root.valueType === "font"
+                                      || root.valueType === "path"
                                       || root.valueType === "int"))
                    ? rowRect.width / 2 : (root.valueType === "color"
                                           || root.valueType === "bool") ? 40 :
@@ -86,16 +88,6 @@ RowLayout {
                 NumberAnimation {
                     duration: Config.general.animDuration * 2
                     easing.type: Easing.OutQuint
-                }
-            }
-            states: State {
-                name: "expanded"
-                when: mouse.hovered && (root.valueType === "string"
-                                        || root.valueType === "int")
-
-                PropertyChanges {
-                    target: controlItem
-                    width: 400
                 }
             }
 
