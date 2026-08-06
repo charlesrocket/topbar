@@ -77,7 +77,7 @@ class System : public QObject {
     void updateJails();
 
     int mCpuCores = 1;
-    QVector<qint64> mPrevTicks{}; // mCpuCores * kCpuStates
+    QVector<qint64> mPrevTicks; // mCpuCores * kCpuStates
     bool mHasPrevTicks = false;
 
     std::optional<float> mCpuTemp;

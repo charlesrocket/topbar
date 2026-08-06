@@ -41,10 +41,10 @@ bool looksIntegrated(const QString &desc) {
         "Vega 6",      "Vega 8",       "Radeon Graphics"
     };
 
-    for (const auto &marker : kIntegratedMarkers) {
-        if (desc.contains(marker, Qt::CaseInsensitive)) return true;
-    }
-    return false;
+    return std::ranges::any_of(kIntegratedMarkers, [&](const QString &marker) {
+        // NOLINTNEXTLINE(misc-include-cleaner)
+        return desc.contains(marker, Qt::CaseInsensitive);
+    });
 }
 
 } // namespace
@@ -64,8 +64,9 @@ System::System(QObject *parent)
     this->detectCores();
     this->detectCpu();
     this->detectGpu();
-
+#ifdef __FreeBSD__
     this->mPrevTicks.resize(qsizetype{this->mCpuCores} * CPUSTATES, 0);
+#endif
     this->mPollTimer->setInterval(3000);
     this->mPollTimer->setSingleShot(false);
 
@@ -179,7 +180,7 @@ std::optional<int> parseBus(const std::string &header) {
 
     errno = 0;
     char *endPtr = nullptr;
-    const long bus = std::strtol(busStart, &endPtr, 10);
+    const qint64 bus = std::strtol(busStart, &endPtr, 10);
 
     if (endPtr == busStart) return std::nullopt; // no digits found
     if (errno == ERANGE || bus < std::numeric_limits<int>::min()
@@ -523,7 +524,8 @@ std::optional<float> readTempC(const char *oid) {
     // (sensor uninitialised or broken)
     if (raw <= K_TZ_ZERO_C) { return std::nullopt; }
 
-    return static_cast<float>(raw - K_TZ_ZERO_C) / 10.0f;
+    float temp = static_cast<float>(raw - K_TZ_ZERO_C) / 10.0f;
+    return std::optional<float>(temp);
 }
 #endif
 
