@@ -1,7 +1,6 @@
 #include "system.hpp"
 
 #include <algorithm>
-#include <array>
 #include <limits>
 #include <qglobal.h>
 #include <qlogging.h>
@@ -14,6 +13,7 @@
 
 // clang-format off
 #ifdef __FreeBSD__
+#include <array>
 #include <optional>
 #include <qtypes.h>
 #include <sys/param.h>
