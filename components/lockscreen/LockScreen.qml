@@ -51,7 +51,6 @@ Item {
 
     Image {
         source: Utils.expandPath(Config.lockscreen.wallpaper)
-        cache: false
         anchors.fill: parent
         fillMode: root.defaultWallpaper ? Image.Pad : Image.PreserveAspectCrop
         layer.enabled: true
