@@ -144,7 +144,7 @@ QString System::uptime() {
         return QString();
     }
 
-    const qint64 totalSeconds = static_cast<qint64>(now - boottime.tv_sec);
+    const auto totalSeconds = static_cast<qint64>(now - boottime.tv_sec);
     const qint64 hours = totalSeconds / 3600;
     const int minutes = static_cast<int>((totalSeconds % 3600) / 60);
 
