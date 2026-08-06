@@ -1,6 +1,7 @@
 #include "system.hpp"
 
 #include <algorithm>
+#include <array>
 #include <limits>
 #include <qglobal.h>
 #include <qlogging.h>
@@ -216,7 +217,7 @@ void System::detectGpu() {
     QString vendorName, deviceName, className, subclassName;
     bool inBlock = false;
 
-    char lineBuf[512];
+    std::array<char, 512> lineBuf{};
     auto flushBlock = [&]() {
         if (inBlock && (className == "display")) {
             current.isVgaController = (subclassName == "VGA");
@@ -242,8 +243,8 @@ void System::detectGpu() {
         subclassName.clear();
     };
 
-    while (std::fgets(lineBuf, sizeof(lineBuf), pipe)) {
-        std::string line(lineBuf);
+    while (std::fgets(lineBuf.data(), lineBuf.size(), pipe)) {
+        std::string line(lineBuf.data());
         // new device block starts with a non-indented line containing "@pci"
         if (!line.empty() && !std::isspace(static_cast<unsigned char>(line[0]))
             && line.find("@pci") != std::string::npos) {
@@ -351,11 +352,13 @@ void System::detectCores() {
 
 #ifdef __FreeBSD__
 void System::detectCpu() {
-    char buf[256]{};
-    auto bufLen = sizeof(buf);
+    std::array<char, 256> buf{};
+    auto bufLen = buf.size();
 
-    if (sysctlbyname("hw.model", buf, &bufLen, nullptr, 0) == 0) {
-        this->mCpu = QString::fromLocal8Bit(buf, static_cast<int>(bufLen - 1));
+    if (sysctlbyname("hw.model", buf.data(), &bufLen, nullptr, 0) == 0
+        && bufLen > 0) {
+        this->mCpu =
+            QString::fromLocal8Bit(buf.data(), static_cast<int>(bufLen - 1));
         qCInfo(logSystem) << "Detected CPU:" << this->mCpu;
     } else {
         qCWarning(logSystem) << "Failed to read hw.model";
@@ -568,23 +571,25 @@ void System::updateJails() {
 
     while (true) {
         int jid = 0;
-        char name[MAXHOSTNAMELEN] = {};
+        std::array<char, MAXHOSTNAMELEN> name{};
 
-        static char kLastJid[] = "lastjid";
-        static char kJid[] = "jid";
-        static char kName[] = "name";
+        static std::array<char, 8> kLastJid = {"lastjid"};
+        static std::array<char, 4> kJid = {"jid"};
+        static std::array<char, 5> kName = {"name"};
 
-        struct iovec iov[] = {
-            {.iov_base = kLastJid, .iov_len = sizeof("lastjid")},
-            {.iov_base = &lastJid,   .iov_len = sizeof(lastJid)},
-            {    .iov_base = kJid,     .iov_len = sizeof("jid")},
-            {    .iov_base = &jid,       .iov_len = sizeof(jid)},
-            {   .iov_base = kName,    .iov_len = sizeof("name")},
-            {    .iov_base = name,      .iov_len = sizeof(name)},
+        std::array<struct iovec, 6> iov = {
+            {
+             {.iov_base = kLastJid.data(), .iov_len = kLastJid.size()},
+             {.iov_base = &lastJid, .iov_len = sizeof(lastJid)},
+             {.iov_base = kJid.data(), .iov_len = kJid.size()},
+             {.iov_base = &jid, .iov_len = sizeof(jid)},
+             {.iov_base = kName.data(), .iov_len = kName.size()},
+             {.iov_base = name.data(), .iov_len = name.size()},
+             }
         };
 
-        constexpr u_int nIov = sizeof(iov) / sizeof(iov[0]);
-        const int ret = ::jail_get(iov, nIov, 0);
+        const int ret =
+            ::jail_get(iov.data(), static_cast<u_int>(iov.size()), 0);
 
         if (ret < 0) {
             if (errno != ENOENT) { qCWarning(logSystem) << "jail_get failed"; }
@@ -593,7 +598,7 @@ void System::updateJails() {
         }
 
         lastJid = ret;
-        newJails.append(QString::fromLocal8Bit(name));
+        newJails.append(QString::fromLocal8Bit(name.data()));
     }
 
     if (this->mJails != newJails) {
