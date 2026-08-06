@@ -8,7 +8,8 @@ Item {
 
     default property alias content: scroll.contentData
     property alias scrollView: scroll
-    property color fadeColor: "black"
+    property color fadeColor: States.ecoMode ? Config.colors.bge :
+                                               Config.colors.bge
     property int fadeHeight: 24
 
     ScrollView {
