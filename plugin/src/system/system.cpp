@@ -61,6 +61,7 @@ System::System(QObject *parent)
     qCWarning(logSystem) << "Linux support is limited";
 #endif
 
+    this->detectMemory();
     this->detectCores();
     this->detectCpu();
     this->detectGpu();
@@ -84,6 +85,7 @@ System::System(QObject *parent)
 static constexpr int K_TZ_ZERO_C = 2731;
 
 int System::interval() const { return this->mPollTimer->interval(); }
+int System::installedMemory() const { return this->mInstalledMemory; }
 int System::cpuCores() const { return this->mCpuCores; }
 QVariant System::cpuTemp() const {
     return this->mCpuTemp ? QVariant(*this->mCpuTemp) : QVariant();
@@ -91,12 +93,12 @@ QVariant System::cpuTemp() const {
 QVariant System::pchTemp() const {
     return this->mPchTemp ? QVariant(*this->mPchTemp) : QVariant();
 }
+QString System::cpu() const { return this->mCpu; }
+QString System::gpu() const { return this->mGpu; }
 float System::cpuUsage() const { return this->mCpuUsage; }
 float System::memoryUsage() const { return this->mMemoryUsage; }
 float System::diskUsage() const { return this->mDiskUsage; }
 QString System::diskMountPoint() const { return this->mDiskMountPoint; }
-QString System::cpu() const { return this->mCpu; }
-QString System::gpu() const { return this->mGpu; }
 QStringList System::jails() const { return this->mJails; }
 
 void System::setPollInterval(int ms) {
@@ -314,7 +316,21 @@ void System::detectGpu() {
 
     this->mGpu = main->description;
     qCDebug(logSystem) << "Main GPU:" << this->mGpu;
-    emit this->gpuChanged();
+}
+#endif
+#ifdef __FreeBSD__
+void System::detectMemory() {
+    quint64 mem = 0;
+    auto size = sizeof(mem);
+
+    if (sysctlbyname("hw.physmem", &mem, &size, nullptr, 0) == 0 && mem > 0) {
+        constexpr quint64 kGiB = 1024ULL * 1024ULL * 1024ULL;
+        this->mInstalledMemory = static_cast<int>((mem + kGiB / 2) / kGiB);
+        qCInfo(logSystem) << "Detected memory:" << this->mInstalledMemory
+                          << "GB";
+    } else {
+        qCWarning(logSystem) << "Failed to read hw.physmem";
+    }
 }
 #endif
 
@@ -340,7 +356,6 @@ void System::detectCpu() {
     if (sysctlbyname("hw.model", buf, &bufLen, nullptr, 0) == 0) {
         this->mCpu = QString::fromLocal8Bit(buf, static_cast<int>(bufLen - 1));
         qCInfo(logSystem) << "Detected CPU:" << this->mCpu;
-        emit this->cpuChanged();
     } else {
         qCWarning(logSystem) << "Failed to read hw.model";
     }
@@ -524,7 +539,7 @@ std::optional<float> readTempC(const char *oid) {
     // (sensor uninitialised or broken)
     if (raw <= K_TZ_ZERO_C) { return std::nullopt; }
 
-    float temp = static_cast<float>(raw - K_TZ_ZERO_C) / 10.0f;
+    const float temp = static_cast<float>(raw - K_TZ_ZERO_C) / 10.0f;
     return std::optional<float>(temp);
 }
 #endif

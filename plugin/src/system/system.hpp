@@ -19,6 +19,7 @@ class System : public QObject {
     QML_SINGLETON;
 
     // clang-format off
+    Q_PROPERTY(int installedMemory READ installedMemory CONSTANT);
     Q_PROPERTY(int cpuCores READ cpuCores CONSTANT);
     Q_PROPERTY(float cpuUsage READ cpuUsage NOTIFY cpuUsageChanged);
     Q_PROPERTY(float memoryUsage READ memoryUsage NOTIFY memoryUsageChanged);
@@ -27,8 +28,8 @@ class System : public QObject {
     Q_PROPERTY(int interval READ interval WRITE setPollInterval NOTIFY intervalChanged);
     Q_PROPERTY(QVariant cpuTemp READ cpuTemp NOTIFY cpuTempChanged);
     Q_PROPERTY(QVariant pchTemp READ pchTemp NOTIFY pchTempChanged);
-    Q_PROPERTY(QString cpu READ cpu NOTIFY cpuChanged);
-    Q_PROPERTY(QString gpu READ gpu NOTIFY gpuChanged);
+    Q_PROPERTY(QString cpu READ cpu CONSTANT);
+    Q_PROPERTY(QString gpu READ gpu CONSTANT);
     Q_PROPERTY(QStringList jails READ jails NOTIFY jailsChanged);
     // clang-format on
 
@@ -37,14 +38,15 @@ class System : public QObject {
 
     [[nodiscard]] QVariant cpuTemp() const;
     [[nodiscard]] QVariant pchTemp() const;
+    [[nodiscard]] int installedMemory() const;
     [[nodiscard]] int cpuCores() const;
+    [[nodiscard]] QString cpu() const;
+    [[nodiscard]] QString gpu() const;
     [[nodiscard]] float cpuUsage() const;
     [[nodiscard]] float memoryUsage() const;
     [[nodiscard]] float diskUsage() const;
     [[nodiscard]] QString diskMountPoint() const;
     [[nodiscard]] int interval() const;
-    [[nodiscard]] QString cpu() const;
-    [[nodiscard]] QString gpu() const;
     [[nodiscard]] QStringList jails() const;
 
     Q_INVOKABLE void setPollInterval(int ms);
@@ -59,14 +61,13 @@ class System : public QObject {
     void diskUsageChanged();
     void diskMountPointChanged();
     void intervalChanged();
-    void cpuChanged();
-    void gpuChanged();
     void jailsChanged();
 
   private slots:
     void poll();
 
   private:
+    void detectMemory();
     void detectCores();
     void detectCpu();
     void detectGpu();
@@ -77,6 +78,7 @@ class System : public QObject {
     void updateJails();
 
     int mCpuCores = 1;
+    int mInstalledMemory = 0;
     QVector<qint64> mPrevTicks; // mCpuCores * kCpuStates
     bool mHasPrevTicks = false;
 
