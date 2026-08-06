@@ -47,7 +47,7 @@ function(qml_module arg_TARGET)
     install(FILES "${module_typeinfo}" DESTINATION "${module_dir}")
 
     target_link_libraries(${arg_TARGET} PRIVATE
-        topbar-pch
+        $<$<BOOL:${PCH_effective}>:topbar-pch>
         Qt::Core
         Qt::Qml
         ${arg_LIBRARIES}
