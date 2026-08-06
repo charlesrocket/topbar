@@ -13,11 +13,10 @@ import qs.core
 Item {
     id: root
 
-    property string fullName: ""
-    readonly property string userName: Quickshell.env("USER")
+    required property LockContext context
+    readonly property string name: System.userName || System.user
     readonly property bool defaultWallpaper: Config.lockscreen.wallpaper
                                              === States.defaultWallpaper
-    required property LockContext context
 
     opacity: 0
 
@@ -30,21 +29,6 @@ Item {
 
     Component.onCompleted: {
         opacity = 1;
-    }
-
-    Process {
-        running: true
-        command: ["sh", "-c", "getent passwd " + root.userName]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var parts = this.text.split(":");
-
-                if (parts.length >= 5) {
-                    root.fullName = parts[4].trim();
-                }
-            }
-        }
     }
 
     Process {
@@ -487,7 +471,7 @@ Item {
                         id: usernameText
 
                         anchors.centerIn: parent
-                        text: root.fullName || root.userName
+                        text: root.name
                         color: Config.colors.fg
                         font.family: Config.general.fontFamily
                         font.pixelSize: 18

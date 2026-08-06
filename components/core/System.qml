@@ -17,6 +17,7 @@ Singleton {
     property string osId
     property string osName
     property string osPrettyName
+    property string userName
     property real cpuTemp: System.cpuTemp
     property real pchTemp: System.pchTemp
     property real cpuUsage: System.cpuUsage
@@ -56,6 +57,21 @@ Singleton {
 
     onConfigDiskChanged: System.setDiskMountPoint(configDisk)
     onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000
+
+    Process {
+        running: true
+        command: ["sh", "-c", "getent passwd " + root.user]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                var parts = this.text.split(":");
+
+                if (parts.length >= 5) {
+                    root.userName = parts[4].trim();
+                }
+            }
+        }
+    }
 
     FileView {
         id: os
