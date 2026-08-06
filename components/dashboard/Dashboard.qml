@@ -138,14 +138,14 @@ Rectangle {
                                 font.pixelSize: root.fontSize * 1.3
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
-                                text: "󰟀"
+                                text: ""
                             }
 
                             Text {
                                 color: Config.colors.fg
-                                font.family: Config.general.fontFamily
                                 font.pixelSize: root.fontSize
-                                text: System.desktop
+                                font.family: Config.general.fontFamily
+                                text: System.user
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }
@@ -180,14 +180,14 @@ Rectangle {
                                 font.pixelSize: root.fontSize * 1.3
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
-                                text: ""
+                                text: "󰟀"
                             }
 
                             Text {
                                 color: Config.colors.fg
-                                font.pixelSize: root.fontSize
                                 font.family: Config.general.fontFamily
-                                text: System.user
+                                font.pixelSize: root.fontSize
+                                text: System.desktop
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }
