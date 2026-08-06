@@ -9,6 +9,7 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtimer.h>
+#include <qvariant.h>
 
 // clang-format off
 #ifdef __FreeBSD__
