@@ -56,6 +56,10 @@ Singleton {
         root.uptime = System.uptime();
     }
 
+    function changeProfileImage(path) {
+        System.setProfileImage(path);
+    }
+
     onConfigDiskChanged: System.setDiskMountPoint(configDisk)
     onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000
 

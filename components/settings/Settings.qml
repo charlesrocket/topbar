@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 import Quickshell
@@ -48,6 +49,19 @@ FloatingWindow {
         anchors.fill: parent
 
         onClicked: States.settingsPresent = false
+    }
+
+    FileDialog {
+        id: fileDialog
+
+        title: "Select profile image"
+        nameFilters: ["Image files (*.png *.jpg *.jpeg *.bmp *.gif *.svg)"]
+
+        onAccepted: {
+            var path = fileDialog.selectedFile;
+            if (path)
+                System.changeProfileImage(path);
+        }
     }
 
     Rectangle {
@@ -258,10 +272,66 @@ FloatingWindow {
                                 anchors.margins: 12
                                 spacing: 12
 
-                                UserImage {
+                                Item {
                                     Layout.preferredWidth: 80
                                     Layout.preferredHeight: 80
-                                    shadow: false
+
+                                    UserImage {
+                                        anchors.fill: parent
+                                        shadow: false
+                                    }
+
+                                    Canvas {
+                                        anchors.fill: parent
+
+                                        onPaint: {
+                                            var ctx = getContext("2d");
+                                            var topY = height - 22;
+                                            var cx = width / 2;
+                                            var cy = height / 2;
+                                            var r = Math.min(width, height) / 2;
+
+                                            var dx = Math.sqrt(r * r - Math.pow(
+                                                                   topY - cy,
+                                                                   2));
+                                            var xLeft = cx - dx;
+                                            var xRight = cx + dx;
+
+                                            ctx.beginPath();
+                                            ctx.moveTo(xLeft, topY);
+                                            ctx.lineTo(xRight, topY);
+                                            ctx.arc(cx, cy, r, Math.atan2(topY
+                                                                          - cy, xRight
+                                                                          - cx), Math.atan2(
+                                                        topY - cy, xLeft - cx),
+                                                    false);
+                                            ctx.closePath();
+
+                                            ctx.fillStyle = Qt.rgba(0, 0, 0,
+                                                                    0.6);
+                                            ctx.fill();
+                                        }
+                                    }
+
+                                    Text {
+                                        anchors.left: parent.left
+                                        anchors.right: parent.right
+                                        anchors.bottom: parent.bottom
+                                        anchors.bottomMargin: 4
+                                        text: "EDIT"
+                                        horizontalAlignment: Text.AlignHCenter
+                                        color: Config.colors.fg
+                                        font.family: "Hack Nerd Font"
+                                        font.pixelSize: 10
+                                        font.bold: true
+                                    }
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+
+                                        onClicked: fileDialog.open()
+                                    }
                                 }
 
                                 ColumnLayout {

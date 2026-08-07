@@ -1,7 +1,16 @@
 #include "system.hpp"
 
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusObjectPath>
+#include <QDBusReply>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QUrl>
 #include <algorithm>
 #include <limits>
+#include <pwd.h>
 #include <qglobal.h>
 #include <qlogging.h>
 #include <qloggingcategory.h>
@@ -10,6 +19,7 @@
 #include <qstringlist.h>
 #include <qtimer.h>
 #include <qvariant.h>
+#include <unistd.h>
 
 // clang-format off
 #ifdef __FreeBSD__
@@ -28,6 +38,11 @@
 // clang-format on
 
 namespace {
+
+constexpr auto kAccountsService = "org.freedesktop.Accounts";
+constexpr auto kAccountsPath = "/org/freedesktop/Accounts";
+constexpr auto kAccountsIface = "org.freedesktop.Accounts";
+constexpr auto kUserIface = "org.freedesktop.Accounts.User";
 
 template <typename T> bool floatEq(T a, T b) {
     const T diff = std::fabs(a - b);
@@ -126,6 +141,98 @@ void System::poll() {
     this->updateDisk();
     this->updateTemperatures();
     this->updateJails();
+}
+
+QString System::currentUserObjectPath() const {
+    qint64 bufSizeHint = sysconf(_SC_GETPW_R_SIZE_MAX);
+    if (bufSizeHint <= 0) { bufSizeHint = 16384; }
+
+    std::vector<char> buf(static_cast<size_t>(bufSizeHint));
+    struct passwd pwd{};
+    struct passwd *result = nullptr;
+
+    const int pwErr =
+        getpwuid_r(getuid(), &pwd, buf.data(), buf.size(), &result);
+
+    if (pwErr != 0 || !result || !result->pw_name) {
+        qCWarning(logSystem)
+            << "Failed to resolve current username (errno" << pwErr << ")";
+        return {};
+    }
+
+    QDBusInterface accounts(
+        kAccountsService, kAccountsPath, kAccountsIface,
+        QDBusConnection::systemBus()
+    );
+
+    if (!accounts.isValid()) {
+        qCWarning(logSystem)
+            << "org.freedesktop.Accounts unavailable on system bus:"
+            << accounts.lastError().message();
+        return {};
+    }
+
+    const QDBusReply<QDBusObjectPath> reply = accounts.call(
+        "FindUserByName", QString::fromLocal8Bit(result->pw_name)
+    );
+
+    if (!reply.isValid()) {
+        qCWarning(logSystem)
+            << "FindUserByName failed:" << reply.error().message();
+        return {};
+    }
+
+    return reply.value().path();
+}
+
+void System::setProfileImage(const QString &path) {
+    QString localPath = path;
+    if (localPath.startsWith("file://")) {
+        localPath = QUrl(localPath).toLocalFile();
+    }
+
+    const QFileInfo info(localPath);
+    if (!info.exists() || !info.isFile()) {
+        qCWarning(logSystem) << "Profile image does not exist:" << localPath;
+        return;
+    }
+
+    const QString absolutePath = info.absoluteFilePath();
+    const QString userPath = this->currentUserObjectPath();
+    if (userPath.isEmpty()) {
+        qCDebug(logSystem) << "Profile image is empty:" << localPath;
+        return;
+    }
+
+    QDBusInterface user(
+        kAccountsService, userPath, kUserIface, QDBusConnection::systemBus()
+    );
+
+    if (!user.isValid()) {
+        qCWarning(logSystem) << "Failed to reach" << userPath << ":"
+                             << user.lastError().message();
+        return;
+    }
+
+    const QDBusReply<void> reply = user.call("SetIconFile", absolutePath);
+    if (!reply.isValid()) {
+        qCWarning(logSystem)
+            << "SetIconFile failed:" << reply.error().message();
+        return;
+    }
+
+    // mirror to `.face.icon` for tools/greeters that still read
+    // it directly instead of querying AccountsService.
+    const QString facePath = QDir::homePath() + "/.face.icon";
+    QFile::remove(facePath);
+    if (!QFile::copy(absolutePath, facePath)) {
+        qCWarning(logSystem)
+            << "Changed profile image via AccountsService, but failed to"
+            << "mirror it to" << facePath;
+    }
+
+    qCInfo(logSystem) << "Profile image updated from" << absolutePath;
+    ;
 }
 
 #ifdef __FreeBSD__
