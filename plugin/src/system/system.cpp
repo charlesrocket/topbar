@@ -2,15 +2,13 @@
 
 #include <QDBusConnection>
 #include <QDBusInterface>
-#include <QDBusObjectPath>
-#include <QDBusReply>
-#include <QDir>
-#include <QFileInfo>
-#include <QUrl>
 #include <algorithm>
 #include <limits>
 #include <pwd.h>
+#include <qdbusreply.h>
+#include <qdir.h>
 #include <qfile.h>
+#include <qfileinfo.h>
 #include <qglobal.h>
 #include <qlogging.h>
 #include <qloggingcategory.h>
@@ -18,6 +16,7 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtimer.h>
+#include <qurl.h>
 #include <qvariant.h>
 #include <unistd.h>
 
@@ -39,10 +38,10 @@
 
 namespace {
 
-constexpr auto kAccountsService = "org.freedesktop.Accounts";
-constexpr auto kAccountsPath = "/org/freedesktop/Accounts";
-constexpr auto kAccountsIface = "org.freedesktop.Accounts";
-constexpr auto kUserIface = "org.freedesktop.Accounts.User";
+constexpr auto K_ACCOUNTS_SERVICE = "org.freedesktop.Accounts";
+constexpr auto K_ACCOUNTS_PATH = "/org/freedesktop/Accounts";
+constexpr auto K_ACCOUNTS_IFACE = "org.freedesktop.Accounts";
+constexpr auto K_USER_IFACE = "org.freedesktop.Accounts.User";
 
 template <typename T> bool floatEq(T a, T b) {
     const T diff = std::fabs(a - b);
@@ -77,11 +76,11 @@ System::System(QObject *parent)
 #ifdef __linux__
     qCWarning(logSystem) << "Linux support is limited";
 #endif
-
     this->detectMemory();
     this->detectCores();
     this->detectCpu();
     this->detectGpu();
+    this->currentUserObjectPath();
 #ifdef __FreeBSD__
     this->mPrevTicks.resize(qsizetype{this->mCpuCores} * CPUSTATES, 0);
 #endif
@@ -143,7 +142,7 @@ void System::poll() {
     this->updateJails();
 }
 
-QString System::currentUserObjectPath() const {
+void System::currentUserObjectPath() {
     qint64 bufSizeHint = sysconf(_SC_GETPW_R_SIZE_MAX);
     if (bufSizeHint <= 0) { bufSizeHint = 16384; }
 
@@ -157,19 +156,18 @@ QString System::currentUserObjectPath() const {
     if (pwErr != 0 || !result || !result->pw_name) {
         qCWarning(logSystem)
             << "Failed to resolve current username (errno" << pwErr << ")";
-        return {};
+        return;
     }
 
     QDBusInterface accounts(
-        kAccountsService, kAccountsPath, kAccountsIface,
+        K_ACCOUNTS_SERVICE, K_ACCOUNTS_PATH, K_ACCOUNTS_IFACE,
         QDBusConnection::systemBus()
     );
 
     if (!accounts.isValid()) {
-        qCWarning(logSystem)
-            << "org.freedesktop.Accounts unavailable on system bus:"
-            << accounts.lastError().message();
-        return {};
+        qCWarning(logSystem) << "org.freedesktop.Accounts unavailable:"
+                             << accounts.lastError().message();
+        return;
     }
 
     const QDBusReply<QDBusObjectPath> reply = accounts.call(
@@ -179,10 +177,13 @@ QString System::currentUserObjectPath() const {
     if (!reply.isValid()) {
         qCWarning(logSystem)
             << "FindUserByName failed:" << reply.error().message();
-        return {};
+        return;
     }
 
-    return reply.value().path();
+    const auto userObject = reply.value().path();
+    this->mUserObject = userObject;
+    qCInfo(logSystem) << "DBus user:" << userObject;
+    emit this->userObjectChanged();
 }
 
 void System::setUserIcon(const QString &path) {
@@ -198,14 +199,14 @@ void System::setUserIcon(const QString &path) {
     }
 
     const QString absolutePath = info.absoluteFilePath();
-    const QString userPath = this->currentUserObjectPath();
+    const QString userPath = this->mUserObject;
     if (userPath.isEmpty()) {
         qCDebug(logSystem) << "User icon is empty:" << localPath;
         return;
     }
 
     QDBusInterface user(
-        kAccountsService, userPath, kUserIface, QDBusConnection::systemBus()
+        K_ACCOUNTS_SERVICE, userPath, K_USER_IFACE, QDBusConnection::systemBus()
     );
 
     if (!user.isValid()) {

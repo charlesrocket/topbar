@@ -32,6 +32,7 @@ class System : public QObject {
     Q_PROPERTY(QString cpu READ cpu CONSTANT);
     Q_PROPERTY(QString gpu READ gpu CONSTANT);
     Q_PROPERTY(QStringList jails READ jails NOTIFY jailsChanged);
+    Q_PROPERTY(QString userObject READ userObject NOTIFY userObjectChanged);
     // clang-format on
 
   public:
@@ -49,11 +50,12 @@ class System : public QObject {
     [[nodiscard]] QString diskMountPoint() const;
     [[nodiscard]] int interval() const;
     [[nodiscard]] QStringList jails() const;
+    [[nodiscard]] QString userObject() const;
 
     Q_INVOKABLE void setPollInterval(int ms);
     Q_INVOKABLE void setDiskMountPoint(const QString &path);
     Q_INVOKABLE void setUserIcon(const QString &path);
-    Q_INVOKABLE [[nodiscard]] QString currentUserObjectPath() const;
+    Q_INVOKABLE void currentUserObjectPath();
     Q_INVOKABLE [[nodiscard]] QString uptime();
 
   signals:
@@ -65,6 +67,7 @@ class System : public QObject {
     void diskMountPointChanged();
     void intervalChanged();
     void jailsChanged();
+    void userObjectChanged();
 
   private slots:
     void poll();
@@ -94,6 +97,7 @@ class System : public QObject {
     QString mGpu = QStringLiteral("Unknown");
     QString mDiskMountPoint = QStringLiteral("/");
     QStringList mJails;
+    QString mUserObject;
 
     QTimer *mPollTimer = nullptr;
 };
