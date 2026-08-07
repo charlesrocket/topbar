@@ -96,6 +96,9 @@ Singleton {
         }
     }
 
+    onDashboardPresentChanged: {
+        System.updateUptime();
+    }
     onFullScreenChanged: {
         ecoMode = fullScreen;
     }

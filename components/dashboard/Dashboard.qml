@@ -125,7 +125,7 @@ Rectangle {
                                 color: Config.colors.fg
                                 font.family: Config.general.fontFamily
                                 font.pixelSize: root.fontSize
-                                text: System.uptime()
+                                text: System.uptime
                                 elide: Text.ElideRight
                             }
                         }

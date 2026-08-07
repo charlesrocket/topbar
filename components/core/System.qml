@@ -30,6 +30,7 @@ Singleton {
     property var mem: System.installedMemory
     property var jails: System.jails
     property int jailCount: System.jails.length
+    property string uptime: "00:00"
     readonly property bool ecoMode: States.ecoMode
     readonly property string configDisk: Config.dashboard.disk
     readonly property string desktop: Quickshell.env(
@@ -51,8 +52,8 @@ Singleton {
             return "󰌽";
     }
 
-    function uptime() {
-        return System.uptime();
+    function updateUptime() {
+        root.uptime = System.uptime();
     }
 
     onConfigDiskChanged: System.setDiskMountPoint(configDisk)
