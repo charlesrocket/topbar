@@ -126,6 +126,15 @@ RowLayout {
                 Layout.alignment: Qt.AlignVCenter
                 implicitHeight: 2
                 color: Config.colors.passive
+
+                Rectangle {
+                    visible: root.description.length > 0
+                    width: 2
+                    height: labelColumn.height / 2
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: Config.colors.passive
+                }
             }
 
             // control element
