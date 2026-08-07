@@ -13,6 +13,7 @@ FloatingWindow {
     id: root
 
     property int gap: 6
+    property int fontSize: Config.general.fontSize
 
     function validateSection(obj, section, key, offset) {
         var configCount = Utils.getPropertyCount(obj);
@@ -191,6 +192,113 @@ FloatingWindow {
                     Layout.fillHeight: true
                     spacing: 8
 
+                    SettingLabel {
+                        label: "User"
+                    }
+
+                    ColumnLayout {
+                        Rectangle {
+                            color: Qt.darker(Config.colors.extraDark, 1.1)
+                            Layout.fillWidth: true
+                            implicitHeight: 110
+                            radius: Config.general.cornerRadius
+                            clip: true
+
+                            Canvas {
+                                id: stripes
+
+                                anchors.right: parent.right
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+                                width: 92
+
+                                onPaint: {
+                                    var ctx = getContext("2d");
+                                    ctx.clearRect(0, 0, width, height);
+
+                                    var stripeWidth = 20;
+                                    var gap = 20;
+                                    var starts = [8, stripeWidth + gap,
+                                                  stripeWidth + gap];
+                                    var h = height;
+
+                                    ctx.fillStyle = Config.colors.accent;
+
+                                    for (var i = 0; i < starts.length; i++) {
+                                        var x0 = starts[i];
+                                        ctx.beginPath();
+                                        // top-left
+                                        ctx.moveTo(x0, 0);
+                                        // top-right
+                                        ctx.lineTo(x0 + stripeWidth, 0);
+                                        // bottom-right
+                                        ctx.lineTo(x0 + stripeWidth + h, h);
+                                        // bottom-left
+                                        ctx.lineTo(x0 + h, h);
+                                        ctx.closePath();
+                                        ctx.fill();
+                                    }
+                                }
+
+                                Connections {
+                                    function onAccentChanged() {
+                                        stripes.requestPaint();
+                                    }
+
+                                    target: Config.colors
+                                }
+                            }
+
+                            RowLayout {
+                                id: userBox
+
+                                anchors.left: parent.left
+                                anchors.top: parent.top
+                                anchors.bottom: parent.bottom
+                                anchors.margins: 12
+                                spacing: 12
+
+                                UserImage {
+                                    Layout.preferredWidth: 80
+                                    Layout.preferredHeight: 80
+                                    shadow: false
+                                }
+
+                                ColumnLayout {
+                                    spacing: 12
+
+                                    RowLayout {
+                                        Layout.fillWidth: true
+                                        Layout.fillHeight: true
+
+                                        Text {
+                                            color: Config.colors.fg
+                                            font.pixelSize: root.fontSize * 1.8
+                                            font.bold: true
+                                            font.family:
+                                                Config.general.fontFamily
+                                            horizontalAlignment: Text.AlignLeft
+                                            verticalAlignment: Text.AlignVCenter
+                                            text: System.userName
+                                        }
+                                    }
+
+                                    RowLayout {
+                                        Text {
+                                            color: Config.colors.fg
+                                            font.family:
+                                                Config.general.fontFamily
+                                            font.pixelSize: root.fontSize * 1.1
+                                            horizontalAlignment: Text.AlignLeft
+                                            verticalAlignment: Text.AlignVCenter
+                                            text: System.user
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     SwipeView {
                         currentIndex: tabBar.currentIndex
                         Layout.fillWidth: true
@@ -209,16 +317,25 @@ FloatingWindow {
                                 id: generalScroll
 
                                 ColumnLayout {
+                                    width: generalScroll.scrollView.width
+                                    spacing: root.gap
+                                }
+
+                                ColumnLayout {
                                     id: generalSection
 
-                                    width: generalScroll.scrollView.width
+                                    implicitWidth: parent.width
                                     spacing: root.gap
 
                                     Component.onCompleted: {
                                         root.validateSection(Config.general,
                                                              generalSection,
                                                              "Config.general",
-                                                             null);
+                                                             -1);
+                                    }
+
+                                    SettingLabel {
+                                        label: "System"
                                     }
 
                                     SettingRow {
@@ -227,6 +344,8 @@ FloatingWindow {
                                         targetProperty: "locale"
                                         valueType: "string"
                                         first: true
+                                        description:
+                                            "Language, country, and character encoding."
                                     }
 
                                     SettingRow {
@@ -303,6 +422,8 @@ FloatingWindow {
                                         targetProperty: "configWatch"
                                         valueType: "bool"
                                         last: true
+                                        description:
+                                            "Reload on configuratio file changes."
                                     }
                                 }
                             }
@@ -521,6 +642,8 @@ FloatingWindow {
                                                 targetProperty: "empty"
                                                 valueType: "string"
                                                 last: true
+                                                description:
+                                                    "Empty window title text."
                                             }
                                         }
                                     }
@@ -715,6 +838,7 @@ FloatingWindow {
                                             targetProperty: "launcher"
                                             valueType: "bool"
                                             first: true
+                                            description: "Application launcher."
                                         }
 
                                         SettingRow {
@@ -723,6 +847,7 @@ FloatingWindow {
                                             targetProperty: "osd"
                                             valueType: "bool"
                                             last: true
+                                            description: "On-screen display."
                                         }
                                     }
                                 }
@@ -855,6 +980,8 @@ FloatingWindow {
                                         valueType: "string"
                                         first: true
                                         last: true
+                                        description:
+                                            "Mounting point of the probe."
                                     }
 
                                     ColumnLayout {
@@ -878,6 +1005,8 @@ FloatingWindow {
                                             targetProperty: "queueButtons"
                                             valueType: "bool"
                                             first: true
+                                            description:
+                                                "Shuffle and repeat controls."
                                         }
 
                                         SettingRow {
@@ -887,6 +1016,8 @@ FloatingWindow {
                                             targetProperty: "notifications"
                                             valueType: "bool"
                                             last: true
+                                            description:
+                                                "Send a desktop notification on track changes."
                                         }
                                     }
                                 }
@@ -1146,7 +1277,7 @@ FloatingWindow {
         font.family: Config.general.fontFamily
         Layout.topMargin: 6
         Layout.bottomMargin: 6
-        font.pixelSize: Config.general.fontSize + 2
+        font.pixelSize: Config.general.fontSize + 4
         font.bold: true
         color: Config.colors.fg
     }
