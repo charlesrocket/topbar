@@ -214,7 +214,7 @@ FloatingWindow {
                         Rectangle {
                             color: Qt.darker(Config.colors.extraDark, 1.1)
                             Layout.fillWidth: true
-                            implicitHeight: 110
+                            implicitHeight: 100
                             radius: Config.general.cornerRadius
                             clip: true
 
@@ -269,7 +269,7 @@ FloatingWindow {
                                 anchors.left: parent.left
                                 anchors.top: parent.top
                                 anchors.bottom: parent.bottom
-                                anchors.margins: 12
+                                anchors.leftMargin: 12
                                 spacing: 12
 
                                 Item {
@@ -335,7 +335,7 @@ FloatingWindow {
                                 }
 
                                 ColumnLayout {
-                                    spacing: 12
+                                    spacing: 6
 
                                     RowLayout {
                                         Layout.fillWidth: true
@@ -493,7 +493,7 @@ FloatingWindow {
                                         valueType: "bool"
                                         last: true
                                         description:
-                                            "Reload on configuratio file changes."
+                                            "Reload on configuration file changes."
                                     }
                                 }
                             }
