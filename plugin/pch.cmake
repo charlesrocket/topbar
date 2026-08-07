@@ -4,6 +4,7 @@ if (PCH)
         <cstdint>
         <cstring>
         <qobject.h>
+        <qfile.h>
         <qqmlintegration.h>
         <qqmlcomponent.h>
         <qqmlengine.h>

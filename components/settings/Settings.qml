@@ -60,7 +60,7 @@ FloatingWindow {
         onAccepted: {
             var path = fileDialog.selectedFile;
             if (path)
-                System.changeProfileImage(path);
+                System.changeUserIcon(path);
         }
     }
 

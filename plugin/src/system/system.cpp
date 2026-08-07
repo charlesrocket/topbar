@@ -5,12 +5,12 @@
 #include <QDBusObjectPath>
 #include <QDBusReply>
 #include <QDir>
-#include <QFile>
 #include <QFileInfo>
 #include <QUrl>
 #include <algorithm>
 #include <limits>
 #include <pwd.h>
+#include <qfile.h>
 #include <qglobal.h>
 #include <qlogging.h>
 #include <qloggingcategory.h>
@@ -185,7 +185,7 @@ QString System::currentUserObjectPath() const {
     return reply.value().path();
 }
 
-void System::setProfileImage(const QString &path) {
+void System::setUserIcon(const QString &path) {
     QString localPath = path;
     if (localPath.startsWith("file://")) {
         localPath = QUrl(localPath).toLocalFile();
@@ -193,14 +193,14 @@ void System::setProfileImage(const QString &path) {
 
     const QFileInfo info(localPath);
     if (!info.exists() || !info.isFile()) {
-        qCWarning(logSystem) << "Profile image does not exist:" << localPath;
+        qCWarning(logSystem) << "User icon does not exist:" << localPath;
         return;
     }
 
     const QString absolutePath = info.absoluteFilePath();
     const QString userPath = this->currentUserObjectPath();
     if (userPath.isEmpty()) {
-        qCDebug(logSystem) << "Profile image is empty:" << localPath;
+        qCDebug(logSystem) << "User icon is empty:" << localPath;
         return;
     }
 
@@ -227,11 +227,11 @@ void System::setProfileImage(const QString &path) {
     QFile::remove(facePath);
     if (!QFile::copy(absolutePath, facePath)) {
         qCWarning(logSystem)
-            << "Changed profile image via AccountsService, but failed to"
+            << "Changed user icon via AccountsService, but failed to"
             << "mirror it to" << facePath;
     }
 
-    qCInfo(logSystem) << "Profile image updated from" << absolutePath;
+    qCInfo(logSystem) << "User icon updated from" << absolutePath;
     ;
 }
 

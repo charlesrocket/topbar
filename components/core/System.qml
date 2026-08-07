@@ -56,8 +56,8 @@ Singleton {
         root.uptime = System.uptime();
     }
 
-    function changeProfileImage(path) {
-        System.setProfileImage(path);
+    function changeUserIcon(path) {
+        System.setUserIcon(path);
     }
 
     onConfigDiskChanged: System.setDiskMountPoint(configDisk)

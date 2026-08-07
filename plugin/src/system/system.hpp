@@ -52,7 +52,7 @@ class System : public QObject {
 
     Q_INVOKABLE void setPollInterval(int ms);
     Q_INVOKABLE void setDiskMountPoint(const QString &path);
-    Q_INVOKABLE void setProfileImage(const QString &path);
+    Q_INVOKABLE void setUserIcon(const QString &path);
     Q_INVOKABLE [[nodiscard]] QString currentUserObjectPath() const;
     Q_INVOKABLE [[nodiscard]] QString uptime();
 
