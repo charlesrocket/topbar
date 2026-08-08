@@ -6,7 +6,6 @@
 #include <qlogging.h>
 #include <qloggingcategory.h>
 #include <qobject.h>
-#include <qqmlengine.h>
 #include <qsocketnotifier.h>
 #include <sys/socket.h>
 #include <sys/un.h>
