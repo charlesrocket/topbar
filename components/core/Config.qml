@@ -20,22 +20,7 @@ Singleton {
     property alias lockscreen: settings.lockscreen
     property alias session: settings.session
     property alias workspaces: settings.workspaces
-    property var colors: QtObject {
-        property color bg: settings.colors.bg
-        property color bgl: settings.colors.bgl
-        property color bge: settings.colors.bge
-        property color fg: settings.colors.fg
-        property color border: settings.colors.border
-        property color passive: settings.colors.passive
-        property color dark: settings.colors.dark
-        property color extraDark: settings.colors.extraDark
-        property color action: settings.colors.action
-        property color accent: settings.colors.accent
-        property color red: settings.colors.red
-        property color yellow: settings.colors.yellow
-        property color purple: settings.colors.purple
-        property color green: settings.colors.green
-    }
+    property alias colors: settings.colors
 
     FileView {
         id: fileView
