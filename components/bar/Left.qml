@@ -25,7 +25,7 @@ RowLayout {
         RowLayout {
             Loader {
                 asynchronous: true
-                sourceComponent: switch (System.desktop) {
+                sourceComponent: switch (States.desktop) {
                                  case "mango":
                                      return dwl;
                                  case "hyprland":

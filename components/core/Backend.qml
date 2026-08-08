@@ -113,9 +113,24 @@ Scope {
     }
 
     Process {
+        running: true
+        command: ["sh", "-c", "getent passwd " + States.user]
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                var parts = this.text.split(":");
+
+                if (parts.length >= 5) {
+                    States.userName = parts[4].trim();
+                }
+            }
+        }
+    }
+
+    Process {
         id: dpmsOff
 
-        command: switch (System.desktop) {
+        command: switch (States.desktop) {
                  case "mango":
                      return ["mmsg", "-d", "disable_monitor"];
                  case "hyprland":
@@ -126,7 +141,7 @@ Scope {
     Process {
         id: dpmsOn
 
-        command: switch (System.desktop) {
+        command: switch (States.desktop) {
                  case "mango":
                      return ["mmsg", "-d", "enable_monitor"];
                  case "hyprland":
@@ -194,6 +209,22 @@ Scope {
                 anchors.fill: parent
                 context: lockContext
             }
+        }
+    }
+
+    FileView {
+        id: os
+
+        path: "/etc/os-release"
+
+        onLoaded: {
+            const lines = text().split("\n");
+            const fd = key => lines.find(l => l.startsWith(`${key}=`))?.split(
+                                  "=")[1].replace(/"/g, "") ?? "";
+
+            States.osName = fd("NAME");
+            States.osPrettyName = fd("PRETTY_NAME");
+            States.osId = fd("ID");
         }
     }
 }

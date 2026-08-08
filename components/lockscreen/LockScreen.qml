@@ -3,7 +3,6 @@ import QtQuick.Controls.Fusion
 import QtQuick.Effects
 import QtQuick.Layouts
 
-import Quickshell
 import Quickshell.Io
 import Quickshell.Services.UPower
 
@@ -14,7 +13,7 @@ Item {
     id: root
 
     required property LockContext context
-    readonly property string name: System.userName || System.user
+    readonly property string name: States.userName || States.user
     readonly property bool defaultWallpaper: Config.lockscreen.wallpaper
                                              === States.defaultWallpaper
 

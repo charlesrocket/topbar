@@ -119,7 +119,7 @@ RowLayout {
     Loader {
         id: jails
 
-        active: System.jails.length > 0 && Config.bar.widgets.jails
+        active: States.jails.length > 0 && Config.bar.widgets.jails
         visible: jails.active
         asynchronous: true
         Layout.rightMargin: 2
@@ -135,7 +135,7 @@ RowLayout {
         visible: lang.active
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
-        sourceComponent: switch (System.desktop) {
+        sourceComponent: switch (States.desktop) {
                          case "mango":
                              return dwlLang;
                          case "hyprland":

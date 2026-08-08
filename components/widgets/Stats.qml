@@ -41,10 +41,10 @@ RowLayout {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 1
-                height: System.cpuUsage * (parent.height - 2)
+                height: States.cpuUsage * (parent.height - 2)
                 radius: 1
                 color: {
-                    const pct = System.cpuUsage;
+                    const pct = States.cpuUsage;
 
                     if (pct > 0.90)
                         return root.colCritical;
@@ -87,10 +87,10 @@ RowLayout {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 1
-                height: System.memoryUsage * (parent.height - 2)
+                height: States.memoryUsage * (parent.height - 2)
                 radius: 1
                 color: {
-                    const pct = System.memoryUsage;
+                    const pct = States.memoryUsage;
 
                     if (pct > 0.90)
                         return root.colCritical;
@@ -133,10 +133,10 @@ RowLayout {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 1
-                height: System.diskUsage * (parent.height - 2)
+                height: States.diskUsage * (parent.height - 2)
                 radius: 1
                 color: {
-                    const pct = System.diskUsage;
+                    const pct = States.diskUsage;
 
                     if (pct > 0.90)
                         return root.colCritical;

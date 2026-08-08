@@ -9,8 +9,8 @@ import qs.core
 Rectangle {
     id: root
 
-    property real cpuTemp: System.cpuTemp
-    property real pchTemp: System.pchTemp
+    property real cpuTemp: States.cpuTemp
+    property real pchTemp: States.pchTemp
     property int fontSize: Config.general.fontSize
     property string mail: ""
     property string mailErr: ""
@@ -109,7 +109,7 @@ Rectangle {
                                 font.family: Config.general.fontFamily
                                 font.bold: false
                                 font.pixelSize: root.fontSize
-                                text: System.uptime
+                                text: States.uptime
                                 elide: Text.ElideRight
                             }
 
@@ -121,7 +121,7 @@ Rectangle {
                                 Layout.preferredWidth: root.fontSize * 2
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
-                                text: System.getOsIcon()
+                                text: States.getOsIcon()
                             }
 
                             Text {
@@ -129,7 +129,7 @@ Rectangle {
                                 font.family: Config.general.fontFamily
                                 font.bold: false
                                 font.pixelSize: root.fontSize
-                                text: System.osId
+                                text: States.osId
                                 elide: Text.ElideRight
                             }
                         }
@@ -151,7 +151,7 @@ Rectangle {
                                 font.family: Config.general.fontFamily
                                 font.bold: false
                                 font.pixelSize: root.fontSize
-                                text: System.desktop
+                                text: States.desktop
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }
@@ -174,7 +174,7 @@ Rectangle {
                                 font.family: Config.general.fontFamily
                                 font.bold: false
                                 font.pixelSize: root.fontSize
-                                text: System.shell
+                                text: States.shell
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }
@@ -197,7 +197,7 @@ Rectangle {
                                 font.family: Config.general.fontFamily
                                 font.pixelSize: root.fontSize
                                 font.bold: false
-                                text: System.user
+                                text: States.user
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }

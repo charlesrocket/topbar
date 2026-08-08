@@ -13,7 +13,7 @@ Item {
     property int fontSize: Config.general.fontSize
     property string fontFamily: "FiraCode Nerd Font"
     property string icon: "󰆧"
-    property var jails: System.jails
+    property var jails: States.jails
     property int jailCount: jails.length
 
     implicitWidth: (hoverDetector.containsMouse ? infoContainer.width + 8 : 0)

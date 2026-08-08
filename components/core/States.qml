@@ -3,14 +3,32 @@ pragma Singleton
 import QtQuick
 
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.UPower
 import Quickshell.Wayland
-
 import TopBar.DWL
+
+import TopBar.Devd
+import TopBar.System
 
 import qs.core
 
 Singleton {
+    id: root
+
+    readonly property Devd dev: Devd
+    readonly property string configDisk: Config.dashboard.disk
+    readonly property string desktop: Quickshell.env(
+                                          "XDG_CURRENT_DESKTOP").toLowerCase()
+                                      || Quickshell.env(
+                                          "XDG_SESSION_DESKTOP").toLowerCase()
+    readonly property string user: Quickshell.env("USER").toLowerCase()
+    readonly property string shell: Quickshell.env("SHELL").split("/").pop(
+                                        ).toLowerCase()
+    readonly property string home: Quickshell.env("HOME")
+    readonly property string config: Quickshell.env("XDG_CONFIG_HOME")
+                                     + "/topbar" || root.home
+                                     + "/.config/topbar"
     property PanelWindow barPanel: null
     property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0
                                      ? DwlIpc.outputs[0] : null
@@ -41,6 +59,23 @@ Singleton {
     // TODO add local
     property string defaultWallpaper:
     "https://codeberg.org/charlesrocket/misc-files/raw/branch/trunk/puffy-red.png"
+    property string osId
+    property string osName
+    property string osPrettyName
+    property string userName
+    property real cpuTemp: System.cpuTemp
+    property real pchTemp: System.pchTemp
+    property real cpuUsage: System.cpuUsage
+    property real cpuCores: System.cpuCores
+    property real diskUsage: System.diskUsage
+    property string diskMountPoint: System.diskMountPoint
+    property real memoryUsage: System.memoryUsage
+    property var cpu: System.cpu
+    property var gpu: System.gpu
+    property var mem: System.installedMemory
+    property var jails: System.jails
+    property int jailCount: System.jails.length
+    property string uptime: "00:00"
     property var battery: QtObject {
         readonly property var device: UPower.displayDevice
         readonly property int percentage: device?.ready ? Math.round(
@@ -96,8 +131,27 @@ Singleton {
         }
     }
 
+    function getOsIcon() {
+        if (root.osId === "freebsd")
+            return "󰣠";
+        else if (root.osName.toLowerCase().includes("linux"))
+            return "󰌽";
+        else
+            return "";
+    }
+
+    function updateUptime() {
+        root.uptime = System.uptime();
+    }
+
+    function changeUserIcon(path) {
+        System.setUserIcon(path);
+    }
+
+    onConfigDiskChanged: System.setDiskMountPoint(configDisk)
+    onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000
     onDashboardPresentChanged: {
-        System.updateUptime();
+        root.uptime = System.uptime();
     }
     onFullScreenChanged: {
         ecoMode = fullScreen;

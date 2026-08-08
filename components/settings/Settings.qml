@@ -31,7 +31,10 @@ FloatingWindow {
         return v + " " + word + (v === 1 ? "" : "s");
     }
 
-    minimumSize: "900x700"
+    minimumSize: ({
+                      width: 900,
+                      height: 700
+                  })
     title: "Settings"
     color: "transparent"
 
@@ -64,7 +67,7 @@ FloatingWindow {
         onAccepted: {
             var path = fileDialog.selectedFile;
             if (path)
-                System.changeUserIcon(path);
+                States.changeUserIcon(path);
         }
     }
 
@@ -277,16 +280,18 @@ FloatingWindow {
                                 spacing: 12
 
                                 Item {
+                                    id: userImageCont
+
                                     Layout.preferredWidth: 80
                                     Layout.preferredHeight: 80
 
                                     UserImage {
-                                        anchors.fill: parent
+                                        anchors.fill: userImageCont
                                         shadow: false
                                     }
 
                                     Canvas {
-                                        anchors.fill: parent
+                                        anchors.fill: userImageCont
 
                                         onPaint: {
                                             var ctx = getContext("2d");
@@ -353,7 +358,7 @@ FloatingWindow {
                                                 Config.general.fontFamily
                                             horizontalAlignment: Text.AlignLeft
                                             verticalAlignment: Text.AlignVCenter
-                                            text: System.userName
+                                            text: States.userName
                                         }
                                     }
 
@@ -365,7 +370,7 @@ FloatingWindow {
                                             font.pixelSize: root.fontSize * 1.1
                                             horizontalAlignment: Text.AlignLeft
                                             verticalAlignment: Text.AlignVCenter
-                                            text: System.user
+                                            text: States.user
                                         }
                                     }
                                 }

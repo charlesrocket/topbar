@@ -11,7 +11,7 @@ import qs.core
 Singleton {
     id: root
 
-    readonly property string path: System.config + "/settings.json"
+    readonly property string path: States.config + "/settings.json"
     property alias general: settings.general
     property alias bar: settings.bar
     property alias desktop: settings.desktop
