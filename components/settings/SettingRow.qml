@@ -13,6 +13,7 @@ RowLayout {
     required property var targetObject
     required property string targetProperty
     required property string valueType
+    property real descriptionMaxWidth: width * 0.45
     property int rowWidth: 100
     property bool first
     property bool last
@@ -69,15 +70,17 @@ RowLayout {
                 id: labelColumn
 
                 Layout.alignment: Qt.AlignVCenter
+                Layout.fillHeight: false
                 Layout.preferredWidth: Math.max(labelText.implicitWidth,
                                                 descriptionText.visible
                                                 ? descriptionText.implicitWidth :
                                                   0)
                 Layout.minimumWidth: 10
-                clip: true
-                height: labelText.implicitHeight + (descriptionText.visible
-                                                    ? descriptionText.implicitHeight
-                                                      + 2 : 0)
+                Layout.maximumWidth: root.descriptionMaxWidth
+                implicitHeight: labelText.implicitHeight + (
+                                    descriptionText.visible
+                                    ? descriptionText.implicitHeight + 2 : 0)
+                Layout.preferredHeight: implicitHeight
 
                 Behavior on Layout.preferredWidth {
                     NumberAnimation {
@@ -107,7 +110,7 @@ RowLayout {
                     anchors.top: labelText.bottom
                     anchors.topMargin: 2
                     width: parent.width
-                    elide: Text.ElideRight
+                    wrapMode: Text.WordWrap
                     visible: root.description !== ""
                     text: root.description
                     font.family: Config.general.fontFamily
@@ -141,14 +144,13 @@ RowLayout {
             Item {
                 id: controlItem
 
-                Layout.alignment: Qt.AlignVCenter
                 Layout.preferredWidth: rowRect.expanded ? rowRect.width / 2 : (
                                                               root.valueType
                                                               === "color"
                                                               || root.valueType
                                                               === "bool") ? 40 :
                                                                             root.rowWidth
-                implicitHeight: 32
+                Layout.preferredHeight: 32
 
                 Behavior on Layout.preferredWidth {
                     NumberAnimation {
