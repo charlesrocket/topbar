@@ -141,7 +141,7 @@ Scope {
     }
 
     IdleMonitor {
-        timeout: Config.session.timeouts.lock
+        timeout: Config.session.timeouts.screen
         enabled: !States.keepAwake
 
         onIsIdleChanged: {
@@ -165,7 +165,7 @@ Scope {
     }
 
     IdleMonitor {
-        timeout: Config.session.timeouts.suspend
+        timeout: Config.session.timeouts.sleep
         enabled: !States.keepAwake
 
         onIsIdleChanged: {

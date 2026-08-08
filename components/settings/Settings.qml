@@ -27,6 +27,10 @@ FloatingWindow {
                          + " != " + section.children.length);
     }
 
+    function unit(v, word) {
+        return v + " " + word + (v === 1 ? "" : "s");
+    }
+
     minimumSize: "900x700"
     title: "Settings"
     color: "transparent"
@@ -1214,15 +1218,40 @@ FloatingWindow {
                                         }
 
                                         SettingRow {
-                                            label: "Lock"
+                                            label: "Screen"
                                             targetObject:
                                                 Config.session.timeouts
-                                            targetProperty: "lock"
+                                            targetProperty: "screen"
                                             valueType: "int"
-                                            sliderFrom: 1
-                                            sliderTo: 10000
+                                            sliderFrom: 2
+                                            sliderTo: 7200
                                             sliderStepSize: 1
                                             first: true
+                                            description: {
+                                                var s = Config.session.timeouts.screen;
+                                                if (s < 60)
+                                                    return qsTr(
+                                                                "Lock the system after %1.").arg(
+                                                                root.unit(s,
+                                                                          "second"));
+
+                                                var m = Math.round(s / 60);
+                                                var h = Math.floor(m / 60);
+                                                m = m % 60;
+
+                                                var parts = [];
+                                                if (h)
+                                                    parts.push(root.unit(h,
+                                                                         "hour"));
+                                                if (m)
+                                                    parts.push(root.unit(m,
+                                                                         "minute"));
+
+                                                return qsTr(
+                                                            "Lock the system after %1.").arg(
+                                                            parts.join(
+                                                                " and "));
+                                            }
                                         }
 
                                         SettingRow {
@@ -1230,22 +1259,72 @@ FloatingWindow {
                                             targetObject:
                                                 Config.session.timeouts
                                             targetProperty: "display"
-                                            sliderFrom: 3
-                                            sliderTo: 10000
+                                            sliderFrom: 5
+                                            sliderTo: 7200
                                             sliderStepSize: 1
                                             valueType: "int"
+                                            description: {
+                                                var s = Config.session.timeouts.display;
+                                                if (s < 60)
+                                                    return qsTr(
+                                                                "Turn off the display after %1.").arg(
+                                                                root.unit(s,
+                                                                          "second"));
+
+                                                var m = Math.round(s / 60);
+                                                var h = Math.floor(m / 60);
+                                                m = m % 60;
+
+                                                var parts = [];
+                                                if (h)
+                                                    parts.push(root.unit(h,
+                                                                         "hour"));
+                                                if (m)
+                                                    parts.push(root.unit(m,
+                                                                         "minute"));
+
+                                                return qsTr(
+                                                            "Turn off the display after %1.").arg(
+                                                            parts.join(
+                                                                " and "));
+                                            }
                                         }
 
                                         SettingRow {
-                                            label: "Suspend"
+                                            label: "Sleep"
                                             targetObject:
                                                 Config.session.timeouts
-                                            targetProperty: "suspend"
+                                            targetProperty: "sleep"
                                             valueType: "int"
-                                            sliderFrom: 5
-                                            sliderTo: 10000
+                                            sliderFrom: 10
+                                            sliderTo: 7200
                                             sliderStepSize: 1
                                             last: true
+                                            description: {
+                                                var s = Config.session.timeouts.sleep;
+                                                if (s < 60)
+                                                    return qsTr(
+                                                                "Put the machine to sleep after %1.").arg(
+                                                                root.unit(s,
+                                                                          "second"));
+
+                                                var m = Math.round(s / 60);
+                                                var h = Math.floor(m / 60);
+                                                m = m % 60;
+
+                                                var parts = [];
+                                                if (h)
+                                                    parts.push(root.unit(h,
+                                                                         "hour"));
+                                                if (m)
+                                                    parts.push(root.unit(m,
+                                                                         "minute"));
+
+                                                return qsTr(
+                                                            "Put the machine to sleep after %1.").arg(
+                                                            parts.join(
+                                                                " and "));
+                                            }
                                         }
                                     }
 
