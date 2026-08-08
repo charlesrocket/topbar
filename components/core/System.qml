@@ -48,8 +48,10 @@ Singleton {
     function getOsIcon() {
         if (root.osId === "freebsd")
             return "󰣠";
-        else
+        else if (root.osName.toLowerCase().includes("linux"))
             return "󰌽";
+        else
+            return "";
     }
 
     function updateUptime() {
