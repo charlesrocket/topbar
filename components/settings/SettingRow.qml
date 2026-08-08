@@ -22,13 +22,13 @@ RowLayout {
     property string description: ""
 
     function colorToHex(c) {
-        return "#%1%2%3%4".arg(Math.round(c.r * 255).toString(16).padStart(2,
+        return "#%1%2%3%4".arg(Math.round(c.a * 255).toString(16).padStart(2,
                                                                            '0')).arg(
-                    Math.round(c.g * 255).toString(16).padStart(2, '0')).arg(Math.round(
-                                                                                 c.b * 255).toString(
+                    Math.round(c.r * 255).toString(16).padStart(2, '0')).arg(Math.round(
+                                                                                 c.g * 255).toString(
                                                                                  16).padStart(
                                                                                  2, '0')).arg(
-                    Math.round(c.a * 255).toString(16).padStart(2, '0'));
+                    Math.round(c.b * 255).toString(16).padStart(2, '0'));
     }
 
     height: description === "" ? 32 : labelColumn.height + 16
