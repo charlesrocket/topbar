@@ -517,14 +517,14 @@ Item {
                         id: blinkBorder
 
                         property real borderOpacity: 0
+                        readonly property color blinkColor: Config.colors.accent
 
                         color: States.ecoMode ? Config.colors.bge :
                                                 Config.colors.bg
                         radius: Config.general.cornerRadius
                         border.width: 2
-                        border.color: Qt.rgba(Config.colors.accent.r,
-                                              Config.colors.accent.g,
-                                              Config.colors.accent.b,
+                        border.color: Qt.rgba(blinkColor.r, blinkColor.g,
+                                              blinkColor.b,
                                               blinkBorder.borderOpacity)
 
                         SequentialAnimation {
