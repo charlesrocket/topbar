@@ -33,7 +33,7 @@ jobs:
         run: >-
           find plugin -type f -name "*.cpp" -print0 |
           parallel -j$(nproc) -q0 --no-notice --will-cite --tty
-          clang-tidy -p build/compile_commands.json
+          clang-tidy -p build
 
   test:
     name: Test
