@@ -97,6 +97,27 @@ Rectangle {
                                 color: Config.colors.fg
                                 font.pixelSize: root.fontSize * 1.3
                                 font.family: "Symbols Nerd Font"
+                                font.bold: false
+                                Layout.preferredWidth: root.fontSize * 2
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                                text: "󰔚"
+                            }
+
+                            Text {
+                                color: Config.colors.fg
+                                font.family: Config.general.fontFamily
+                                font.bold: false
+                                font.pixelSize: root.fontSize
+                                text: System.uptime
+                                elide: Text.ElideRight
+                            }
+
+                            Text {
+                                color: Config.colors.fg
+                                font.pixelSize: root.fontSize * 1.3
+                                font.family: "Symbols Nerd Font"
+                                font.bold: false
                                 Layout.preferredWidth: root.fontSize * 2
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
@@ -106,26 +127,9 @@ Rectangle {
                             Text {
                                 color: Config.colors.fg
                                 font.family: Config.general.fontFamily
+                                font.bold: false
                                 font.pixelSize: root.fontSize
                                 text: System.osId
-                                elide: Text.ElideRight
-                            }
-
-                            Text {
-                                color: Config.colors.fg
-                                font.pixelSize: root.fontSize * 1.3
-                                font.family: "Symbols Nerd Font"
-                                Layout.preferredWidth: root.fontSize * 2
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-                                text: "󰜎"
-                            }
-
-                            Text {
-                                color: Config.colors.fg
-                                font.family: Config.general.fontFamily
-                                font.pixelSize: root.fontSize
-                                text: System.uptime
                                 elide: Text.ElideRight
                             }
                         }
@@ -134,18 +138,20 @@ Rectangle {
                             Text {
                                 color: Config.colors.fg
                                 font.family: "Symbols Nerd Font"
+                                font.bold: false
                                 Layout.preferredWidth: root.fontSize * 2
                                 font.pixelSize: root.fontSize * 1.3
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
-                                text: ""
+                                text: "󰟀"
                             }
 
                             Text {
                                 color: Config.colors.fg
-                                font.pixelSize: root.fontSize
                                 font.family: Config.general.fontFamily
-                                text: System.user
+                                font.bold: false
+                                font.pixelSize: root.fontSize
+                                text: System.desktop
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }
@@ -155,8 +161,9 @@ Rectangle {
                             Text {
                                 color: Config.colors.fg
                                 font.family: "Symbols Nerd Font"
-                                Layout.preferredWidth: root.fontSize * 2
+                                font.bold: false
                                 font.pixelSize: root.fontSize * 1.3
+                                Layout.preferredWidth: root.fontSize * 2
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
                                 text: ""
@@ -165,6 +172,7 @@ Rectangle {
                             Text {
                                 color: Config.colors.fg
                                 font.family: Config.general.fontFamily
+                                font.bold: false
                                 font.pixelSize: root.fontSize
                                 text: System.shell
                                 elide: Text.ElideRight
@@ -176,18 +184,20 @@ Rectangle {
                             Text {
                                 color: Config.colors.fg
                                 font.family: "Symbols Nerd Font"
+                                font.bold: false
                                 Layout.preferredWidth: root.fontSize * 2
                                 font.pixelSize: root.fontSize * 1.3
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
-                                text: "󰟀"
+                                text: ""
                             }
 
                             Text {
                                 color: Config.colors.fg
                                 font.family: Config.general.fontFamily
                                 font.pixelSize: root.fontSize
-                                text: System.desktop
+                                font.bold: false
+                                text: System.user
                                 elide: Text.ElideRight
                                 Layout.maximumWidth: 220
                             }
