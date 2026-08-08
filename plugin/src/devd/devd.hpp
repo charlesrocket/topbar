@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QObject>
-#include <QQmlEngine>
-#include <QSocketNotifier>
-#include <QString>
-#include <QTimer>
 #include <cstring>
+#include <qobject.h>
+#include <qqmlengine.h>
+#include <qsocketnotifier.h>
+#include <qstring.h>
+#include <qtimer.h>
 
 namespace topbar::devd {
 // NOLINTBEGIN(misc-include-cleaner)

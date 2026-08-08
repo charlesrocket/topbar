@@ -1,13 +1,13 @@
 #include "devd.hpp"
 
-#include <QObject>
-#include <QQmlEngine>
-#include <QSocketNotifier>
 #include <cerrno>
 #include <cstddef>
 #include <cstring>
 #include <qlogging.h>
 #include <qloggingcategory.h>
+#include <qobject.h>
+#include <qqmlengine.h>
+#include <qsocketnotifier.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>

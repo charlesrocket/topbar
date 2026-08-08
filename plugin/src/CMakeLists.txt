@@ -5,7 +5,6 @@ qml_module(topbar
     LIBRARIES
         Qt::Gui
         Qt::Quick
-        Qt::Concurrent
 )
 
 if (DEVD)
@@ -13,9 +12,7 @@ if (DEVD)
 endif()
 
 if (SYSTEM)
-    if (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
-        add_subdirectory(system)
-    endif()
+    add_subdirectory(system)
 endif()
 
 if (NETWORK)
