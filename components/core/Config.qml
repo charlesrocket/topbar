@@ -17,6 +17,7 @@ Singleton {
     property alias desktop: settings.desktop
     property alias dashboard: settings.dashboard
     property alias notifications: settings.notifications
+    property alias services: settings.services
     property alias lockscreen: settings.lockscreen
     property alias session: settings.session
     property alias workspaces: settings.workspaces
@@ -116,6 +117,11 @@ Singleton {
             property JsonObject notifications: JsonObject {
                 property bool enabled: true
                 property int width: 300
+            }
+
+            // services
+            property JsonObject services: JsonObject {
+                property bool github: false
             }
 
             // lockscreen

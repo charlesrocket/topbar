@@ -141,9 +141,9 @@ FloatingWindow {
 
                                 Repeater {
                                     model: ["General", "Colors", "Bar",
-                                        "Notifications", "Desktop", "Spaces",
-                                        "Dashboard", "Lockscreen", "Session",
-                                        "About"]
+                                        "Notifications", "Services", "Desktop",
+                                        "Spaces", "Dashboard", "Lockscreen",
+                                        "Session", "About"]
 
                                     delegate: Button {
                                         id: tabButton
@@ -201,7 +201,7 @@ FloatingWindow {
                     visible: false
 
                     Repeater {
-                        model: 10
+                        model: 11
 
                         TabButton {}
                     }
@@ -878,6 +878,45 @@ FloatingWindow {
                                             sliderFrom: 10
                                             sliderTo: 1000
                                             sliderStepSize: 1
+                                            last: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // services
+                        Loader {
+                            active: SwipeView.isCurrentItem
+                                    || SwipeView.isNextItem
+                                    || SwipeView.isPreviousItem
+
+                            sourceComponent: FadingScrollView {
+                                id: servicesScroll
+
+                                ColumnLayout {
+                                    width: servicesScroll.scrollView.width
+                                    spacing: root.gap
+
+                                    ColumnLayout {
+                                        id: servicesSection
+
+                                        implicitWidth: servicesScroll.width
+                                        spacing: root.gap
+
+                                        Component.onCompleted: {
+                                            root.validateSection(Config.services,
+                                                                 servicesSection,
+                                                                 "Config.services",
+                                                                 null);
+                                        }
+
+                                        SettingRow {
+                                            label: "GitHub"
+                                            targetObject: Config.services
+                                            targetProperty: "github"
+                                            valueType: "bool"
+                                            first: true
                                             last: true
                                         }
                                     }

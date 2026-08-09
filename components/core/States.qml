@@ -6,6 +6,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.UPower
 import Quickshell.Wayland
+import TopBar.Clients
 import TopBar.DWL
 
 import TopBar.Devd
@@ -17,6 +18,8 @@ Singleton {
     id: root
 
     readonly property Devd dev: Devd
+    readonly property GitHub github: Config.services.github ? GitHub : null
+    readonly property bool githubEnabled: Config.services.github
     readonly property string configDisk: Config.dashboard.disk
     readonly property string desktop: Quickshell.env(
                                           "XDG_CURRENT_DESKTOP").toLowerCase()
@@ -155,5 +158,11 @@ Singleton {
     }
     onFullScreenChanged: {
         ecoMode = fullScreen;
+    }
+    onGithubEnabledChanged: val => {
+        if (val) {
+            if (!Github.authenticated)
+                GitHub.login();
+        }
     }
 }
