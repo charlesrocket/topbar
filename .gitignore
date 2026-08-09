@@ -1,4 +1,10 @@
 /build
 /.cache
 
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+
 **/.qmlls.ini
