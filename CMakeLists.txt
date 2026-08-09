@@ -31,6 +31,7 @@ boption(SYSTEM "System" ON)
 boption(NETWORK "Network" ON REQUIRES DEVD)
 boption(OSS "OSS" ON REQUIRES DEVD)
 boption(DWL "Mango" ON)
+boption(CLIENTS "Clients" ON)
 boption(PCH "Precompiled headers" ON)
 boption(TESTING "Test suite" ON)
 

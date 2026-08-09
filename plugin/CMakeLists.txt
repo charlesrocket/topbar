@@ -12,6 +12,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     WaylandClient
     Quick
     QuickControls2
+    NetworkAuth
     Concurrent
     Test
 )
