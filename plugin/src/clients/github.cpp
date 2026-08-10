@@ -343,8 +343,7 @@ void GitHub::handleNotificationsReply(QRestReply &reply) {
         if (n.unread && !seenIds.contains(n.id)) {
             seenIds.insert(n.id);
             anyNew = true;
-            spawnNotification(n);
-            markThreadRead(n.id, /*alsoRemoveLocally=*/false);
+            this->spawnNotification(n);
         }
     }
 
@@ -367,6 +366,8 @@ void GitHub::spawnNotification(const GHNotification &notification) const {
         QStringLiteral("--app-name=GitHub"),
         QStringLiteral("--urgency=normal"),
         QStringLiteral("--expire-time=0"),
+        QStringLiteral("--hint=string:x-github-thread-id:%1")
+            .arg(notification.id),
         title,
         body,
     };
@@ -374,40 +375,27 @@ void GitHub::spawnNotification(const GHNotification &notification) const {
     QProcess::startDetached(QStringLiteral("notify-send"), args);
 }
 
-void GitHub::markThreadRead(const QString &threadId, bool alsoRemoveLocally) {
+void GitHub::markAsRead(const QString &threadId) {
     if (threadId.isEmpty()) { return; }
 
     const QString path = QStringLiteral("notifications/threads/") + threadId;
     const QNetworkRequest request = api.createRequest(path);
 
     QNetworkReply *reply = qnam->sendCustomRequest(request, "PATCH");
-    connect(
-        reply, &QNetworkReply::finished, this,
-        [this, reply, threadId, alsoRemoveLocally]() {
-            reply->deleteLater();
-            if (reply->error() != QNetworkReply::NoError) {
-                emit error(
-                    QStringLiteral(
-                        "Failed to mark GitHub notification %1 as read: %2"
-                    )
-                        .arg(threadId, reply->errorString())
-                );
+    connect(reply, &QNetworkReply::finished, this, [this, reply, threadId]() {
+        reply->deleteLater();
+        if (reply->error() != QNetworkReply::NoError) {
+            emit error(QStringLiteral(
+                           "Failed to mark GitHub notification %1 as read: %2"
+            )
+                           .arg(threadId, reply->errorString()));
 
-                return;
-            }
-
-            qCDebug(logGitHub)
-                << "Marked thread" << threadId << "as read on GitHub";
-
-            if (alsoRemoveLocally) {
-                for (qsizetype i = current.size() - 1; i >= 0; --i) {
-                    if (current.at(i).id == threadId) { current.removeAt(i); }
-                }
-
-                emit notificationsUpdated();
-            }
+            return;
         }
-    );
+
+        qCDebug(logGitHub) << "Marked thread" << threadId
+                           << "as read on GitHub";
+    });
 }
 
 void GitHub::markAllAsRead() {

@@ -92,7 +92,6 @@ class GitHub : public QObject {
 
     void poll();
     void handleNotificationsReply(QRestReply &reply);
-    void markThreadRead(const QString &threadId, bool alsoRemoveLocally);
     void spawnNotification(const GHNotification &notification) const;
 
     static GitHub *gInstance;

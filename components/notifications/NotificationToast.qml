@@ -4,6 +4,8 @@ import QtQuick.Layouts
 import Quickshell.Services.Notifications
 import Quickshell.Widgets
 
+import TopBar.Clients
+
 import qs
 import qs.core
 
@@ -36,8 +38,20 @@ Rectangle {
     signal dismissed
     signal expired
 
+    function markGithubReadIfNeeded() {
+        if (!root.ready || root.notification.appName !== "GitHub")
+            return;
+
+        const threadId = root.notification.hints
+              ? root.notification.hints["x-github-thread-id"] : undefined;
+
+        if (threadId)
+            GitHub.markAsRead(threadId);
+    }
+
     function dismiss() {
         expireTimer.stop();
+        markGithubReadIfNeeded();
         slideOutAnim.pendingDismiss = true;
         slideOutAnim.start();
     }
