@@ -194,7 +194,7 @@ Rectangle {
             right: parent.right
             top: parent.top
             bottom: parent.bottom
-            margins: 8
+            margins: 12
         }
 
         // text content
