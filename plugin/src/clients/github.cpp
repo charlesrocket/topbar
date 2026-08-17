@@ -199,6 +199,11 @@ void GitHub::setupOAuth() {
                     } else {
                         api.setBearerToken(oauth2->token().toUtf8());
                     }
+
+                    if (!oauth2->refreshToken().isEmpty()) {
+                        // refresh failed, fallback to device login
+                        login();
+                    }
                     break;
                 case QAbstractOAuth::Status::NotAuthenticated:
                     onOAuthDeauthenticated();
