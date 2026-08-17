@@ -915,9 +915,19 @@ FloatingWindow {
                                             label: "GitHub"
                                             targetObject: Config.services
                                             targetProperty: "github"
-                                            valueType: "bool"
+                                            valueType: "integration"
+                                            status: States.githubClient
+                                                    ? States.githubClient.authenticated :
+                                                      false
+                                            description:
+                                                "Subscribe to GitHub notifications."
                                             first: true
                                             last: true
+
+                                            onLogoutRequested: if (
+                                                                       States.githubClient)
+                                                                   States.githubClient.logout(
+                                                                               )
                                         }
                                     }
                                 }

@@ -3,7 +3,6 @@ pragma Singleton
 import QtQuick
 
 import Quickshell
-import Quickshell.Io
 import Quickshell.Services.UPower
 import Quickshell.Wayland
 import TopBar.Clients
@@ -18,7 +17,6 @@ Singleton {
     id: root
 
     readonly property Devd dev: Devd
-    readonly property GitHub github: Config.services.github ? GitHub : null
     readonly property bool githubEnabled: Config.services.github
     readonly property string configDisk: Config.dashboard.disk
     readonly property string desktop: Quickshell.env(
@@ -67,6 +65,7 @@ Singleton {
     property string osPrettyName
     property string userName
     property real cpuTemp: System.cpuTemp
+    property var githubClient: null
     property real pchTemp: System.pchTemp
     property real cpuUsage: System.cpuUsage
     property real cpuCores: System.cpuCores
@@ -158,11 +157,5 @@ Singleton {
     }
     onFullScreenChanged: {
         ecoMode = fullScreen;
-    }
-    onGithubEnabledChanged: val => {
-        if (val) {
-            if (!Github.authenticated)
-                GitHub.login();
-        }
     }
 }

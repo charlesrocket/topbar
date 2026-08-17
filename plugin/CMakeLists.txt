@@ -18,6 +18,7 @@ find_package(Qt6 REQUIRED COMPONENTS
 )
 
 find_package(PkgConfig REQUIRED)
+find_package(Qt6Keychain REQUIRED)
 find_package(WaylandScanner REQUIRED)
 
 find_program(WAYLAND_SCANNER_EXE

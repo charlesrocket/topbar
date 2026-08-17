@@ -21,6 +21,11 @@ RowLayout {
     property real sliderTo: 100
     property real sliderStepSize: 1
     property string description: ""
+    property var status: null
+    property bool integrationConnected: valueType === "integration" ? !!status :
+                                                                      false
+
+    signal logoutRequested
 
     function colorToHex(c) {
         return "#%1%2%3%4".arg(Math.round(c.a * 255).toString(16).padStart(2,
@@ -71,15 +76,18 @@ RowLayout {
 
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillHeight: false
-                Layout.preferredWidth: Math.max(labelText.implicitWidth,
+                Layout.preferredWidth: Math.max(labelText.implicitWidth + (
+                                                    root.valueType
+                                                    === "integration"
+                                                    ? statusDot.width + 8 : 0),
                                                 descriptionText.visible
                                                 ? descriptionText.implicitWidth :
                                                   0)
                 Layout.minimumWidth: 10
                 Layout.maximumWidth: root.descriptionMaxWidth
-                implicitHeight: labelText.implicitHeight + (
-                                    descriptionText.visible
-                                    ? descriptionText.implicitHeight + 2 : 0)
+                implicitHeight: labelRow.height + (descriptionText.visible
+                                                   ? descriptionText.implicitHeight
+                                                     + 2 : 0)
                 Layout.preferredHeight: implicitHeight
 
                 Behavior on Layout.preferredWidth {
@@ -89,25 +97,51 @@ RowLayout {
                     }
                 }
 
-                Text {
-                    id: labelText
+                Item {
+                    id: labelRow
 
                     anchors.left: parent.left
                     anchors.top: parent.top
                     width: parent.width
-                    elide: Text.ElideRight
-                    text: root.label
-                    font.family: Config.general.fontFamily
-                    font.pixelSize: Config.general.fontSize
-                    color: Config.colors.fg
-                    verticalAlignment: Text.AlignVCenter
+                    height: Math.max(labelText.implicitHeight, statusDot.height)
+
+                    Text {
+                        id: labelText
+
+                        anchors.left: parent.left
+                        width: parent.width
+                        elide: Text.ElideRight
+                        text: root.label
+                        font.family: Config.general.fontFamily
+                        font.pixelSize: Config.general.fontSize
+                        color: Config.colors.fg
+                        verticalAlignment: Text.AlignVCenter
+                    }
+
+                    Rectangle {
+                        id: statusDot
+
+                        visible: root.valueType === "integration"
+                        x: labelText.x + labelText.contentWidth + 8
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 8
+                        height: 8
+                        radius: 4
+                        color: root.integrationConnected ? "#4CAF50" : "#F44336"
+                        border.color: Qt.darker(color, 1.3)
+                        border.width: 1
+
+                        Behavior on color {
+                            ColAnim {}
+                        }
+                    }
                 }
 
                 Text {
                     id: descriptionText
 
                     anchors.left: parent.left
-                    anchors.top: labelText.bottom
+                    anchors.top: labelRow.bottom
                     anchors.topMargin: 2
                     width: parent.width
                     wrapMode: Text.WordWrap
@@ -149,7 +183,9 @@ RowLayout {
                                                               === "color"
                                                               || root.valueType
                                                               === "bool") ? 40 :
-                                                                            root.rowWidth
+                                                                            root.valueType
+                                                                            === "integration"
+                                                                            ? 110 : root.rowWidth
                 Layout.preferredHeight: 32
 
                 Behavior on Layout.preferredWidth {
@@ -525,6 +561,91 @@ RowLayout {
                     }
 
                     onToggled: root.targetObject[root.targetProperty] = checked
+                }
+
+                RowLayout {
+                    id: integrationRow
+
+                    visible: root.valueType === "integration"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    spacing: 10
+
+                    Button {
+                        id: logoutButton
+
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.preferredHeight: 24
+                        Layout.preferredWidth: logoutContent.implicitWidth + 20
+                        text: ""
+                        font.family: "Symbols Nerd Font"
+                        font.pixelSize: Config.general.fontSize - 3
+
+                        background: Rectangle {
+                            color: Config.colors.dark
+                            border.color: logoutButton.hovered
+                                          ? Config.colors.action :
+                                            Config.colors.border
+                            border.width: Config.general.borderWidth
+                            radius: Config.general.cornerRadius
+
+                            Behavior on border.color {
+                                ColAnim {}
+                            }
+                        }
+                        contentItem: Text {
+                            id: logoutContent
+
+                            text: logoutButton.text
+                            font: logoutButton.font
+                            color: Config.colors.fg
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        onClicked: root.logoutRequested()
+                    }
+
+                    Switch {
+                        id: integrationSwitch
+
+                        Layout.alignment: Qt.AlignVCenter
+                        implicitHeight: 24
+                        checked: root.targetObject[root.targetProperty]
+
+                        indicator: Rectangle {
+                            implicitWidth: 48
+                            implicitHeight: 24
+                            radius: 12
+                            color: parent.checked ? Config.colors.accent :
+                                                    Config.colors.passive
+                            border.color: Config.colors.border
+                            border.width: 1
+
+                            Behavior on color {
+                                ColAnim {}
+                            }
+
+                            Rectangle {
+                                x: parent.parent.checked ? parent.width - width
+                                                           - 2 : 2
+                                y: 2
+                                width: 20
+                                height: 20
+                                radius: 10
+                                color: Config.colors.fg
+
+                                Behavior on x {
+                                    NumberAnimation {
+                                        duration: Config.general.animDuration
+                                    }
+                                }
+                            }
+                        }
+
+                        onToggled: root.targetObject[root.targetProperty]
+                                   = checked
+                    }
                 }
             }
         }

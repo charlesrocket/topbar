@@ -68,6 +68,10 @@ Scope {
         sourceComponent: Launcher {}
     }
 
+    Integrations {
+        id: clients
+    }
+
     Session {
         SessionButton {
             command: Config.session.commands.lock

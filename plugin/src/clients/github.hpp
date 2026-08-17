@@ -1,22 +1,24 @@
 #pragma once
 
 #include <QDateTime>
-#include <QJsonObject>
 #include <QList>
-#include <QNetworkAccessManager>
+#include <QLoggingCategory>
 #include <QNetworkRequestFactory>
 #include <QOAuth2DeviceAuthorizationFlow>
+#include <QObject>
+#include <QRestAccessManager>
+#include <QRestReply>
 #include <QSet>
 #include <QSettings>
 #include <QString>
+#include <QStringLiteral>
 #include <QTimer>
 #include <QVariantList>
+#include <QVariantMap>
+#include <qnetworkaccessmanager.h>
 #include <qqmlintegration.h>
 
-QT_FORWARD_DECLARE_CLASS(QRestAccessManager)
-QT_FORWARD_DECLARE_CLASS(QRestReply)
-
-namespace topbar::Clients {
+namespace topbar::clients {
 
 struct GHNotification {
     QString id;
@@ -32,36 +34,29 @@ struct GHNotification {
 };
 
 class GitHub : public QObject {
-    Q_OBJECT
     QML_ELEMENT
-    QML_SINGLETON
+    Q_OBJECT
 
-    // clang-format off
-    Q_PROPERTY(bool authenticated READ isAuthenticated NOTIFY authenticatedChanged)
-    Q_PROPERTY(int pollIntervalSeconds READ pollIntervalSeconds WRITE setPollIntervalSeconds NOTIFY pollIntervalSecondsChanged)
-    Q_PROPERTY(QVariantList notifications READ notificationsVariant NOTIFY notificationsUpdated)
-    // clang-format on
+    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
+    Q_PROPERTY(bool authenticated READ authenticated NOTIFY authenticatedChanged
+    )
+    Q_PROPERTY(int pollIntervalSeconds READ pollIntervalSeconds WRITE
+                   setPollIntervalSeconds NOTIFY pollIntervalSecondsChanged)
+    Q_PROPERTY(QVariantList notifications READ notificationsVariant NOTIFY
+                   notificationsUpdated)
 
   public:
-    static GitHub *
-    create(QQmlEngine *engine, QJSEngine * /*_*/ /*_*/ /*_*/ /*_*/) {
-        Q_UNUSED(engine)
-        return instance();
-    }
-
-    static GitHub *instance();
-
+    explicit GitHub(QObject *parent = nullptr);
     ~GitHub() override;
-    GitHub(const GitHub &) = delete;
-    GitHub &operator=(const GitHub &) = delete;
-    GitHub(GitHub &&) = delete;
-    GitHub &operator=(GitHub &&) = delete;
 
-    [[nodiscard]] bool isAuthenticated() const { return authenticated; }
-    [[nodiscard]] int pollIntervalSeconds() const {
-        return pollTimer.interval() / 1000;
-    }
+    void setEnabled(bool value);
+
+    [[nodiscard]] bool enabled() const;
+    [[nodiscard]] bool authenticated() const;
+
+    [[nodiscard]] int pollIntervalSeconds() const;
     void setPollIntervalSeconds(int seconds);
+
     [[nodiscard]] QVariantList notificationsVariant() const;
 
     Q_INVOKABLE void login();
@@ -71,7 +66,7 @@ class GitHub : public QObject {
     Q_INVOKABLE void markAllAsRead();
 
   signals:
-    void error(const QString &errorString);
+    void enabledChanged();
     void authenticatedChanged();
     void pollIntervalSecondsChanged();
     void notificationsUpdated();
@@ -79,14 +74,21 @@ class GitHub : public QObject {
         const QString &verificationUrl, const QString &userCode
     );
 
+    void error(const QString &message);
+
   private:
-    explicit GitHub(QObject *parent = nullptr);
+    void start();
+    void stop();
 
     void setupApi();
     void setupOAuth();
-    void applyToken(const QString &accessToken);
 
-    void loadPersistedState();
+    void loadNotificationCache();
+    void loadOAuthTokens();
+
+    void onOAuthGranted();
+    void onOAuthDeauthenticated();
+
     void persistSeenIds();
     void persistLastPoll();
 
@@ -94,24 +96,21 @@ class GitHub : public QObject {
     void handleNotificationsReply(QRestReply &reply);
     void spawnNotification(const GHNotification &notification) const;
 
-    static GitHub *gInstance;
-
-    QString clientId;
-    QString clientSecret;
+    QSettings settings;
     QNetworkAccessManager *qnam = nullptr;
+    QOAuth2DeviceAuthorizationFlow *oauth2 = nullptr;
     QRestAccessManager *network = nullptr;
     QNetworkRequestFactory api;
-    QOAuth2DeviceAuthorizationFlow oauth2;
 
     QTimer pollTimer;
-    QSettings settings;
 
-    QSet<QString> seenIds;
     QList<GHNotification> current;
+    QSet<QString> seenIds;
     QString lastModified;
     QString etag;
 
-    bool authenticated = false;
+    bool mEnabled = false;
+    bool mAuthenticated = false;
 };
 
-} // namespace topbar::Clients
+} // namespace topbar::clients

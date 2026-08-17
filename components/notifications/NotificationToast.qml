@@ -4,8 +4,6 @@ import QtQuick.Layouts
 import Quickshell.Services.Notifications
 import Quickshell.Widgets
 
-import TopBar.Clients
-
 import qs
 import qs.core
 
@@ -46,7 +44,8 @@ Rectangle {
               ? root.notification.hints["x-github-thread-id"] : undefined;
 
         if (threadId)
-            GitHub.markAsRead(threadId);
+            if (States.githubClient)
+                States.githubClient.markAsRead(threadId);
     }
 
     function dismiss() {

@@ -16,9 +16,10 @@ jobs:
       - name: Install dependencies
         run: >-
           sudo apt update && sudo apt install -y
-          clang-tidy clang-format gcc cmake ninja-build parallel
-          qt6-base-dev qt6-declarative-dev
+          clang-tidy clang-format gcc cmake jq ninja-build parallel
+          qt6-base-dev qt6-declarative-dev qt6-networkauth-dev
           qt6-wayland qt6-wayland-dev qt6-wayland-dev-tools
+          qtkeychain-qt6-dev
           wayland-protocols
 
       - name: Check format
@@ -26,13 +27,14 @@ jobs:
 
       - name: Build
         run: >-
-          cmake -B build -G Ninja -DENABLE_PCH=false &&
+          cmake -B build -G Ninja -DCLIENTS=false -DENABLE_PCH=false &&
           cmake --build build
 
       - name: Run clang-tidy
         run: >-
-          find plugin -type f -name "*.cpp" -print0 |
-          parallel -j$(nproc) -q0 --no-notice --will-cite --tty
+          jq -r '.[].file' build/compile_commands.json |
+          grep '/plugin/src/' | grep -v '/build/' |
+          parallel -j$(nproc) --no-notice --will-cite --tty
           clang-tidy -p build
 
   test:
