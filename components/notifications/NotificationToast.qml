@@ -36,21 +36,29 @@ Rectangle {
     signal dismissed
     signal expired
 
-    function markGithubReadIfNeeded() {
-        if (!root.ready || root.notification.appName !== "GitHub")
+    function markReadIfNeeded() {
+        if (!root.ready || root.notification.appName !== "GitHub"
+                || root.notification.appName !== "Codeberg")
             return;
 
-        const threadId = root.notification.hints
+        const cbThreadId = root.notification.hints
+              ? root.notification.hints["x-codeberg-thread-id"] : undefined;
+
+        if (cbThreadId)
+            if (States.codebergClient)
+                States.codebergClient.markAsRead(cbThreadId);
+
+        const ghThreadId = root.notification.hints
               ? root.notification.hints["x-github-thread-id"] : undefined;
 
-        if (threadId)
+        if (ghThreadId)
             if (States.githubClient)
-                States.githubClient.markAsRead(threadId);
+                States.githubClient.markAsRead(ghThreadId);
     }
 
     function dismiss() {
         expireTimer.stop();
-        markGithubReadIfNeeded();
+        markReadIfNeeded();
         slideOutAnim.pendingDismiss = true;
         slideOutAnim.start();
     }
