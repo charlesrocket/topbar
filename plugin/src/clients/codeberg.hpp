@@ -50,6 +50,11 @@ class Codeberg : public QObject {
     explicit Codeberg(QObject *parent = nullptr);
     ~Codeberg() override;
 
+    Codeberg(const Codeberg &) = delete;
+    Codeberg &operator=(const Codeberg &) = delete;
+    Codeberg(Codeberg &&) = delete;
+    Codeberg &operator=(Codeberg &&) = delete;
+
     void setEnabled(bool value);
     [[nodiscard]] bool enabled() const;
     [[nodiscard]] bool authenticated() const;

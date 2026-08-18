@@ -49,6 +49,11 @@ class GitHub : public QObject {
     explicit GitHub(QObject *parent = nullptr);
     ~GitHub() override;
 
+    GitHub(const GitHub &) = delete;
+    GitHub &operator=(const GitHub &) = delete;
+    GitHub(GitHub &&) = delete;
+    GitHub &operator=(GitHub &&) = delete;
+
     void setEnabled(bool value);
 
     [[nodiscard]] bool enabled() const;
