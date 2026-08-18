@@ -12,6 +12,7 @@ if (PCH)
         <qloggingcategory.h>
         <qprocess.h>
         <qproperty.h>
+        <qsettings.h>
         <qstring.h>
         <qvariant.h>
         <qtimer.h>
