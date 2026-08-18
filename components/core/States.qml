@@ -16,8 +16,8 @@ import qs.core
 Singleton {
     id: root
 
-    property var codebergClient: null
-    property var githubClient: null
+    property Item codebergClient: null
+    property Item githubClient: null
     readonly property Devd dev: Devd
     readonly property bool codebergEnabled: Config.services.codeberg
     readonly property bool githubEnabled: Config.services.github
@@ -45,7 +45,7 @@ Singleton {
     property bool launcherPresent: false
     property bool dashboardPresent: false
     property bool dropdownRevealed: false
-    property var dropdownOwner: null
+    property Item dropdownOwner: null
     property int dropdownX: 0
     property int dropdownY: 0
     property int dropdownHeight: 0
@@ -74,13 +74,13 @@ Singleton {
     property real diskUsage: System.diskUsage
     property string diskMountPoint: System.diskMountPoint
     property real memoryUsage: System.memoryUsage
-    property var cpu: System.cpu
-    property var gpu: System.gpu
-    property var mem: System.installedMemory
+    property real cpu: System.cpu
+    property real gpu: System.gpu
+    property real mem: System.installedMemory
     property var jails: System.jails
     property int jailCount: System.jails.length
     property string uptime: "00:00"
-    property var battery: QtObject {
+    property QtObject battery: QtObject {
         readonly property var device: UPower.displayDevice
         readonly property int percentage: device?.ready ? Math.round(
                                                               device.percentage
