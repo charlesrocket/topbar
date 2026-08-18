@@ -123,9 +123,8 @@ RowLayout {
 
                         visible: root.valueType === "integration"
                         x: labelText.x + labelText.contentWidth + 8
-                        anchors.verticalCenter: parent.verticalCenter
                         width: 8
-                        height: 8
+                        height: 14
                         radius: 4
                         color: root.integrationConnected ? "#4CAF50" : "#F44336"
                         border.color: Qt.darker(color, 1.3)
