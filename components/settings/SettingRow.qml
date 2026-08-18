@@ -21,8 +21,8 @@ RowLayout {
     property real sliderTo: 100
     property real sliderStepSize: 1
     property string description: ""
-    property var status: null
-    property bool integrationConnected: valueType === "integration" ? !!status :
+    property bool status: false
+    property bool integrationConnected: valueType === "integration" ? status :
                                                                       false
 
     signal logoutRequested
@@ -126,7 +126,8 @@ RowLayout {
                         width: 8
                         height: 14
                         radius: 4
-                        color: root.integrationConnected ? "#4CAF50" : "#F44336"
+                        color: root.integrationConnected ? Config.colors.green :
+                                                           Config.colors.red
                         border.color: Qt.darker(color, 1.3)
                         border.width: 1
 

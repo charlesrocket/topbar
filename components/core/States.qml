@@ -5,7 +5,6 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.UPower
 import Quickshell.Wayland
-import TopBar.Clients
 import TopBar.DWL
 
 import TopBar.Devd
@@ -16,8 +15,8 @@ import qs.core
 Singleton {
     id: root
 
-    property Item codebergClient: null
-    property Item githubClient: null
+    property var codebergClient: null
+    property var githubClient: null
     readonly property Devd dev: Devd
     readonly property bool codebergEnabled: Config.services.codeberg
     readonly property bool githubEnabled: Config.services.github
