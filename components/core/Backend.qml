@@ -68,6 +68,7 @@ Scope {
         sourceComponent: Launcher {}
     }
 
+    // services
     Integrations {
         id: clients
     }

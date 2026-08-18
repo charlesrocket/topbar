@@ -1,9 +1,6 @@
-#include "github.hpp"
+#include "codeberg.hpp"
 
-#include <QAbstractOAuth2>
-#include <QAbstractOAuth>
-#include <QDate>
-#include <QDesktopServices>
+#include <QHostAddress>
 #include <QHttpHeaders>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -13,7 +10,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QOAuth2DeviceAuthorizationFlow>
 #include <QProcess>
 #include <QRestAccessManager>
 #include <QRestReply>
@@ -28,57 +24,59 @@
 namespace {
 using namespace Qt::StringLiterals;
 
-constexpr auto GITHUB_CLIENT_ID = "Ov23ligQg7RPhr4kPI8Q";
-constexpr auto APIBASEURL = "https://api.github.com";
+constexpr auto CODEBERG_CLIENT_ID = "8f9c65aa-389c-470f-a3b3-e4111e47b8af";
+constexpr auto APIBASEURL = "https://codeberg.org/api/v1";
 constexpr auto NOTIFICATIONSPATH = "/notifications";
-constexpr auto KEYCHAIN_SERVICE = "topbar-github-client";
+constexpr auto KEYCHAIN_SERVICE = "topbar-codeberg-client";
 constexpr int DEFAULTPOLLINTERVALSEC = 90;
 constexpr int MINPOLLINTERVALSEC = 60;
 
-QUrl githubDeviceCodeUrl() {
-    return QUrl(QStringLiteral("https://github.com/login/device/code"));
+QUrl codebergAuthorizationUrl() {
+    return QUrl(QStringLiteral("https://codeberg.org/login/oauth/authorize"));
 }
 
-QUrl githubTokenUrl() {
-    return QUrl(QStringLiteral("https://github.com/login/oauth/access_token"));
+QUrl codebergTokenUrl() {
+    return QUrl(QStringLiteral("https://codeberg.org/login/oauth/access_token")
+    );
 }
 
 } // namespace
 
 namespace topbar::clients {
 
-Q_LOGGING_CATEGORY(logGitHub, "topbar.clients.github", QtInfoMsg)
+Q_LOGGING_CATEGORY(logCodeberg, "topbar.clients.codeberg", QtInfoMsg)
 
-QVariantMap GHNotification::toVariantMap() const {
+QVariantMap CBNotification::toVariantMap() const {
     return {
         {          u"id"_s,           id},
-        {      u"reason"_s,       reason},
         {u"subjectTitle"_s, subjectTitle},
         { u"subjectType"_s,  subjectType},
+        {u"subjectState"_s, subjectState},
         {u"repoFullName"_s, repoFullName},
         {     u"htmlUrl"_s,      htmlUrl},
         {   u"updatedAt"_s,    updatedAt},
         {      u"unread"_s,       unread},
+        {      u"pinned"_s,       pinned},
     };
 }
 
-GitHub::GitHub(QObject *parent)
+Codeberg::Codeberg(QObject *parent)
     : QObject(parent),
-      settings(QStringLiteral("topbar"), QStringLiteral("github-client")) {
-    qCInfo(logGitHub) << "Loading GitHub client";
+      settings(QStringLiteral("topbar"), QStringLiteral("codeberg-client")) {
+    qCInfo(logCodeberg) << "Loading Codeberg client";
 
     pollTimer.setTimerType(Qt::VeryCoarseTimer);
-    connect(&pollTimer, &QTimer::timeout, this, &GitHub::poll);
+    connect(&pollTimer, &QTimer::timeout, this, &Codeberg::poll);
 
     loadNotificationCache();
 }
 
-GitHub::~GitHub() { stop(); }
+Codeberg::~Codeberg() { stop(); }
 
-bool GitHub::authenticated() const { return this->mAuthenticated; }
-bool GitHub::enabled() const { return this->mEnabled; }
+bool Codeberg::authenticated() const { return this->mAuthenticated; }
+bool Codeberg::enabled() const { return this->mEnabled; }
 
-void GitHub::setEnabled(bool value) {
+void Codeberg::setEnabled(bool value) {
     if (this->enabled() == value) { return; }
 
     this->mEnabled = value;
@@ -87,10 +85,10 @@ void GitHub::setEnabled(bool value) {
     this->enabled() ? start() : stop();
 }
 
-void GitHub::start() {
+void Codeberg::start() {
     if (qnam) { return; }
 
-    qCInfo(logGitHub) << "Starting GitHub client";
+    qCInfo(logCodeberg) << "Starting Codeberg client";
 
     qnam = new QNetworkAccessManager(this);
     network = new QRestAccessManager(qnam, this);
@@ -100,12 +98,11 @@ void GitHub::start() {
     loadOAuthTokens();
 }
 
-void GitHub::stop() {
+void Codeberg::stop() {
     if (!qnam) { return; }
 
-    qCInfo(logGitHub) << "Stopping GitHub client";
+    qCInfo(logCodeberg) << "Stopping Codeberg client";
     pollTimer.stop();
-    if (oauth2) { oauth2->stopTokenPolling(); }
     persistSeenIds();
 
     delete network;
@@ -113,6 +110,8 @@ void GitHub::stop() {
 
     delete oauth2;
     oauth2 = nullptr;
+
+    replyHandler = nullptr;
 
     delete qnam;
     qnam = nullptr;
@@ -122,66 +121,55 @@ void GitHub::stop() {
     emit authenticatedChanged();
 }
 
-void GitHub::setupApi() {
+void Codeberg::setupApi() {
     api.setBaseUrl(QUrl(APIBASEURL));
 
     QHttpHeaders headers;
+    headers.append(QHttpHeaders::WellKnownHeader::Accept, "application/json");
     headers.append(
-        QHttpHeaders::WellKnownHeader::Accept, "application/vnd.github+json"
+        QHttpHeaders::WellKnownHeader::UserAgent, "topbar-codeberg-client/1.0"
     );
 
-    headers.append(
-        QHttpHeaders::WellKnownHeader::UserAgent, "topbar-github-client/1.0"
-    );
-
-    headers.append("X-GitHub-Api-Version", "2026-03-10");
     api.setCommonHeaders(headers);
 }
 
-void GitHub::setupOAuth() {
+void Codeberg::setupOAuth() {
     if (oauth2) { return; }
 
-    qCInfo(logGitHub) << "Configuring device authorization flow";
+    qCInfo(logCodeberg) << "Configuring authorization code + PKCE flow";
 
-    oauth2 = new QOAuth2DeviceAuthorizationFlow(qnam, this);
-    oauth2->setAuthorizationUrl(githubDeviceCodeUrl());
-    oauth2->setTokenUrl(githubTokenUrl());
-    oauth2->setClientIdentifier(QString::fromUtf8(GITHUB_CLIENT_ID));
-    oauth2->setRequestedScopeTokens({"notifications"});
-    oauth2->setNetworkRequestModifier(
-        this, [](QNetworkRequest &request, QAbstractOAuth::Stage
-              ) { request.setRawHeader("Accept", "application/json"); }
-    );
-
+    oauth2 = new QOAuth2AuthorizationCodeFlow(qnam, this);
+    oauth2->setAuthorizationUrl(codebergAuthorizationUrl());
+    oauth2->setTokenUrl(codebergTokenUrl());
+    oauth2->setClientIdentifier(QString::fromUtf8(CODEBERG_CLIENT_ID));
+    oauth2->setPkceMethod(QOAuth2AuthorizationCodeFlow::PkceMethod::S256);
     oauth2->setAutoRefresh(true);
 
+    // Forgejo's documentation states that
+    // auth scopes are NOT implemented!
+    oauth2->setRequestedScopeTokens({"read:notification"}); // for posterity
+
+    replyHandler =
+        new QOAuthHttpServerReplyHandler(QHostAddress::LocalHost, 0, oauth2);
+    oauth2->setReplyHandler(replyHandler);
+
     connect(
-        oauth2, &QOAuth2DeviceAuthorizationFlow::authorizeWithUserCode, this,
-        [this](
-            const QUrl &verificationUrl, const QString &userCode,
-            const QUrl &completeVerificationUrl
-        ) {
-            qCInfo(logGitHub) << "Device authorization link:" << verificationUrl
-                              << "code:" << userCode;
+        oauth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, this,
+        [this](const QUrl &url) {
+            qCInfo(logCodeberg)
+                << "Opening the browser for authorization:" << url;
 
-            emit deviceAuthorizationRequired(
-                verificationUrl.toString(), userCode
-            );
-
-            const QUrl openUrl = completeVerificationUrl.isValid()
-                                   ? completeVerificationUrl
-                                   : verificationUrl;
+            emit authorizationRequired(url.toString());
 
             QProcess::startDetached(
-                "xdg-open", QStringList() << openUrl.toString()
+                "xdg-open", QStringList() << url.toString()
             );
 
             const QStringList args = {
-                QStringLiteral("--app-name=GitHub"),
+                QStringLiteral("--app-name=Codeberg"),
                 QStringLiteral("--urgency=critical"),
                 QStringLiteral("--expire-time=20000"),
-                QStringLiteral("Authorization code"),
-                userCode,
+                QStringLiteral("Authorize in the browser"),
             };
 
             QProcess::startDetached(QStringLiteral("notify-send"), args);
@@ -194,15 +182,10 @@ void GitHub::setupOAuth() {
             switch (status) {
                 case QAbstractOAuth::Status::Granted:
                     if (!this->authenticated()) {
-                        qCInfo(logGitHub) << "Authorization granted";
+                        qCInfo(logCodeberg) << "Authorization granted";
                         onOAuthGranted();
                     } else {
                         api.setBearerToken(oauth2->token().toUtf8());
-                    }
-
-                    if (!oauth2->refreshToken().isEmpty()) {
-                        // refresh failed, fallback to device login
-                        login();
                     }
                     break;
                 case QAbstractOAuth::Status::NotAuthenticated:
@@ -229,8 +212,9 @@ void GitHub::setupOAuth() {
                 job, &QKeychain::Job::finished, this,
                 [](QKeychain::Job *job) {
                     if (job->error() != QKeychain::NoError) {
-                        qCWarning(logGitHub) << "Failed to store access token:"
-                                             << job->errorString();
+                        qCWarning(logCodeberg)
+                            << "Failed to store access token:"
+                            << job->errorString();
                     }
                 }
             );
@@ -256,8 +240,9 @@ void GitHub::setupOAuth() {
                 job, &QKeychain::Job::finished, this,
                 [](QKeychain::Job *job) {
                     if (job->error() != QKeychain::NoError) {
-                        qCWarning(logGitHub) << "Failed to store refresh token:"
-                                             << job->errorString();
+                        qCWarning(logCodeberg)
+                            << "Failed to store refresh token:"
+                            << job->errorString();
                     }
                 }
             );
@@ -268,14 +253,15 @@ void GitHub::setupOAuth() {
 
     connect(
         oauth2, &QAbstractOAuth2::serverReportedErrorOccurred,
-        [](const QString &err, const QString &errorDescription, const QUrl &) {
-            qCWarning(logGitHub)
+        [this](const QString &err, const QString &errorDescription, const QUrl &) {
+            qCWarning(logCodeberg)
                 << "OAuth server error:" << err << errorDescription;
+            emit error(errorDescription.isEmpty() ? err : errorDescription);
         }
     );
 }
 
-void GitHub::loadOAuthTokens() {
+void Codeberg::loadOAuthTokens() {
     if (this->authenticated()) { return; }
 
     auto *job =
@@ -295,7 +281,7 @@ void GitHub::loadOAuthTokens() {
             return;
         }
 
-        qCInfo(logGitHub) << "Setting OAuth refresh token";
+        qCInfo(logCodeberg) << "Setting OAuth refresh token";
 
         auto *refreshJob = new QKeychain::ReadPasswordJob(
             QLatin1String(KEYCHAIN_SERVICE), this
@@ -326,17 +312,17 @@ void GitHub::loadOAuthTokens() {
     job->start();
 }
 
-void GitHub::login() {
+void Codeberg::login() {
     if (!oauth2) {
-        qCWarning(logGitHub) << "Cannot start login (device flow not ready)";
+        qCWarning(logCodeberg) << "Cannot start login (OAuth flow not ready)";
         return;
     }
 
-    qCInfo(logGitHub) << "Initiating device flow";
+    qCInfo(logCodeberg) << "Initiating authorization code + PKCE flow";
     oauth2->grant();
 }
 
-void GitHub::onOAuthGranted() {
+void Codeberg::onOAuthGranted() {
     if (this->authenticated()) { return; }
 
     api.setBearerToken(oauth2->token().toUtf8());
@@ -344,7 +330,7 @@ void GitHub::onOAuthGranted() {
     emit authenticatedChanged();
 
     const QStringList args = {
-        QStringLiteral("--app-name=GitHub"),
+        QStringLiteral("--app-name=Codeberg"),
         QStringLiteral("--urgency=low"),
         QStringLiteral("Logged in"),
     };
@@ -357,7 +343,7 @@ void GitHub::onOAuthGranted() {
     if (!pollTimer.isActive()) { pollTimer.start(); }
 }
 
-void GitHub::onOAuthDeauthenticated() {
+void Codeberg::onOAuthDeauthenticated() {
     if (this->authenticated()) {
         this->mAuthenticated = false;
         emit authenticatedChanged();
@@ -366,11 +352,10 @@ void GitHub::onOAuthDeauthenticated() {
     pollTimer.stop();
 }
 
-void GitHub::logout() {
+void Codeberg::logout() {
     pollTimer.stop();
 
     if (oauth2) {
-        oauth2->stopTokenPolling();
         oauth2->setToken(QString());
         oauth2->setRefreshToken(QString());
     }
@@ -391,10 +376,10 @@ void GitHub::logout() {
 
     this->mAuthenticated = false;
     emit authenticatedChanged();
-    qCInfo(logGitHub) << "Logged out";
+    qCInfo(logCodeberg) << "Logged out";
 
     const QStringList args = {
-        QStringLiteral("--app-name=GitHub"),
+        QStringLiteral("--app-name=Codeberg"),
         QStringLiteral("--urgency=low"),
         QStringLiteral("Logged out"),
     };
@@ -402,35 +387,33 @@ void GitHub::logout() {
     QProcess::startDetached(QStringLiteral("notify-send"), args);
 }
 
-void GitHub::refresh() { poll(); }
+void Codeberg::refresh() { poll(); }
 
-int GitHub::pollIntervalSeconds() const { return pollTimer.interval() / 1000; }
+int Codeberg::pollIntervalSeconds() const {
+    return pollTimer.interval() / 1000;
+}
 
-void GitHub::setPollIntervalSeconds(int seconds) {
+void Codeberg::setPollIntervalSeconds(int seconds) {
     seconds = qMax(seconds, MINPOLLINTERVALSEC);
     if (pollTimer.interval() / 1000 == seconds) { return; }
     pollTimer.setInterval(seconds * 1000);
     emit pollIntervalSecondsChanged();
 }
 
-QVariantList GitHub::notificationsVariant() const {
+QVariantList Codeberg::notificationsVariant() const {
     QVariantList list;
     list.reserve(current.size());
     for (const auto &n : current) { list.append(n.toVariantMap()); }
     return list;
 }
 
-void GitHub::loadNotificationCache() {
+void Codeberg::loadNotificationCache() {
     const QStringList ids =
         settings.value(QStringLiteral("notifications/seenIds")).toStringList();
     seenIds = QSet<QString>(ids.begin(), ids.end());
-
-    lastModified =
-        settings.value(QStringLiteral("notifications/lastModified")).toString();
-    etag = settings.value(QStringLiteral("notifications/etag")).toString();
 }
 
-void GitHub::persistSeenIds() {
+void Codeberg::persistSeenIds() {
     settings.setValue(
         QStringLiteral("notifications/seenIds"),
         QStringList(seenIds.begin(), seenIds.end())
@@ -438,70 +421,33 @@ void GitHub::persistSeenIds() {
     settings.sync();
 }
 
-void GitHub::persistLastPoll() {
-    settings.setValue(
-        QStringLiteral("notifications/lastModified"), lastModified
-    );
-    settings.setValue(QStringLiteral("notifications/etag"), etag);
-    settings.sync();
-}
-
-void GitHub::poll() {
+void Codeberg::poll() {
     if (!this->authenticated() || !network) { return; }
 
     QUrlQuery query;
-    query.addQueryItem(QStringLiteral("all"), QStringLiteral("false"));
     query.addQueryItem(
-        QStringLiteral("participating"), QStringLiteral("false")
+        QStringLiteral("status-types"), QStringLiteral("unread")
     );
 
-    QNetworkRequest request =
+    const QNetworkRequest request =
         api.createRequest(QString(NOTIFICATIONSPATH), query);
-
-    if (!lastModified.isEmpty()) {
-        request.setRawHeader("If-Modified-Since", lastModified.toUtf8());
-    }
-    if (!etag.isEmpty()) {
-        request.setRawHeader("If-None-Match", etag.toUtf8());
-    }
 
     network->get(request, this, [this](QRestReply &reply) {
         handleNotificationsReply(reply);
     });
 }
 
-void GitHub::handleNotificationsReply(QRestReply &reply) {
+void Codeberg::handleNotificationsReply(QRestReply &reply) {
     if (!network) { return; }
 
-    if (const auto *response = reply.networkReply()) {
-        if (const QByteArray pollInterval =
-                response->rawHeader("X-Poll-Interval");
-            !pollInterval.isEmpty()) {
-            setPollIntervalSeconds(pollInterval.toInt());
-        }
-
-        if (const QByteArray newLastModified =
-                response->rawHeader("Last-Modified");
-            !newLastModified.isEmpty()) {
-            lastModified = QString::fromUtf8(newLastModified);
-        }
-
-        if (const QByteArray newEtag = response->rawHeader("ETag");
-            !newEtag.isEmpty()) {
-            etag = QString::fromUtf8(newEtag);
-        }
-    }
-
-    if (reply.httpStatus() == 304) { return; }
-
     if (reply.httpStatus() == 401) {
-        qCWarning(logGitHub) << "Access token rejected";
+        qCWarning(logCodeberg) << "Access token rejected";
         if (oauth2 && !oauth2->refreshToken().isEmpty()) {
-            qCInfo(logGitHub) << "Refreshing the token";
+            qCInfo(logCodeberg) << "Refreshing the token";
             oauth2->refreshTokens();
         } else {
-            qCWarning(logGitHub) << "No refresh token, authorizing";
-            logout();
+            qCWarning(logCodeberg) << "No refresh token, re-authorizing";
+            onOAuthDeauthenticated();
             login();
         }
 
@@ -509,7 +455,7 @@ void GitHub::handleNotificationsReply(QRestReply &reply) {
     }
 
     if (!reply.isSuccess()) {
-        qCWarning(logGitHub)
+        qCWarning(logCodeberg)
             << "Failed to fetch notifications:" << reply.errorString();
 
         return;
@@ -518,26 +464,25 @@ void GitHub::handleNotificationsReply(QRestReply &reply) {
     const auto json = reply.readJson();
     if (!json || !json->isArray()) { return; }
 
-    persistLastPoll();
-
     current.clear();
     bool anyNew = false;
 
     for (const QJsonValue &value : json->array()) {
         const QJsonObject obj = value.toObject();
 
-        GHNotification n;
-        n.id = obj.value("id").toString();
-        n.reason = obj.value("reason").toString();
+        CBNotification n;
+        n.id = QString::number(obj.value("id").toInteger());
         n.updatedAt = QDateTime::fromString(
             obj.value("updated_at").toString(), Qt::ISODate
         );
 
         n.unread = obj.value("unread").toBool(true);
+        n.pinned = obj.value("pinned").toBool(false);
 
         const QJsonObject subject = obj.value("subject").toObject();
         n.subjectTitle = subject.value("title").toString();
         n.subjectType = subject.value("type").toString();
+        n.subjectState = subject.value("state").toString();
 
         const QJsonObject repository = obj.value("repository").toObject();
         n.repoFullName = repository.value("full_name").toString();
@@ -557,10 +502,10 @@ void GitHub::handleNotificationsReply(QRestReply &reply) {
     emit notificationsUpdated();
 }
 
-void GitHub::spawnNotification(const GHNotification &notification) const {
+void Codeberg::spawnNotification(const CBNotification &notification) const {
     const QString title =
         notification.repoFullName.isEmpty()
-            ? notification.reason
+            ? notification.subjectType
             : QStringLiteral("%1 · %2").arg(
                   notification.repoFullName, notification.subjectType
               );
@@ -568,9 +513,9 @@ void GitHub::spawnNotification(const GHNotification &notification) const {
     const QString body = notification.subjectTitle;
 
     const QStringList args = {
-        QStringLiteral("--app-name=GitHub"),
+        QStringLiteral("--app-name=Codeberg"),
         QStringLiteral("--urgency=normal"),
-        QStringLiteral("--hint=string:x-github-thread-id:%1")
+        QStringLiteral("--hint=string:x-codeberg-thread-id:%1")
             .arg(notification.id),
         title,
         body,
@@ -579,7 +524,7 @@ void GitHub::spawnNotification(const GHNotification &notification) const {
     QProcess::startDetached(QStringLiteral("notify-send"), args);
 }
 
-void GitHub::markAsRead(const QString &threadId) {
+void Codeberg::markAsRead(const QString &threadId) {
     if (threadId.isEmpty() || !qnam) { return; }
 
     const QString path = QStringLiteral("notifications/threads/") + threadId;
@@ -589,15 +534,14 @@ void GitHub::markAsRead(const QString &threadId) {
     connect(reply, &QNetworkReply::finished, [reply, threadId]() {
         reply->deleteLater();
         if (reply->error() != QNetworkReply::NoError) {
-
-            qCWarning(logGitHub)
-                << "Failed to mark notifications as read:" << threadId
+            qCWarning(logCodeberg)
+                << "Failed to mark notification as read:" << threadId
                 << reply->errorString();
 
             return;
         }
 
-        qCInfo(logGitHub) << "Marked thread" << threadId << "as read";
+        qCInfo(logCodeberg) << "Marked thread" << threadId << "as read";
     });
 }
 

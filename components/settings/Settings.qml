@@ -912,6 +912,24 @@ FloatingWindow {
                                         }
 
                                         SettingRow {
+                                            label: "Codeberg"
+                                            targetObject: Config.services
+                                            targetProperty: "codeberg"
+                                            valueType: "integration"
+                                            status: States.codebergClient
+                                                    ? States.codebergClient.authenticated :
+                                                      false
+                                            description:
+                                                "Subscribe to Codeberg notifications."
+                                            first: true
+
+                                            onLogoutRequested: if (
+                                                                       States.codebergClient)
+                                                                   States.codebergClient.logout(
+                                                                               )
+                                        }
+
+                                        SettingRow {
                                             label: "GitHub"
                                             targetObject: Config.services
                                             targetProperty: "github"
@@ -921,7 +939,6 @@ FloatingWindow {
                                                       false
                                             description:
                                                 "Subscribe to GitHub notifications."
-                                            first: true
                                             last: true
 
                                             onLogoutRequested: if (

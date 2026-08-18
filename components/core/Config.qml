@@ -121,6 +121,7 @@ Singleton {
 
             // services
             property JsonObject services: JsonObject {
+                property bool codeberg: false
                 property bool github: false
             }
 

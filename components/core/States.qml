@@ -16,7 +16,10 @@ import qs.core
 Singleton {
     id: root
 
+    property var codebergClient: null
+    property var githubClient: null
     readonly property Devd dev: Devd
+    readonly property bool codebergEnabled: Config.services.codeberg
     readonly property bool githubEnabled: Config.services.github
     readonly property string configDisk: Config.dashboard.disk
     readonly property string desktop: Quickshell.env(
@@ -65,7 +68,6 @@ Singleton {
     property string osPrettyName
     property string userName
     property real cpuTemp: System.cpuTemp
-    property var githubClient: null
     property real pchTemp: System.pchTemp
     property real cpuUsage: System.cpuUsage
     property real cpuCores: System.cpuCores
