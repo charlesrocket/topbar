@@ -41,6 +41,14 @@ cmake --install build
 
 See `quickshell -c topbar ipc call show` for all available commands.
 
+## Troubleshooting
+
+```
+Could not find "topbar" config directory in any valid config path.
+```
+
+Ensure `XDG_DATA_DIRS` is set: `export XDG_DATA_DIRS=/usr/local/share:/usr/share`.
+
 ## Contributing
 
 Patches are accepted via [Codeberg](https://codeberg.org/charlesrocket/topbar/) or e-mail.
