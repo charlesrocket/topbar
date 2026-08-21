@@ -2,6 +2,135 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-08-21
+
+### Bug Fixes
+
+- Drop redundant `ComponentBehavior`
+- Use xdg config path
+- Adjust container height
+- Drop redundant `font.bold`
+- Fix property changes
+- Update `qs` imports
+- Use `implicit*`
+- Set default logging category
+- Use vertical bar
+- Improve layout
+- `config` -> `settings`
+- Drop header
+- Import `core`
+- Change `session.commands.lock` keybind
+- Invert row
+- Set missing `colors.bge`
+- Center `About` elements
+- Improve action row layout
+- Adjust integer slider values
+- Set window size
+- Drop `cursorShape`
+- Improve sidebar
+- Animate tab switch
+- (session): update `logout` command
+- (settings): expand all string types
+- (settings): use vertical view
+- Use `CP_IDLE`
+- Improve `updateMemory()`
+- Fix `updateDisk()`
+- Move `System.user`
+- Import `qvariant`
+- Fix `totalSeconds` type
+- Change `FadingScrollView` background
+- Move `array` import
+- Fix `uptime`
+- Add separator notch
+- Adjust user box layout
+- Add `mUserObject`
+- Set unix icon
+- Improve `sysinfo` icons
+- Fix `colorToHex()`
+- Add `colors` alias
+- Resolve ub in `SettingRow`
+- Fix passbox border color
+- Mark gh toasts
+- Adjust toast margins
+- Fallback to device login
+- Set constructor/operator
+- Update read marks
+- Adjust service leds
+- Optimize state types
+- Fix client status
+
+### Documentation
+
+- Drop cd badge
+- Add `Troubleshooting`
+
+### Features
+
+- Add `About`
+- Add `main`
+- Add color picker
+- Add path dialog
+- Add labels
+- Implement action rows
+- Add font dialog
+- Add integer slider
+- Add `uptime`
+- Add cpu/gpu detection
+- Add `installedMemory`
+- Add setting descriptions
+- Handle user image change
+- Rewrite `session.timeouts`
+- Add `github`
+- Add `Integrations`
+- Add `codeberg`
+
+### Miscellaneous tasks
+
+- Ignore language server file
+- Ignore dotenv files
+
+### Operations
+
+- Edit linter command
+
+### Performance
+
+- Improve `system` properties
+- Move `getent` call
+- Cache lockscreen background
+
+### Refactor
+
+- Add `core`
+- Edit `About` imports
+- Move `core` imports
+- Move `Settings`
+- Move `widgets`
+- Fix constructor
+- Use `std::array`
+- `setProfileImage()` -> `changeUserIcon()`
+- Move system properties
+- Add `Appearance`
+- Move `Dashboard`
+
+### Styling
+
+- Fix formatting
+- Enforce max column width
+
+### Build
+
+- Exclude language server file
+- Ensure `qmlls.ini` is present
+- Export library
+- Fix `qmlls.ini` path
+- Add linux note
+- Fix pch option
+- Adjust imports
+- Fix impl import
+- Add `clients` module
+- Add `QSettings`
+
 ## [0.3.1] - 2026-07-30
 
 ### Bug Fixes
