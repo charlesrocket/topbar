@@ -15,7 +15,6 @@ Singleton {
     property alias general: settings.general
     property alias bar: settings.bar
     property alias desktop: settings.desktop
-    property alias dashboard: settings.dashboard
     property alias notifications: settings.notifications
     property alias services: settings.services
     property alias lockscreen: settings.lockscreen
@@ -88,6 +87,15 @@ Singleton {
                     property string empty: ""
                 }
 
+                // dashboard
+                property JsonObject dashboard: JsonObject {
+                    property string disk: "/"
+                    property JsonObject player: JsonObject {
+                        property bool queueButtons: false
+                        property bool notifications: false
+                    }
+                }
+
                 // widgets
                 property JsonObject widgets: JsonObject {
                     property bool workspaces: true
@@ -109,15 +117,6 @@ Singleton {
             property JsonObject desktop: JsonObject {
                 property bool launcher: true
                 property bool osd: true
-            }
-
-            // dashboard
-            property JsonObject dashboard: JsonObject {
-                property string disk: "/"
-                property JsonObject player: JsonObject {
-                    property bool queueButtons: false
-                    property bool notifications: false
-                }
             }
 
             // toasts

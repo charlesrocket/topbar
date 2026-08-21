@@ -66,7 +66,7 @@ Item {
         }
 
         function onPostTrackChanged() {
-            if (Config.dashboard.player.notifications)
+            if (Config.bar.dashboard.player.notifications)
                 root.showTrackInfo();
         }
 
@@ -210,7 +210,7 @@ Item {
             Loader {
                 id: shuffle
 
-                active: Config.dashboard.player.queueButtons
+                active: Config.bar.dashboard.player.queueButtons
                 visible: shuffle.active
                 anchors.verticalCenter: parent.verticalCenter
 
@@ -282,7 +282,7 @@ Item {
             Loader {
                 id: repeat
 
-                active: Config.dashboard.player.queueButtons
+                active: Config.bar.dashboard.player.queueButtons
                 visible: repeat.active
                 anchors.verticalCenter: parent.verticalCenter
 

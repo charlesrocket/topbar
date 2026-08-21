@@ -121,7 +121,8 @@ FloatingWindow {
                                         id: header
 
                                         color: Config.colors.fg
-                                        font.family: Config.appearance.fontFamily
+                                        font.family:
+                                            Config.appearance.fontFamily
                                         font.pixelSize: 20
                                         font.bold: true
                                         text: "TopBar"
@@ -142,8 +143,8 @@ FloatingWindow {
                                 Repeater {
                                     model: ["General", "Appearance", "Bar",
                                         "Notifications", "Services", "Desktop",
-                                        "Spaces", "Dashboard", "Lockscreen",
-                                        "Session", "About"]
+                                        "Spaces", "Lockscreen", "Session",
+                                        "About"]
 
                                     delegate: Button {
                                         id: tabButton
@@ -201,7 +202,7 @@ FloatingWindow {
                     visible: false
 
                     Repeater {
-                        model: 11
+                        model: 10
 
                         TabButton {}
                     }
@@ -467,10 +468,10 @@ FloatingWindow {
                                         spacing: root.gap
 
                                         Component.onCompleted: {
-                                            root.validateSection(Config.appearance,
-                                                                 appearanceSection,
-                                                                 "Config.appearance",
-                                                                 1);
+                                            root.validateSection(
+                                                        Config.appearance,
+                                                        appearanceSection,
+                                                        "Config.appearance", 1);
                                         }
 
                                         SettingRow {
@@ -689,7 +690,7 @@ FloatingWindow {
                                                 root.validateSection(Config.bar,
                                                                      barSection,
                                                                      "Config.bar",
-                                                                     2);
+                                                                     3);
                                             }
 
                                             SettingRow {
@@ -748,6 +749,79 @@ FloatingWindow {
                                                 last: true
                                                 description:
                                                     "Empty window title text."
+                                            }
+                                        }
+                                    }
+
+                                    SettingLabel {
+                                        label: "Dashboard"
+                                    }
+
+                                    ColumnLayout {
+                                        width: parent.width
+                                        spacing: root.gap
+
+                                        ColumnLayout {
+                                            id: dashboardSection
+
+                                            implicitWidth: parent.width
+                                            spacing: root.gap
+
+                                            Component.onCompleted: {
+                                                root.validateSection(
+                                                            Config.bar.dashboard,
+                                                            dashboardSection,
+                                                            "Config.bar.dashboard",
+                                                            1);
+                                            }
+
+                                            SettingRow {
+                                                label: "Disk"
+                                                targetObject:
+                                                    Config.bar.dashboard
+                                                targetProperty: "disk"
+                                                valueType: "string"
+                                                first: true
+                                                last: true
+                                                description:
+                                                    "Mounting point of the probe."
+                                            }
+                                        }
+
+                                        ColumnLayout {
+                                            id: dashboardPlayerSection
+
+                                            implicitWidth: parent.width
+                                            spacing: root.gap
+
+                                            Component.onCompleted: {
+                                                root.validateSection(
+                                                            Config.bar.dashboard.player,
+                                                            dashboardPlayerSection,
+                                                            "Config.bar.dashboard.player",
+                                                            null);
+                                            }
+
+                                            SettingRow {
+                                                label: "Queue buttons"
+                                                targetObject:
+                                                    Config.bar.dashboard.player
+                                                targetProperty: "queueButtons"
+                                                valueType: "bool"
+                                                first: true
+                                                description:
+                                                    "Shuffle and repeat controls."
+                                            }
+
+                                            SettingRow {
+                                                label: "Track notifications"
+                                                targetObject:
+                                                    Config.bar.dashboard.player
+                                                targetProperty: "notifications"
+                                                valueType: "bool"
+                                                last: true
+                                                description:
+                                                    "Send a desktop notification on track changes."
                                             }
                                         }
                                     }
@@ -1116,79 +1190,6 @@ FloatingWindow {
                                         targetProperty: "ten"
                                         valueType: "string"
                                         last: true
-                                    }
-                                }
-                            }
-                        }
-
-                        // dashboard
-                        Loader {
-                            active: SwipeView.isCurrentItem
-                                    || SwipeView.isNextItem
-                                    || SwipeView.isPreviousItem
-
-                            sourceComponent: FadingScrollView {
-                                id: dashboardScroll
-
-                                ColumnLayout {
-                                    id: dashboardSection
-
-                                    width: dashboardScroll.scrollView.width
-                                    spacing: root.gap
-
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.dashboard,
-                                                             dashboardSection,
-                                                             "Config.dashboard",
-                                                             null);
-                                    }
-
-                                    SettingRow {
-                                        label: "Disk"
-                                        targetObject: Config.dashboard
-                                        targetProperty: "disk"
-                                        valueType: "string"
-                                        first: true
-                                        last: true
-                                        description:
-                                            "Mounting point of the probe."
-                                    }
-
-                                    ColumnLayout {
-                                        id: dashboardPlayerSection
-
-                                        implicitWidth: parent.width
-                                        spacing: root.gap
-
-                                        Component.onCompleted: {
-                                            root.validateSection(
-                                                        Config.dashboard.player,
-                                                        dashboardPlayerSection,
-                                                        "Config.dashboard.player",
-                                                        null);
-                                        }
-
-                                        SettingRow {
-                                            label: "Queue buttons"
-                                            targetObject:
-                                                Config.dashboard.player
-                                            targetProperty: "queueButtons"
-                                            valueType: "bool"
-                                            first: true
-                                            description:
-                                                "Shuffle and repeat controls."
-                                        }
-
-                                        SettingRow {
-                                            label: "Track notifications"
-                                            targetObject:
-                                                Config.dashboard.player
-                                            targetProperty: "notifications"
-                                            valueType: "bool"
-                                            last: true
-                                            description:
-                                                "Send a desktop notification on track changes."
-                                        }
                                     }
                                 }
                             }

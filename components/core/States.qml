@@ -20,7 +20,7 @@ Singleton {
     readonly property Devd dev: Devd
     readonly property bool codebergEnabled: Config.services.codeberg
     readonly property bool githubEnabled: Config.services.github
-    readonly property string configDisk: Config.dashboard.disk
+    readonly property string configDisk: Config.bar.dashboard.disk
     readonly property string desktop: Quickshell.env(
                                           "XDG_CURRENT_DESKTOP").toLowerCase()
                                       || Quickshell.env(
