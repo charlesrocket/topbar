@@ -10,7 +10,7 @@ RowLayout {
     id: root
 
     property int animDuration: 250
-    property int fontSize: Config.general.fontSize
+    property int fontSize: Config.appearance.fontSize
     property string fontFamily: "Symbols Nerd Font"
     property color colNormal: Config.colors.fg
     property color colActive: Config.colors.accent

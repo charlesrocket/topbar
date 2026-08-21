@@ -47,7 +47,7 @@ RowLayout {
 
         Behavior on Layout.preferredWidth {
             NumberAnimation {
-                duration: Config.general.animDuration
+                duration: Config.appearance.animDuration
                 easing.type: Easing.OutCubic
             }
         }
@@ -178,7 +178,7 @@ RowLayout {
         Layout.rightMargin: 2
 
         sourceComponent: Clock {
-            fontSize: Config.general.fontSize + 1
+            fontSize: Config.appearance.fontSize + 1
         }
     }
 
@@ -192,7 +192,7 @@ RowLayout {
         asynchronous: true
 
         sourceComponent: Battery {
-            fontSize: Config.general.fontSize + 2
+            fontSize: Config.appearance.fontSize + 2
         }
     }
 }

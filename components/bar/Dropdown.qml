@@ -27,10 +27,10 @@ Item {
                                                                / 2) - Config.bar.padding;
 
             States.dropdownX = centerX;
-            States.dropdownWidth = dropdown.width + (Config.general.borderWidth
-                                                     * 2);
+            States.dropdownWidth = dropdown.width + (
+                        Config.appearance.borderWidth * 2);
             States.dropdownHeight = dropdown.height + (
-                        Config.general.borderWidth * 2);
+                        Config.appearance.borderWidth * 2);
             States.dropdownY = dropdown.y;
         }
     }
@@ -107,13 +107,13 @@ Item {
                     ParallelAnimation {
                         NumberAnimation {
                             property: "opacity"
-                            duration: Config.general.animDuration / 2
+                            duration: Config.appearance.animDuration / 2
                             easing.type: Easing.OutCubic
                         }
 
                         NumberAnimation {
                             property: "scale"
-                            duration: Config.general.animDuration / 2
+                            duration: Config.appearance.animDuration / 2
                             easing.type: Easing.OutCubic
                         }
                     }
@@ -133,13 +133,13 @@ Item {
                     ParallelAnimation {
                         NumberAnimation {
                             property: "opacity"
-                            duration: Config.general.animDuration / 2
+                            duration: Config.appearance.animDuration / 2
                             easing.type: Easing.InCubic
                         }
 
                         NumberAnimation {
                             property: "scale"
-                            duration: Config.general.animDuration / 2
+                            duration: Config.appearance.animDuration / 2
                             easing.type: Easing.InCubic
                         }
                     }
@@ -173,55 +173,55 @@ Item {
 
             ShapePath {
                 strokeColor: "transparent"
-                strokeWidth: Config.general.borderWidth > 0
-                             ? Config.general.borderWidth : -1
+                strokeWidth: Config.appearance.borderWidth > 0
+                             ? Config.appearance.borderWidth : -1
                 fillColor: States.ecoMode ? Config.colors.bge : Config.colors.bg
-                startX: -(Config.general.cornerRadius * 2)
+                startX: -(Config.appearance.cornerRadius * 2)
                 startY: 0
 
                 PathArc {
                     x: 0
-                    y: Config.general.cornerRadius * 2
-                    radiusX: Config.general.cornerRadius * 2
-                    radiusY: Config.general.cornerRadius * 2
+                    y: Config.appearance.cornerRadius * 2
+                    radiusX: Config.appearance.cornerRadius * 2
+                    radiusY: Config.appearance.cornerRadius * 2
                 }
 
                 PathLine {
                     x: 0
-                    y: dropdown.height - Config.general.cornerRadius
+                    y: dropdown.height - Config.appearance.cornerRadius
                 }
 
                 PathArc {
-                    x: Config.general.cornerRadius
+                    x: Config.appearance.cornerRadius
                     y: dropdown.height
                     direction: PathArc.Counterclockwise
-                    radiusX: Config.general.cornerRadius
-                    radiusY: Config.general.cornerRadius
+                    radiusX: Config.appearance.cornerRadius
+                    radiusY: Config.appearance.cornerRadius
                 }
 
                 PathLine {
-                    x: dropdown.width - Config.general.cornerRadius
+                    x: dropdown.width - Config.appearance.cornerRadius
                     y: dropdown.height
                 }
 
                 PathArc {
                     x: dropdown.width
-                    y: dropdown.height - Config.general.cornerRadius
+                    y: dropdown.height - Config.appearance.cornerRadius
                     direction: PathArc.Counterclockwise
-                    radiusX: Config.general.cornerRadius
-                    radiusY: Config.general.cornerRadius
+                    radiusX: Config.appearance.cornerRadius
+                    radiusY: Config.appearance.cornerRadius
                 }
 
                 PathLine {
                     x: dropdown.width
-                    y: Config.general.cornerRadius * 2
+                    y: Config.appearance.cornerRadius * 2
                 }
 
                 PathArc {
-                    x: dropdown.width + Config.general.cornerRadius * 2
+                    x: dropdown.width + Config.appearance.cornerRadius * 2
                     y: 0
-                    radiusX: Config.general.cornerRadius * 2
-                    radiusY: Config.general.cornerRadius * 2
+                    radiusX: Config.appearance.cornerRadius * 2
+                    radiusY: Config.appearance.cornerRadius * 2
                 }
             }
         }

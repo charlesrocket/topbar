@@ -14,8 +14,8 @@ Item {
     property color colActive: Config.colors.accent
     property color colCheck: Config.colors.green
     property int cornerRadius: 8
-    property string fontFamily: Config.general.fontFamily
-    property int fontSize: Config.general.fontSize
+    property string fontFamily: Config.appearance.fontFamily
+    property int fontSize: Config.appearance.fontSize
     property bool hpConnected: snd.headphonesConnected
     required property var snd
 
@@ -41,7 +41,7 @@ Item {
     }
 
     implicitWidth: icon.implicitWidth
-    implicitHeight: Config.general.fontSize + 2
+    implicitHeight: Config.appearance.fontSize + 2
     Layout.alignment: Qt.AlignVCenter
 
     Text {
@@ -73,7 +73,7 @@ Item {
 
         font {
             family: "Symbols Nerd Font"
-            pixelSize: Config.general.fontSize + 2
+            pixelSize: Config.appearance.fontSize + 2
             bold: true
         }
 
@@ -156,7 +156,7 @@ Item {
                                 Layout.preferredWidth: 24
                                 color: root.colMain
                                 font.family: "Symbols Nerd Font"
-                                font.pixelSize: Config.general.fontSize + 8
+                                font.pixelSize: Config.appearance.fontSize + 8
                                 font.bold: true
                             }
 
@@ -169,7 +169,7 @@ Item {
                                           || modelData.name
                                     color: root.colMain
                                     font.family: root.fontFamily
-                                    font.pixelSize: Config.general.fontSize
+                                    font.pixelSize: Config.appearance.fontSize
                                     elide: Text.ElideRight
                                     Layout.fillWidth: true
                                     font.bold: true
@@ -179,7 +179,8 @@ Item {
                                     text: modelData.name
                                     color: root.colMain
                                     font.family: root.fontFamily
-                                    font.pixelSize: Config.general.fontSize - 2
+                                    font.pixelSize: Config.appearance.fontSize
+                                                    - 2
                                     visible: modelData.description
                                              && modelData.description
                                              !== modelData.name

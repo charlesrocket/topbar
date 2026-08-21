@@ -9,8 +9,8 @@ Item {
     property color colMain: Config.colors.fg
     property color colBg: "transparent"
     property color colBorder: Config.colors.purple
-    property int slideDuration: Config.general.animDuration
-    property int fontSize: Config.general.fontSize
+    property int slideDuration: Config.appearance.animDuration
+    property int fontSize: Config.appearance.fontSize
     property string fontFamily: "FiraCode Nerd Font"
     property string icon: "󱣶"
     property real temperature: 0

@@ -77,7 +77,7 @@ Item {
     }
 
     implicitWidth: iconText.width
-    implicitHeight: Config.general.fontSize + 2
+    implicitHeight: Config.appearance.fontSize + 2
     Layout.alignment: Qt.AlignVCenter
 
     Text {
@@ -88,7 +88,7 @@ Item {
         text: root.getVolumeIcon(root.volume, root.muted)
         color: root.muted ? root.colMuted : root.colNormal
         font.family: "Symbols Nerd Font"
-        font.pixelSize: Config.general.fontSize + 2
+        font.pixelSize: Config.appearance.fontSize + 2
         font.bold: true
 
         Behavior on color {
@@ -96,13 +96,13 @@ Item {
         }
         Behavior on opacity {
             NumberAnimation {
-                duration: Config.general.animDuration
+                duration: Config.appearance.animDuration
                 easing.type: Easing.InOutQuad
             }
         }
         Behavior on scale {
             NumberAnimation {
-                duration: Config.general.animDuration
+                duration: Config.appearance.animDuration
                 easing.type: Easing.InOutQuad
             }
         }
@@ -159,7 +159,7 @@ Item {
 
         Rectangle {
             color: "transparent"
-            radius: Config.general.cornerRadius
+            radius: Config.appearance.cornerRadius
             topLeftRadius: 0
             topRightRadius: 0
             implicitWidth: layout.implicitWidth + 24
@@ -178,8 +178,8 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     text: root.volume
                     color: root.muted ? root.colPassive : root.colNormal
-                    font.pixelSize: Config.general.fontSize
-                    font.family: Config.general.fontFamily
+                    font.pixelSize: Config.appearance.fontSize
+                    font.family: Config.appearance.fontFamily
                     font.bold: true
 
                     Behavior on color {

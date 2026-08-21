@@ -9,7 +9,7 @@ Item {
     id: root
 
     property color iconColor: Config.colors.fg
-    property int iconSize: Config.general.fontSize
+    property int iconSize: Config.appearance.fontSize
 
     implicitWidth: row.width + 10
     implicitHeight: iconSize + 4
@@ -19,7 +19,7 @@ Item {
         anchors.centerIn: parent
         width: parent.width
         height: parent.height
-        radius: Config.general.cornerRadius / 2
+        radius: Config.appearance.cornerRadius / 2
 
         Row {
             id: row

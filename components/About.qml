@@ -18,8 +18,8 @@ ColumnLayout {
 
         Text {
             color: Config.colors.fg
-            font.family: Config.general.fontFamily
-            font.pixelSize: Config.general.fontSize * 2
+            font.family: Config.appearance.fontFamily
+            font.pixelSize: Config.appearance.fontSize * 2
             font.bold: true
             text: "TopBar"
         }
@@ -34,15 +34,15 @@ ColumnLayout {
             color: "transparent"
             implicitWidth: versionString.width + 12
             implicitHeight: versionString.height + 6
-            radius: Config.general.cornerRadius
+            radius: Config.appearance.cornerRadius
 
             TextEdit {
                 id: versionString
 
                 anchors.centerIn: parent
                 text: Version.full
-                font.family: Config.general.fontFamily
-                font.pixelSize: Config.general.fontSize
+                font.family: Config.appearance.fontFamily
+                font.pixelSize: Config.appearance.fontSize
                 font.bold: false
                 color: Config.colors.fg
                 readOnly: true
@@ -58,8 +58,8 @@ ColumnLayout {
             color: Config.colors.fg
             verticalAlignment: Qt.AlignVCenter
             visible: Version.distributor != "Unset"
-            font.family: Config.general.fontFamily
-            font.pixelSize: Config.general.fontSize * 1.2
+            font.family: Config.appearance.fontFamily
+            font.pixelSize: Config.appearance.fontSize * 1.2
             font.bold: false
             font.italic: true
             text: Version.distributor
@@ -71,8 +71,8 @@ ColumnLayout {
 
         Text {
             color: Config.colors.fg
-            font.family: Config.general.fontFamily
-            font.pixelSize: Config.general.fontSize - 1
+            font.family: Config.appearance.fontFamily
+            font.pixelSize: Config.appearance.fontSize - 1
             font.bold: false
             text: '<a href="https://codeberg.org/charlesrocket/topbar">homepage'
             textFormat: Text.RichText
@@ -89,8 +89,8 @@ ColumnLayout {
 
         Text {
             color: Config.colors.fg
-            font.family: Config.general.fontFamily
-            font.pixelSize: Config.general.fontSize - 1
+            font.family: Config.appearance.fontFamily
+            font.pixelSize: Config.appearance.fontSize - 1
             font.bold: false
             text: '<a href="https://codeberg.org/charlesrocket/topbar/issues">issues'
             textFormat: Text.RichText
@@ -107,8 +107,8 @@ ColumnLayout {
 
         Text {
             color: Config.colors.fg
-            font.family: Config.general.fontFamily
-            font.pixelSize: Config.general.fontSize - 1
+            font.family: Config.appearance.fontFamily
+            font.pixelSize: Config.appearance.fontSize - 1
             font.bold: false
             text: '<a href="https://codeberg.org/charlesrocket/topbar/raw/branch/trunk/LICENSE">license'
             textFormat: Text.RichText

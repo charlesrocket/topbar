@@ -10,12 +10,12 @@ import qs.dashboard
 Item {
     id: root
 
-    property int fontSize: Config.general.fontSize
+    property int fontSize: Config.appearance.fontSize
     property int length: 80
     property string fontFamily: "JetBrainsMono Nerd Font"
     property color colFg: Config.colors.fg
     property color colPassive: Qt.darker(Config.colors.passive, 1.5)
-    property int animDuration: Config.general.animDuration
+    property int animDuration: Config.appearance.animDuration
     property string emptyTitle: Config.bar.title.empty
     property string fullTitle: ToplevelManager.activeToplevel
                                ? ToplevelManager.activeToplevel.title :
@@ -29,7 +29,7 @@ Item {
                                                                        fullTitle)
 
     Layout.alignment: Qt.AlignVCenter
-    implicitHeight: Config.general.fontSize + 2
+    implicitHeight: Config.appearance.fontSize + 2
 
     onDisplayTextChanged: {
         newTitle.text = displayText;
@@ -121,10 +121,10 @@ Item {
 
         Rectangle {
             color: "transparent"
-            radius: Config.general.cornerRadius
+            radius: Config.appearance.cornerRadius
             implicitWidth: layout.implicitWidth + 651
-            implicitHeight: layout.implicitHeight + (Config.general.borderWidth
-                                                     > 0 ? 424 : 420)
+            implicitHeight: layout.implicitHeight + (
+                                Config.appearance.borderWidth > 0 ? 424 : 420)
 
             ColumnLayout {
                 id: layout

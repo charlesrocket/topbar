@@ -14,7 +14,7 @@ FloatingWindow {
     id: root
 
     property int gap: 6
-    property int fontSize: Config.general.fontSize
+    property int fontSize: Config.appearance.fontSize
 
     function validateSection(obj, section, key, offset) {
         var configCount = Utils.getPropertyCount(obj);
@@ -74,7 +74,7 @@ FloatingWindow {
     Rectangle {
         anchors.fill: parent
         color: States.ecoMode ? Config.colors.bge : Config.colors.bg
-        radius: Config.general.cornerRadius
+        radius: Config.appearance.cornerRadius
 
         MouseArea {
             anchors.fill: parent
@@ -94,7 +94,7 @@ FloatingWindow {
                 // tab bar
                 Rectangle {
                     color: "transparent"
-                    radius: Config.general.cornerRadius
+                    radius: Config.appearance.cornerRadius
                     Layout.preferredWidth: 186
                     Layout.fillHeight: true
 
@@ -105,7 +105,7 @@ FloatingWindow {
                             color: Qt.darker(Config.colors.extraDark, 1.1)
                             Layout.fillHeight: true
                             Layout.fillWidth: true
-                            radius: Config.general.cornerRadius
+                            radius: Config.appearance.cornerRadius
 
                             ColumnLayout {
                                 anchors.fill: parent
@@ -121,7 +121,7 @@ FloatingWindow {
                                         id: header
 
                                         color: Config.colors.fg
-                                        font.family: Config.general.fontFamily
+                                        font.family: Config.appearance.fontFamily
                                         font.pixelSize: 20
                                         font.bold: true
                                         text: "TopBar"
@@ -140,7 +140,7 @@ FloatingWindow {
                                 }
 
                                 Repeater {
-                                    model: ["General", "Colors", "Bar",
+                                    model: ["General", "Appearance", "Bar",
                                         "Notifications", "Services", "Desktop",
                                         "Spaces", "Dashboard", "Lockscreen",
                                         "Session", "About"]
@@ -156,7 +156,7 @@ FloatingWindow {
                                         checked: tabBar.currentIndex === index
 
                                         background: Rectangle {
-                                            radius: Config.general.cornerRadius
+                                            radius: Config.appearance.cornerRadius
                                             color: tabButton.checked
                                                    ? Config.colors.accent : (
                                                          tabButton.hovered
@@ -170,9 +170,9 @@ FloatingWindow {
                                         contentItem: Text {
                                             text: tabButton.modelData
                                             font.family:
-                                                Config.general.fontFamily
+                                                Config.appearance.fontFamily
                                             font.pixelSize:
-                                                Config.general.fontSize
+                                                Config.appearance.fontSize
                                             font.bold: tabButton.checked
                                             color: tabButton.checked
                                                    ? Config.colors.bge :
@@ -222,7 +222,7 @@ FloatingWindow {
                             color: Qt.darker(Config.colors.extraDark, 1.1)
                             Layout.fillWidth: true
                             implicitHeight: 100
-                            radius: Config.general.cornerRadius
+                            radius: Config.appearance.cornerRadius
                             clip: true
 
                             Canvas {
@@ -355,7 +355,7 @@ FloatingWindow {
                                             font.pixelSize: root.fontSize * 1.8
                                             font.bold: true
                                             font.family:
-                                                Config.general.fontFamily
+                                                Config.appearance.fontFamily
                                             horizontalAlignment: Text.AlignLeft
                                             verticalAlignment: Text.AlignVCenter
                                             text: States.userName
@@ -366,7 +366,7 @@ FloatingWindow {
                                         Text {
                                             color: Config.colors.fg
                                             font.family:
-                                                Config.general.fontFamily
+                                                Config.appearance.fontFamily
                                             font.pixelSize: root.fontSize * 1.1
                                             horizontalAlignment: Text.AlignLeft
                                             verticalAlignment: Text.AlignVCenter
@@ -398,236 +398,261 @@ FloatingWindow {
                                 ColumnLayout {
                                     width: generalScroll.scrollView.width
                                     spacing: root.gap
-                                }
 
-                                ColumnLayout {
-                                    id: generalSection
+                                    ColumnLayout {
+                                        id: generalSection
 
-                                    implicitWidth: parent.width
-                                    spacing: root.gap
+                                        implicitWidth: parent.width
+                                        spacing: root.gap
 
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.general,
-                                                             generalSection,
-                                                             "Config.general",
-                                                             -1);
-                                    }
+                                        Component.onCompleted: {
+                                            root.validateSection(Config.general,
+                                                                 generalSection,
+                                                                 "Config.general",
+                                                                 -1);
+                                        }
 
-                                    SettingLabel {
-                                        label: "System"
-                                    }
+                                        SettingLabel {
+                                            label: "System"
+                                        }
 
-                                    SettingRow {
-                                        label: "Locale"
-                                        targetObject: Config.general
-                                        targetProperty: "locale"
-                                        valueType: "string"
-                                        first: true
-                                        description:
-                                            "Language, country, and character encoding."
-                                    }
+                                        SettingRow {
+                                            label: "Locale"
+                                            targetObject: Config.general
+                                            targetProperty: "locale"
+                                            valueType: "string"
+                                            first: true
+                                            description:
+                                                "Language, country, and character encoding."
+                                        }
 
-                                    SettingRow {
-                                        label: "Font family"
-                                        targetObject: Config.general
-                                        targetProperty: "fontFamily"
-                                        valueType: "font"
-                                    }
+                                        SettingRow {
+                                            label: "Wallpaper"
+                                            targetObject: Config.general
+                                            targetProperty: "wallpaper"
+                                            valueType: "path"
+                                        }
 
-                                    SettingRow {
-                                        label: "Font Size"
-                                        targetObject: Config.general
-                                        targetProperty: "fontSize"
-                                        valueType: "int"
-                                        sliderFrom: 2
-                                        sliderTo: 65
-                                        sliderStepSize: 1
-                                    }
-
-                                    SettingRow {
-                                        label: "Border width"
-                                        targetObject: Config.general
-                                        targetProperty: "borderWidth"
-                                        valueType: "int"
-                                        sliderFrom: 0
-                                        sliderTo: 50
-                                        sliderStepSize: 1
-                                    }
-
-                                    SettingRow {
-                                        label: "Corner radius"
-                                        targetObject: Config.general
-                                        targetProperty: "cornerRadius"
-                                        valueType: "int"
-                                        sliderFrom: 0
-                                        sliderTo: 20
-                                        sliderStepSize: 1
-                                    }
-
-                                    SettingRow {
-                                        label: "Animation duration"
-                                        targetObject: Config.general
-                                        targetProperty: "animDuration"
-                                        valueType: "int"
-                                        sliderFrom: 0
-                                        sliderTo: 1000
-                                        sliderStepSize: 1
-                                    }
-
-                                    SettingRow {
-                                        label: "Wallpaper"
-                                        targetObject: Config.general
-                                        targetProperty: "wallpaper"
-                                        valueType: "path"
-                                    }
-
-                                    SettingRow {
-                                        label: "Blur"
-                                        targetObject: Config.general
-                                        targetProperty: "blur"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Shadows"
-                                        targetObject: Config.general
-                                        targetProperty: "shadows"
-                                        valueType: "bool"
-                                    }
-
-                                    SettingRow {
-                                        label: "Config watch"
-                                        targetObject: Config.general
-                                        targetProperty: "configWatch"
-                                        valueType: "bool"
-                                        last: true
-                                        description:
-                                            "Reload on configuration file changes."
+                                        SettingRow {
+                                            label: "Config watch"
+                                            targetObject: Config.general
+                                            targetProperty: "configWatch"
+                                            valueType: "bool"
+                                            last: true
+                                            description:
+                                                "Reload on configuration file changes."
+                                        }
                                     }
                                 }
                             }
                         }
 
-                        // colors
+                        // appearance
                         Loader {
                             active: SwipeView.isCurrentItem
                                     || SwipeView.isNextItem
                                     || SwipeView.isPreviousItem
 
                             sourceComponent: FadingScrollView {
-                                id: colorsScroll
+                                id: appearanceScroll
 
                                 ColumnLayout {
-                                    id: colorsSection
-
-                                    width: colorsScroll.scrollView.width
+                                    width: appearanceScroll.scrollView.width
                                     spacing: root.gap
 
-                                    Component.onCompleted: {
-                                        root.validateSection(Config.colors,
-                                                             colorsSection,
-                                                             "Config.colors",
-                                                             null);
+                                    ColumnLayout {
+                                        id: appearanceSection
+
+                                        implicitWidth: parent.width
+                                        spacing: root.gap
+
+                                        Component.onCompleted: {
+                                            root.validateSection(Config.appearance,
+                                                                 appearanceSection,
+                                                                 "Config.appearance",
+                                                                 1);
+                                        }
+
+                                        SettingRow {
+                                            label: "Font family"
+                                            targetObject: Config.appearance
+                                            targetProperty: "fontFamily"
+                                            valueType: "font"
+                                            first: true
+                                        }
+
+                                        SettingRow {
+                                            label: "Font Size"
+                                            targetObject: Config.appearance
+                                            targetProperty: "fontSize"
+                                            valueType: "int"
+                                            sliderFrom: 2
+                                            sliderTo: 65
+                                            sliderStepSize: 1
+                                        }
+
+                                        SettingRow {
+                                            label: "Border width"
+                                            targetObject: Config.appearance
+                                            targetProperty: "borderWidth"
+                                            valueType: "int"
+                                            sliderFrom: 0
+                                            sliderTo: 50
+                                            sliderStepSize: 1
+                                        }
+
+                                        SettingRow {
+                                            label: "Corner radius"
+                                            targetObject: Config.appearance
+                                            targetProperty: "cornerRadius"
+                                            valueType: "int"
+                                            sliderFrom: 0
+                                            sliderTo: 20
+                                            sliderStepSize: 1
+                                        }
+
+                                        SettingRow {
+                                            label: "Animation duration"
+                                            targetObject: Config.appearance
+                                            targetProperty: "animDuration"
+                                            valueType: "int"
+                                            sliderFrom: 0
+                                            sliderTo: 1000
+                                            sliderStepSize: 1
+                                        }
+
+                                        SettingRow {
+                                            label: "Blur"
+                                            targetObject: Config.appearance
+                                            targetProperty: "blur"
+                                            valueType: "bool"
+                                        }
+
+                                        SettingRow {
+                                            label: "Shadows"
+                                            targetObject: Config.appearance
+                                            targetProperty: "shadows"
+                                            valueType: "bool"
+                                            last: true
+                                        }
                                     }
 
-                                    SettingRow {
-                                        label: "Background"
-                                        targetObject: Config.colors
-                                        targetProperty: "bg"
-                                        valueType: "color"
-                                        first: true
+                                    SettingLabel {
+                                        label: "Colors"
                                     }
 
-                                    SettingRow {
-                                        label: "Background eco"
-                                        targetObject: Config.colors
-                                        targetProperty: "bge"
-                                        valueType: "color"
-                                    }
+                                    ColumnLayout {
+                                        id: colorsSection
 
-                                    SettingRow {
-                                        label: "Background light"
-                                        targetObject: Config.colors
-                                        targetProperty: "bgl"
-                                        valueType: "color"
-                                    }
+                                        implicitWidth: parent.width
+                                        spacing: root.gap
 
-                                    SettingRow {
-                                        label: "Foreground"
-                                        targetObject: Config.colors
-                                        targetProperty: "fg"
-                                        valueType: "color"
-                                    }
+                                        Component.onCompleted: {
+                                            root.validateSection(Config.colors,
+                                                                 colorsSection,
+                                                                 "Config.colors",
+                                                                 null);
+                                        }
 
-                                    SettingRow {
-                                        label: "Border"
-                                        targetObject: Config.colors
-                                        targetProperty: "border"
-                                        valueType: "color"
-                                    }
+                                        SettingRow {
+                                            label: "Background"
+                                            targetObject: Config.colors
+                                            targetProperty: "bg"
+                                            valueType: "color"
+                                            first: true
+                                        }
 
-                                    SettingRow {
-                                        label: "Passive"
-                                        targetObject: Config.colors
-                                        targetProperty: "passive"
-                                        valueType: "color"
-                                    }
+                                        SettingRow {
+                                            label: "Background eco"
+                                            targetObject: Config.colors
+                                            targetProperty: "bge"
+                                            valueType: "color"
+                                        }
 
-                                    SettingRow {
-                                        label: "Dark"
-                                        targetObject: Config.colors
-                                        targetProperty: "dark"
-                                        valueType: "color"
-                                    }
+                                        SettingRow {
+                                            label: "Background light"
+                                            targetObject: Config.colors
+                                            targetProperty: "bgl"
+                                            valueType: "color"
+                                        }
 
-                                    SettingRow {
-                                        label: "Extra Dark"
-                                        targetObject: Config.colors
-                                        targetProperty: "extraDark"
-                                        valueType: "color"
-                                    }
+                                        SettingRow {
+                                            label: "Foreground"
+                                            targetObject: Config.colors
+                                            targetProperty: "fg"
+                                            valueType: "color"
+                                        }
 
-                                    SettingRow {
-                                        label: "Action"
-                                        targetObject: Config.colors
-                                        targetProperty: "action"
-                                        valueType: "color"
-                                    }
+                                        SettingRow {
+                                            label: "Border"
+                                            targetObject: Config.colors
+                                            targetProperty: "border"
+                                            valueType: "color"
+                                        }
 
-                                    SettingRow {
-                                        label: "Accent"
-                                        targetObject: Config.colors
-                                        targetProperty: "accent"
-                                        valueType: "color"
-                                    }
+                                        SettingRow {
+                                            label: "Passive"
+                                            targetObject: Config.colors
+                                            targetProperty: "passive"
+                                            valueType: "color"
+                                        }
 
-                                    SettingRow {
-                                        label: "Red"
-                                        targetObject: Config.colors
-                                        targetProperty: "red"
-                                        valueType: "color"
-                                    }
+                                        SettingRow {
+                                            label: "Dark"
+                                            targetObject: Config.colors
+                                            targetProperty: "dark"
+                                            valueType: "color"
+                                        }
 
-                                    SettingRow {
-                                        label: "Yellow"
-                                        targetObject: Config.colors
-                                        targetProperty: "yellow"
-                                        valueType: "color"
-                                    }
+                                        SettingRow {
+                                            label: "Extra Dark"
+                                            targetObject: Config.colors
+                                            targetProperty: "extraDark"
+                                            valueType: "color"
+                                        }
 
-                                    SettingRow {
-                                        label: "Purple"
-                                        targetObject: Config.colors
-                                        targetProperty: "purple"
-                                        valueType: "color"
-                                    }
+                                        SettingRow {
+                                            label: "Action"
+                                            targetObject: Config.colors
+                                            targetProperty: "action"
+                                            valueType: "color"
+                                        }
 
-                                    SettingRow {
-                                        label: "Green"
-                                        targetObject: Config.colors
-                                        targetProperty: "green"
-                                        valueType: "color"
-                                        last: true
+                                        SettingRow {
+                                            label: "Accent"
+                                            targetObject: Config.colors
+                                            targetProperty: "accent"
+                                            valueType: "color"
+                                        }
+
+                                        SettingRow {
+                                            label: "Red"
+                                            targetObject: Config.colors
+                                            targetProperty: "red"
+                                            valueType: "color"
+                                        }
+
+                                        SettingRow {
+                                            label: "Yellow"
+                                            targetObject: Config.colors
+                                            targetProperty: "yellow"
+                                            valueType: "color"
+                                        }
+
+                                        SettingRow {
+                                            label: "Purple"
+                                            targetObject: Config.colors
+                                            targetProperty: "purple"
+                                            valueType: "color"
+                                        }
+
+                                        SettingRow {
+                                            label: "Green"
+                                            targetObject: Config.colors
+                                            targetProperty: "green"
+                                            valueType: "color"
+                                            last: true
+                                        }
                                     }
                                 }
                             }
@@ -1282,8 +1307,8 @@ FloatingWindow {
 
                                         Component.onCompleted: {
                                             root.validateSection(
-                                                        Config.session.commands,
-                                                        sessionCommandsSection,
+                                                        Config.session.timeouts,
+                                                        sessionTimeoutsSection,
                                                         "Config.session.timeouts",
                                                         null);
                                         }
@@ -1494,10 +1519,10 @@ FloatingWindow {
         required property string label
 
         text: label
-        font.family: Config.general.fontFamily
+        font.family: Config.appearance.fontFamily
         Layout.topMargin: 6
         Layout.bottomMargin: 6
-        font.pixelSize: Config.general.fontSize + 4
+        font.pixelSize: Config.appearance.fontSize + 4
         font.bold: true
         color: Config.colors.fg
     }

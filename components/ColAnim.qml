@@ -3,6 +3,6 @@ import QtQuick
 import qs.core
 
 ColorAnimation {
-    duration: Config.general.animDuration
+    duration: Config.appearance.animDuration
     easing.type: Easing.OutCubic
 }

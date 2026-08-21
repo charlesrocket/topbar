@@ -13,8 +13,8 @@ Item {
     property color colGood: Config.colors.green
     property color colBad: Config.colors.red
     property color colBg: Config.colors.dark
-    property int slideDuration: Config.general.animDuration
-    property int fontSize: Config.general.fontSize
+    property int slideDuration: Config.appearance.animDuration
+    property int fontSize: Config.appearance.fontSize
     property var fontFamily: "Hack Nerd Font"
 
     function secondsToHhMm(seconds) {

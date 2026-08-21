@@ -9,7 +9,7 @@ Text {
 
     property color colMain: Config.colors.fg
     property string fontFamily: "Symbols Nerd Font"
-    property int fontSize: Config.general.fontSize
+    property int fontSize: Config.appearance.fontSize
     readonly property bool hasAdapter: Bluetooth && Bluetooth.adapters
                                        && Bluetooth.adapters.length > 0
     readonly property var adapter: hasAdapter ? Bluetooth.adapters[0] : null

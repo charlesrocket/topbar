@@ -10,13 +10,13 @@ import qs.core
 Item {
     id: root
 
-    property int slideDuration: Config.general.animDuration
+    property int slideDuration: Config.appearance.animDuration
     property color colMain: Config.colors.fg
     property color colButton: Config.colors.accent
     property color colGreen: Config.colors.green
     property color colPurple: Config.colors.purple
     property string fontFamily: "FiraCode Nerd Font"
-    property int fontSize: Config.general.fontSize
+    property int fontSize: Config.appearance.fontSize
 
     function toggleEcoMode() {
         States.ecoMode = !States.ecoMode;

@@ -22,7 +22,7 @@ Item {
         height: 280
         color: "transparent"
         anchors.centerIn: parent
-        radius: Config.general.cornerRadius
+        radius: Config.appearance.cornerRadius
         border.color: Config.colors.passive
         border.width: 1
 
@@ -40,14 +40,14 @@ Item {
 
                 delegate: Rectangle {
                     implicitWidth: 32
-                    implicitHeight: Config.general.fontSize + 2
+                    implicitHeight: Config.appearance.fontSize + 2
                     color: "transparent"
 
                     Text {
                         anchors.centerIn: parent
                         text: model.shortName
-                        font.family: Config.general.fontFamily
-                        font.pixelSize: Config.general.fontSize
+                        font.family: Config.appearance.fontFamily
+                        font.pixelSize: Config.appearance.fontSize
                         font.bold: true
                         color: Config.colors.fg
                     }
@@ -93,8 +93,8 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         text: model.day
-                        font.family: Config.general.fontFamily
-                        font.pixelSize: Config.general.fontSize
+                        font.family: Config.appearance.fontFamily
+                        font.pixelSize: Config.appearance.fontSize
                         color: parent.isSelected ? Config.colors.fg :
                                                    parent.isToday
                                                    ? Config.colors.extraDark :

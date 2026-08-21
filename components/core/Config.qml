@@ -21,7 +21,8 @@ Singleton {
     property alias lockscreen: settings.lockscreen
     property alias session: settings.session
     property alias workspaces: settings.workspaces
-    property alias colors: settings.colors
+    property alias appearance: settings.appearance
+    property alias colors: colorsObj
 
     FileView {
         id: fileView
@@ -42,33 +43,39 @@ Singleton {
             // general
             property JsonObject general: JsonObject {
                 property string locale: "AnyTerritory"
+                property string wallpaper: States.defaultWallpaper
+                property bool configWatch: true
+            }
+
+            // appearance
+            property JsonObject appearance: JsonObject {
                 property string fontFamily: "Hack Nerd Font"
                 property int fontSize: 14
                 property int borderWidth: 1
                 property int cornerRadius: 8
                 property int animDuration: 250
-                property string wallpaper: States.defaultWallpaper
                 property bool blur: true
                 property bool shadows: true
-                property bool configWatch: true
-            }
 
-            // colors
-            property JsonObject colors: JsonObject {
-                property string bg: "#aa000000"
-                property string bgl: "#80404040"
-                property string bge: "#000000" // eco mode
-                property string fg: "#b0b4bc"
-                property string border: "#aa4e4e4e"
-                property string passive: "#4e4e4e"
-                property string dark: Qt.darker(passive, 1.5)
-                property string extraDark: Qt.darker(dark, 1.2)
-                property string action: "#0db9d7"
-                property string accent: "#cc0000"
-                property string red: "#cc0000"
-                property string yellow: "#ffd700"
-                property string purple: "#bf00ff"
-                property string green: "#9ece6a"
+                // colors
+                property JsonObject colors: JsonObject {
+                    id: colorsObj
+
+                    property string bg: "#aa000000"
+                    property string bgl: "#80404040"
+                    property string bge: "#000000" // eco mode
+                    property string fg: "#b0b4bc"
+                    property string border: "#aa4e4e4e"
+                    property string passive: "#4e4e4e"
+                    property string dark: Qt.darker(passive, 1.5)
+                    property string extraDark: Qt.darker(dark, 1.2)
+                    property string action: "#0db9d7"
+                    property string accent: "#cc0000"
+                    property string red: "#cc0000"
+                    property string yellow: "#ffd700"
+                    property string purple: "#bf00ff"
+                    property string green: "#9ece6a"
+                }
             }
 
             // bar

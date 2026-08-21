@@ -70,13 +70,13 @@ Loader {
                         anchors.right: parent.right
                         anchors.top: parent.top
                         height: contentColumn.implicitHeight + 32
-                        radius: Config.general.cornerRadius * 2
+                        radius: Config.appearance.cornerRadius * 2
                         color: States.ecoMode ? Config.colors.bge :
                                                 Config.colors.bg
 
                         Behavior on height {
                             NumberAnimation {
-                                duration: Config.general.animDuration / 2
+                                duration: Config.appearance.animDuration / 2
                                 easing.type: Easing.OutCubic
                             }
                         }
@@ -94,7 +94,7 @@ Loader {
                             Rectangle {
                                 Layout.fillWidth: true
                                 Layout.preferredHeight: 44
-                                radius: Config.general.cornerRadius
+                                radius: Config.appearance.cornerRadius
                                 color: States.ecoMode ? Config.colors.bge :
                                                         Config.colors.bgl
                                 border.color: Config.colors.accent
@@ -119,9 +119,10 @@ Loader {
                                         Layout.fillWidth: true
                                         Layout.fillHeight: true
                                         placeholderText: "Search applications"
-                                        font.family: Config.general.fontFamily
-                                        font.pixelSize: Config.general.fontSize
-                                                        + 2
+                                        font.family:
+                                            Config.appearance.fontFamily
+                                        font.pixelSize:
+                                            Config.appearance.fontSize + 2
                                         font.bold: false
                                         color: Config.colors.fg
 
@@ -197,7 +198,7 @@ Loader {
                                     Layout.fillWidth: true
                                     visible: appList.count > 0
                                     font.pixelSize: 14
-                                    font.family: Config.general.fontFamily
+                                    font.family: Config.appearance.fontFamily
                                     font.bold: false
                                     color: Config.colors.fg
                                     text: {
@@ -235,14 +236,14 @@ Loader {
                                 visible: Layout.preferredHeight > 0
                                 color: States.ecoMode ? Config.colors.bge :
                                                         Config.colors.bgl
-                                radius: Config.general.cornerRadius
+                                radius: Config.appearance.cornerRadius
                                 clip: true
                                 Layout.fillWidth: true
                                 Layout.preferredHeight: targetHeight
 
                                 Behavior on Layout.preferredHeight {
                                     NumberAnimation {
-                                        duration: Config.general.animDuration
+                                        duration: Config.appearance.animDuration
                                                   / 2
                                         easing.type: Easing.OutCubic
                                     }
@@ -330,7 +331,7 @@ Loader {
                                             delegateMouseArea.containsMouse ? 2 :
                                                                               0
                                         border.color: Config.colors.accent
-                                        radius: Config.general.cornerRadius
+                                        radius: Config.appearance.cornerRadius
 
                                         MouseArea {
                                             id: delegateMouseArea
@@ -383,7 +384,7 @@ Loader {
                                                     visible: appIcon.status
                                                              !== Image.Ready
                                                     color: Config.colors.accent
-                                                    radius: Config.general.cornerRadius
+                                                    radius: Config.appearance.cornerRadius
 
                                                     Text {
                                                         anchors.centerIn: parent
@@ -394,7 +395,7 @@ Loader {
                                                         font.pixelSize: 22
                                                         font.bold: true
                                                         font.family:
-                                                            Config.general.fontFamily
+                                                            Config.appearance.fontFamily
                                                         color: Config.colors.fg
                                                     }
                                                 }
@@ -413,7 +414,7 @@ Loader {
                                                     font.pixelSize: 15
                                                     font.bold: true
                                                     font.family:
-                                                        Config.general.fontFamily
+                                                        Config.appearance.fontFamily
                                                     color: Config.colors.fg
                                                     elide: Text.ElideRight
                                                     wrapMode: Text.NoWrap
@@ -428,7 +429,7 @@ Loader {
                                                     font.pixelSize: 12
                                                     font.bold: true
                                                     font.family:
-                                                        Config.general.fontFamily
+                                                        Config.appearance.fontFamily
                                                     color: Config.colors.fg
                                                     elide: Text.ElideRight
                                                     opacity: 0.7

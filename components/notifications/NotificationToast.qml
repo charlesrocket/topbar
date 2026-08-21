@@ -10,7 +10,7 @@ import qs.core
 Rectangle {
     id: root
 
-    property string fontFamily: Config.general.fontFamily
+    property string fontFamily: Config.appearance.fontFamily
     property var notification: null
     property real hoverPauseStart: 0
     property real progressFraction: 1.0
@@ -70,9 +70,9 @@ Rectangle {
 
     implicitWidth: Config.notifications.width
     implicitHeight: bodyRow.implicitHeight + (bodyRow.anchors.margins * 2)
-    radius: Config.general.cornerRadius
+    radius: Config.appearance.cornerRadius
     color: States.ecoMode ? Config.colors.bge : Config.colors.bg
-    border.width: Config.general.borderWidth
+    border.width: Config.appearance.borderWidth
     border.color: Config.colors.border
 
     transform: Translate {
@@ -90,7 +90,7 @@ Rectangle {
         property: "x"
         from: Config.notifications.width
         to: 0
-        duration: Config.general.animDuration
+        duration: Config.appearance.animDuration
         easing.type: Easing.OutQuint
     }
 
@@ -103,7 +103,7 @@ Rectangle {
         property: "x"
         from: 0
         to: Config.notifications.width
-        duration: Config.general.animDuration
+        duration: Config.appearance.animDuration
         easing.type: Easing.InQuint
 
         onStopped: {
@@ -146,12 +146,12 @@ Rectangle {
         color: Config.colors.bge
         border.width: 1
         border.color: Config.colors.accent
-        radius: Config.general.cornerRadius
+        radius: Config.appearance.cornerRadius
         z: 1
 
         Behavior on opacity {
             NumberAnimation {
-                duration: Config.general.animDuration
+                duration: Config.appearance.animDuration
                 easing.type: Easing.InOutQuad
             }
         }
@@ -313,7 +313,7 @@ Rectangle {
 
                         implicitWidth: label.implicitWidth + 24
                         implicitHeight: label.implicitHeight + 10
-                        radius: Config.general.cornerRadius
+                        radius: Config.appearance.cornerRadius
                         color: "transparent"
                         border.color: buttonArea.containsMouse
                                       ? Config.colors.action : Config.colors.fg
@@ -370,7 +370,7 @@ Rectangle {
 
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: Config.general.animDuration
+                        duration: Config.appearance.animDuration
                         easing.type: Easing.InOutQuad
                     }
                 }

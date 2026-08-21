@@ -11,7 +11,7 @@ import qs.core
 Item {
     id: root
 
-    property int fontSize: Config.general.fontSize
+    property int fontSize: Config.appearance.fontSize
     property color colFg: Config.colors.fg
     property color colAction: Config.colors.action
     property color colOffline: Config.colors.red

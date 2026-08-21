@@ -92,7 +92,7 @@ RowLayout {
 
                 Behavior on Layout.preferredWidth {
                     NumberAnimation {
-                        duration: Config.general.animDuration * 2
+                        duration: Config.appearance.animDuration * 2
                         easing.type: Easing.OutQuint
                     }
                 }
@@ -112,8 +112,8 @@ RowLayout {
                         width: parent.width
                         elide: Text.ElideRight
                         text: root.label
-                        font.family: Config.general.fontFamily
-                        font.pixelSize: Config.general.fontSize
+                        font.family: Config.appearance.fontFamily
+                        font.pixelSize: Config.appearance.fontSize
                         color: Config.colors.fg
                         verticalAlignment: Text.AlignVCenter
                     }
@@ -147,8 +147,8 @@ RowLayout {
                     wrapMode: Text.WordWrap
                     visible: root.description !== ""
                     text: root.description
-                    font.family: Config.general.fontFamily
-                    font.pixelSize: Config.general.fontSize - 2
+                    font.family: Config.appearance.fontFamily
+                    font.pixelSize: Config.appearance.fontSize - 2
                     color: Config.colors.fg
                     verticalAlignment: Text.AlignVCenter
                 }
@@ -190,7 +190,7 @@ RowLayout {
 
                 Behavior on Layout.preferredWidth {
                     NumberAnimation {
-                        duration: Config.general.animDuration * 2
+                        duration: Config.appearance.animDuration * 2
                         easing.type: Easing.OutQuint
                     }
                 }
@@ -208,8 +208,8 @@ RowLayout {
                                      "transparent"
                     border.color: colorMouseArea.containsMouse
                                   ? Config.colors.action : Config.colors.border
-                    border.width: Config.general.borderWidth
-                    radius: Config.general.cornerRadius
+                    border.width: Config.appearance.borderWidth
+                    radius: Config.appearance.cornerRadius
 
                     Behavior on border.color {
                         ColAnim {}
@@ -244,8 +244,8 @@ RowLayout {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.left: parent.left
-                    font.family: Config.general.fontFamily
-                    font.pixelSize: Config.general.fontSize - 2
+                    font.family: Config.appearance.fontFamily
+                    font.pixelSize: Config.appearance.fontSize - 2
                     implicitHeight: 24
                     selectionColor: Config.colors.action
                     horizontalAlignment: Text.AlignHCenter
@@ -257,8 +257,8 @@ RowLayout {
                         color: Config.colors.dark
                         border.color: parent.activeFocus ? Config.colors.action :
                                                            Config.colors.border
-                        border.width: Config.general.borderWidth
-                        radius: Config.general.cornerRadius
+                        border.width: Config.appearance.borderWidth
+                        radius: Config.appearance.cornerRadius
 
                         Behavior on border.color {
                             ColAnim {}
@@ -338,7 +338,7 @@ RowLayout {
                             border.color: intSlider.pressed
                                           ? Config.colors.action :
                                             Config.colors.border
-                            border.width: Config.general.borderWidth
+                            border.width: Config.appearance.borderWidth
 
                             Behavior on border.color {
                                 ColAnim {}
@@ -359,8 +359,8 @@ RowLayout {
 
                         Layout.preferredWidth: 30
                         text: Math.round(intSlider.value)
-                        font.family: Config.general.fontFamily
-                        font.pixelSize: Config.general.fontSize - 2
+                        font.family: Config.appearance.fontFamily
+                        font.pixelSize: Config.appearance.fontSize - 2
                         font.bold: true
                         color: Config.colors.fg
                         horizontalAlignment: Text.AlignHCenter
@@ -385,8 +385,8 @@ RowLayout {
                         border.color: pathMouseArea.containsMouse
                                       ? Config.colors.action :
                                         Config.colors.border
-                        border.width: Config.general.borderWidth
-                        radius: Config.general.cornerRadius
+                        border.width: Config.appearance.borderWidth
+                        radius: Config.appearance.cornerRadius
 
                         Behavior on border.color {
                             ColAnim {}
@@ -400,8 +400,8 @@ RowLayout {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.leftMargin: 12
                             anchors.rightMargin: 12
-                            font.family: Config.general.fontFamily
-                            font.pixelSize: Config.general.fontSize - 2
+                            font.family: Config.appearance.fontFamily
+                            font.pixelSize: Config.appearance.fontSize - 2
                             color: Config.colors.fg
                             elide: Text.ElideLeft
                             horizontalAlignment: Qt.AlignRight
@@ -466,8 +466,8 @@ RowLayout {
                         border.color: fontMouseArea.containsMouse
                                       ? Config.colors.action :
                                         Config.colors.border
-                        border.width: Config.general.borderWidth
-                        radius: Config.general.cornerRadius
+                        border.width: Config.appearance.borderWidth
+                        radius: Config.appearance.cornerRadius
 
                         Behavior on border.color {
                             ColAnim {}
@@ -481,8 +481,8 @@ RowLayout {
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.leftMargin: 12
                             anchors.rightMargin: 12
-                            font.family: Config.general.fontFamily
-                            font.pixelSize: Config.general.fontSize - 2
+                            font.family: Config.appearance.fontFamily
+                            font.pixelSize: Config.appearance.fontSize - 2
                             color: Config.colors.fg
                             elide: Text.ElideLeft
                             horizontalAlignment: Qt.AlignRight
@@ -554,7 +554,7 @@ RowLayout {
 
                             Behavior on x {
                                 NumberAnimation {
-                                    duration: Config.general.animDuration
+                                    duration: Config.appearance.animDuration
                                 }
                             }
                         }
@@ -579,15 +579,15 @@ RowLayout {
                         Layout.preferredWidth: logoutContent.implicitWidth + 20
                         text: ""
                         font.family: "Symbols Nerd Font"
-                        font.pixelSize: Config.general.fontSize - 3
+                        font.pixelSize: Config.appearance.fontSize - 3
 
                         background: Rectangle {
                             color: Config.colors.dark
                             border.color: logoutButton.hovered
                                           ? Config.colors.action :
                                             Config.colors.border
-                            border.width: Config.general.borderWidth
-                            radius: Config.general.cornerRadius
+                            border.width: Config.appearance.borderWidth
+                            radius: Config.appearance.cornerRadius
 
                             Behavior on border.color {
                                 ColAnim {}
@@ -637,7 +637,7 @@ RowLayout {
 
                                 Behavior on x {
                                     NumberAnimation {
-                                        duration: Config.general.animDuration
+                                        duration: Config.appearance.animDuration
                                     }
                                 }
                             }

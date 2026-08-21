@@ -11,7 +11,7 @@ Rectangle {
 
     property real cpuTemp: States.cpuTemp
     property real pchTemp: States.pchTemp
-    property int fontSize: Config.general.fontSize
+    property int fontSize: Config.appearance.fontSize
     property string mail: ""
     property string mailErr: ""
 
@@ -25,7 +25,7 @@ Rectangle {
     }
 
     anchors.fill: parent
-    anchors.topMargin: Config.general.borderWidth > 0 ? 8 : 2
+    anchors.topMargin: Config.appearance.borderWidth > 0 ? 8 : 2
     anchors.bottomMargin: 8
     anchors.leftMargin: 8
     anchors.rightMargin: 8
@@ -66,7 +66,7 @@ Rectangle {
                 color: "transparent"
                 border.width: 1
                 border.color: Config.colors.passive
-                radius: Config.general.cornerRadius
+                radius: Config.appearance.cornerRadius
 
                 RowLayout {
                     id: sysinfo
@@ -106,7 +106,7 @@ Rectangle {
 
                             Text {
                                 color: Config.colors.fg
-                                font.family: Config.general.fontFamily
+                                font.family: Config.appearance.fontFamily
                                 font.bold: false
                                 font.pixelSize: root.fontSize
                                 text: States.uptime
@@ -126,7 +126,7 @@ Rectangle {
 
                             Text {
                                 color: Config.colors.fg
-                                font.family: Config.general.fontFamily
+                                font.family: Config.appearance.fontFamily
                                 font.bold: false
                                 font.pixelSize: root.fontSize
                                 text: States.osId
@@ -148,7 +148,7 @@ Rectangle {
 
                             Text {
                                 color: Config.colors.fg
-                                font.family: Config.general.fontFamily
+                                font.family: Config.appearance.fontFamily
                                 font.bold: false
                                 font.pixelSize: root.fontSize
                                 text: States.desktop
@@ -171,7 +171,7 @@ Rectangle {
 
                             Text {
                                 color: Config.colors.fg
-                                font.family: Config.general.fontFamily
+                                font.family: Config.appearance.fontFamily
                                 font.bold: false
                                 font.pixelSize: root.fontSize
                                 text: States.shell
@@ -194,7 +194,7 @@ Rectangle {
 
                             Text {
                                 color: Config.colors.fg
-                                font.family: Config.general.fontFamily
+                                font.family: Config.appearance.fontFamily
                                 font.pixelSize: root.fontSize
                                 font.bold: false
                                 text: States.user
@@ -223,7 +223,7 @@ Rectangle {
                     color: "transparent"
                     border.width: 1
                     border.color: Config.colors.passive
-                    radius: Config.general.cornerRadius
+                    radius: Config.appearance.cornerRadius
 
                     ColumnLayout {
                         anchors.fill: parent
@@ -241,7 +241,7 @@ Rectangle {
                                 Layout.fillHeight: true
                                 Layout.fillWidth: false
                                 Layout.preferredWidth: 10
-                                radius: Config.general.cornerRadius
+                                radius: Config.appearance.cornerRadius
                                 color: Config.colors.extraDark
                                 clip: true
 
@@ -255,7 +255,7 @@ Rectangle {
                                     anchors.bottom: parent.bottom
                                     width: parent.width
                                     height: parent.height * fraction
-                                    radius: Config.general.cornerRadius
+                                    radius: Config.appearance.cornerRadius
                                     color: getTempColor(root.cpuTemp)
 
                                     Behavior on height {
@@ -272,7 +272,7 @@ Rectangle {
                                 Layout.fillHeight: true
                                 Layout.fillWidth: false
                                 Layout.preferredWidth: 10
-                                radius: Config.general.cornerRadius
+                                radius: Config.appearance.cornerRadius
                                 color: Config.colors.extraDark
                                 clip: true
 
@@ -286,7 +286,7 @@ Rectangle {
                                     anchors.bottom: parent.bottom
                                     width: parent.width
                                     height: parent.height * fraction
-                                    radius: Config.general.cornerRadius
+                                    radius: Config.appearance.cornerRadius
                                     color: getTempColor(root.pchTemp)
 
                                     Behavior on height {
@@ -314,7 +314,7 @@ Rectangle {
                 color: "transparent"
                 border.width: 1
                 border.color: Config.colors.passive
-                radius: Config.general.cornerRadius
+                radius: Config.appearance.cornerRadius
 
                 Player {
                     anchors.fill: parent
@@ -329,7 +329,7 @@ Rectangle {
                 color: "transparent"
                 border.width: 1
                 border.color: Config.colors.passive
-                radius: Config.general.cornerRadius
+                radius: Config.appearance.cornerRadius
 
                 RowLayout {
                     anchors.centerIn: parent
@@ -353,7 +353,7 @@ Rectangle {
                                   /\s+for\s+\S+[\s\S]*$/, "")
                         color: Config.colors.fg
                         font.pixelSize: root.fontSize
-                        font.family: Config.general.fontFamily
+                        font.family: Config.appearance.fontFamily
                         horizontalAlignment: Text.AlignRight
                         verticalAlignment: Text.AlignVCenter
                         elide: Text.ElideRight

@@ -95,7 +95,7 @@ Item {
 
         Behavior on opacity {
             NumberAnimation {
-                duration: Config.general.animDuration
+                duration: Config.appearance.animDuration
                 easing.type: Easing.OutSine
             }
         }
@@ -104,7 +104,7 @@ Item {
             anchors.centerIn: parent
             text: "󰥠"
             color: Config.colors.fg
-            font.pixelSize: Config.general.fontSize * 6
+            font.pixelSize: Config.appearance.fontSize * 6
             font.family: "Symbols Nerd Font"
         }
     }
@@ -117,7 +117,7 @@ Item {
 
         Behavior on opacity {
             NumberAnimation {
-                duration: Config.general.animDuration
+                duration: Config.appearance.animDuration
                 easing.type: Easing.OutSine
             }
         }
@@ -135,7 +135,7 @@ Item {
                 Text {
                     anchors.centerIn: parent
                     text: ""
-                    font.pixelSize: Config.general.fontSize * 1.4
+                    font.pixelSize: Config.appearance.fontSize * 1.4
                     font.family: "Symbols Nerd Font"
                     horizontalAlignment: Text.AlignHCenter
                     color: Config.colors.fg
@@ -158,7 +158,7 @@ Item {
                 text: root.player?.identity || ""
                 elide: Text.ElideRight
                 font.pixelSize: 13
-                font.family: Config.general.fontFamily
+                font.family: Config.appearance.fontFamily
                 color: Config.colors.fg
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -167,7 +167,7 @@ Item {
                 visible: root.player === null
                 text: "󰥠"
                 elide: Text.ElideRight
-                font.pixelSize: Config.general.fontSize * 1.4
+                font.pixelSize: Config.appearance.fontSize * 1.4
                 font.bold: true
                 font.family: "Symbols Nerd Font"
                 color: Config.colors.passive
@@ -183,7 +183,7 @@ Item {
                 Text {
                     anchors.centerIn: parent
                     text: ""
-                    font.pixelSize: Config.general.fontSize * 1.4
+                    font.pixelSize: Config.appearance.fontSize * 1.4
                     font.family: "Symbols Nerd Font"
                     horizontalAlignment: Text.AlignHCenter
                     color: Config.colors.fg
@@ -222,7 +222,7 @@ Item {
                     Text {
                         anchors.centerIn: parent
                         text: "󰒟"
-                        font.pixelSize: Config.general.fontSize / 0.6
+                        font.pixelSize: Config.appearance.fontSize / 0.6
                         font.family: "Symbols Nerd Font"
                         horizontalAlignment: Text.AlignHCenter
                         color: player?.shuffle ? Config.colors.fg :
@@ -303,7 +303,7 @@ Item {
                                 return "󰑗";
                             }
                         }
-                        font.pixelSize: Config.general.fontSize / 0.6
+                        font.pixelSize: Config.appearance.fontSize / 0.6
                         font.family: "Symbols Nerd Font"
                         horizontalAlignment: Text.AlignHCenter
                         color: Config.colors.fg
@@ -339,7 +339,7 @@ Item {
             Text {
                 text: root.title
                 font.bold: true
-                font.family: Config.general.fontFamily
+                font.family: Config.appearance.fontFamily
                 font.pixelSize: 15
                 color: Config.colors.fg
                 elide: Text.ElideRight
@@ -350,7 +350,7 @@ Item {
             Text {
                 text: root.artist
                 font.pixelSize: 14
-                font.family: Config.general.fontFamily
+                font.family: Config.appearance.fontFamily
                 color: Config.colors.fg
                 elide: Text.ElideRight
                 width: parent.width
@@ -360,7 +360,7 @@ Item {
             Text {
                 text: root.album
                 font.pixelSize: 13
-                font.family: Config.general.fontFamily
+                font.family: Config.appearance.fontFamily
                 color: Config.colors.fg
                 elide: Text.ElideRight
                 width: parent.width

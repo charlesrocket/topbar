@@ -6,7 +6,7 @@ import qs.core
 RowLayout {
     id: root
 
-    property int fontSize: Config.general.fontSize
+    property int fontSize: Config.appearance.fontSize
     property color colBar: Config.colors.dark
     property color colWarning: Config.colors.yellow
     property color colCritical: Config.colors.red

@@ -66,7 +66,7 @@ PanelWindow {
         implicitHeight: Config.bar.height
         height: Config.bar.height
         color: States.ecoMode ? Config.colors.bge : Config.colors.bg
-        radius: Config.general.cornerRadius
+        radius: Config.appearance.cornerRadius
 
         //Bar.DynamicFrame {
         //    barWidth: bar.width
@@ -75,7 +75,7 @@ PanelWindow {
 
         Behavior on y {
             NumberAnimation {
-                duration: Config.general.animDuration * 2
+                duration: Config.appearance.animDuration * 2
                 easing.type: Easing.OutQuint
             }
         }
@@ -88,7 +88,7 @@ PanelWindow {
 
             Behavior on y {
                 NumberAnimation {
-                    duration: Config.general.animDuration * 5
+                    duration: Config.appearance.animDuration * 5
                     easing.type: Easing.OutQuint
                 }
             }
@@ -132,7 +132,7 @@ PanelWindow {
         Timer {
             id: hideTimer
 
-            interval: Config.general.animDuration * 2
+            interval: Config.appearance.animDuration * 2
 
             onTriggered: {
                 bar.visible = false;

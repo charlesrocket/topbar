@@ -21,7 +21,7 @@ Item {
 
     Behavior on opacity {
         NumberAnimation {
-            duration: Config.general.animDuration * 2
+            duration: Config.appearance.animDuration * 2
             easing.type: Easing.OutQuint
         }
     }
@@ -87,7 +87,7 @@ Item {
                         height: clockRow.implicitHeight + 12
                         color: States.ecoMode ? Config.colors.bge :
                                                 Config.colors.bg
-                        radius: Config.general.cornerRadius
+                        radius: Config.appearance.cornerRadius
 
                         Loader {
                             active: Config.lockscreen.shadows
@@ -98,7 +98,7 @@ Item {
                             sourceComponent: RectangularShadow {
                                 offset.x: 0
                                 offset.y: 0
-                                radius: Config.general.cornerRadius
+                                radius: Config.appearance.cornerRadius
                                 blur: 30
                                 spread: 10
                                 color: Qt.rgba(0, 0, 0, 0.3)
@@ -121,7 +121,7 @@ Item {
                                     property var currentTime: new Date()
 
                                     anchors.fill: parent
-                                    radius: Config.general.cornerRadius
+                                    radius: Config.appearance.cornerRadius
                                     color: "transparent"
                                     anchors.topMargin: 4
 
@@ -166,7 +166,7 @@ Item {
                         height: battRow.implicitHeight + 12
                         color: States.ecoMode ? Config.colors.bge :
                                                 Config.colors.bg
-                        radius: Config.general.cornerRadius
+                        radius: Config.appearance.cornerRadius
 
                         Loader {
                             active: Config.lockscreen.shadows
@@ -177,7 +177,7 @@ Item {
                             sourceComponent: RectangularShadow {
                                 offset.x: 0
                                 offset.y: 0
-                                radius: Config.general.cornerRadius
+                                radius: Config.appearance.cornerRadius
                                 blur: 30
                                 spread: 10
                                 color: Qt.rgba(0, 0, 0, 0.3)
@@ -198,7 +198,7 @@ Item {
                                     id: battRect
 
                                     anchors.fill: parent
-                                    radius: Config.general.cornerRadius
+                                    radius: Config.appearance.cornerRadius
                                     color: "transparent"
 
                                     Text {
@@ -249,7 +249,7 @@ Item {
             width: buttonsRow.implicitWidth + 18
             height: buttonsRow.implicitHeight + 12
             color: States.ecoMode ? Config.colors.bge : Config.colors.bg
-            radius: Config.general.cornerRadius
+            radius: Config.appearance.cornerRadius
 
             Loader {
                 active: Config.lockscreen.shadows
@@ -260,7 +260,7 @@ Item {
                 sourceComponent: RectangularShadow {
                     offset.x: 0
                     offset.y: 0
-                    radius: Config.general.cornerRadius
+                    radius: Config.appearance.cornerRadius
                     blur: 30
                     spread: 10
                     color: Qt.rgba(0, 0, 0, 0.3)
@@ -279,7 +279,7 @@ Item {
 
                     Rectangle {
                         anchors.fill: parent
-                        radius: Config.general.cornerRadius
+                        radius: Config.appearance.cornerRadius
                         color: powerMouseArea.containsMouse ? Config.colors.fg :
                                                               "transparent"
 
@@ -320,7 +320,7 @@ Item {
 
                     Rectangle {
                         anchors.fill: parent
-                        radius: Config.general.cornerRadius
+                        radius: Config.appearance.cornerRadius
                         color: sleepMouseArea.containsMouse ? Config.colors.fg :
                                                               "transparent"
 
@@ -361,7 +361,7 @@ Item {
 
                     Rectangle {
                         anchors.fill: parent
-                        radius: Config.general.cornerRadius
+                        radius: Config.appearance.cornerRadius
                         color: rebootMouseArea.containsMouse ? Config.colors.fg :
                                                                "transparent"
 
@@ -447,7 +447,7 @@ Item {
                     sourceComponent: RectangularShadow {
                         offset.x: 0
                         offset.y: 0
-                        radius: Config.general.cornerRadius
+                        radius: Config.appearance.cornerRadius
                         blur: 30
                         spread: 10
                         color: Qt.rgba(0, 0, 0, 0.3)
@@ -460,7 +460,7 @@ Item {
                     implicitWidth: usernameText.implicitWidth + 20
                     implicitHeight: usernameText.implicitHeight + 12
                     color: States.ecoMode ? Config.colors.bge : Config.colors.bg
-                    radius: Config.general.cornerRadius
+                    radius: Config.appearance.cornerRadius
 
                     //border.width: 1
                     //border.color: Config.colors.passive
@@ -471,7 +471,7 @@ Item {
                         anchors.centerIn: parent
                         text: root.name
                         color: Config.colors.fg
-                        font.family: Config.general.fontFamily
+                        font.family: Config.appearance.fontFamily
                         font.pixelSize: 18
                         font.bold: false
                     }
@@ -495,7 +495,7 @@ Item {
                     sourceComponent: RectangularShadow {
                         offset.x: 0
                         offset.y: 0
-                        radius: Config.general.cornerRadius
+                        radius: Config.appearance.cornerRadius
                         blur: 30
                         spread: 10
                         color: Qt.rgba(0, 0, 0, 0.3)
@@ -521,7 +521,7 @@ Item {
 
                         color: States.ecoMode ? Config.colors.bge :
                                                 Config.colors.bg
-                        radius: Config.general.cornerRadius
+                        radius: Config.appearance.cornerRadius
                         border.width: 2
                         border.color: Qt.rgba(blinkColor.r, blinkColor.g,
                                               blinkColor.b,
@@ -570,7 +570,7 @@ Item {
                         color: root.context.showFailure ? Config.colors.red :
                                                           Config.colors.fg
                         opacity: root.context.showFailure ? 1 : 0.5
-                        font.family: Config.general.fontFamily
+                        font.family: Config.appearance.fontFamily
                         font.bold: false
                         font.pixelSize: passwordBox.font.pixelSize
                         visible: passwordBox.text.length === 0

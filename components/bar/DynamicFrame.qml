@@ -8,9 +8,9 @@ Shape {
 
     required property int barWidth
     required property int barHeight
-    property int sw: Config.general.borderWidth > 0
-                     ? Config.general.borderWidth : 0
-    property int cr: Config.general.cornerRadius
+    property int sw: Config.appearance.borderWidth > 0
+                     ? Config.appearance.borderWidth : 0
+    property int cr: Config.appearance.cornerRadius
     property int ramp: cr * 2
 
     preferredRendererType: Shape.CurveRenderer

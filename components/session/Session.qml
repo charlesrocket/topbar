@@ -178,7 +178,7 @@ Loader {
                                             font.pointSize: 14
                                             font.bold: true
                                             font.family:
-                                                Config.general.fontFamily
+                                                Config.appearance.fontFamily
 
                                             Behavior on color {
                                                 ColAnim {}

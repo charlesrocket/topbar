@@ -11,7 +11,7 @@ Variants {
 
     readonly property bool defaultWallpaper: Config.general.wallpaper
                                              === States.defaultWallpaper
-    property bool blurred: States.blurredBackground && Config.general.blur
+    property bool blurred: States.blurredBackground && Config.appearance.blur
 
     model: Quickshell.screens
 
@@ -47,9 +47,9 @@ Variants {
                 blur: 0.95
                 blurMax: 42
                 blurMultiplier: 0.3
-                shadowEnabled: Config.general.shadows
+                shadowEnabled: Config.appearance.shadows
                 shadowColor: Config.colors.bge
-                autoPaddingEnabled: Config.general.shadows
+                autoPaddingEnabled: Config.appearance.shadows
             }
 
             SequentialAnimation {
