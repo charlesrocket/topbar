@@ -23,6 +23,10 @@ Singleton {
     property alias appearance: settings.appearance
     property alias colors: colorsObj
 
+    function save() {
+        fileView.writeAdapter();
+    }
+
     FileView {
         id: fileView
 

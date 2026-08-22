@@ -190,6 +190,83 @@ FloatingWindow {
                                 Item {
                                     Layout.fillHeight: true
                                 }
+
+                                Text {
+                                    id: saveFeedbackText
+
+                                    Layout.alignment: Qt.AlignHCenter
+                                    Layout.topMargin: 4
+                                    Layout.bottomMargin: 2
+                                    text: "DONE"
+                                    color: Config.colors.green
+                                    font.family: Config.appearance.fontFamily
+                                    font.pixelSize: Config.appearance.fontSize
+                                                    - 2
+                                    opacity: 0
+                                    visible: opacity > 0
+
+                                    SequentialAnimation {
+                                        id: saveFeedback
+
+                                        NumberAnimation {
+                                            target: saveFeedbackText
+                                            property: "opacity"
+                                            to: 1
+                                            duration: Config.appearance.animDuration
+                                        }
+
+                                        PauseAnimation {
+                                            duration: Config.appearance.animDuration
+                                                      * 6
+                                        }
+
+                                        NumberAnimation {
+                                            target: saveFeedbackText
+                                            property: "opacity"
+                                            to: 0
+                                            duration: Config.appearance.animDuration
+                                        }
+                                    }
+                                }
+
+                                Button {
+                                    id: saveButton
+
+                                    Layout.fillWidth: true
+                                    Layout.preferredHeight: 36
+
+                                    background: Rectangle {
+                                        radius: Config.appearance.cornerRadius
+                                        border.width:
+                                            Config.appearance.borderWidth
+                                        border.color: Config.colors.accent
+                                        color: saveButton.pressed ? Qt.darker(
+                                                                        Config.colors.accent,
+                                                                        1.2) : (saveButton.hovered
+                                                                                ? Config.colors.accent :
+                                                                                  "transparent")
+
+                                        Behavior on color {
+                                            ColAnim {}
+                                        }
+                                    }
+                                    contentItem: Text {
+                                        text: "Save"
+                                        font.family:
+                                            Config.appearance.fontFamily
+                                        font.pixelSize:
+                                            Config.appearance.fontSize
+                                        font.bold: true
+                                        color: Config.colors.fg
+                                        horizontalAlignment: Text.AlignHCenter
+                                        verticalAlignment: Text.AlignVCenter
+                                    }
+
+                                    onClicked: {
+                                        Config.save();
+                                        saveFeedback.restart();
+                                    }
+                                }
                             }
                         }
                     }
