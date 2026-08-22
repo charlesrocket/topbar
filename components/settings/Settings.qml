@@ -204,29 +204,6 @@ FloatingWindow {
                                                     - 2
                                     opacity: 0
                                     visible: opacity > 0
-
-                                    SequentialAnimation {
-                                        id: saveFeedback
-
-                                        NumberAnimation {
-                                            target: saveFeedbackText
-                                            property: "opacity"
-                                            to: 1
-                                            duration: Config.appearance.animDuration
-                                        }
-
-                                        PauseAnimation {
-                                            duration: Config.appearance.animDuration
-                                                      * 6
-                                        }
-
-                                        NumberAnimation {
-                                            target: saveFeedbackText
-                                            property: "opacity"
-                                            to: 0
-                                            duration: Config.appearance.animDuration
-                                        }
-                                    }
                                 }
 
                                 Button {
@@ -234,8 +211,11 @@ FloatingWindow {
 
                                     Layout.fillWidth: true
                                     Layout.preferredHeight: 36
+                                    visible: !Config.general.configWatch
 
                                     background: Rectangle {
+                                        id: saveRectangle
+
                                         radius: Config.appearance.cornerRadius
                                         border.width:
                                             Config.appearance.borderWidth
@@ -246,8 +226,77 @@ FloatingWindow {
                                                                                 ? Config.colors.accent :
                                                                                   "transparent")
 
+                                        Behavior on border.color {
+                                            enabled: !saveFeedback.running &&
+                                                     !failFeedback.running
+
+                                            ColorAnimation {
+                                                duration: Config.appearance.animDuration
+                                            }
+                                        }
                                         Behavior on color {
                                             ColAnim {}
+                                        }
+
+                                        SequentialAnimation {
+                                            id: saveFeedback
+
+                                            ColorAnimation {
+                                                target: saveRectangle
+                                                property: "border.color"
+                                                to: Config.colors.green
+                                                duration: Config.appearance.animDuration
+                                            }
+
+                                            NumberAnimation {
+                                                target: saveFeedbackText
+                                                property: "opacity"
+                                                to: 1
+                                                duration: Config.appearance.animDuration
+                                            }
+
+                                            PauseAnimation {
+                                                duration: Config.appearance.animDuration
+                                                          * 6
+                                            }
+
+                                            ParallelAnimation {
+                                                ColorAnimation {
+                                                    target: saveRectangle
+                                                    property: "border.color"
+                                                    to: Config.colors.accent
+                                                    duration: Config.appearance.animDuration
+                                                }
+
+                                                NumberAnimation {
+                                                    target: saveFeedbackText
+                                                    property: "opacity"
+                                                    to: 0
+                                                    duration: Config.appearance.animDuration
+                                                }
+                                            }
+                                        }
+
+                                        SequentialAnimation {
+                                            id: failFeedback
+
+                                            loops: 3
+
+                                            ColorAnimation {
+                                                target: saveRectangle
+                                                property: "border.color"
+                                                to: Config.colors.red
+                                                duration: Config.appearance.animDuration
+                                                          / 2
+                                            }
+
+                                            ColorAnimation {
+                                                target: saveRectangle
+                                                property: "border.color"
+                                                to: Config.colors.accent
+                                                duration: Config.appearance.animDuration
+                                                          / 2
+                                            }
                                         }
                                     }
                                     contentItem: Text {
@@ -264,7 +313,18 @@ FloatingWindow {
 
                                     onClicked: {
                                         Config.save();
-                                        saveFeedback.restart();
+                                    }
+
+                                    Connections {
+                                        function onSaveFailed() {
+                                            failFeedback.restart();
+                                        }
+
+                                        function onSaveSucceeded() {
+                                            saveFeedback.restart();
+                                        }
+
+                                        target: Config
                                     }
                                 }
                             }

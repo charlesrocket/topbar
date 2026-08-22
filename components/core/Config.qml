@@ -23,6 +23,9 @@ Singleton {
     property alias appearance: settings.appearance
     property alias colors: colorsObj
 
+    signal saveFailed
+    signal saveSucceeded
+
     function save() {
         fileView.writeAdapter();
     }
@@ -34,11 +37,14 @@ Singleton {
         watchChanges: Config.general.configWatch
 
         onFileChanged: reload()
-        onAdapterUpdated: writeAdapter()
+        onAdapterUpdated: if (Config.general.configWatch)
+        writeAdapter()
         onLoadFailed: error => {
             if (error === FileViewError.FileNotFound)
                 writeAdapter();
         }
+        onSaveFailed: error => root.saveFailed()
+        onSaved: root.saveSucceeded()
 
         JsonAdapter {
             id: settings
