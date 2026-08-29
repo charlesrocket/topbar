@@ -578,7 +578,7 @@ FloatingWindow {
                                             valueType: "bool"
                                             last: true
                                             description:
-                                                "Reload on configuration file changes."
+                                                "Automatically save and reload the configuration file."
                                         }
                                     }
                                 }
