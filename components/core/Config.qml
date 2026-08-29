@@ -38,7 +38,7 @@ Singleton {
 
         onFileChanged: reload()
         onAdapterUpdated: if (Config.general.configWatch)
-        writeAdapter()
+                              writeAdapter()
         onLoadFailed: error => {
             if (error === FileViewError.FileNotFound)
                 writeAdapter();
@@ -157,7 +157,7 @@ Singleton {
                 property string background: "#aa202020"
                 property JsonObject commands: JsonObject {
                     property string lock:
-                    "quickshell -c topbar ipc call bar lock"
+                        "quickshell -c topbar ipc call bar lock"
                     property string logout: "pkill mango | hyprshutdown"
                     property string suspend: "zzz"
                     property string hibernate: "acpiconf -s 4"

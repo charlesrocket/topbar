@@ -61,7 +61,7 @@ Singleton {
 
     // TODO add local
     property string defaultWallpaper:
-    "https://codeberg.org/charlesrocket/misc-files/raw/branch/trunk/puffy-red.png"
+        "https://codeberg.org/charlesrocket/misc-files/raw/branch/trunk/puffy-red.png"
     property string osId
     property string osName
     property string osPrettyName
