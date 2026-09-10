@@ -98,7 +98,7 @@ Item {
     Process {
         id: onlineCheck
 
-        command: ["host", "-W", "1", "8.8.8.8"]
+        command: ["ping", "-c", "1", "8.8.8.8"]
         running: !States.ecoMode
 
         onExited: (exitCode, exitStatus) => {
