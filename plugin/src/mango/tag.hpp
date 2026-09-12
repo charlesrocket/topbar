@@ -1,36 +1,34 @@
 #pragma once
 
-#include "wayland-dwl-ipc-unstable-v2-client-protocol.h"
-
 #include <QtGlobal>
+#include <cstdint>
 #include <qobject.h>
 #include <qqmlintegration.h>
 #include <qtmetamacros.h>
 
-namespace topbar::dwl {
-// NOLINTBEGIN(misc-include-cleaner)
+namespace topbar::mango {
 
-///! State of a single DWL tag.
-/// Represents one tag slot on @@DwlIpcOutput.
-class DwlTag : public QObject {
+enum class MangoTagState : uint8_t {
+    None = 0,
+    Active = 1,
+    Urgent = 2,
+};
+
+class MangoTag : public QObject {
     Q_OBJECT;
     QML_ELEMENT;
-    QML_UNCREATABLE("DwlTag instances are created by DwlIpcOutput.");
+    QML_UNCREATABLE("MangoTag instances are created by MangoIpcOutput.");
 
-    /// Zero-based index of this tag.
+    // clang-format off
     Q_PROPERTY(quint32 index READ index CONSTANT);
-    /// Whether this tag is currently active on its output.
     Q_PROPERTY(bool active READ active NOTIFY activeChanged);
-    /// Whether any client on this tag is urgent.
     Q_PROPERTY(bool urgent READ urgent NOTIFY urgentChanged);
-    /// Number of clients assigned to this tag.
     Q_PROPERTY(quint32 clientCount READ clientCount NOTIFY clientCountChanged);
-    /// Nonzero index of the focused client within this tag, 0 if none.
-    Q_PROPERTY(quint32 focusedClient READ focusedClient NOTIFY
-                   focusedClientChanged);
+    Q_PROPERTY(quint32 focusedClient READ focusedClient NOTIFY focusedClientChanged);
+    // clang-format on
 
   public:
-    explicit DwlTag(quint32 index, QObject *parent = nullptr);
+    explicit MangoTag(quint32 index, QObject *parent = nullptr);
 
     [[nodiscard]] quint32 index() const;
     [[nodiscard]] bool active() const;
@@ -53,6 +51,5 @@ class DwlTag : public QObject {
     quint32 mClientCount = 0;
     quint32 mFocusedClient = 0;
 };
-// NOLINTEND(misc-include-cleaner)
 
-} // namespace topbar::dwl
+} // namespace topbar::mango

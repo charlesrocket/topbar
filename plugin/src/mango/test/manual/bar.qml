@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 
-import TopBar.DWL
+import TopBar.Mango
 
 ShellRoot {
     Scope {
@@ -13,10 +13,10 @@ ShellRoot {
 
             PanelWindow {
                 required property var modelData
-                property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0
-                                                 ? DwlIpc.outputForName(
+                property MangoIpcOutput mangoOutput: MangoIpc.outputs.length > 0
+                                                 ? MangoIpc.outputForName(
                                                        modelData.name) : null
-                property string currentLayout: dwlOutput ? dwlOutput.kbLayout :
+                property string currentLayout: mangoOutput ? mangoOutput.kbLayout :
                                                            ""
 
                 screen: modelData
@@ -33,10 +33,10 @@ ShellRoot {
 
                     // Tag indicators
                     Repeater {
-                        model: dwlOutput ? dwlOutput.tags : []
+                        model: mangoOutput ? mangoOutput.tags : []
 
                         delegate: Rectangle {
-                            required property DwlTag modelData
+                            required property MangoTag modelData
 
                             width: 22
                             height: 22
@@ -65,10 +65,10 @@ ShellRoot {
                                 // Right click: toggle tag on focused client
                                 onClicked: mouse => {
                                     if (mouse.button === Qt.RightButton)
-                                        dwlOutput.setClientTags(0xFFFFFFFF, 1
+                                        mangoOutput.setClientTags(0xFFFFFFFF, 1
                                                                 << modelData.index);
                                     else
-                                        dwlOutput.setTags(1 << modelData.index);
+                                        mangoOutput.setTags(1 << modelData.index);
                                 }
                             }
                         }
@@ -76,20 +76,20 @@ ShellRoot {
 
                     // Layout symbol
                     Text {
-                        text: dwlOutput ? dwlOutput.layoutSymbol : ""
+                        text: mangoOutput ? mangoOutput.layoutSymbol : ""
                         color: "#a6e3a1"
                         font.pixelSize: 12
                         font.family: "monospace"
-                        visible: dwlOutput !== null
+                        visible: mangoOutput !== null
 
                         MouseArea {
                             anchors.fill: parent
 
                             onClicked: {
-                                if (dwlOutput) {
-                                    const next = (dwlOutput.layoutIndex + 1)
-                                          % DwlIpc.layouts.length;
-                                    dwlOutput.setLayout(next);
+                                if (mangoOutput) {
+                                    const next = (mangoOutput.layoutIndex + 1)
+                                          % MangoIpc.layouts.length;
+                                    mangoOutput.setLayout(next);
                                 }
                             }
                         }
@@ -137,7 +137,7 @@ ShellRoot {
                     }
 
                     Text {
-                        visible: dwlOutput ? dwlOutput.floating : false
+                        visible: mangoOutput ? mangoOutput.floating : false
                         text: "[~]"
                         color: "#f9e2af"
                         font.pixelSize: 12
@@ -145,9 +145,9 @@ ShellRoot {
                 }
 
                 Text {
-                    visible: !DwlIpc.available
+                    visible: !MangoIpc.available
                     anchors.centerIn: parent
-                    text: "DWL not available"
+                    text: "Mango not available"
                     color: "#f38ba8"
                     font.pixelSize: 12
                 }

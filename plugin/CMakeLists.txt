@@ -9,7 +9,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     Gui
     DBus
     Widgets
-    WaylandClient
+    #WaylandClient
     Quick
     QuickControls2
     NetworkAuth
@@ -19,28 +19,28 @@ find_package(Qt6 REQUIRED COMPONENTS
 
 find_package(PkgConfig REQUIRED)
 find_package(Qt6Keychain REQUIRED)
-find_package(WaylandScanner REQUIRED)
+#find_package(WaylandScanner REQUIRED)
 
-find_program(WAYLAND_SCANNER_EXE
-    NAMES wayland-scanner
-    REQUIRED
-)
+#find_program(WAYLAND_SCANNER_EXE
+#    NAMES wayland-scanner
+#    REQUIRED
+#)
 
-find_program(QT_WAYLAND_SCANNER_EXE
-    NAMES qtwaylandscanner
-    HINTS
-        "/usr/local/libexec/qt6"
-        "/usr/lib/qt6/libexec"
-    REQUIRED
-)
+#find_program(QT_WAYLAND_SCANNER_EXE
+#    NAMES qtwaylandscanner
+#    HINTS
+#        "/usr/local/libexec/qt6"
+#        "/usr/lib/qt6/libexec"
+#    REQUIRED
+#)
 
-pkg_get_variable(WAYLAND_PROTOCOLS wayland-protocols pkgdatadir)
+#pkg_get_variable(WAYLAND_PROTOCOLS wayland-protocols pkgdatadir)
 
-if(WAYLAND_PROTOCOLS)
-    message(STATUS "Found Wayland protocols: ${WAYLAND_PROTOCOLS}")
-else()
-    message(FATAL_ERROR "Could not find wayland protocols")
-endif()
+#if(WAYLAND_PROTOCOLS)
+#    message(STATUS "Found Wayland protocols: ${WAYLAND_PROTOCOLS}")
+#else()
+#    message(FATAL_ERROR "Could not find wayland protocols")
+#endif()
 
 set(QT_QML_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qml")
 include(${CMAKE_SOURCE_DIR}/plugin/pch.cmake)

@@ -7,8 +7,8 @@ import Quickshell.Services.UPower
 import qs.core
 import qs.widgets
 import qs.widgets.audio
-import qs.widgets.dwl as DWL
 import qs.widgets.hypr as Hypr
+import qs.widgets.mango as Mango
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3
@@ -137,19 +137,19 @@ RowLayout {
         asynchronous: true
         sourceComponent: switch (States.desktop) {
                          case "mango":
-                             return dwlLang;
+                             return mangoLang;
                          case "hyprland":
                              return hyprLang;
                          }
 
         Component {
-            id: dwlLang
+            id: mangoLang
 
             Item {
                 implicitWidth: childrenRect.width
                 implicitHeight: childrenRect.height
 
-                DWL.Lang {}
+                Mango.Lang {}
             }
         }
 

@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 
-import TopBar.DWL
+import TopBar.Mango
 
 import qs
 import qs.core
@@ -16,19 +16,19 @@ RowLayout {
     property color colActive: Config.colors.accent
     property color colPassive: Qt.darker(Config.colors.passive, 1.5)
     property color colAction: Config.colors.action
-    property DwlIpcOutput dwlOutput: States.dwlOutput
+    property MangoIpcOutput mangoOutput: States.mangoOutput
     required property var names
 
     spacing: 6
 
     Repeater {
-        model: dwlOutput ? dwlOutput.tags : []
+        model: mangoOutput ? mangoOutput.tags : []
 
         Text {
             id: button
 
             required property int index
-            required property DwlTag modelData
+            required property MangoTag modelData
             property bool isHovered: false
 
             text: root.names[index]
@@ -55,7 +55,7 @@ RowLayout {
                 anchors.fill: parent
                 hoverEnabled: true
 
-                onClicked: root.dwlOutput.setTags(1 << button.modelData.index)
+                onClicked: root.mangoOutput.setTags(1 << button.modelData.index)
                 onEntered: button.isHovered = true
                 onExited: button.isHovered = false
             }
@@ -68,9 +68,9 @@ RowLayout {
         property bool isHovered: false
 
         text: root.names[9]
-        color: isHovered ? root.colAction : (root.dwlOutput
-                                             && root.dwlOutput.tags.every(t
-                                                                          => t.active)
+        color: isHovered ? root.colAction : (root.mangoOutput
+                                             && root.mangoOutput.tags.every(t
+                                                                            => t.active)
                                              ? root.colNormal : root.colPassive)
         leftPadding: 4
         rightPadding: 4
@@ -89,7 +89,7 @@ RowLayout {
             anchors.fill: parent
             hoverEnabled: true
 
-            onClicked: root.dwlOutput.setTags(-1)
+            onClicked: root.mangoOutput.setTags(-1)
             onEntered: tagZero.isHovered = true
             onExited: tagZero.isHovered = false
         }

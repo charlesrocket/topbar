@@ -23,8 +23,8 @@ if (OSS)
     add_subdirectory(oss)
 endif()
 
-if (DWL)
-    add_subdirectory(dwl)
+if (MANGO)
+    add_subdirectory(mango)
 endif()
 
 if (CLIENTS)

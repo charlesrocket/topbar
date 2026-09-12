@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs.core
-import qs.widgets.dwl as DWL
 import qs.widgets.hypr as Hypr
+import qs.widgets.mango as Mango
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3
@@ -27,16 +27,16 @@ RowLayout {
                 asynchronous: true
                 sourceComponent: switch (States.desktop) {
                                  case "mango":
-                                     return dwl;
+                                     return mango;
                                  case "hyprland":
                                      return hypr;
                                  }
             }
 
             Component {
-                id: dwl
+                id: mango
 
-                DWL.Workspaces {
+                Mango.Workspaces {
                     names: [Config.workspaces.one, Config.workspaces.two,
                         Config.workspaces.three, Config.workspaces.four,
                         Config.workspaces.five, Config.workspaces.six,

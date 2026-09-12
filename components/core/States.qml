@@ -5,9 +5,9 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.UPower
 import Quickshell.Wayland
-import TopBar.DWL
 
 import TopBar.Devd
+import TopBar.Mango
 import TopBar.System
 
 import qs.core
@@ -33,8 +33,8 @@ Singleton {
                                      + "/topbar" || root.home
                                      + "/.config/topbar"
     property PanelWindow barPanel: null
-    property DwlIpcOutput dwlOutput: DwlIpc.outputs.length > 0
-                                     ? DwlIpc.outputs[0] : null
+    property MangoIpcOutput mangoOutput: MangoIpc.outputs.length > 0
+                                         ? MangoIpc.outputs[0] : null
     property var locale: Qt.locale(Config.general.locale)
     property bool barEnabled: true
     property bool ecoMode: false
@@ -53,7 +53,7 @@ Singleton {
                               ? ToplevelManager.activeToplevel.fullscreen :
                                 false
     property bool blurredBackground: {
-        const output = DwlIpc.outputs.find(o => o.active);
+        const output = MangoIpc.outputs.find(o => o.active);
         const activeTag = output?.tags.find(tag => tag.active);
         const hasClients = (activeTag?.clientCount ?? 0) > 0;
         return hasClients || (hasClients && !ecoMode);

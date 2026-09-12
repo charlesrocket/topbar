@@ -1,6 +1,6 @@
 import QtQuick
 
-import TopBar.DWL
+import TopBar.Mango
 
 import qs.core
 
@@ -11,8 +11,8 @@ Rectangle {
     property color colMain: Config.colors.fg
     property color colBorder: Qt.darker(Config.colors.accent, 1.5)
     property color colBackground: "transparent"
-    property DwlIpcOutput dwlOutput: States.dwlOutput
-    property string currentLayout: dwlOutput ? dwlOutput.kbLayout : ""
+    property MangoIpcOutput mangoOutput: States.mangoOutput
+    property string currentLayout: mangoOutput ? mangoOutput.kbLayout : ""
 
     width: layoutText.width + 8
     height: layoutText.height
