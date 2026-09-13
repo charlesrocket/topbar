@@ -29,7 +29,7 @@ namespace {
 
 constexpr const char *INSTANCE_SIGNATURE_ENV = "MANGO_INSTANCE_SIGNATURE";
 
-constexpr int RECONNECT_INTERVAL_MS = 2000;
+constexpr int RECONNECT_INTERVAL_MS = 10000;
 
 } // namespace
 
