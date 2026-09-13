@@ -50,7 +50,7 @@ class MangoIpcManager : public QObject {
     void onSocketErrorOccurred();
     void onSocketReadyRead();
     void reconnect();
-    void requestLayouts();
+    void requestLayouts() const;
     void onScreenAdded(QScreen *screen);
     void onScreenRemoved(QScreen *screen);
 

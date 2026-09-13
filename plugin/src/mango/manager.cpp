@@ -20,6 +20,7 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtimer.h>
+#include <qtypes.h>
 
 namespace topbar::mango {
 
@@ -263,7 +264,9 @@ quint32 MangoIpcManager::indexForLayoutSymbol(const QString &symbol) {
     return static_cast<quint32>(this->mLayouts.size() - 1);
 }
 
-void MangoIpcManager::requestLayouts() { this->sendCommand("get layouts"); }
+void MangoIpcManager::requestLayouts() const {
+    this->sendCommand("get layouts");
+}
 
 void MangoIpcManager::sendCommand(const QString &line) const {
     if (!this->mConnected) {
