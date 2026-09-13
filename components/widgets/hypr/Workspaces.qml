@@ -54,7 +54,8 @@ RowLayout {
                 anchors.fill: parent
                 hoverEnabled: true
 
-                onClicked: Hyprland.dispatch("workspace " + (parent.index + 1))
+                onClicked: Hyprland.dispatch("hl.dsp.focus({ workspace = " + (
+                                                 parent.index + 1) + "})")
                 onEntered: button.isHovered = true
                 onExited: button.isHovered = false
             }
