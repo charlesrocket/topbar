@@ -20,7 +20,6 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtimer.h>
-#include <qtypes.h>
 
 namespace topbar::mango {
 
@@ -151,8 +150,6 @@ void MangoIpcManager::onSocketErrorOccurred() {
     this->mReconnectTimer.start(RECONNECT_INTERVAL_MS);
 }
 
-// NOLINTEND(misc-include-cleaner)
-
 void MangoIpcManager::onSocketReadyRead() {
     this->mReadBuffer.append(this->mSocket.readAll());
 
@@ -163,6 +160,8 @@ void MangoIpcManager::onSocketReadyRead() {
         this->processLine(line);
     }
 }
+
+// NOLINTEND(misc-include-cleaner)
 
 void MangoIpcManager::processLine(const QByteArray &line) {
     if (line.trimmed().isEmpty()) return;
