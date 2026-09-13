@@ -25,6 +25,7 @@ Singleton {
                                           "XDG_CURRENT_DESKTOP").toLowerCase()
                                       || Quickshell.env(
                                           "XDG_SESSION_DESKTOP").toLowerCase()
+    readonly property bool isMango: desktop === "mango"
     readonly property string user: Quickshell.env("USER").toLowerCase()
     readonly property string shell: Quickshell.env("SHELL").split("/").pop(
                                         ).toLowerCase()
@@ -33,8 +34,7 @@ Singleton {
                                      + "/topbar" || root.home
                                      + "/.config/topbar"
     property PanelWindow barPanel: null
-    property MangoIpcOutput mangoOutput: MangoIpc.outputs.length > 0
-                                         ? MangoIpc.outputs[0] : null
+    property var mangoOutput: null
     property var locale: Qt.locale(Config.general.locale)
     property bool barEnabled: true
     property bool ecoMode: false
@@ -52,12 +52,7 @@ Singleton {
     property bool fullScreen: ToplevelManager.activeToplevel
                               ? ToplevelManager.activeToplevel.fullscreen :
                                 false
-    property bool blurredBackground: {
-        const output = MangoIpc.outputs.find(o => o.active);
-        const activeTag = output?.tags.find(tag => tag.active);
-        const hasClients = (activeTag?.clientCount ?? 0) > 0;
-        return hasClients || (hasClients && !ecoMode);
-    }
+    property bool blurredBackground: false
 
     // TODO add local
     property string defaultWallpaper:
@@ -134,6 +129,22 @@ Singleton {
         }
     }
 
+    function updateMangoState() {
+        if (!root.isMango) {
+            root.mangoOutput = null;
+            root.blurredBackground = false;
+            return;
+        }
+
+        const outputs = MangoIpc.outputs;
+        root.mangoOutput = outputs.length > 0 ? outputs[0] : null;
+
+        const output = outputs.find(o => o.active);
+        const activeTag = output?.tags.find(tag => tag.active);
+        const hasClients = (activeTag?.clientCount ?? 0) > 0;
+        root.blurredBackground = hasClients || (hasClients && !root.ecoMode);
+    }
+
     function getOsIcon() {
         if (root.osId === "freebsd")
             return "󰣠";
@@ -156,7 +167,14 @@ Singleton {
     onDashboardPresentChanged: {
         root.uptime = System.uptime();
     }
-    onFullScreenChanged: {
-        ecoMode = fullScreen;
+    onFullScreenChanged: ecoMode = fullScreen // TODO fix ecoMode state
+    Component.onCompleted: root.updateMangoState()
+
+    Connections {
+        function onOutputsChanged() {
+            root.updateMangoState();
+        }
+
+        target: root.isMango ? MangoIpc : null
     }
 }
