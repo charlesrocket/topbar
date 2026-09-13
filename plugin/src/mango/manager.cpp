@@ -44,14 +44,17 @@ MangoIpcManager::MangoIpcManager() : QObject(nullptr) {
         &this->mSocket, &QLocalSocket::connected, this,
         &MangoIpcManager::onSocketConnected
     );
+
     QObject::connect(
         &this->mSocket, &QLocalSocket::disconnected, this,
         &MangoIpcManager::onSocketDisconnected
     );
+
     QObject::connect(
         &this->mSocket, &QLocalSocket::errorOccurred, this,
         &MangoIpcManager::onSocketErrorOccurred
     );
+
     QObject::connect(
         &this->mSocket, &QLocalSocket::readyRead, this,
         &MangoIpcManager::onSocketReadyRead
@@ -64,6 +67,7 @@ MangoIpcManager::MangoIpcManager() : QObject(nullptr) {
         qApp, &QGuiApplication::screenAdded, this,
         &MangoIpcManager::onScreenAdded
     );
+
     QObject::connect(
         qApp, &QGuiApplication::screenRemoved, this,
         &MangoIpcManager::onScreenRemoved
@@ -75,6 +79,8 @@ MangoIpcManager::MangoIpcManager() : QObject(nullptr) {
 void MangoIpcManager::onScreenAdded(QScreen *screen) {
     this->outputForName(screen->name(), true);
 }
+
+// NOLINTBEGIN(misc-include-cleaner)
 
 void MangoIpcManager::onScreenRemoved(QScreen *screen) {
     auto *output = this->mOutputMap.take(screen->name());
@@ -95,6 +101,7 @@ QStringList MangoIpcManager::layouts() const { return this->mLayouts; }
 QList<MangoIpcOutput *> MangoIpcManager::outputs() const {
     return this->mOutputs;
 }
+
 bool MangoIpcManager::isActive() const { return this->mConnected; }
 
 void MangoIpcManager::connectSocket() {
@@ -136,11 +143,14 @@ void MangoIpcManager::onSocketErrorOccurred() {
 
     qCWarning(logMangoIpc) << "IPC socket error:"
                            << this->mSocket.errorString();
+
     const bool wasConnected = this->mConnected;
     this->mConnected = false;
     if (wasConnected) emit this->activeChanged();
     this->mReconnectTimer.start(RECONNECT_INTERVAL_MS);
 }
+
+// NOLINTEND(misc-include-cleaner)
 
 void MangoIpcManager::onSocketReadyRead() {
     this->mReadBuffer.append(this->mSocket.readAll());
@@ -184,9 +194,11 @@ void MangoIpcManager::handleTopLevelMessage(const QJsonObject &root) {
                 const auto obj = entry.toObject();
                 const auto name = obj.contains("name") ? obj.value("name")
                                                        : obj.value("symbol");
+
                 if (name.isString()) names.append(name.toString());
             }
         }
+
         if (!names.isEmpty()) this->setLayouts(names);
     }
 
@@ -253,11 +265,10 @@ quint32 MangoIpcManager::indexForLayoutSymbol(const QString &symbol) {
 
 void MangoIpcManager::requestLayouts() { this->sendCommand("get layouts"); }
 
-void MangoIpcManager::sendCommand(const QString &line) {
-    const auto env = qEnvironmentVariable(INSTANCE_SIGNATURE_ENV);
-    if (env.isEmpty()) {
+void MangoIpcManager::sendCommand(const QString &line) const {
+    if (!this->mConnected) {
         qCWarning(logMangoIpc)
-            << "cannot send command without a socket path:" << line;
+            << "cannot send command while disconnected" << line;
         return;
     }
 
@@ -275,11 +286,12 @@ void MangoIpcManager::sendCommand(const QString &line) {
     QObject::connect(
         cmdSocket, &QLocalSocket::disconnected, cmdSocket, cleanup
     );
+
     QObject::connect(
         cmdSocket, &QLocalSocket::errorOccurred, cmdSocket, cleanup
     );
 
-    cmdSocket->connectToServer(env);
+    cmdSocket->connectToServer(qEnvironmentVariable(INSTANCE_SIGNATURE_ENV));
 }
 
 } // namespace topbar::mango

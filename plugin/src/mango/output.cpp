@@ -3,6 +3,8 @@
 #include "manager.hpp"
 #include "tag.hpp"
 
+// NOLINTBEGIN(misc-include-cleaner)
+
 #include <QtGlobal>
 #include <qjsonarray.h>
 #include <qjsonobject.h>
@@ -188,5 +190,7 @@ void MangoIpcOutput::applyJson(const QJsonObject &json) {
 
     emit this->frame();
 }
+
+// NOLINTEND(misc-include-cleaner)
 
 } // namespace topbar::mango

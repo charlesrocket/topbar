@@ -33,7 +33,7 @@ class MangoIpcManager : public QObject {
 
     quint32 indexForLayoutSymbol(const QString &symbol);
 
-    void sendCommand(const QString &line);
+    void sendCommand(const QString &line) const;
 
     static MangoIpcManager *instance();
 
