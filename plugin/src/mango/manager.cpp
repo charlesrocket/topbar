@@ -120,7 +120,7 @@ void MangoIpcManager::connectSocket() {
 void MangoIpcManager::reconnect() { this->connectSocket(); }
 
 void MangoIpcManager::onSocketConnected() {
-    qCInfo(logMangoIpc) << "Mango event socket connected";
+    qCInfo(logMangoIpc) << "Event socket connected";
     this->mConnected = true;
     this->mReadBuffer.clear();
     this->mSocket.write("watch all-monitors\n");
@@ -131,7 +131,7 @@ void MangoIpcManager::onSocketConnected() {
 }
 
 void MangoIpcManager::onSocketDisconnected() {
-    qCInfo(logMangoIpc) << "Mango event socket disconnectedt";
+    qCInfo(logMangoIpc) << "Event socket disconnectedt";
     const bool wasConnected = this->mConnected;
     this->mConnected = false;
     if (wasConnected) emit this->activeChanged();
