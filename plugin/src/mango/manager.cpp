@@ -23,7 +23,7 @@
 
 namespace topbar::mango {
 
-Q_LOGGING_CATEGORY(logMangoIpc, "topbar.mango.ipc")
+Q_LOGGING_CATEGORY(logMangoIpc, "topbar.mango.ipc", QtInfoMsg)
 
 namespace {
 
@@ -120,7 +120,7 @@ void MangoIpcManager::connectSocket() {
 void MangoIpcManager::reconnect() { this->connectSocket(); }
 
 void MangoIpcManager::onSocketConnected() {
-    qCInfo(logMangoIpc) << "connected to socket";
+    qCInfo(logMangoIpc) << "Mango event socket connected";
     this->mConnected = true;
     this->mReadBuffer.clear();
     this->mSocket.write("watch all-monitors\n");
@@ -131,7 +131,7 @@ void MangoIpcManager::onSocketConnected() {
 }
 
 void MangoIpcManager::onSocketDisconnected() {
-    qCWarning(logMangoIpc) << "disconnected from socket";
+    qCInfo(logMangoIpc) << "Mango event socket disconnectedt";
     const bool wasConnected = this->mConnected;
     this->mConnected = false;
     if (wasConnected) emit this->activeChanged();
@@ -141,8 +141,7 @@ void MangoIpcManager::onSocketDisconnected() {
 void MangoIpcManager::onSocketErrorOccurred() {
     if (this->mSocket.error() == QLocalSocket::PeerClosedError) return;
 
-    qCWarning(logMangoIpc) << "IPC socket error:"
-                           << this->mSocket.errorString();
+    qCWarning(logMangoIpc) << "Socket error:" << this->mSocket.errorString();
 
     const bool wasConnected = this->mConnected;
     this->mConnected = false;
@@ -170,7 +169,7 @@ void MangoIpcManager::processLine(const QByteArray &line) {
     const auto doc = QJsonDocument::fromJson(line, &parseError);
     if (parseError.error != QJsonParseError::NoError || !doc.isObject()) {
         qCWarning(logMangoIpc)
-            << "failed to parse mango IPC message:" << parseError.errorString();
+            << "Failed to parse message:" << parseError.errorString();
         return;
     }
 
@@ -270,7 +269,7 @@ void MangoIpcManager::requestLayouts() const {
 void MangoIpcManager::sendCommand(const QString &line) const {
     if (!this->mConnected) {
         qCWarning(logMangoIpc)
-            << "cannot send command while disconnected" << line;
+            << "Cannot send commands while disconnected" << line;
         return;
     }
 
