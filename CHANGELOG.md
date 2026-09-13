@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2026-09-13
+
+### Bug Fixes
+
+- Allow manual config writes
+- Improve write feedback
+- Update `configWatch` description
+- Show bars on external screens
+- Use single screen source
+- Switch to `ping`
+- Use `mango` ipc
+- Improve `sendCommand()` socket check
+- Fix `requestLayouts()`
+- Move lint end
+- Update log messages
+- Update dispatch syntax
+- Gate mango ipc
+- Increase reconnect interval
+- Change socket log messages
+
+### Styling
+
+- Fix indentations
+
 ## [0.4.0] - 2026-08-21
 
 ### Bug Fixes
