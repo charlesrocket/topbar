@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs.core
+import qs.widgets
 import qs.widgets.hypr as Hypr
 import qs.widgets.mango as Mango
 
@@ -30,6 +31,8 @@ RowLayout {
                                      return mango;
                                  case "hyprland":
                                      return hypr;
+                                 default:
+                                     return menu;
                                  }
             }
 
@@ -55,6 +58,12 @@ RowLayout {
                         Config.workspaces.seven, Config.workspaces.eight,
                         Config.workspaces.nine, Config.workspaces.ten]
                 }
+            }
+
+            Component {
+                id: menu
+
+                StartMenu {}
             }
         }
     }
