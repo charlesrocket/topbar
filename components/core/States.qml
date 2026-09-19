@@ -21,10 +21,9 @@ Singleton {
     readonly property bool codebergEnabled: Config.services.codeberg
     readonly property bool githubEnabled: Config.services.github
     readonly property string configDisk: Config.bar.dashboard.disk
-    readonly property string desktop: Quickshell.env(
-                                          "XDG_CURRENT_DESKTOP").toLowerCase()
-                                      || Quickshell.env(
-                                          "XDG_SESSION_DESKTOP").toLowerCase()
+    readonly property string xdgSession: Quickshell.env("XDG_SESSION_DESKTOP")
+    readonly property string xdgDesktop: Quickshell.env("XDG_CURRENT_DESKTOP")
+    readonly property string desktop: (xdgSession || xdgDesktop).toLowerCase()
     readonly property bool isMango: desktop === "mango"
     readonly property string user: Quickshell.env("USER").toLowerCase()
     readonly property string shell: Quickshell.env("SHELL").split("/").pop(
