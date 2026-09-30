@@ -9,6 +9,7 @@ import qs.widgets
 import qs.widgets.audio
 import qs.widgets.hypr as Hypr
 import qs.widgets.mango as Mango
+import qs.widgets.nullspace as Nullspace
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3
@@ -136,11 +137,24 @@ RowLayout {
         Layout.alignment: Qt.AlignVCenter
         asynchronous: true
         sourceComponent: switch (States.desktop) {
+                         case "nullspace":
+                             return nullspaceLang;
                          case "mango":
                              return mangoLang;
                          case "hyprland":
                              return hyprLang;
                          }
+
+        Component {
+            id: nullspaceLang
+
+            Item {
+                implicitWidth: childrenRect.width
+                implicitHeight: childrenRect.height
+
+                Nullspace.Lang {}
+            }
+        }
 
         Component {
             id: mangoLang

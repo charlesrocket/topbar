@@ -5,6 +5,7 @@ import qs.core
 import qs.widgets
 import qs.widgets.hypr as Hypr
 import qs.widgets.mango as Mango
+import qs.widgets.nullspace as Nullspace
 
 RowLayout {
     Layout.preferredWidth: parent.width / 3
@@ -27,6 +28,8 @@ RowLayout {
             Loader {
                 asynchronous: true
                 sourceComponent: switch (States.desktop) {
+                                 case "nullspace":
+                                     return nullspace;
                                  case "mango":
                                      return mango;
                                  case "hyprland":
@@ -34,6 +37,18 @@ RowLayout {
                                  default:
                                      return menu;
                                  }
+            }
+
+            Component {
+                id: nullspace
+
+                Nullspace.Workspaces {
+                    names: [Config.workspaces.one, Config.workspaces.two,
+                        Config.workspaces.three, Config.workspaces.four,
+                        Config.workspaces.five, Config.workspaces.six,
+                        Config.workspaces.seven, Config.workspaces.eight,
+                        Config.workspaces.nine, Config.workspaces.ten]
+                }
             }
 
             Component {
