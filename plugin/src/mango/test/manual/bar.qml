@@ -13,11 +13,12 @@ ShellRoot {
 
             PanelWindow {
                 required property var modelData
-                property MangoIpcOutput mangoOutput: MangoIpc.outputs.length > 0
-                                                 ? MangoIpc.outputForName(
-                                                       modelData.name) : null
-                property string currentLayout: mangoOutput ? mangoOutput.kbLayout :
-                                                           ""
+                property MangoIpcOutput mangoOutput: MangoIpc.outputs.length
+                                                     > 0 ? MangoIpc.outputForName(
+                                                               modelData.name) :
+                                                           null
+                property string currentLayout: mangoOutput
+                                               ? mangoOutput.kbLayout : ""
 
                 screen: modelData
                 anchors.top: true
@@ -66,9 +67,10 @@ ShellRoot {
                                 onClicked: mouse => {
                                     if (mouse.button === Qt.RightButton)
                                         mangoOutput.setClientTags(0xFFFFFFFF, 1
-                                                                << modelData.index);
+                                                                  << modelData.index);
                                     else
-                                        mangoOutput.setTags(1 << modelData.index);
+                                        mangoOutput.setTags(1
+                                                            << modelData.index);
                                 }
                             }
                         }
