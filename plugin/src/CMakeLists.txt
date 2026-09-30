@@ -23,6 +23,10 @@ if (OSS)
     add_subdirectory(oss)
 endif()
 
+if (NULLSPACE)
+    add_subdirectory(nullspace)
+endif()
+
 if (MANGO)
     add_subdirectory(mango)
 endif()
