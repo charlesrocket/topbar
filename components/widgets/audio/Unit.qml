@@ -33,6 +33,9 @@ Item {
 
         return snd.defaultDevice;
     }
+    readonly property bool isInteracting: hoverDetector.containsMouse
+                                              || volumeMenu.show
+
     property var control: {
         if (!device || !device.controls)
             return null;
@@ -139,8 +142,8 @@ Item {
         hoverEnabled: true
 
         onEntered: {
-            snd.refresh();
             volumeMenu.show = true;
+            snd.refresh();
         }
         onExited: {
             volumeMenu.timer.start();
@@ -277,9 +280,7 @@ Item {
     Timer {
         interval: 200
         repeat: true
-        running: snd.devices ? (hoverDetector.containsMouse || volumeMenu.show) :
-                               false
-
+        running: snd.devices ? root.isInteracting : false
         onTriggered: snd.refresh()
     }
 }
