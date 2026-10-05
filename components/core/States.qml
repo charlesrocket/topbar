@@ -51,9 +51,25 @@ Singleton {
     property bool fullScreen: ToplevelManager.activeToplevel
                               ? ToplevelManager.activeToplevel.fullscreen :
                                 false
-    property bool blurredBackground: false
 
-    // TODO add local
+    readonly property bool hasVisibleWindow: {
+        if (root.ecoMode)
+            return false;
+
+        if (root.isMango) {
+            const outputs = MangoIpc.outputs;
+            const output = outputs.find(o => o.active);
+            const tag = output?.tags.find(t => t.active);
+            return (tag?.clientCount ?? 0) > 0;
+        }
+
+        const tls = ToplevelManager.toplevels;
+        return !!(tls && tls.values && tls.values.length > 0);
+    }
+
+    // disable for now (we are doing this via nullspace)
+    property bool blurredBackground: false //hasVisibleWindow && !ecoMode
+
     property string defaultWallpaper:
         "https://codeberg.org/charlesrocket/misc-files/raw/branch/trunk/puffy-red.png"
     property string osId
@@ -131,17 +147,11 @@ Singleton {
     function updateMangoState() {
         if (!root.isMango) {
             root.mangoOutput = null;
-            root.blurredBackground = false;
             return;
         }
 
         const outputs = MangoIpc.outputs;
         root.mangoOutput = outputs.length > 0 ? outputs[0] : null;
-
-        const output = outputs.find(o => o.active);
-        const activeTag = output?.tags.find(tag => tag.active);
-        const hasClients = (activeTag?.clientCount ?? 0) > 0;
-        root.blurredBackground = hasClients || (hasClients && !root.ecoMode);
     }
 
     function getOsIcon() {
@@ -162,11 +172,10 @@ Singleton {
     }
 
     onConfigDiskChanged: System.setDiskMountPoint(configDisk)
-    onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000
-    onDashboardPresentChanged: {
-        root.uptime = System.uptime();
-    }
-    onFullScreenChanged: ecoMode = fullScreen // TODO fix ecoMode state
+    onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000;
+    onDashboardPresentChanged:  root.uptime = System.uptime();
+    onFullScreenChanged: ecoMode = fullScreen
+
     Component.onCompleted: root.updateMangoState()
 
     Connections {
@@ -175,5 +184,13 @@ Singleton {
         }
 
         target: root.isMango ? MangoIpc : null
+    }
+
+    Connections {
+        target: ToplevelManager.toplevels
+
+        function onValuesChanged() {
+            root.hasVisibleWindowChanged?.();
+        }
     }
 }
