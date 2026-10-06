@@ -56,8 +56,10 @@ RowLayout {
 
         Connections {
             function onMutedChanged() {
-                if (States.dropdownOwner !== null) return;
-                if (speaker.isInteracting) return;
+                if (States.dropdownOwner !== null)
+                    return;
+                if (speaker.isInteracting)
+                    return;
 
                 if (Config.desktop.osd)
                     audioOSD.item.trigger();
@@ -65,8 +67,10 @@ RowLayout {
 
             // should be enough for now
             function onLeftChanged() {
-                if (States.dropdownOwner !== null) return;
-                if (speaker.isInteracting) return;
+                if (States.dropdownOwner !== null)
+                    return;
+                if (speaker.isInteracting)
+                    return;
 
                 if (Config.desktop.osd)
                     audioOSD.item.trigger();

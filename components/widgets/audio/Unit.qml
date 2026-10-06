@@ -34,8 +34,7 @@ Item {
         return snd.defaultDevice;
     }
     readonly property bool isInteracting: hoverDetector.containsMouse
-                                              || volumeMenu.show
-
+                                          || volumeMenu.show
     property var control: {
         if (!device || !device.controls)
             return null;
@@ -281,6 +280,7 @@ Item {
         interval: 200
         repeat: true
         running: snd.devices ? root.isInteracting : false
+
         onTriggered: snd.refresh()
     }
 }

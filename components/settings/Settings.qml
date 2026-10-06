@@ -1322,9 +1322,9 @@ FloatingWindow {
                                     }
 
                                     SettingRow {
-                                        label: "Workspace 10"
+                                        label: "Workspace 0"
                                         targetObject: Config.workspaces
-                                        targetProperty: "ten"
+                                        targetProperty: "zero"
                                         valueType: "string"
                                         last: true
                                     }

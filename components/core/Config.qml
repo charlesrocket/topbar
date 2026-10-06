@@ -182,7 +182,7 @@ Singleton {
                 property string seven: "7"
                 property string eight: "8"
                 property string nine: "9"
-                property string ten: "0"
+                property string zero: "0"
             }
         }
     }

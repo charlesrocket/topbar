@@ -21,20 +21,27 @@ RowLayout {
     spacing: 6
 
     Repeater {
-        model: NullspaceIpc.spaces
+        model: 10
 
         Text {
             id: button
 
             required property int index
-            required property NullspaceSpace modelData
-            property bool isHovered: false
 
-            text: root.names[index]
-            color: isHovered ? root.colAction : button.modelData.active
-                               ? root.colActive : (button.modelData.clientCount
-                                                   > 0 ? root.colNormal :
-                                                         root.colPassive)
+            // spaces layout is 123456790
+            readonly property int spaceIndex: button.index === 9 ? 0 :
+                                                                   button.index
+                                                                   + 1
+            readonly property NullspaceSpace space:
+                NullspaceIpc.spaces[button.spaceIndex]
+
+            text: root.names[button.index]
+            color: mouseArea.containsMouse ? root.colAction : (space
+                                                               && space.active)
+                                             ? root.colActive : (space
+                                                                 && space.clientCount
+                                                                 > 0) ? root.colNormal :
+                                                                        root.colPassive
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             leftPadding: 4
@@ -51,18 +58,18 @@ RowLayout {
             }
 
             MouseArea {
+                id: mouseArea
+
                 anchors.fill: parent
                 hoverEnabled: true
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
 
                 onClicked: mouse => {
                     if (mouse.button === Qt.RightButton)
-                        NullspaceIpc.moveFocusedToSpace(button.modelData.index);
+                        NullspaceIpc.moveFocusedToSpace(button.spaceIndex);
                     else
-                        NullspaceIpc.switchSpace(button.modelData.index);
+                        NullspaceIpc.switchSpace(button.spaceIndex);
                 }
-                onEntered: button.isHovered = true
-                onExited: button.isHovered = false
             }
         }
     }

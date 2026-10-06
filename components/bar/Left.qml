@@ -47,7 +47,7 @@ RowLayout {
                         Config.workspaces.three, Config.workspaces.four,
                         Config.workspaces.five, Config.workspaces.six,
                         Config.workspaces.seven, Config.workspaces.eight,
-                        Config.workspaces.nine, Config.workspaces.ten]
+                        Config.workspaces.nine, Config.workspaces.zero]
                 }
             }
 
@@ -59,7 +59,7 @@ RowLayout {
                         Config.workspaces.three, Config.workspaces.four,
                         Config.workspaces.five, Config.workspaces.six,
                         Config.workspaces.seven, Config.workspaces.eight,
-                        Config.workspaces.nine, Config.workspaces.ten]
+                        Config.workspaces.nine, Config.workspaces.zero]
                 }
             }
 
@@ -71,7 +71,7 @@ RowLayout {
                         Config.workspaces.three, Config.workspaces.four,
                         Config.workspaces.five, Config.workspaces.six,
                         Config.workspaces.seven, Config.workspaces.eight,
-                        Config.workspaces.nine, Config.workspaces.ten]
+                        Config.workspaces.nine, Config.workspaces.zero]
                 }
             }
 

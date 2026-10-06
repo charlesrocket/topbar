@@ -51,7 +51,6 @@ Singleton {
     property bool fullScreen: ToplevelManager.activeToplevel
                               ? ToplevelManager.activeToplevel.fullscreen :
                                 false
-
     readonly property bool hasVisibleWindow: {
         if (root.ecoMode)
             return false;
@@ -172,10 +171,9 @@ Singleton {
     }
 
     onConfigDiskChanged: System.setDiskMountPoint(configDisk)
-    onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000;
-    onDashboardPresentChanged:  root.uptime = System.uptime();
+    onEcoModeChanged: System.interval = ecoMode ? 35000 : 3000
+    onDashboardPresentChanged: root.uptime = System.uptime()
     onFullScreenChanged: ecoMode = fullScreen
-
     Component.onCompleted: root.updateMangoState()
 
     Connections {
@@ -187,10 +185,10 @@ Singleton {
     }
 
     Connections {
-        target: ToplevelManager.toplevels
-
         function onValuesChanged() {
             root.hasVisibleWindowChanged?.();
         }
+
+        target: ToplevelManager.toplevels
     }
 }
