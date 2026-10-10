@@ -33,6 +33,14 @@ Loader {
         exclusionMode: ExclusionMode.Ignore
         color: "transparent"
 
+        BackgroundEffect.blurRegion: Region {
+            x: panelWrap.x
+            y: panelWrap.y + container.y
+            width: container.width
+            height: container.height
+            radius: container.radius
+        }
+
         contentItem {
             Keys.onPressed: event => {
                 if (event.key == Qt.Key_Escape) {
@@ -58,6 +66,8 @@ Loader {
                 onClicked: States.launcherPresent = false
 
                 Item {
+                    id: panelWrap
+
                     anchors.top: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: Math.min(parent.width * 0.5, 600)

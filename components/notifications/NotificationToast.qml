@@ -12,6 +12,7 @@ Rectangle {
 
     property string fontFamily: Config.appearance.fontFamily
     property var notification: null
+    property alias slideX: slide.x
     property real hoverPauseStart: 0
     property real progressFraction: 1.0
     property int timeoutMs: ready && notification.expireTimeout > 0
@@ -37,8 +38,8 @@ Rectangle {
     signal expired
 
     function markReadIfNeeded() {
-        if (!root.ready || root.notification.appName !== "GitHub"
-                || root.notification.appName !== "Codeberg")
+        if (!root.ready || (root.notification.appName !== "GitHub"
+                            && root.notification.appName !== "Codeberg"))
             return;
 
         const cbThreadId = root.notification.hints

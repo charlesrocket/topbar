@@ -38,6 +38,20 @@ PanelWindow {
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "topbar"
 
+    BackgroundEffect.blurRegion: Region {
+        readonly property real clipTop: Math.max(0, bar.y + launchSequence.y)
+        readonly property real clipBottom: Math.min(root.height, bar.y
+                                                    + launchSequence.y
+                                                    + bar.height)
+        readonly property bool shown: bar.visible && clipBottom - clipTop > 0
+
+        x: shown ? bar.x : 0
+        y: shown ? clipTop : 0
+        width: shown ? bar.width : 1
+        height: shown ? clipBottom - clipTop : 1
+        radius: shown ? Config.appearance.cornerRadius : 0
+    }
+
     anchors {
         top: true
         left: true

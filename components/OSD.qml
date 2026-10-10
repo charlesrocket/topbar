@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import Quickshell
+import Quickshell.Wayland
 
 import qs.core
 
@@ -38,8 +39,14 @@ Scope {
             color: "transparent"
 
             mask: Region {}
+            BackgroundEffect.blurRegion: Region {
+                item: osdRect
+                radius: osdRect.radius
+            }
 
             Rectangle {
+                id: osdRect
+
                 anchors.fill: parent
                 radius: height / 2
                 color: Config.colors.bg

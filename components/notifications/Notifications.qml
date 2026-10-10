@@ -43,6 +43,10 @@ Item {
     }
 
     PanelWindow {
+        id: win
+
+        property var toastItems: []
+
         WlrLayershell.namespace: "notifications"
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
@@ -53,9 +57,31 @@ Item {
         visible: root.notifications.length > 0
         margins.top: Config.bar.height + (Config.bar.padding * 3)
 
+        BackgroundEffect.blurRegion: Region {
+            id: blurRegion
+
+            regions: blurRegions.instances
+        }
+
         anchors {
             top: true
             right: true
+        }
+
+        Variants {
+            id: blurRegions
+
+            model: win.toastItems
+
+            delegate: Region {
+                required property var modelData
+
+                x: stack.x + modelData.x + modelData.slideX
+                y: stack.y + modelData.y
+                width: modelData.width
+                height: modelData.height
+                radius: modelData.radius
+            }
         }
 
         ColumnLayout {
@@ -82,6 +108,12 @@ Item {
                     onDismissed: root.removeNotification(modelData)
                     onExpired: root.expireNotification(modelData)
                 }
+
+                onItemAdded: (index, item) => win.toastItems
+                                              = win.toastItems.concat([item])
+                onItemRemoved: (index, item) => win.toastItems
+                                                = win.toastItems.filter(i => i
+                                                                             !== item)
             }
         }
     }

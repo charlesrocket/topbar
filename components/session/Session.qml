@@ -11,6 +11,7 @@ Loader {
     id: root
 
     property color backgroundColor: Config.session.background
+    readonly property int cornerRadius: 80
     default property list<SessionButton> buttons
 
     active: States.sessionPresent
@@ -27,6 +28,11 @@ Loader {
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
             exclusionMode: ExclusionMode.Ignore
             color: "transparent"
+
+            BackgroundEffect.blurRegion: Region {
+                item: grid
+                radius: root.cornerRadius
+            }
 
             contentItem {
                 focus: true
@@ -62,6 +68,8 @@ Loader {
                     onClicked: States.sessionPresent = false
 
                     GridLayout {
+                        id: grid
+
                         anchors.centerIn: parent
                         width: parent.width * 0.50
                         height: parent.height * 0.50
@@ -84,7 +92,8 @@ Loader {
                                 readonly property int totalRows: Math.ceil(
                                                                      root.buttons.length
                                                                      / 3)
-                                readonly property int cornerRadius: 80
+                                readonly property int cornerRadius:
+                                    root.cornerRadius
 
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
