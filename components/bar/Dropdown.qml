@@ -226,6 +226,14 @@ Item {
             }
         }
 
+        // ext-background-effect markers
+        Item {
+            property bool blurSurface: true
+            property real blurRadius: Config.appearance.cornerRadius
+
+            anchors.fill: parent
+        }
+
         Item {
             id: contentArea
 

@@ -31,6 +31,32 @@ PanelWindow {
         return items;
     }
 
+    function getBlurItems() {
+        const items = [];
+
+        function collect(item) {
+            if (!item || !item.visible)
+                return;
+
+            if (item.blurSurface === true)
+                items.push(item);
+
+            for (const child of item.children) {
+                collect(child);
+            }
+        }
+
+        for (const child of root.contentItem.children) {
+            collect(child);
+        }
+
+        return items;
+    }
+
+    function refreshBlur() {
+        blurUnion.changed();
+    }
+
     mask: itemsRegions
     color: "transparent"
     implicitHeight: screen.height
@@ -39,17 +65,31 @@ PanelWindow {
     WlrLayershell.namespace: "topbar"
 
     BackgroundEffect.blurRegion: Region {
-        readonly property real clipTop: Math.max(0, bar.y + launchSequence.y)
-        readonly property real clipBottom: Math.min(root.height, bar.y
-                                                    + launchSequence.y
-                                                    + bar.height)
-        readonly property bool shown: bar.visible && clipBottom - clipTop > 0
+        id: blurUnion
 
-        x: shown ? bar.x : 0
-        y: shown ? clipTop : 0
-        width: shown ? bar.width : 1
-        height: shown ? clipBottom - clipTop : 1
-        radius: shown ? Config.appearance.cornerRadius : 0
+        Region {
+            id: barBlur
+
+            readonly property real clipTop: Math.max(0, bar.y
+                                                     + launchSequence.y)
+            readonly property real clipBottom: Math.min(root.height, bar.y
+                                                        + launchSequence.y
+                                                        + bar.height)
+            readonly property bool shown: bar.visible && clipBottom - clipTop
+                                          > 0
+
+            x: shown ? bar.x : 0
+            y: shown ? clipTop : 0
+            width: shown ? bar.width : 1
+            height: shown ? clipBottom - clipTop : 1
+            radius: shown ? Config.appearance.cornerRadius : 0
+        }
+
+        Region {
+            id: dropdownBlur
+
+            regions: dropdownBlurVariants.instances
+        }
     }
 
     anchors {
@@ -174,11 +214,25 @@ PanelWindow {
         }
     }
 
+    Variants {
+        id: dropdownBlurVariants
+
+        model: States.dropdownRevealed ? root.getBlurItems() : []
+
+        delegate: Region {
+            required property Item modelData
+
+            item: modelData
+            radius: modelData.blurRadius
+        }
+    }
+
     Connections {
         function onDropdownRevealedChanged() {
             regions.model = States.dropdownRevealed ? getAllVisibleItems() :
                                                       root.contentItem.children;
             itemsRegions.changed();
+            Qt.callLater(root.refreshBlur);
         }
 
         target: States
@@ -188,9 +242,19 @@ PanelWindow {
         // post-start region refresh
         function onYChanged() {
             itemsRegions.changed();
+            root.refreshBlur();
         }
 
         target: launchSequence
+    }
+
+    Connections {
+        function onYChanged() {
+            if (States.dropdownRevealed)
+                root.refreshBlur();
+        }
+
+        target: bar
     }
 
     IpcHandler {

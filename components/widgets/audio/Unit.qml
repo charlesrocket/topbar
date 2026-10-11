@@ -162,8 +162,6 @@ Item {
         Rectangle {
             color: "transparent"
             radius: Config.appearance.cornerRadius
-            topLeftRadius: 0
-            topRightRadius: 0
             implicitWidth: layout.implicitWidth + 24
             implicitHeight: layout.implicitHeight + 24
 
