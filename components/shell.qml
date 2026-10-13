@@ -12,8 +12,6 @@ ShellRoot {
 
     Panel {}
 
-    Wallpaper {}
-
     Connections {
         function onLastWindowClosed() {
             Qt.quit();
