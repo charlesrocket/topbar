@@ -136,6 +136,8 @@ Scope {
         id: dpmsOff
 
         command: switch (States.desktop) {
+                 case "nullspace":
+                     return ["nctl", "dpms", "off"];
                  case "mango":
                      return ["mmsg", "-d", "disable_monitor"];
                  case "hyprland":
@@ -147,6 +149,8 @@ Scope {
         id: dpmsOn
 
         command: switch (States.desktop) {
+                 case "nullspace":
+                     return ["nctl", "dpms", "on"];
                  case "mango":
                      return ["mmsg", "-d", "enable_monitor"];
                  case "hyprland":
