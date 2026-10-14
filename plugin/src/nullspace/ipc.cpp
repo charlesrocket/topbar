@@ -17,14 +17,11 @@ namespace {
 constexpr int RECONNECT_INTERVAL_MS = 3000;
 // NOLINTBEGIN(misc-include-cleaner)
 QString socketPath() {
-    const auto runtime = qEnvironmentVariable("XDG_RUNTIME_DIR");
-    if (runtime.isEmpty()) return {};
+    const auto instanceSig =
+        qEnvironmentVariable("NULLSPACE_INSTANCE_SIGNATURE");
+    if (instanceSig.isEmpty()) return {};
 
-    const auto display = qEnvironmentVariable("WAYLAND_DISPLAY");
-    if (display.isEmpty()) return runtime + QStringLiteral("/nullspace.sock");
-
-    return runtime + QStringLiteral("/nullspace-") + display
-         + QStringLiteral(".sock");
+    return QString(instanceSig);
 }
 
 QString unquote(const QString &s) {
