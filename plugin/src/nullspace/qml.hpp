@@ -23,7 +23,6 @@ class NullspaceIpc : public QObject {
 
     // clang-format off
     Q_PROPERTY(bool available READ available NOTIFY availableChanged);
-    Q_PROPERTY(quint32 spaceCount READ spaceCount NOTIFY spaceCountChanged);
     Q_PROPERTY(QStringList layouts READ layouts CONSTANT);
 
     Q_PROPERTY(QString layoutName READ layoutName NOTIFY layoutNameChanged);
@@ -55,7 +54,6 @@ class NullspaceIpc : public QObject {
     static NullspaceIpc *instance();
 
     [[nodiscard]] bool available() const;
-    [[nodiscard]] quint32 spaceCount() const { return this->mSpaceCount; }
     [[nodiscard]] QStringList layouts() const { return this->mLayouts; }
 
     [[nodiscard]] QString layoutName() const { return this->mLayoutName; }
@@ -97,7 +95,6 @@ class NullspaceIpc : public QObject {
 
   signals:
     void availableChanged();
-    void spaceCountChanged();
     void layoutNameChanged();
     void layoutIndexChanged();
     void currentSpaceChanged();
@@ -126,12 +123,10 @@ class NullspaceIpc : public QObject {
     static NullspaceSpace *
     spacesAt(QQmlListProperty<NullspaceSpace> *list, qsizetype index);
 
-    void ensureSpaceCount(quint32 n);
     void setActiveSpace(quint32 s);
 
     IpcClient *mIpc = nullptr;
 
-    quint32 mSpaceCount = 10;
     QStringList mLayouts;
 
     QString mLayoutName = QStringLiteral("vtile");

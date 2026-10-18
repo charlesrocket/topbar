@@ -42,7 +42,10 @@ NullspaceIpc::NullspaceIpc(QObject *parent)
         &NullspaceIpc::onConnectedChanged
     );
 
-    this->ensureSpaceCount(this->mSpaceCount);
+    for (quint32 i = 0; i < 10; i++) { // always 10
+        this->mSpaces.append(new NullspaceSpace(i, this));
+    }
+
     this->mSpaces.at(0)->setActive(true);
 }
 
@@ -86,13 +89,6 @@ void NullspaceIpc::onEventReceived(const QString &key, const QString &value) {
         bool ok = false;
         const auto v = value.toUInt(&ok);
         if (ok) this->setActiveSpace(v);
-        return;
-    }
-
-    if (key == QStringLiteral("space_count")) {
-        bool ok = false;
-        const auto v = value.toUInt(&ok);
-        if (ok) this->ensureSpaceCount(v);
         return;
     }
 
@@ -213,25 +209,6 @@ void NullspaceIpc::onEventReceived(const QString &key, const QString &value) {
     }
 
     // window_opened, window_closed, window, focused, ready — ignored
-}
-
-void NullspaceIpc::ensureSpaceCount(quint32 n) {
-    if (n == 0) return;
-    if (!this->mSpaces.isEmpty()
-        && this->mSpaces.size() == static_cast<qsizetype>(n)) {
-        return;
-    }
-
-    qDeleteAll(this->mSpaces);
-    this->mSpaces.clear();
-    this->mSpaces.reserve(static_cast<qsizetype>(n));
-
-    for (quint32 i = 0; i < n; ++i)
-        this->mSpaces.append(new NullspaceSpace(i, this));
-
-    this->mSpaceCount = n;
-    emit this->spaceCountChanged();
-    emit this->spacesChanged();
 }
 
 void NullspaceIpc::setActiveSpace(quint32 s) {
