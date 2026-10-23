@@ -35,8 +35,20 @@ RowLayout {
                                  case "hyprland":
                                      return hypr;
                                  default:
-                                     return menu;
+                                     return xdgws;
                                  }
+            }
+
+            Component {
+                id: xdgws
+
+                Workspaces {
+                    names: [Config.workspaces.one, Config.workspaces.two,
+                        Config.workspaces.three, Config.workspaces.four,
+                        Config.workspaces.five, Config.workspaces.six,
+                        Config.workspaces.seven, Config.workspaces.eight,
+                        Config.workspaces.nine, Config.workspaces.zero]
+                }
             }
 
             Component {

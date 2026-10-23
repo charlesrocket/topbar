@@ -9,7 +9,7 @@ import qs.core
 RowLayout {
     id: root
 
-    property int animDuration: 250
+    property int animDuration: Config.animDuration
     property int fontSize: Config.appearance.fontSize
     property string fontFamily: "Symbols Nerd Font"
     property color colNormal: Config.colors.fg
