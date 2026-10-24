@@ -158,7 +158,9 @@ Singleton {
                 property JsonObject commands: JsonObject {
                     property string lock:
                         "quickshell -c topbar ipc call bar lock"
-                    property string logout: "pkill mango | hyprshutdown"
+                    // TODO logout cmd
+                    property string logout:
+                        "pkill nullspace | pkill mango | hyprshutdown"
                     property string suspend: "zzz"
                     property string hibernate: "acpiconf -s 4"
                     property string shutdown: "shutdown -p now"
