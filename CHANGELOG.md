@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.0] - 2026-10-25
+
+### Bug Fixes
+
+- Fix `desktop` string
+- Drop redundant calls
+- Resolve unit race condition
+- Disable blur infra for now
+- Update workspaces widget
+- Blur dropdowns
+- Drop wallpaper component
+- Update nullspace signature
+- Update dpms commands
+- Drop `space_count`
+- Fix `animDuration`
+- Update logout command
+
+### Features
+
+- Add menu widget
+- Add nullspace module
+- Add nullspace widgets
+- Implement `blurRegion`
+- Implement ext-workspace
+
+### Styling
+
+- Fix mango test formatting
+
 ## [0.4.1] - 2026-09-13
 
 ### Bug Fixes
