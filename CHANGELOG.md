@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.1] - 2026-10-30
+
+### Bug Fixes
+
+- Change background
+- Move `User`
+- Add labels
+
 ## [0.5.0] - 2026-10-25
 
 ### Bug Fixes
