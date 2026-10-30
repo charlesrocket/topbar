@@ -638,6 +638,10 @@ FloatingWindow {
                                     width: appearanceScroll.scrollView.width
                                     spacing: root.gap
 
+                                    SettingLabel {
+                                        label: "Geometry"
+                                    }
+
                                     ColumnLayout {
                                         id: appearanceSection
 
@@ -1124,6 +1128,10 @@ FloatingWindow {
                                     width: notificationsScroll.scrollView.width
                                     spacing: root.gap
 
+                                    SettingLabel {
+                                        label: "Controls"
+                                    }
+
                                     ColumnLayout {
                                         id: notificationsSection
 
@@ -1173,6 +1181,10 @@ FloatingWindow {
                                 ColumnLayout {
                                     width: servicesScroll.scrollView.width
                                     spacing: root.gap
+
+                                    SettingLabel {
+                                        label: "Integrations"
+                                    }
 
                                     ColumnLayout {
                                         id: servicesSection
@@ -1240,6 +1252,10 @@ FloatingWindow {
                                     width: desktopScroll.scrollView.width
                                     spacing: root.gap
 
+                                    SettingLabel {
+                                        label: "Tools"
+                                    }
+
                                     ColumnLayout {
                                         id: desktopSection
 
@@ -1295,6 +1311,10 @@ FloatingWindow {
                                                              workspaceSection,
                                                              "Config.workspaces",
                                                              null);
+                                    }
+
+                                    SettingLabel {
+                                        label: "Labels"
                                     }
 
                                     SettingRow {
@@ -1394,6 +1414,10 @@ FloatingWindow {
                                                              null);
                                     }
 
+                                    SettingLabel {
+                                        label: "Widgets"
+                                    }
+
                                     SettingRow {
                                         label: "Wallpaper"
                                         targetObject: Config.lockscreen
@@ -1460,6 +1484,10 @@ FloatingWindow {
                                 ColumnLayout {
                                     width: sessionScroll.scrollView.width
                                     spacing: root.gap
+
+                                    SettingLabel {
+                                        label: "Theme"
+                                    }
 
                                     ColumnLayout {
                                         spacing: root.gap
