@@ -72,7 +72,7 @@ Singleton {
 
                     property string bg: "#aa000000"
                     property string bgl: "#80404040"
-                    property string bge: "#000000" // eco mode
+                    property string bge: "#1a1a1a" // eco mode
                     property string fg: "#b0b4bc"
                     property string border: "#aa4e4e4e"
                     property string passive: "#4e4e4e"
