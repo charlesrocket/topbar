@@ -351,171 +351,6 @@ FloatingWindow {
                     Layout.fillHeight: true
                     spacing: 8
 
-                    SettingLabel {
-                        label: "User"
-                    }
-
-                    ColumnLayout {
-                        Rectangle {
-                            color: Qt.darker(Config.colors.extraDark, 1.1)
-                            Layout.fillWidth: true
-                            implicitHeight: 100
-                            radius: Config.appearance.cornerRadius
-                            clip: true
-
-                            Canvas {
-                                id: stripes
-
-                                anchors.right: parent.right
-                                anchors.top: parent.top
-                                anchors.bottom: parent.bottom
-                                width: 92
-
-                                onPaint: {
-                                    var ctx = getContext("2d");
-                                    ctx.clearRect(0, 0, width, height);
-
-                                    var stripeWidth = 20;
-                                    var gap = 20;
-                                    var starts = [8, stripeWidth + gap,
-                                                  stripeWidth + gap];
-                                    var h = height;
-
-                                    ctx.fillStyle = Config.colors.accent;
-
-                                    for (var i = 0; i < starts.length; i++) {
-                                        var x0 = starts[i];
-                                        ctx.beginPath();
-                                        // top-left
-                                        ctx.moveTo(x0, 0);
-                                        // top-right
-                                        ctx.lineTo(x0 + stripeWidth, 0);
-                                        // bottom-right
-                                        ctx.lineTo(x0 + stripeWidth + h, h);
-                                        // bottom-left
-                                        ctx.lineTo(x0 + h, h);
-                                        ctx.closePath();
-                                        ctx.fill();
-                                    }
-                                }
-
-                                Connections {
-                                    function onAccentChanged() {
-                                        stripes.requestPaint();
-                                    }
-
-                                    target: Config.colors
-                                }
-                            }
-
-                            RowLayout {
-                                id: userBox
-
-                                anchors.left: parent.left
-                                anchors.top: parent.top
-                                anchors.bottom: parent.bottom
-                                anchors.leftMargin: 12
-                                spacing: 12
-
-                                Item {
-                                    id: userImageCont
-
-                                    Layout.preferredWidth: 80
-                                    Layout.preferredHeight: 80
-
-                                    UserImage {
-                                        anchors.fill: userImageCont
-                                        shadow: false
-                                    }
-
-                                    Canvas {
-                                        anchors.fill: userImageCont
-
-                                        onPaint: {
-                                            var ctx = getContext("2d");
-                                            var topY = height - 22;
-                                            var cx = width / 2;
-                                            var cy = height / 2;
-                                            var r = Math.min(width, height) / 2;
-
-                                            var dx = Math.sqrt(r * r - Math.pow(
-                                                                   topY - cy,
-                                                                   2));
-                                            var xLeft = cx - dx;
-                                            var xRight = cx + dx;
-
-                                            ctx.beginPath();
-                                            ctx.moveTo(xLeft, topY);
-                                            ctx.lineTo(xRight, topY);
-                                            ctx.arc(cx, cy, r, Math.atan2(topY
-                                                                          - cy, xRight
-                                                                          - cx), Math.atan2(
-                                                        topY - cy, xLeft - cx),
-                                                    false);
-                                            ctx.closePath();
-
-                                            ctx.fillStyle = Qt.rgba(0, 0, 0,
-                                                                    0.6);
-                                            ctx.fill();
-                                        }
-                                    }
-
-                                    Text {
-                                        anchors.left: parent.left
-                                        anchors.right: parent.right
-                                        anchors.bottom: parent.bottom
-                                        anchors.bottomMargin: 4
-                                        text: "EDIT"
-                                        horizontalAlignment: Text.AlignHCenter
-                                        color: Config.colors.fg
-                                        font.family: "Hack Nerd Font"
-                                        font.pixelSize: 10
-                                        font.bold: true
-                                    }
-
-                                    MouseArea {
-                                        anchors.fill: parent
-                                        cursorShape: Qt.PointingHandCursor
-
-                                        onClicked: fileDialog.open()
-                                    }
-                                }
-
-                                ColumnLayout {
-                                    spacing: 6
-
-                                    RowLayout {
-                                        Layout.fillWidth: true
-                                        Layout.fillHeight: true
-
-                                        Text {
-                                            color: Config.colors.fg
-                                            font.pixelSize: root.fontSize * 1.8
-                                            font.bold: true
-                                            font.family:
-                                                Config.appearance.fontFamily
-                                            horizontalAlignment: Text.AlignLeft
-                                            verticalAlignment: Text.AlignVCenter
-                                            text: States.userName
-                                        }
-                                    }
-
-                                    RowLayout {
-                                        Text {
-                                            color: Config.colors.fg
-                                            font.family:
-                                                Config.appearance.fontFamily
-                                            font.pixelSize: root.fontSize * 1.1
-                                            horizontalAlignment: Text.AlignLeft
-                                            verticalAlignment: Text.AlignVCenter
-                                            text: States.user
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
                     SwipeView {
                         currentIndex: tabBar.currentIndex
                         Layout.fillWidth: true
@@ -536,6 +371,211 @@ FloatingWindow {
                                 ColumnLayout {
                                     width: generalScroll.scrollView.width
                                     spacing: root.gap
+
+                                    SettingLabel {
+                                        label: "User"
+                                    }
+
+                                    ColumnLayout {
+                                        Rectangle {
+                                            color: Qt.darker(
+                                                       Config.colors.extraDark,
+                                                       1.1)
+                                            Layout.fillWidth: true
+                                            implicitHeight: 100
+                                            radius: Config.appearance.cornerRadius
+                                            clip: true
+
+                                            Canvas {
+                                                id: stripes
+
+                                                anchors.right: parent.right
+                                                anchors.top: parent.top
+                                                anchors.bottom: parent.bottom
+                                                width: 92
+
+                                                onPaint: {
+                                                    var ctx = getContext("2d");
+                                                    ctx.clearRect(0, 0, width,
+                                                                  height);
+
+                                                    var stripeWidth = 20;
+                                                    var gap = 20;
+                                                    var starts = [8,
+                                                                  stripeWidth
+                                                                  + gap, stripeWidth
+                                                                  + gap];
+                                                    var h = height;
+
+                                                    ctx.fillStyle
+                                                            = Config.colors.accent;
+
+                                                    for (var i = 0; i
+                                                         < starts.length; i++) {
+                                                        var x0 = starts[i];
+                                                        ctx.beginPath();
+                                                        // top-left
+                                                        ctx.moveTo(x0, 0);
+                                                        // top-right
+                                                        ctx.lineTo(x0
+                                                                   + stripeWidth,
+                                                                   0);
+                                                        // bottom-right
+                                                        ctx.lineTo(x0
+                                                                   + stripeWidth
+                                                                   + h, h);
+                                                        // bottom-left
+                                                        ctx.lineTo(x0 + h, h);
+                                                        ctx.closePath();
+                                                        ctx.fill();
+                                                    }
+                                                }
+
+                                                Connections {
+                                                    function onAccentChanged() {
+                                                        stripes.requestPaint();
+                                                    }
+
+                                                    target: Config.colors
+                                                }
+                                            }
+
+                                            RowLayout {
+                                                id: userBox
+
+                                                anchors.left: parent.left
+                                                anchors.top: parent.top
+                                                anchors.bottom: parent.bottom
+                                                anchors.leftMargin: 12
+                                                spacing: 12
+
+                                                Item {
+                                                    id: userImageCont
+
+                                                    Layout.preferredWidth: 80
+                                                    Layout.preferredHeight: 80
+
+                                                    UserImage {
+                                                        anchors.fill:
+                                                            userImageCont
+                                                        shadow: false
+                                                    }
+
+                                                    Canvas {
+                                                        anchors.fill:
+                                                            userImageCont
+
+                                                        onPaint: {
+                                                            var ctx = getContext(
+                                                                        "2d");
+                                                            var topY = height
+                                                                    - 22;
+                                                            var cx = width / 2;
+                                                            var cy = height / 2;
+                                                            var r = Math.min(
+                                                                        width, height)
+                                                                    / 2;
+
+                                                            var dx = Math.sqrt(
+                                                                        r * r - Math.pow(
+                                                                            topY - cy,
+                                                                            2));
+                                                            var xLeft = cx - dx;
+                                                            var xRight = cx
+                                                                    + dx;
+
+                                                            ctx.beginPath();
+                                                            ctx.moveTo(xLeft,
+                                                                       topY);
+                                                            ctx.lineTo(xRight,
+                                                                       topY);
+                                                            ctx.arc(cx, cy, r,
+                                                                    Math.atan2(
+                                                                        topY - cy,
+                                                                        xRight - cx),
+                                                                    Math.atan2(
+                                                                        topY - cy,
+                                                                        xLeft - cx),
+                                                                    false);
+                                                            ctx.closePath();
+
+                                                            ctx.fillStyle
+                                                                    = Qt.rgba(0,
+                                                                              0, 0, 0.6);
+                                                            ctx.fill();
+                                                        }
+                                                    }
+
+                                                    Text {
+                                                        anchors.left:
+                                                            parent.left
+                                                        anchors.right:
+                                                            parent.right
+                                                        anchors.bottom:
+                                                            parent.bottom
+                                                        anchors.bottomMargin: 4
+                                                        text: "EDIT"
+                                                        horizontalAlignment:
+                                                            Text.AlignHCenter
+                                                        color: Config.colors.fg
+                                                        font.family:
+                                                            "Hack Nerd Font"
+                                                        font.pixelSize: 10
+                                                        font.bold: true
+                                                    }
+
+                                                    MouseArea {
+                                                        anchors.fill: parent
+                                                        cursorShape:
+                                                            Qt.PointingHandCursor
+
+                                                        onClicked:
+                                                            fileDialog.open()
+                                                    }
+                                                }
+
+                                                ColumnLayout {
+                                                    spacing: 6
+
+                                                    RowLayout {
+                                                        Layout.fillWidth: true
+                                                        Layout.fillHeight: true
+
+                                                        Text {
+                                                            color: Config.colors.fg
+                                                            font.pixelSize:
+                                                                root.fontSize
+                                                                * 1.8
+                                                            font.bold: true
+                                                            font.family:
+                                                                Config.appearance.fontFamily
+                                                            horizontalAlignment:
+                                                                Text.AlignLeft
+                                                            verticalAlignment:
+                                                                Text.AlignVCenter
+                                                            text: States.userName
+                                                        }
+                                                    }
+
+                                                    RowLayout {
+                                                        Text {
+                                                            color: Config.colors.fg
+                                                            font.family:
+                                                                Config.appearance.fontFamily
+                                                            font.pixelSize:
+                                                                root.fontSize
+                                                                * 1.1
+                                                            horizontalAlignment:
+                                                                Text.AlignLeft
+                                                            verticalAlignment:
+                                                                Text.AlignVCenter
+                                                            text: States.user
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
 
                                     ColumnLayout {
                                         id: generalSection
