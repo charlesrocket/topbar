@@ -14,6 +14,12 @@ void NullspaceSpace::setActive(bool v) {
     emit this->activeChanged();
 }
 
+void NullspaceSpace::setUrgent(bool v) {
+    if (v == this->mUrgent) return;
+    this->mUrgent = v;
+    emit this->urgentChanged();
+}
+
 void NullspaceSpace::setClientCount(quint32 v) {
     if (v == this->mClientCount) return;
     this->mClientCount = v;

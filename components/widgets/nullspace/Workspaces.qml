@@ -39,9 +39,11 @@ RowLayout {
             color: mouseArea.containsMouse ? root.colAction : (space
                                                                && space.active)
                                              ? root.colActive : (space
-                                                                 && space.clientCount
-                                                                 > 0) ? root.colNormal :
-                                                                        root.colPassive
+                                                                 && space.urgent)
+                                               ? Config.colors.purple : (space
+                                                                         && space.clientCount
+                                                                         > 0) ? root.colNormal :
+                                                                                root.colPassive
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             leftPadding: 4

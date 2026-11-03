@@ -15,6 +15,7 @@ class NullspaceSpace : public QObject {
     // clang-format off
     Q_PROPERTY(quint32 index READ index CONSTANT);
     Q_PROPERTY(bool active READ active NOTIFY activeChanged);
+    Q_PROPERTY(bool urgent READ urgent NOTIFY urgentChanged);
     Q_PROPERTY(quint32 clientCount READ clientCount NOTIFY clientCountChanged);
     // clang-format on
 
@@ -23,18 +24,22 @@ class NullspaceSpace : public QObject {
 
     [[nodiscard]] quint32 index() const { return this->mIndex; }
     [[nodiscard]] bool active() const { return this->mActive; }
+    [[nodiscard]] bool urgent() const { return this->mUrgent; }
     [[nodiscard]] quint32 clientCount() const { return this->mClientCount; }
 
     void setActive(bool v);
+    void setUrgent(bool v);
     void setClientCount(quint32 v);
 
   signals:
     void activeChanged();
+    void urgentChanged();
     void clientCountChanged();
 
   private:
     quint32 mIndex;
     bool mActive = false;
+    bool mUrgent = false;
     quint32 mClientCount = 0;
 };
 // NOLINTEND(misc-include-cleaner)

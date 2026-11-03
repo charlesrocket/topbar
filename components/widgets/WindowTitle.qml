@@ -17,9 +17,28 @@ Item {
     property color colPassive: Qt.darker(Config.colors.passive, 1.5)
     property int animDuration: Config.appearance.animDuration
     property string emptyTitle: Config.bar.title.empty
-    property string fullTitle: ToplevelManager.activeToplevel
-                               ? ToplevelManager.activeToplevel.title :
-                                 emptyTitle
+    readonly property var screenToplevel: {
+        const w = Window.window;
+        const scr = w && w.screen ? w.screen : null;
+        const act = ToplevelManager.activeToplevel;
+
+        if (!scr)
+            return act;
+
+        if (act && act.screens && act.screens.some(s => s.name === scr.name))
+            return act;
+
+        const tls = ToplevelManager.toplevels.values;
+        for (const tl of tls) {
+            if (tl.screens && tl.screens.some(s => s.name === scr.name))
+                return tl;
+        }
+
+        return null;
+    }
+    readonly property string fullTitle: root.screenToplevel
+                                        ? root.screenToplevel.title :
+                                          root.emptyTitle
     property string displayText: fullTitle === root.emptyTitle ? fullTitle : (
                                                                      fullTitle.length
                                                                      > root.length

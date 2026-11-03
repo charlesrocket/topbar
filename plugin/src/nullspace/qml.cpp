@@ -46,7 +46,7 @@ NullspaceIpc::NullspaceIpc(QObject *parent)
         this->mSpaces.append(new NullspaceSpace(i, this));
     }
 
-    this->mSpaces.at(0)->setActive(true);
+    this->mSpaces.at(1)->setActive(true);
 }
 
 bool NullspaceIpc::available() const { return this->mIpc->isConnected(); }
@@ -104,6 +104,20 @@ void NullspaceIpc::onEventReceived(const QString &key, const QString &value) {
         if (space >= static_cast<quint32>(this->mSpaces.size())) return;
 
         this->mSpaces[static_cast<qsizetype>(space)]->setClientCount(count);
+        return;
+    }
+
+    if (key == QStringLiteral("space_urgent")) {
+        const auto idx = value.indexOf(QLatin1Char(' '));
+        if (idx < 0) return;
+
+        bool okS = false;
+        const auto space = value.left(idx).toUInt(&okS);
+        if (!okS) return;
+        if (space >= static_cast<quint32>(this->mSpaces.size())) return;
+
+        const bool v = (value.mid(idx + 1) == QStringLiteral("true"));
+        this->mSpaces[static_cast<qsizetype>(space)]->setUrgent(v);
         return;
     }
 

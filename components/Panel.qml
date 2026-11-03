@@ -8,266 +8,306 @@ import Quickshell.Wayland
 import qs.bar as Bar
 import qs.core
 
-PanelWindow {
-    id: root
+Variants {
+    model: Quickshell.screens
 
-    function getAllVisibleItems() {
-        const items = [];
+    delegate: PanelWindow {
+        id: root
 
-        function collect(item) {
-            if (!item)
-                return;
+        required property var modelData
+        readonly property string screenSlug: {
+            const s = root.screen && root.screen.name ? root.screen.name : "";
+            return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(
+                        /^-+|-+$/g, "");
+        }
+        property bool barVisible: true
+        property bool barEnabled: true
 
-            items.push(item);
+        function setBarVisible(v) {
+            root.barVisible = v;
+            if (v) {
+                hideTimer.stop();
+                root.barEnabled = true;
+                bar.y = Config.bar.padding;
+            } else {
+                bar.y = -(Config.bar.height);
+                hideTimer.start();
+            }
+        }
 
-            for (const child of item.children) {
-                if (child.visible) {
+        function getAllVisibleItems() {
+            const items = [];
+
+            function collect(item) {
+                if (!item)
+                    return;
+
+                items.push(item);
+
+                for (const child of item.children) {
+                    if (child.visible) {
+                        collect(child);
+                    }
+                }
+            }
+
+            collect(root.contentItem);
+            return items;
+        }
+
+        function getBlurItems() {
+            const items = [];
+
+            function collect(item) {
+                if (!item || !item.visible)
+                    return;
+
+                if (item.blurSurface === true)
+                    items.push(item);
+
+                for (const child of item.children) {
                     collect(child);
                 }
             }
-        }
 
-        collect(root.contentItem);
-        return items;
-    }
-
-    function getBlurItems() {
-        const items = [];
-
-        function collect(item) {
-            if (!item || !item.visible)
-                return;
-
-            if (item.blurSurface === true)
-                items.push(item);
-
-            for (const child of item.children) {
+            for (const child of root.contentItem.children) {
                 collect(child);
             }
+
+            return items;
         }
 
-        for (const child of root.contentItem.children) {
-            collect(child);
+        function refreshBlur() {
+            blurUnion.changed();
         }
 
-        return items;
-    }
+        screen: root.modelData
+        mask: itemsRegions
+        color: "transparent"
+        implicitHeight: screen.height
+        exclusiveZone: bar.visible ? bar.height + Config.bar.padding : 0
+        WlrLayershell.layer: WlrLayer.Top
+        WlrLayershell.namespace: "topbar"
 
-    function refreshBlur() {
-        blurUnion.changed();
-    }
+        BackgroundEffect.blurRegion: Region {
+            id: blurUnion
 
-    mask: itemsRegions
-    color: "transparent"
-    implicitHeight: screen.height
-    exclusiveZone: bar.visible ? bar.height + Config.bar.padding : 0
-    WlrLayershell.layer: WlrLayer.Top
-    WlrLayershell.namespace: "topbar"
+            Region {
+                id: barBlur
 
-    BackgroundEffect.blurRegion: Region {
-        id: blurUnion
+                readonly property real clipTop: Math.max(0, bar.y
+                                                         + launchSequence.y)
+                readonly property real clipBottom: Math.min(root.height, bar.y
+                                                            + launchSequence.y
+                                                            + bar.height)
+                readonly property bool shown: bar.visible && clipBottom
+                                              - clipTop > 0
 
-        Region {
-            id: barBlur
+                x: shown ? bar.x : 0
+                y: shown ? clipTop : 0
+                width: shown ? bar.width : 1
+                height: shown ? clipBottom - clipTop : 1
+                radius: shown ? Config.appearance.cornerRadius : 0
+            }
 
-            readonly property real clipTop: Math.max(0, bar.y
-                                                     + launchSequence.y)
-            readonly property real clipBottom: Math.min(root.height, bar.y
-                                                        + launchSequence.y
-                                                        + bar.height)
-            readonly property bool shown: bar.visible && clipBottom - clipTop
-                                          > 0
+            Region {
+                id: dropdownBlur
 
-            x: shown ? bar.x : 0
-            y: shown ? clipTop : 0
-            width: shown ? bar.width : 1
-            height: shown ? clipBottom - clipTop : 1
-            radius: shown ? Config.appearance.cornerRadius : 0
-        }
-
-        Region {
-            id: dropdownBlur
-
-            regions: dropdownBlurVariants.instances
-        }
-    }
-
-    anchors {
-        top: true
-        left: true
-        right: true
-    }
-
-    ColAnim {}
-
-    Rectangle {
-        id: bar
-
-        function hidden(val) {
-            if (val) {
-                bar.y = -(Config.bar.height);
-                hideTimer.start();
-            } else {
-                States.barEnabled = true;
-                bar.y = Config.bar.padding;
-                bar.visible = true;
+                regions: dropdownBlurVariants.instances
             }
         }
 
-        y: Config.bar.padding
-        anchors.horizontalCenter: parent.horizontalCenter
-        implicitWidth: root.screen.width - Config.bar.padding * 2
-        implicitHeight: Config.bar.height
-        height: Config.bar.height
-        color: States.ecoMode ? Config.colors.bge : Config.colors.bg
-        radius: Config.appearance.cornerRadius
+        Component.onCompleted: States.registerBarPanel(root)
+        Component.onDestruction: States.unregisterBarPanel(root)
 
-        //Bar.DynamicFrame {
-        //    barWidth: bar.width
-        //    barHeight: bar.height
-        //}
+        Loader {
+            active: root.screenSlug.length > 0
 
-        Behavior on y {
-            NumberAnimation {
-                duration: Config.appearance.animDuration * 2
-                easing.type: Easing.OutQuint
+            sourceComponent: IpcHandler {
+                function hide() {
+                    root.setBarVisible(false);
+                }
+
+                function reveal() {
+                    root.setBarVisible(true);
+                }
+
+                function toggle() {
+                    root.setBarVisible(!root.barVisible);
+                }
+
+                function outputName() {
+                    return root.screen ? root.screen.name : "";
+                }
+
+                target: "bar-" + root.screenSlug
             }
         }
 
-        // startup animation
-        transform: Translate {
-            id: launchSequence
+        anchors {
+            top: true
+            left: true
+            right: true
+        }
 
-            y: -(root.implicitHeight)
+        ColAnim {}
+
+        Rectangle {
+            id: bar
+
+            function hidden(val) {
+                if (val) {
+                    bar.y = -(Config.bar.height);
+                    hideTimer.start();
+                } else {
+                    root.barEnabled = true;
+                    bar.y = Config.bar.padding;
+                    bar.visible = true;
+                }
+            }
+
+            y: Config.bar.padding
+            visible: root.barEnabled && !States.barsLocked
+            anchors.horizontalCenter: parent.horizontalCenter
+            implicitWidth: root.screen.width - Config.bar.padding * 2
+            implicitHeight: Config.bar.height
+            height: Config.bar.height
+            color: States.ecoMode ? Config.colors.bge : Config.colors.bg
+            radius: Config.appearance.cornerRadius
+
+            //Bar.DynamicFrame {
+            //    barWidth: bar.width
+            //    barHeight: bar.height
+            //}
 
             Behavior on y {
                 NumberAnimation {
-                    duration: Config.appearance.animDuration * 5
+                    duration: Config.appearance.animDuration * 2
                     easing.type: Easing.OutQuint
                 }
             }
-        }
 
-        Component.onCompleted: {
-            launchSequence.y = 0;
-            States.barPanel = root;
-        }
+            // startup animation
+            transform: Translate {
+                id: launchSequence
 
-        // sections
-        Loader {
-            active: States.barEnabled
-            visible: States.barEnabled
-            Layout.alignment: Qt.AlignCenter
-            anchors.fill: parent
-            anchors.leftMargin: 12
-            anchors.rightMargin: 12
+                y: -(root.implicitHeight)
 
-            sourceComponent: RowLayout {
-                Bar.Left {
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 0
-                    Layout.alignment: Qt.AlignLeft
+                Behavior on y {
+                    NumberAnimation {
+                        duration: Config.appearance.animDuration * 5
+                        easing.type: Easing.OutQuint
+                    }
                 }
+            }
 
-                Bar.Center {
-                    Layout.fillWidth: false
-                    Layout.preferredWidth: 400
-                    Layout.alignment: Qt.AlignHCenter
+            Component.onCompleted: launchSequence.y = 0
+
+            // sections
+            Loader {
+                id: sectionsLoader
+
+                active: root.barEnabled && !States.barsLocked
+                visible: sectionsLoader.active
+                Layout.alignment: Qt.AlignCenter
+                anchors.fill: parent
+                anchors.leftMargin: 12
+                anchors.rightMargin: 12
+
+                sourceComponent: RowLayout {
+                    Bar.Left {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
+                        Layout.alignment: Qt.AlignLeft
+                    }
+
+                    Bar.Center {
+                        Layout.fillWidth: false
+                        Layout.preferredWidth: 400
+                        Layout.alignment: Qt.AlignHCenter
+                    }
+
+                    Bar.Right {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
+                        Layout.alignment: Qt.AlignRight
+                    }
                 }
+            }
 
-                Bar.Right {
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 0
-                    Layout.alignment: Qt.AlignRight
+            Timer {
+                id: hideTimer
+
+                interval: Config.appearance.animDuration * 2
+
+                onTriggered: {
+                    if (root.barVisible)
+                        return;
+                    root.barEnabled = false;
                 }
             }
         }
 
-        Timer {
-            id: hideTimer
+        Region {
+            id: itemsRegions
 
-            interval: Config.appearance.animDuration * 2
+            regions: regions.instances
+        }
 
-            onTriggered: {
-                bar.visible = false;
-                States.barEnabled = false;
+        Variants {
+            id: regions
+
+            model: States.dropdownRevealed ? getAllVisibleItems() :
+                                             root.contentItem.children
+
+            delegate: Region {
+                required property Item modelData
+
+                item: modelData
             }
         }
-    }
 
-    Region {
-        id: itemsRegions
+        Variants {
+            id: dropdownBlurVariants
 
-        regions: regions.instances
-    }
+            model: States.dropdownRevealed ? root.getBlurItems() : []
 
-    Variants {
-        id: regions
+            delegate: Region {
+                required property Item modelData
 
-        model: States.dropdownRevealed ? getAllVisibleItems() :
-                                         root.contentItem.children
-
-        delegate: Region {
-            required property Item modelData
-
-            item: modelData
-        }
-    }
-
-    Variants {
-        id: dropdownBlurVariants
-
-        model: States.dropdownRevealed ? root.getBlurItems() : []
-
-        delegate: Region {
-            required property Item modelData
-
-            item: modelData
-            radius: modelData.blurRadius
-        }
-    }
-
-    Connections {
-        function onDropdownRevealedChanged() {
-            regions.model = States.dropdownRevealed ? getAllVisibleItems() :
-                                                      root.contentItem.children;
-            itemsRegions.changed();
-            Qt.callLater(root.refreshBlur);
+                item: modelData
+                radius: modelData.blurRadius
+            }
         }
 
-        target: States
-    }
+        Connections {
+            function onDropdownRevealedChanged() {
+                regions.model = States.dropdownRevealed ? getAllVisibleItems() :
+                                                          root.contentItem.children;
+                itemsRegions.changed();
+                Qt.callLater(root.refreshBlur);
+            }
 
-    Connections {
-        // post-start region refresh
-        function onYChanged() {
-            itemsRegions.changed();
-            root.refreshBlur();
+            target: States
         }
 
-        target: launchSequence
-    }
-
-    Connections {
-        function onYChanged() {
-            if (States.dropdownRevealed)
+        Connections {
+            // post-start region refresh
+            function onYChanged() {
+                itemsRegions.changed();
                 root.refreshBlur();
+            }
+
+            target: launchSequence
         }
 
-        target: bar
+        Connections {
+            function onYChanged() {
+                if (States.dropdownRevealed)
+                    root.refreshBlur();
+            }
+
+            target: bar
+        }
     }
-
-    IpcHandler {
-        function hide() {
-            bar.hidden(true);
-        }
-
-        function reveal() {
-            bar.hidden(false);
-        }
-
-        target: "bar"
-    }
-
-    Backend {}
 }

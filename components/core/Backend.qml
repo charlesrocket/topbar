@@ -14,7 +14,7 @@ Scope {
     id: root
 
     function lockScreen() {
-        States.barEnabled = false;
+        States.barsLocked = true;
         lock.locked = true;
     }
 
@@ -35,7 +35,28 @@ Scope {
         }
 
         function lock() {
+            States.barsLocked = true;
             root.lockScreen();
+        }
+
+        function bars() {
+            return States.barPanels.map(p => p.screen ? p.screen.name :
+                                                        "").filter(n
+                                                                   => n.length
+                                                                      > 0).join(
+                        ",");
+        }
+
+        function hideAllBars() {
+            States.hideAllBars();
+        }
+
+        function revealAllBars() {
+            States.revealAllBars();
+        }
+
+        function diagnostics() {
+            return States.debugBars();
         }
 
         target: "main"
@@ -170,7 +191,9 @@ Scope {
 
         onIsIdleChanged: {
             if (isIdle) {
-                lock.locked = true;
+                States.barsLocked = true;
+
+                root.lockScreen();
             }
         }
     }
@@ -203,7 +226,7 @@ Scope {
         id: lockContext
 
         onUnlocked: {
-            States.barEnabled = true;
+            States.barsLocked = false;
             lock.locked = false;
         }
     }
@@ -219,6 +242,25 @@ Scope {
                 context: lockContext
             }
         }
+    }
+
+    OSD {
+        id: globalOsd
+
+        icon: ""
+        value: 0
+        muted: false
+    }
+
+    Connections {
+        function onOsdRequested(icon, value, muted) {
+            globalOsd.icon = icon;
+            globalOsd.value = value;
+            globalOsd.muted = muted;
+            globalOsd.trigger();
+        }
+
+        target: States
     }
 
     FileView {

@@ -61,36 +61,21 @@ RowLayout {
                 if (speaker.isInteracting)
                     return;
 
-                if (Config.desktop.osd)
-                    audioOSD.item.trigger();
+                States.requestOsd(speaker.iconAlias.text, speaker.volume,
+                                  speaker.muted);
             }
 
-            // should be enough for now
             function onLeftChanged() {
                 if (States.dropdownOwner !== null)
                     return;
                 if (speaker.isInteracting)
                     return;
 
-                if (Config.desktop.osd)
-                    audioOSD.item.trigger();
+                States.requestOsd(speaker.iconAlias.text, speaker.volume,
+                                  speaker.muted);
             }
 
             target: speaker.control
-        }
-
-        Loader {
-            id: audioOSD
-
-            active: Config.desktop.osd
-            visible: audioOSD.active
-            asynchronous: true
-
-            sourceComponent: OSD {
-                icon: speaker.iconAlias.text
-                value: speaker.volume
-                muted: speaker.muted
-            }
         }
 
         IpcHandler {
@@ -106,9 +91,6 @@ RowLayout {
                                              = speaker.control.left + 5;
                                              speaker.control.right
                                              = speaker.control.right + 5;
-
-                                             if (Config.desktop.osd)
-                                             audioOSD.item.trigger();
                                          }
                                      }
 
@@ -116,9 +98,6 @@ RowLayout {
                 if (speaker.control) {
                     speaker.control.left = speaker.control.left - 5;
                     speaker.control.right = speaker.control.right - 5;
-
-                    if (Config.desktop.osd)
-                    audioOSD.item.trigger();
                 }
                 }
 

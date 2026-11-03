@@ -32,11 +32,10 @@ Singleton {
     readonly property string config: Quickshell.env("XDG_CONFIG_HOME")
                                      + "/topbar" || root.home
                                      + "/.config/topbar"
-    property PanelWindow barPanel: null
     property var mangoOutput: null
     property var locale: Qt.locale(Config.general.locale)
-    property bool barEnabled: true
     property bool ecoMode: false
+    property bool barsLocked: false
     property bool sessionPresent: false
     property bool keepAwake: false
     property bool settingsPresent: false
@@ -65,10 +64,22 @@ Singleton {
         const tls = ToplevelManager.toplevels;
         return !!(tls && tls.values && tls.values.length > 0);
     }
-
+    property var barPanels: []
+    property var primaryBarPanel: null
+    readonly property var activeBarScreen: {
+        const tl = ToplevelManager.activeToplevel;
+        if (!tl)
+            return null;
+        const screens = tl.screens;
+        return (screens && screens.length > 0) ? screens[0] : null;
+    }
+    readonly property var barPanel: {
+        const scr = root.activeBarScreen;
+        const p = root.barForScreen(scr);
+        return p ? p : root.primaryBarPanel;
+    }
     // disable for now (we are doing this via nullspace)
-    property bool blurredBackground: false //hasVisibleWindow && !ecoMode
-
+    property bool blurredBackground: false
     property string defaultWallpaper:
         "https://codeberg.org/charlesrocket/misc-files/raw/branch/trunk/puffy-red.png"
     property string osId
@@ -141,6 +152,111 @@ Singleton {
                 return "󰁺";
             }
         }
+    }
+
+    signal osdRequested(string icon, int value, bool muted)
+
+    function registerBarPanel(panel) {
+        if (!panel)
+            return;
+        const current = root.barPanels;
+        if (!current)
+            return;
+        if (current.indexOf(panel) >= 0)
+            return;
+        root.barPanels = current.concat([panel]);
+        if (!root.primaryBarPanel)
+            root.primaryBarPanel = panel;
+    }
+
+    function unregisterBarPanel(panel) {
+        if (!panel)
+            return;
+        const current = root.barPanels;
+        if (!current)
+            return;
+        const idx = current.indexOf(panel);
+        if (idx < 0)
+            return;
+        const next = current.slice();
+        next.splice(idx, 1);
+        root.barPanels = next;
+        if (root.primaryBarPanel === panel) {
+            root.primaryBarPanel = next.length > 0 ? next[0] : null;
+        }
+    }
+
+    function barForScreen(screen) {
+        if (!screen)
+            return null;
+        const panels = root.barPanels;
+        if (!panels)
+            return null;
+        const n = panels.length;
+        for (let i = 0; i < n; i++) {
+            const p = panels[i];
+            if (p && p.screen && p.screen.name === screen.name)
+                return p;
+        }
+        return null;
+    }
+
+    function barForName(name) {
+        if (!name)
+            return null;
+        const panels = root.barPanels;
+        if (!panels)
+            return null;
+        const n = panels.length;
+        for (let i = 0; i < n; i++) {
+            const p = panels[i];
+            if (p && p.screen && p.screen.name === name)
+                return p;
+        }
+        return null;
+    }
+
+    function forEachBar(fn) {
+        const panels = root.barPanels;
+        if (!panels)
+            return;
+        const n = panels.length;
+        if (!n)
+            return;
+        for (let i = 0; i < n; i++) {
+            const p = panels[i];
+            if (p)
+                fn(p);
+        }
+    }
+
+    function hideAllBars() {
+        root.forEachBar(p => {
+            if (p.setBarVisible)
+                p.setBarVisible(false);
+        });
+    }
+
+    function revealAllBars() {
+        root.forEachBar(p => {
+            if (p.setBarVisible)
+                p.setBarVisible(true);
+        });
+    }
+
+    function barNames() {
+        const out = [];
+        root.forEachBar(p => {
+            if (p.screen && p.screen.name)
+                out.push(p.screen.name);
+        });
+        return out.join(",");
+    }
+
+    function requestOsd(icon, value, muted) {
+        if (!Config.desktop.osd)
+            return;
+        root.osdRequested(icon, value, muted);
     }
 
     function updateMangoState() {

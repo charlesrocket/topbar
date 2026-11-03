@@ -44,10 +44,13 @@ Item {
                         if (event.button === Qt.LeftButton)
                             trayElement.modelData.activate();
                         else if (event.button === Qt.RightButton) {
-                            const pos = trayElement.mapToItem(
-                                      States.barPanel.contentItem, 0, 0);
-                            trayElement.modelData.display(States.barPanel, pos.x,
-                                                          pos.y);
+                            const win = trayElement.Window.window
+                                  ?? States.barPanel;
+                            if (!win)
+                                return;
+                            const pos = trayElement.mapToItem(win.contentItem, 0,
+                                                              0);
+                            trayElement.modelData.display(win, pos.x, pos.y);
                         } else
                             trayElement.modelData.secondaryActivate();
                     }
