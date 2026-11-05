@@ -31,10 +31,7 @@ FloatingWindow {
         return v + " " + word + (v === 1 ? "" : "s");
     }
 
-    minimumSize: ({
-                      width: 900,
-                      height: 700
-                  })
+    minimumSize: Qt.size(980, 640)
     title: "Settings"
     color: "transparent"
 
