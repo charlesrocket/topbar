@@ -14,6 +14,7 @@ Scope {
     id: root
 
     function lockScreen() {
+        States.hideAllBars();
         States.barsLocked = true;
         lock.locked = true;
     }
@@ -35,7 +36,6 @@ Scope {
         }
 
         function lock() {
-            States.barsLocked = true;
             root.lockScreen();
         }
 
@@ -191,8 +191,6 @@ Scope {
 
         onIsIdleChanged: {
             if (isIdle) {
-                States.barsLocked = true;
-
                 root.lockScreen();
             }
         }
@@ -227,6 +225,7 @@ Scope {
 
         onUnlocked: {
             States.barsLocked = false;
+            States.revealAllBars();
             lock.locked = false;
         }
     }
