@@ -27,6 +27,7 @@ class System : public QObject {
     Q_PROPERTY(float diskUsage READ diskUsage NOTIFY diskUsageChanged);
     Q_PROPERTY(QString diskMountPoint READ diskMountPoint WRITE setDiskMountPoint NOTIFY diskMountPointChanged);
     Q_PROPERTY(int interval READ interval WRITE setPollInterval NOTIFY intervalChanged);
+    Q_PROPERTY(bool pollingEnabled READ pollingEnabled WRITE setPollingEnabled NOTIFY pollingEnabledChanged);
     Q_PROPERTY(QVariant cpuTemp READ cpuTemp NOTIFY cpuTempChanged);
     Q_PROPERTY(QVariant pchTemp READ pchTemp NOTIFY pchTempChanged);
     Q_PROPERTY(QString cpu READ cpu CONSTANT);
@@ -49,10 +50,12 @@ class System : public QObject {
     [[nodiscard]] float diskUsage() const;
     [[nodiscard]] QString diskMountPoint() const;
     [[nodiscard]] int interval() const;
+    [[nodiscard]] bool pollingEnabled() const;
     [[nodiscard]] QStringList jails() const;
     [[nodiscard]] QString userObject() const;
 
     Q_INVOKABLE void setPollInterval(int ms);
+    Q_INVOKABLE void setPollingEnabled(bool enabled);
     Q_INVOKABLE void setDiskMountPoint(const QString &path);
     Q_INVOKABLE void setUserIcon(const QString &path);
     Q_INVOKABLE void currentUserObjectPath();
@@ -66,6 +69,7 @@ class System : public QObject {
     void diskUsageChanged();
     void diskMountPointChanged();
     void intervalChanged();
+    void pollingEnabledChanged();
     void jailsChanged();
     void userObjectChanged();
 
@@ -99,6 +103,7 @@ class System : public QObject {
     QStringList mJails;
     QString mUserObject;
 
+    bool mPollingEnabled = true;
     QTimer *mPollTimer = nullptr;
 };
 

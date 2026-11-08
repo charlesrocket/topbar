@@ -20,6 +20,8 @@ Singleton {
     readonly property Devd dev: Devd
     readonly property bool codebergEnabled: Config.services.codeberg
     readonly property bool githubEnabled: Config.services.github
+    readonly property bool systemPollingEnabled: anyBarVisible
+                                                 || dashboardPresent
     readonly property string configDisk: Config.bar.dashboard.disk
     readonly property string xdgSession: Quickshell.env("XDG_SESSION_DESKTOP")
     readonly property string xdgDesktop: Quickshell.env("XDG_CURRENT_DESKTOP")
@@ -32,6 +34,17 @@ Singleton {
     readonly property string config: Quickshell.env("XDG_CONFIG_HOME")
                                      + "/topbar" || root.home
                                      + "/.config/topbar"
+    readonly property bool anyBarVisible: {
+        const panels = root.barPanels;
+        if (!panels)
+            return false;
+        for (let i = 0; i < panels.length; i++) {
+            const p = panels[i];
+            if (p && p.barVisible)
+                return true;
+        }
+        return false;
+    }
     property var mangoOutput: null
     property var locale: Qt.locale(Config.general.locale)
     property bool ecoMode: false
@@ -306,5 +319,12 @@ Singleton {
         }
 
         target: ToplevelManager.toplevels
+    }
+
+    Binding {
+        target: System
+        property: "pollingEnabled"
+        value: States.systemPollingEnabled
+        restoreMode: Binding.RestoreNone
     }
 }

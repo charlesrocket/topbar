@@ -99,7 +99,7 @@ Item {
         id: onlineCheck
 
         command: ["ping", "-c", "1", "8.8.8.8"]
-        running: !States.ecoMode
+        running: !States.ecoMode && root.visible
 
         onExited: (exitCode, exitStatus) => {
             var randomValue = Math.floor(Math.random() * (5000 - 1000) + 1000);
@@ -112,7 +112,7 @@ Item {
     Timer {
         id: tmr
 
-        running: !States.ecoMode
+        running: !States.ecoMode && root.visible
 
         onTriggered: {
             onlineCheck.running = true;

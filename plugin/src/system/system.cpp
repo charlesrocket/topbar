@@ -16,6 +16,7 @@
 #include <qstring.h>
 #include <qstringlist.h>
 #include <qtimer.h>
+#include <qtmetamacros.h>
 #include <qurl.h>
 #include <qvariant.h>
 #include <unistd.h>
@@ -95,7 +96,7 @@ System::System(QObject *parent)
     this->updateTemperatures();
     this->updateJails();
 
-    this->mPollTimer->start();
+    if (this->mPollingEnabled) { this->mPollTimer->start(); }
 }
 
 static constexpr int K_TZ_ZERO_C = 2731;
@@ -140,6 +141,22 @@ void System::poll() {
     this->updateDisk();
     this->updateTemperatures();
     this->updateJails();
+}
+
+bool System::pollingEnabled() const { return this->mPollingEnabled; }
+
+void System::setPollingEnabled(bool enabled) {
+    if (this->mPollingEnabled == enabled) return;
+
+    this->mPollingEnabled = enabled;
+    emit this->pollingEnabledChanged();
+
+    if (enabled) {
+        this->poll();
+        this->mPollTimer->start();
+    } else {
+        this->mPollTimer->stop();
+    }
 }
 
 void System::currentUserObjectPath() {
