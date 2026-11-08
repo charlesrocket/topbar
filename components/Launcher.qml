@@ -200,36 +200,6 @@ Loader {
                                 }
                             }
 
-                            RowLayout {
-                                visible: appList.count > 0
-
-                                // results count
-                                Text {
-                                    Layout.fillWidth: true
-                                    visible: appList.count > 0
-                                    font.pixelSize: 14
-                                    font.family: Config.appearance.fontFamily
-                                    font.bold: false
-                                    color: Config.colors.fg
-                                    text: {
-                                        var count = appList.count;
-                                        return count === 1
-                                                ? "1 application found" : count
-                                                  + " applications found";
-                                    }
-                                }
-
-                                Text {
-                                    Layout.alignment: Qt.AlignRight
-                                    visible: appList.count > 0
-                                    font.pixelSize: 14
-                                    font.family: "Symbols Nerd Font"
-                                    font.bold: false
-                                    color: Config.colors.fg
-                                    text: ""
-                                }
-                            }
-
                             // application list
                             Rectangle {
                                 id: listContainer
