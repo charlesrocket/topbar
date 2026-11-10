@@ -15,6 +15,7 @@ Rectangle {
     property alias slideX: slide.x
     property real hoverPauseStart: 0
     property real progressFraction: 1.0
+    // TODO fix dismissed states
     property int timeoutMs: {
         if (!ready)
             return 5000;
