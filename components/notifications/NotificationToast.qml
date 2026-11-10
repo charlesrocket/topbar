@@ -15,8 +15,16 @@ Rectangle {
     property alias slideX: slide.x
     property real hoverPauseStart: 0
     property real progressFraction: 1.0
-    property int timeoutMs: ready && notification.expireTimeout > 0
-                            ? notification.expireTimeout : 5000
+    property int timeoutMs: {
+        if (!ready)
+            return 5000;
+        const t = notification.expireTimeout;
+        if (t > 0)
+            return t;
+        return 5000;
+    }
+    readonly property bool neverExpires: ready && notification.expireTimeout
+                                         === 0
     readonly property bool ready: notification !== null
     readonly property bool hasImage: ready && notification.image !== ""
     readonly property bool hasAppIcon: ready && notification.appIcon !== ""
@@ -132,7 +140,7 @@ Rectangle {
         id: expireTimer
 
         interval: root.timeoutMs
-        running: root.ready
+        running: root.ready && !root.neverExpires
 
         onTriggered: root.expire()
     }
@@ -381,16 +389,17 @@ Rectangle {
 
     HoverHandler {
         onHoveredChanged: {
+            closeButtonCont.opacity = hovered ? 1 : 0;
+            progressBar.opacity = hovered ? 0 : 0.9;
+
+            if (root.neverExpires)
+                return;
             if (hovered) {
-                closeButtonCont.opacity = 1;
-                progressBar.opacity = 0;
-                root.hoverPauseStart = Date.now();
-                root.timeoutMs = root.progressFraction * root.timeoutMs;
+                root.timeoutMs = Math.round(root.progressFraction
+                                            * root.timeoutMs);
                 progressAnim.stop();
                 expireTimer.stop();
             } else {
-                closeButtonCont.opacity = 0;
-                progressBar.opacity = 0.9;
                 expireTimer.interval = root.timeoutMs;
                 progressAnim.from = root.progressFraction;
                 progressAnim.duration = root.timeoutMs;
