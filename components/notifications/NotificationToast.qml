@@ -42,6 +42,7 @@ Rectangle {
             return Config.colors.fg;
         }
     }
+    property var pendingAction: null
 
     signal dismissed
     signal expired
@@ -66,14 +67,16 @@ Rectangle {
                 States.githubClient.markAsRead(ghThreadId);
     }
 
-    function dismiss() {
+    function dismiss(action) {
         expireTimer.stop();
         markReadIfNeeded();
+        pendingAction = action ?? null;
         slideOutAnim.pendingDismiss = true;
         slideOutAnim.start();
     }
 
     function expire() {
+        pendingAction = null;
         slideOutAnim.pendingDismiss = false;
         slideOutAnim.start();
     }
@@ -117,6 +120,11 @@ Rectangle {
         easing.type: Easing.InQuint
 
         onStopped: {
+            if (root.pendingAction) {
+                const a = root.pendingAction;
+                root.pendingAction = null;
+                a.invoke();
+            }
             if (slideOutAnim.pendingDismiss)
                 root.dismissed();
             else
@@ -351,10 +359,7 @@ Rectangle {
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
 
-                            onClicked: {
-                                parent.modelData.invoke();
-                                root.dismiss();
-                            }
+                            onClicked: root.dismiss(parent.modelData)
                         }
                     }
                 }
