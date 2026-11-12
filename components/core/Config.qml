@@ -132,7 +132,7 @@ Singleton {
             // toasts
             property JsonObject notifications: JsonObject {
                 property bool enabled: true
-                property int width: 300
+                property int width: 340
             }
 
             // services
