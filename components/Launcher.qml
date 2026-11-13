@@ -15,6 +15,8 @@ Loader {
     sourceComponent: PanelWindow {
         id: root
 
+        property bool hadFocus: false
+
         function launchApp(index) {
             if (index < 0 || index >= appList.count)
                 return;
@@ -39,6 +41,15 @@ Loader {
             width: container.width
             height: container.height
             radius: container.radius
+        }
+
+        Item {
+            Window.onActiveChanged: {
+                if (Window.active)
+                    root.hadFocus = true;
+                else if (root.hadFocus)
+                    States.launcherPresent = false;
+            }
         }
 
         contentItem {
