@@ -160,7 +160,7 @@ Singleton {
                         "quickshell -c topbar ipc call bar lock"
                     // TODO logout cmd
                     property string logout:
-                        "pkill nullspace | pkill mango | hyprshutdown"
+                        "pkill nullspace | pkill mango"
                     property string suspend: "zzz"
                     property string hibernate: "acpiconf -s 4"
                     property string shutdown: "shutdown -p now"

@@ -22,10 +22,8 @@ Item {
         States.ecoMode = !States.ecoMode;
 
         if (States.ecoMode) {
-            hyprctlBatch.running = true;
             notify.command = ["notify-send", "-u", "low", "ECO MODE ON"];
         } else {
-            hyprctlReload.running = true;
             notify.command = ["notify-send", "-u", "low", "ECO MODE OFF"];
         }
 
@@ -60,23 +58,6 @@ Item {
         id: clock
 
         precision: SystemClock.Minutes
-    }
-
-    Process {
-        id: hyprctlReload
-
-        command: ["hyprctl", "reload", "--quiet"]
-
-        Component.onCompleted: running = false
-    }
-
-    Process {
-        id: hyprctlBatch
-
-        command: ["hyprctl", "--quiet", "--batch",
-            "keyword animations:enabled false;keyword decoration:blur:enabled false;keyword decoration:shadow:enabled false;"]
-
-        Component.onCompleted: running = false
     }
 
     Process {

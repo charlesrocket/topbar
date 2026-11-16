@@ -7,7 +7,6 @@ import Quickshell.Services.UPower
 import qs.core
 import qs.widgets
 import qs.widgets.audio
-import qs.widgets.hypr as Hypr
 import qs.widgets.mango as Mango
 import qs.widgets.nullspace as Nullspace
 
@@ -141,8 +140,6 @@ RowLayout {
                              return nullspaceLang;
                          case "mango":
                              return mangoLang;
-                         case "hyprland":
-                             return hyprLang;
                          }
 
         Component {
@@ -164,17 +161,6 @@ RowLayout {
                 implicitHeight: childrenRect.height
 
                 Mango.Lang {}
-            }
-        }
-
-        Component {
-            id: hyprLang
-
-            Item {
-                implicitWidth: childrenRect.width
-                implicitHeight: childrenRect.height
-
-                Hypr.Lang {}
             }
         }
     }

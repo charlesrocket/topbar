@@ -3,7 +3,6 @@ import QtQuick.Layouts
 
 import qs.core
 import qs.widgets
-import qs.widgets.hypr as Hypr
 import qs.widgets.mango as Mango
 import qs.widgets.nullspace as Nullspace
 
@@ -32,8 +31,6 @@ RowLayout {
                                      return nullspace;
                                  case "mango":
                                      return mango;
-                                 case "hyprland":
-                                     return hypr;
                                  default:
                                      return xdgws;
                                  }
@@ -73,24 +70,6 @@ RowLayout {
                         Config.workspaces.seven, Config.workspaces.eight,
                         Config.workspaces.nine, Config.workspaces.zero]
                 }
-            }
-
-            Component {
-                id: hypr
-
-                Hypr.Workspaces {
-                    names: [Config.workspaces.one, Config.workspaces.two,
-                        Config.workspaces.three, Config.workspaces.four,
-                        Config.workspaces.five, Config.workspaces.six,
-                        Config.workspaces.seven, Config.workspaces.eight,
-                        Config.workspaces.nine, Config.workspaces.zero]
-                }
-            }
-
-            Component {
-                id: menu
-
-                StartMenu {}
             }
         }
     }

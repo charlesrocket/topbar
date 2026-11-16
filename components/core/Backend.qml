@@ -161,8 +161,6 @@ Scope {
                      return ["nctl", "dpms", "off"];
                  case "mango":
                      return ["mmsg", "-d", "disable_monitor"];
-                 case "hyprland":
-                     return ["hyprctl", "dispatch", "dpms", "off"];
                  }
     }
 
@@ -174,8 +172,6 @@ Scope {
                      return ["nctl", "dpms", "on"];
                  case "mango":
                      return ["mmsg", "-d", "enable_monitor"];
-                 case "hyprland":
-                     return ["hyprctl", "dispatch", "dpms", "on"];
                  }
     }
 
