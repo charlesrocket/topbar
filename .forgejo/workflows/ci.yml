@@ -17,9 +17,9 @@ jobs:
         run: >-
           sudo apt update && sudo apt install -y
           clang-tidy clang-format gcc cmake jq ninja-build parallel
-          qt6-base-dev qt6-declarative-dev qt6-networkauth-dev
+          qt6-base-dev qt6-declarative-dev
           qt6-wayland qt6-wayland-dev qt6-base-dev-tools
-          qtkeychain-qt6-dev
+          qtkeychain-qt6-dev qt6-networkauth-dev
           wayland-protocols
 
       - name: Check format
@@ -55,7 +55,7 @@ jobs:
           gcc cmake ninja-build
           qt6-base-dev qt6-declarative-dev
           qt6-wayland qt6-wayland-dev qt6-base-dev-tools
-          qt6-networkauth-dev
+          qt6-networkauth-dev qtkeychain-qt6-dev
           qml6-module-qtqml-workerscript
           qml6-module-qtquick
           wayland-protocols
