@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="nullspace_controller_v1">
+  <copyright>
+    Copyright (C) 2026 -k
+
+    Permission is hereby granted, free of charge, to any person
+    obtaining a copy of this software and associated documentation files
+    (the "Software"), to deal in the Software without restriction,
+    including without limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of the Software,
+    and to permit persons to whom the Software is furnished to do so,
+    subject to the following conditions:
+
+    The above copyright notice and this permission notice (including the
+    next paragraph) shall be included in all copies or substantial
+    portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+    ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+  </copyright>
+
+  <interface name="nullspace_controller_v1" version="1">
+    <description summary="control interface for the Nullspace compositor">
+      This interface lets a client inspect and control the Nullspace
+      compositor: read and write runtime configuration, switch spaces and
+      layouts, manage windows, and query displays, input devices and layer
+      surfaces. Every request is a privileged compositor operation. The
+      interface is intended for trusted, user-run tools only.
+
+      Every non-destructor request takes a 32-bit serial argument. The serial
+      must be nonzero; serial zero is reserved for unsolicited broadcast
+      batches. The compositor terminates every batch with exactly one done
+      event, carrying the serial of the request that produced it (or zero for
+      a broadcast). An error, when present, precedes the done of the same
+      batch and carries the same serial.
+
+      A client that sends one request and waits for done(its_serial) always
+      observes exactly its own reply, even when broadcasts from other clients
+      or the user are interleaved in the event stream. A client may also use
+      wl_display.roundtrip to ensure that all pending events have been
+      processed before continuing.
+
+      Window IDs are assigned by the compositor, are only meaningful within
+      one compositor session, and may be reused after window_removed has been
+      sent.
+
+      Every bound controller receives state-change notifications whether it
+      asked for them. Broadcast batches end with done(0), there is no
+      subscribe request.
+
+      All strings are UTF-8 (never NULL, but length zero is allowed), and some
+      are controlled by other clients (window titles, app ids, layer
+      namespaces, device names). Treat them as untrusted data (they may contain
+      control characters or terminal escape sequences, and must be sanitized
+      before being written to a terminal.
+
+      Requests that do not name an output operate on the output the compositor
+      considers focused (typically the one containing the focused window, or
+      the last one the user interacted with). In a single-output session, this
+      is the only output. Requests that operate on spaces, layouts, or the
+      focused window inherit this target.
+    </description>
+
+    <enum name="error">
+      <entry name="invalid_serial" value="0"
+             summary="serial was zero or reused while still in flight"/>
+    </enum>
+
+    <enum name="key_type">
+      <description summary="value type of a configuration key">
+        All configuration values travel as strings. The type tells the
+        client how to parse and format them.
+      </description>
+      <entry name="int"     value="0"/>
+      <entry name="float"   value="1"/>
+      <entry name="bool"    value="2"/>
+      <entry name="string"  value="3"/>
+      <entry name="special" value="4"/>
+    </enum>
+
+    <enum name="access">
+      <entry name="read"       value="1"/>
+      <entry name="write"      value="2"/>
+      <entry name="read_write" value="3"/>
+    </enum>
+
+    <enum name="status">
+      <description summary="non-fatal status codes for the error event">
+        Reported via the error event for application-level failures. The
+        connection remains usable. Fatal protocol violations are reported
+        with wl_resource_post_error (see the error enum) and do close the
+        connection.
+
+        Every error event is immediately followed by a done event carrying
+        the same serial.
+      </description>
+      <entry name="unknown_key" value="0">
+        <description summary="no such configuration key"/>
+      </entry>
+      <entry name="invalid_value" value="1">
+        <description summary="argument rejected">
+          A value failed to parse or was out of range, or an index/layout
+          name was not valid. The error message describes the problem.
+        </description>
+      </entry>
+      <entry name="read_only" value="2">
+        <description summary="key cannot be written"/>
+      </entry>
+      <entry name="not_supported" value="4">
+        <description summary="request cannot be served in this state">
+          The request is valid but cannot be satisfied right now or for
+          this key. Examples: reading a per-space key through get_config
+          (use get_space_info instead), or show_binding_help while the
+          overview is active.
+        </description>
+      </entry>
+      <entry name="locked" value="5">
+        <description summary="session is locked">
+          The session is locked. Requests that modify state are rejected
+          (read-only queries are not currently rejected).
+        </description>
+      </entry>
+      <entry name="no_such_window" value="6">
+        <description summary="window id is not valid in this session"/>
+      </entry>
+      <entry name="no_focus" value="7">
+        <description summary="no window is currently focused"/>
+      </entry>
+    </enum>
+
+    <enum name="window_state" bitfield="true">
+      <entry name="mapped"     value="1">
+        <description summary="window is mapped">
+          The window has a buffer attached. A window on a hidden space or a
+          minimized window can still be reported as mapped.
+        </description>
+      </entry>
+      <entry name="focused"    value="2"/>
+      <entry name="fullscreen" value="4"/>
+      <entry name="maximized"  value="8"/>
+      <entry name="minimized"  value="16"/>
+      <entry name="floating"   value="32">
+        <description summary="window is not tiled">
+          The window is transient, or its space uses a non-tiling layout.
+        </description>
+      </entry>
+      <entry name="xwayland"   value="64"/>
+    </enum>
+
+    <enum name="window_fx_state" bitfield="true">
+      <entry name="blur_rule"     value="1"
+        summary="compositor's blur rule"/>
+      <entry name="ext_surface"    value="2"
+        summary="ext-background-effect surface"/>
+      <entry name="ext_blur"       value="4"
+        summary="ext-background-effect blur"/>
+      <entry name="blur"   value="8"
+        summary="window surface blur"/>
+      <entry name="shadow" value="16"
+        summary="window surface shadows"/>
+    </enum>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the controller object">
+        Destroys the object. The client stops receiving events. No done is
+        sent for this request.
+      </description>
+    </request>
+
+    <request name="get_config">
+      <description summary="read one configuration key">
+        Replies with config_value and done, or with error (unknown_key or
+        not_supported) and done. Per-space keys (space_window_count or
+        space_urgent) are not readable this way and yield not_supported (use
+        get_space_info instead).
+      </description>
+      <arg name="serial" type="uint"/>
+      <arg name="key"    type="string"/>
+    </request>
+
+    <request name="set_config">
+      <description summary="write one configuration key">
+        On success, the compositor broadcasts config_value. The broadcast uses
+        serial zero.
+
+        On failure, replies with error and done carrying this request's
+        serial: unknown_key, read_only, invalid_value (parse failure or out
+        of range), or locked. The error message names the key and the
+        reason. A failed write changes nothing.
+
+        Boolean values are exactly "true" or "false", numbers are
+        range-checked against the range reported by config_key, color keys
+        take "#rrggbb" or "#rrggbbaa".
+      </description>
+      <arg name="serial" type="uint"/>
+      <arg name="key"    type="string"/>
+      <arg name="value"  type="string"/>
+    </request>
+
+    <request name="dump_config">
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <request name="list_config_keys">
+      <arg name="serial" type="uint"/>
+      <arg name="access" type="uint" enum="access"/>
+    </request>
+
+    <request name="switch_space">
+      <arg name="serial" type="uint"/>
+      <arg name="index"  type="uint"/>
+    </request>
+
+    <request name="move_to_space">
+      <arg name="serial" type="uint"/>
+      <arg name="index"  type="uint"/>
+    </request>
+
+    <request name="get_space_info">
+      <arg name="serial" type="uint"/>
+      <arg name="index"  type="uint"/>
+    </request>
+
+    <request name="list_spaces">
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <request name="cycle_layout">
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <request name="set_layout">
+      <arg name="serial" type="uint"/>
+      <arg name="name"   type="string"/>
+    </request>
+
+    <request name="list_layouts">
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <request name="window_close_focused">
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <request name="window_activate">
+      <arg name="serial" type="uint"/>
+      <arg name="id"     type="uint"/>
+    </request>
+
+    <request name="window_close">
+      <arg name="serial" type="uint"/>
+      <arg name="id"     type="uint"/>
+    </request>
+
+    <request name="window_minimize">
+      <arg name="serial" type="uint"/>
+      <arg name="id"     type="uint"/>
+    </request>
+
+    <request name="restore_last">
+      <description summary="restore the most recently minimized window">
+        Broadcasts the same batch as window_minimize. It is not an error
+        if there is nothing to restore.
+      </description>
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <request name="show_binding_help">
+      <description summary="show the on-screen key binding help">
+        Asks the compositor to show the on-screen key binding panel.
+      </description>
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <event name="config_value">
+      <arg name="key"   type="string"/>
+      <arg name="value" type="string"/>
+    </event>
+
+    <event name="config_key">
+      <arg name="key"         type="string"/>
+      <arg name="type"        type="uint" enum="key_type"/>
+      <arg name="access"      type="uint" enum="access"/>
+      <arg name="range"       type="string"/>
+      <arg name="description" type="string"/>
+    </event>
+
+    <event name="space_info">
+      <arg name="index"        type="uint"/>
+      <arg name="window_count" type="uint"/>
+      <arg name="urgent"       type="uint"/>
+      <arg name="active"       type="uint"/>
+    </event>
+
+    <event name="layout_info">
+      <arg name="name"        type="string"/>
+      <arg name="description" type="string"/>
+      <arg name="active"      type="uint"/>
+    </event>
+
+    <event name="window_removed">
+      <description summary="a window went away">
+        Broadcast when a window is closed, followed by done(0). After this
+        event, the ID must be considered as invalid.
+      </description>
+      <arg name="id" type="uint"/>
+    </event>
+
+    <event name="error">
+      <description summary="non-fatal error reported for a request">
+        Sent when a request could not be satisfied for an application-level
+        reason. The client may continue using the interface. Fatal protocol
+        violations use wl_resource_post_error instead. The message is for
+        humans and its wording is not stable. Always followed by done with
+        the same serial.
+      </description>
+      <arg name="serial"  type="uint"/>
+      <arg name="code"    type="uint" enum="status"/>
+      <arg name="message" type="string"/>
+    </event>
+
+    <event name="done">
+      <description summary="end of a batch of events">
+        Terminates a batch. The compositor sends exactly one done after
+        every non-destructor request, whether it succeeded or failed, and
+        after every unsolicited notification batch.
+
+        A done carrying a nonzero serial terminates the reply to the
+        request that uses that serial (all events since the previous done
+        in the same direction belong to that reply). A done carrying serial
+        zero terminates an unsolicited broadcast batch.
+
+        Every broadcast batch is a complete unit. Clients that issue a single
+        request and exit may wait for any done reply whose serial matches
+        theirs (or "use wl_display.roundtrip").
+      </description>
+      <arg name="serial" type="uint"/>
+    </event>
+
+    <request name="list_window_details">
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <event name="window_detail">
+      <arg name="id"           type="uint"/>
+      <arg name="pid"          type="int"/>
+      <arg name="ftl_id"       type="string"/>
+      <arg name="app_id"       type="string"/>
+      <arg name="title"        type="string"/>
+      <arg name="monitor"      type="string"/>
+      <arg name="space"        type="int"
+           summary="-1 = window is not assigned to a space"/>
+      <arg name="x"            type="int"/>
+      <arg name="y"            type="int"/>
+      <arg name="width"        type="int"/>
+      <arg name="height"       type="int"/>
+      <arg name="state"        type="uint" enum="window_state"/>
+      <arg name="content_type" type="string"/>
+      <arg name="effect_state" type="uint" enum="effect_state"/>
+    </event>
+
+    <request name="list_devices">
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <event name="device_info">
+      <arg name="type" type="string"/>
+      <arg name="name" type="string"/>
+    </event>
+
+    <request name="list_displays">
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <event name="display_info">
+      <arg name="name"        type="string"/>
+      <arg name="make"        type="string"/>
+      <arg name="model"       type="string"/>
+      <arg name="serial"      type="string"/>
+      <arg name="x"           type="int"/>
+      <arg name="y"           type="int"/>
+      <arg name="width"       type="int"/>
+      <arg name="height"      type="int"/>
+      <arg name="phys_width"  type="int"/>
+      <arg name="phys_height" type="int"/>
+      <arg name="scale"       type="string"/>
+      <arg name="refresh"     type="int"/>
+      <arg name="enabled"     type="uint"/>
+      <arg name="space"       type="int"/>
+      <arg name="area_x"      type="int"/>
+      <arg name="area_y"      type="int"/>
+      <arg name="area_width"  type="int"/>
+      <arg name="area_height" type="int"/>
+    </event>
+
+    <request name="list_layers">
+      <arg name="serial" type="uint"/>
+    </request>
+
+    <event name="layer_info">
+      <arg name="layer_namespace" type="string"/>
+      <arg name="layer"           type="string"/>
+      <arg name="output"          type="string"/>
+      <arg name="mapped"          type="uint"/>
+      <arg name="x"               type="int"/>
+      <arg name="y"               type="int"/>
+      <arg name="width"           type="uint"/>
+      <arg name="height"          type="uint"/>
+      <arg name="exclusive_zone"  type="int"/>
+      <arg name="keyboard"        type="string"/>
+    </event>
+  </interface>
+</protocol>

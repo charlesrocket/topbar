@@ -235,72 +235,70 @@ void NullspaceIpc::setActiveSpace(quint32 s) {
 }
 
 void NullspaceIpc::switchSpace(int space) const {
-    this->mIpc->send(QStringLiteral("SWITCH_SPACE %1").arg(space));
+    this->mIpc->switchSpace(static_cast<quint32>(space));
 }
 
 void NullspaceIpc::moveFocusedToSpace(int space) const {
-    this->mIpc->send(QStringLiteral("MOVE_TO_SPACE %1").arg(space));
+    this->mIpc->moveFocusedToSpace(static_cast<quint32>(space));
 }
 
-void NullspaceIpc::cycleLayout() const {
-    this->mIpc->send(QStringLiteral("CYCLE_LAYOUT"));
-}
+void NullspaceIpc::cycleLayout() const { this->mIpc->cycleLayout(); }
 
 void NullspaceIpc::setLayoutByIndex(int index) const {
     if (index < 0 || index >= this->mLayouts.size()) return;
-    this->mIpc->send(
-        QStringLiteral("SET layout %1").arg(this->mLayouts.at(index))
-    );
+    this->mIpc->setConfig(QStringLiteral("layout"), this->mLayouts.at(index));
 }
 
 void NullspaceIpc::setLayoutByName(const QString &name) const {
     if (!this->mLayouts.contains(name)) return;
-    this->mIpc->send(QStringLiteral("SET layout %1").arg(name));
+    this->mIpc->setConfig(QStringLiteral("layout"), name);
 }
 
 void NullspaceIpc::setNmasters(int v) const {
-    this->mIpc->send(QStringLiteral("SET nmasters %1").arg(v));
+    this->mIpc->setConfig(QStringLiteral("nmasters"), QString::number(v));
 }
 
 void NullspaceIpc::setMfact(qreal v) const {
-    this->mIpc->send(QStringLiteral("SET mfact %1").arg(v));
+    this->mIpc->setConfig(QStringLiteral("mfact"), QString::number(v));
 }
 
 void NullspaceIpc::setGapOuterH(int v) const {
-    this->mIpc->send(QStringLiteral("SET gap_outer_h %1").arg(v));
+    this->mIpc->setConfig(QStringLiteral("gap_outer_h"), QString::number(v));
 }
 
 void NullspaceIpc::setGapOuterV(int v) const {
-    this->mIpc->send(QStringLiteral("SET gap_outer_v %1").arg(v));
+    this->mIpc->setConfig(QStringLiteral("gap_outer_v"), QString::number(v));
 }
 
 void NullspaceIpc::setGapInnerH(int v) const {
-    this->mIpc->send(QStringLiteral("SET gap_inner_h %1").arg(v));
+    this->mIpc->setConfig(QStringLiteral("gap_inner_h"), QString::number(v));
 }
 
 void NullspaceIpc::setGapInnerV(int v) const {
-    this->mIpc->send(QStringLiteral("SET gap_inner_v %1").arg(v));
+    this->mIpc->setConfig(QStringLiteral("gap_inner_v"), QString::number(v));
 }
 
 void NullspaceIpc::setSmartGaps(bool v) const {
-    this->mIpc->send(
-        QStringLiteral("SET smart_gaps %1").arg(v ? "true" : "false")
+    this->mIpc->setConfig(
+        QStringLiteral("smart_gaps"),
+        v ? QStringLiteral("true") : QStringLiteral("false")
     );
 }
 
 void NullspaceIpc::setCenterOverspread(bool v) const {
-    this->mIpc->send(
-        QStringLiteral("SET center_overspread %1").arg(v ? "true" : "false")
+    this->mIpc->setConfig(
+        QStringLiteral("center_overspread"),
+        v ? QStringLiteral("true") : QStringLiteral("false")
     );
 }
 
 void NullspaceIpc::setCenterWhenSingleStack(bool v) const {
-    this->mIpc->send(QStringLiteral("SET center_when_single_stack %1")
-                         .arg(v ? "true" : "false"));
+    this->mIpc->setConfig(
+        QStringLiteral("center_when_single_stack"),
+        v ? QStringLiteral("true") : QStringLiteral("false")
+    );
 }
 
-void NullspaceIpc::closeFocused() const {
-    this->mIpc->send(QStringLiteral("CLOSE"));
-}
+void NullspaceIpc::closeFocused() const { this->mIpc->closeFocused(); }
 // NOLINTEND(misc-include-cleaner)
 } // namespace topbar::nullspace
