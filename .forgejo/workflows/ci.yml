@@ -18,7 +18,7 @@ jobs:
           sudo apt update && sudo apt install -y
           clang-tidy clang-format gcc cmake jq ninja-build parallel
           qt6-base-dev qt6-declarative-dev qt6-networkauth-dev
-          qt6-wayland qt6-wayland-dev qt6-wayland-dev-tools
+          qt6-wayland qt6-wayland-dev qt6-base-dev-tools
           qtkeychain-qt6-dev
           wayland-protocols
 
@@ -39,7 +39,6 @@ jobs:
 
   test:
     name: Test
-    if: false # waiting for ubuntu26
     runs-on: codeberg-medium
     env:
       QT_QPA_PLATFORM: offscreen
@@ -55,7 +54,7 @@ jobs:
           sudo apt update && sudo apt install -y
           gcc cmake ninja-build
           qt6-base-dev qt6-declarative-dev
-          qt6-wayland qt6-wayland-dev qt6-wayland-dev-tools
+          qt6-wayland qt6-wayland-dev qt6-base-dev-tools
           wayland-protocols
           qml6-module-qtqml-workerscript
           qml6-module-qtquick
@@ -70,7 +69,7 @@ jobs:
 
   release:
     name: Create release
-    #needs: test
+    needs: test
     if: >-
       forgejo.ref_type == 'tag' &&
       forgejo.repository_owner == 'charlesrocket'
