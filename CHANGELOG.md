@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.2] - 2026-11-21
+
+### Bug Fixes
+
+- Handle multiple displays
+- Update `minimumSize`
+- Fix locked bars
+- Do not tick in eco/hidden
+- Drop results count
+- Handle expiration time
+- Handle expiration time
+- Defer action
+- Adjust toast width
+- Resolve stale focus
+- Drop hyprland support
+- Switch to nullspace controller
+
+### Documentation
+
+- Update compositor requirements
+
+### Operations
+
+- Update packages
+- Install `NetworkAuth`
+- Install `qtkeychain`
+
+### Styling
+
+- Fix formatting
+
 ## [0.5.1] - 2026-10-30
 
 ### Bug Fixes
