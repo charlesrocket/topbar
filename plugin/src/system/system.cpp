@@ -5,11 +5,11 @@
 #include <algorithm>
 #include <limits>
 #include <pwd.h>
+#include <qcontainerfwd.h>
 #include <qdbusreply.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
-#include <qglobal.h>
 #include <qlogging.h>
 #include <qloggingcategory.h>
 #include <qobject.h>

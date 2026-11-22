@@ -5,12 +5,14 @@
 #include <QTimer>
 #include <cstdint>
 
+// NOLINTBEGIN(readability-identifier-naming)
 class QSocketNotifier;
 struct nullspace_controller_v1;
 struct nullspace_controller_v1_listener;
 struct wl_display;
 struct wl_registry;
 struct wl_registry_listener;
+// NOLINTEND(readability-identifier-naming)
 
 namespace topbar::nullspace {
 

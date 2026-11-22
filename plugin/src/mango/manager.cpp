@@ -10,6 +10,7 @@
 #include <qjsonarray.h>
 #include <qjsondocument.h>
 #include <qjsonobject.h>
+#include <qjsonparseerror.h>
 #include <qjsonvalue.h>
 #include <qlist.h>
 #include <qlocalsocket.h>

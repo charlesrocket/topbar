@@ -8,7 +8,6 @@
 #include <QStringList>
 #include <QtAlgorithms>
 #include <QtGlobal>
-#include <qlogging.h>
 #include <qqmllist.h>
 #include <utility>
 
