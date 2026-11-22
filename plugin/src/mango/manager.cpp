@@ -23,12 +23,11 @@
 
 namespace topbar::mango {
 
-Q_LOGGING_CATEGORY(logMangoIpc, "topbar.mango.ipc", QtInfoMsg)
-
 namespace {
 
-constexpr const char *INSTANCE_SIGNATURE_ENV = "MANGO_INSTANCE_SIGNATURE";
+Q_LOGGING_CATEGORY(logMangoIpc, "topbar.mango.ipc", QtInfoMsg)
 
+constexpr const char *INSTANCE_SIGNATURE_ENV = "MANGO_INSTANCE_SIGNATURE";
 constexpr int RECONNECT_INTERVAL_MS = 10000;
 
 } // namespace
