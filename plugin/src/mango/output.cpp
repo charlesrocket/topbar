@@ -84,7 +84,7 @@ void MangoIpcOutput::setClientTags(quint32 andTags, quint32 xorTags) {
 
 void MangoIpcOutput::setLayout(quint32 index) {
     const auto layouts = this->mManager->layouts();
-    if (index >= static_cast<quint32>(layouts.size())) return;
+    if (std::cmp_greater_equal(index, layouts.size())) return;
 
     this->mManager->sendCommand(
         QStringLiteral("dispatch setlayout,%1").arg(layouts.at(index))

@@ -10,6 +10,7 @@
 #include <QtGlobal>
 #include <qlogging.h>
 #include <qqmllist.h>
+#include <utility>
 
 namespace topbar::nullspace {
 
@@ -101,7 +102,7 @@ void NullspaceIpc::onEventReceived(const QString &key, const QString &value) {
         const auto space = value.left(idx).toUInt(&okS);
         const auto count = value.mid(idx + 1).toUInt(&okC);
         if (!okS || !okC) return;
-        if (space >= static_cast<quint32>(this->mSpaces.size())) return;
+        if (std::cmp_greater_equal(space, this->mSpaces.size())) return;
 
         this->mSpaces[static_cast<qsizetype>(space)]->setClientCount(count);
         return;
@@ -114,7 +115,7 @@ void NullspaceIpc::onEventReceived(const QString &key, const QString &value) {
         bool okS = false;
         const auto space = value.left(idx).toUInt(&okS);
         if (!okS) return;
-        if (space >= static_cast<quint32>(this->mSpaces.size())) return;
+        if (std::cmp_greater_equal(space, this->mSpaces.size())) return;
 
         const bool v = (value.mid(idx + 1) == QStringLiteral("true"));
         this->mSpaces[static_cast<qsizetype>(space)]->setUrgent(v);
