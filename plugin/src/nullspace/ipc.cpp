@@ -13,7 +13,7 @@
 #include <wayland-nullspace-controller-v1-client-protocol.h>
 
 namespace {
-Q_LOGGING_CATEGORY(logNullspaceIpc, "topbar.nullspace.controller", QtInfoMsg)
+Q_LOGGING_CATEGORY(logNullspaceIpc, "topbar.nullspace", QtInfoMsg)
 }
 
 namespace topbar::nullspace {
@@ -92,7 +92,7 @@ void IpcClient::connectSocket() {
 
     if (!this->mController) {
         qCWarning(logNullspaceIpc)
-            << "compositor does not advertise nullspace_controller_v1";
+            << "Compositor does not advertise controller";
 
         this->teardown();
         this->mReconnectTimer.start(RECONNECT_INTERVAL_MS);
@@ -113,7 +113,7 @@ void IpcClient::connectSocket() {
     this->flush();
 
     this->mConnected = true;
-    qCInfo(logNullspaceIpc) << "connected to nullspace_controller_v1";
+    qCInfo(logNullspaceIpc) << "Connected to controller";
     emit this->connectedChanged();
 }
 
