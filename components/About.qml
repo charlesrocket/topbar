@@ -40,7 +40,7 @@ ColumnLayout {
                 id: versionString
 
                 anchors.centerIn: parent
-                text: Version.full
+                text: States.topbarVersionFull
                 font.family: Config.appearance.fontFamily
                 font.pixelSize: Config.appearance.fontSize
                 font.bold: false

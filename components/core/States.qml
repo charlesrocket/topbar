@@ -6,6 +6,7 @@ import Quickshell
 import Quickshell.Services.UPower
 import Quickshell.Wayland
 
+import TopBar
 import TopBar.Devd
 import TopBar.Mango
 import TopBar.System
@@ -17,6 +18,7 @@ Singleton {
 
     property var codebergClient: null
     property var githubClient: null
+    readonly property string topbarVersionFull: Version.full
     readonly property Devd dev: Devd
     readonly property bool codebergEnabled: Config.services.codeberg
     readonly property bool githubEnabled: Config.services.github
