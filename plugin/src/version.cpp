@@ -6,9 +6,11 @@
 #include <qloggingcategory.h>
 #include <qobject.h>
 
-namespace topbar::version {
-
+namespace {
 Q_LOGGING_CATEGORY(logVersion, "topbar.version", QtInfoMsg)
+}
+
+namespace topbar::version {
 
 Version::Version(QObject *parent) : QObject(parent) {
     qCInfo(logVersion) << PROJECT_VERSION_FULL;

@@ -21,6 +21,11 @@ class IpcClient : public QObject {
     explicit IpcClient(QObject *parent = nullptr);
     ~IpcClient() override;
 
+    IpcClient(const IpcClient &) = delete;
+    IpcClient &operator=(const IpcClient &) = delete;
+    IpcClient(IpcClient &&) = delete;
+    IpcClient &operator=(IpcClient &&) = delete;
+
     [[nodiscard]] bool isConnected() const { return this->mConnected; }
 
     void switchSpace(quint32 space);

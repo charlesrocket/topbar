@@ -4,12 +4,17 @@
 #include <QSocketNotifier>
 #include <QString>
 #include <cerrno>
+#include <cstdint>
 #include <cstring>
+#include <qlogging.h>
+#include <qloggingcategory.h>
 #include <wayland-client-core.h>
 #include <wayland-client-protocol.h>
 #include <wayland-nullspace-controller-v1-client-protocol.h>
 
+namespace {
 Q_LOGGING_CATEGORY(logNullspaceIpc, "topbar.nullspace.controller", QtInfoMsg)
+}
 
 namespace topbar::nullspace {
 
@@ -19,16 +24,16 @@ constexpr int RECONNECT_INTERVAL_MS = 3000;
 } // namespace
 
 const wl_registry_listener &IpcClient::registryListener() {
-    static const wl_registry_listener L = {
+    static const wl_registry_listener l = {
         .global = &IpcClient::onRegistryGlobal,
         .global_remove = &IpcClient::onRegistryGlobalRemove,
     };
 
-    return L;
+    return l;
 }
 
 const nullspace_controller_v1_listener &IpcClient::controllerListener() {
-    static const nullspace_controller_v1_listener L = {
+    static const nullspace_controller_v1_listener l = {
         .config_value = &IpcClient::onConfigValue,
         .config_key = &IpcClient::onConfigKey,
         .space_info = &IpcClient::onSpaceInfo,
@@ -42,7 +47,7 @@ const nullspace_controller_v1_listener &IpcClient::controllerListener() {
         .layer_info = &IpcClient::onLayerInfo,
     };
 
-    return L;
+    return l;
 }
 
 IpcClient::IpcClient(QObject *parent) : QObject(parent) {
@@ -237,14 +242,25 @@ void IpcClient::onConfigValue(
     emit self->eventReceived(QString::fromUtf8(key), QString::fromUtf8(value));
 }
 
-void IpcClient::
-    onConfigKey(void *, nullspace_controller_v1 *, const char *, std::uint32_t, std::uint32_t, const char *, const char *) {
+void IpcClient::onConfigKey(
+    void *data, nullspace_controller_v1 *c, const char *key, std::uint32_t type,
+    std::uint32_t access, const char *range, const char *desc
+) {
+    (void)data;
+    (void)c;
+    (void)key;
+    (void)type;
+    (void)desc;
+    (void)access;
+    (void)range;
 }
 
 void IpcClient::onSpaceInfo(
-    void *data, nullspace_controller_v1 *, std::uint32_t index,
+    void *data, nullspace_controller_v1 *c, std::uint32_t index,
     std::uint32_t count, std::uint32_t urgent, std::uint32_t active
 ) {
+    (void)c;
+
     auto *self = static_cast<IpcClient *>(data);
 
     emit self->eventReceived(
@@ -286,9 +302,11 @@ void IpcClient::onWindowRemoved(
 }
 
 void IpcClient::onError(
-    void *data, nullspace_controller_v1 *, std::uint32_t serial,
+    void *data, nullspace_controller_v1 *c, std::uint32_t serial,
     std::uint32_t code, const char *message
 ) {
+    (void)c;
+
     auto *self = static_cast<IpcClient *>(data);
     qCWarning(logNullspaceIpc)
         << "controller error" << code << message << "(serial" << serial << ")";
@@ -305,11 +323,29 @@ void IpcClient::onDone(
 }
 
 void IpcClient::onWindowDetail(
-    void *, nullspace_controller_v1 *, std::uint32_t, std::int32_t,
-    const char *, const char *, const char *, const char *, std::int32_t,
-    std::int32_t, std::int32_t, std::int32_t, std::int32_t, std::uint32_t,
-    const char *, std::uint32_t
-) {}
+    void *data, nullspace_controller_v1 *c, std::uint32_t id, std::int32_t pid,
+    const char *ftlId, const char *appId, const char *title,
+    const char *monitor, std::int32_t space, std::int32_t x, std::int32_t y,
+    std::int32_t width, std::int32_t height, std::uint32_t state,
+    const char *contentType, std::uint32_t effectState
+) {
+    (void)data;
+    (void)c;
+    (void)id;
+    (void)pid;
+    (void)ftlId;
+    (void)monitor;
+    (void)contentType;
+    (void)effectState;
+    (void)width;
+    (void)height;
+    (void)state;
+    (void)title;
+    (void)appId;
+    (void)space;
+    (void)x;
+    (void)y;
+}
 
 void IpcClient::onDeviceInfo(
     void *data, nullspace_controller_v1 *c, const char *type, const char *name

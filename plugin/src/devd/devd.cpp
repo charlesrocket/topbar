@@ -11,10 +11,12 @@
 #include <sys/un.h>
 #include <unistd.h>
 
+namespace {
+Q_LOGGING_CATEGORY(logDevd, "topbar.devd", QtInfoMsg)
+}
+
 namespace topbar::devd {
 // NOLINTBEGIN(misc-include-cleaner)
-
-Q_LOGGING_CATEGORY(logDevd, "topbar.devd", QtInfoMsg)
 
 Devd *Devd::dInstance = nullptr;
 

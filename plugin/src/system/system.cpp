@@ -39,6 +39,8 @@
 
 namespace {
 
+Q_LOGGING_CATEGORY(logSystem, "topbar.system", QtInfoMsg)
+
 constexpr auto K_ACCOUNTS_SERVICE = "org.freedesktop.Accounts";
 constexpr auto K_ACCOUNTS_PATH = "/org/freedesktop/Accounts";
 constexpr auto K_ACCOUNTS_IFACE = "org.freedesktop.Accounts";
@@ -69,8 +71,6 @@ bool looksIntegrated(const QString &desc) {
 // NOLINTBEGIN(misc-include-cleaner)
 
 namespace topbar::system {
-
-Q_LOGGING_CATEGORY(logSystem, "topbar.system", QtInfoMsg)
 
 System::System(QObject *parent)
     : QObject(parent), mPollTimer(new QTimer(this)) {

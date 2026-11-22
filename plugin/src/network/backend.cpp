@@ -42,6 +42,8 @@
 #include <utility>
 
 namespace {
+Q_LOGGING_CATEGORY(logNetworkFreeBSD, "topbar.network.fbsd", QtInfoMsg)
+
 bool isWiredInterface(const QString &ifname) {
     // Handle virtual interfaces too
     return ifname.startsWith("eth") ||   // Generic
@@ -89,8 +91,6 @@ bool isIgnoredInterface(const QString &ifname) {
 } // namespace
 
 namespace topbar::network {
-
-Q_LOGGING_CATEGORY(logNetworkFreeBSD, "topbar.network.fbsd", QtInfoMsg)
 
 FreeBSDBackend::FreeBSDBackend(QObject *parent)
     : NetworkBackend(parent), bWifiEnabled(true), bWifiHardwareEnabled(true) {
