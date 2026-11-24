@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.3] - 2026-11-24
+
+### Bug Fixes
+
+- Move version call
+- Adjust log messages
+- Improve int checks
+
+### Refactor
+
+- Move logging macros
+- Move logging category
+- Fix imports
+
 ## [0.5.2] - 2026-11-21
 
 ### Bug Fixes
