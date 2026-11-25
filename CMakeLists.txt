@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(topbar VERSION 0.5.3 LANGUAGES CXX C)
+project(topbar VERSION 0.5.4 LANGUAGES CXX C)
 
 set(DISTRIBUTOR "Unset" CACHE STRING "Distributor")
 set(ENABLE_MODULES "components;plugin" CACHE STRING "Modules to build")
