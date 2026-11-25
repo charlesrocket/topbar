@@ -162,7 +162,7 @@ Singleton {
                     property string logout: "pkill nullspace | pkill mango"
                     property string suspend: "zzz"
                     property string hibernate: "acpiconf -s 4"
-                    property string shutdown: "shutdown -p now"
+                    property string shutdown: "poweroff"
                     property string reboot: "shutdown -r now"
                 }
                 property JsonObject timeouts: JsonObject { // in seconds
