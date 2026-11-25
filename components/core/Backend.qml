@@ -94,6 +94,11 @@ Scope {
         id: clients
     }
 
+    // nullspace runtime bridge
+    Compositor {
+        id: compositor
+    }
+
     Session {
         SessionButton {
             command: Config.session.commands.lock

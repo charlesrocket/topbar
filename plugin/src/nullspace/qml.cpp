@@ -244,6 +244,10 @@ void NullspaceIpc::moveFocusedToSpace(int space) const {
 
 void NullspaceIpc::cycleLayout() const { this->mIpc->cycleLayout(); }
 
+void NullspaceIpc::setConfig(const QString &key, const QString &value) const {
+    this->mIpc->setConfig(key, value);
+}
+
 void NullspaceIpc::setLayoutByIndex(int index) const {
     if (index < 0 || index >= this->mLayouts.size()) return;
     this->mIpc->setConfig(QStringLiteral("layout"), this->mLayouts.at(index));

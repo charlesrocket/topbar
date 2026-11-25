@@ -61,7 +61,9 @@ Singleton {
                 property string fontFamily: "Hack Nerd Font"
                 property int fontSize: 14
                 property int borderWidth: 1
+                // TODO single corner option?
                 property int cornerRadius: 8
+                property bool roundedCorners: true
                 property int animDuration: 250
                 property bool blur: true
                 property bool shadows: true

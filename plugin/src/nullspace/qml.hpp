@@ -92,6 +92,7 @@ class NullspaceIpc : public QObject {
     Q_INVOKABLE void setCenterOverspread(bool v) const;
     Q_INVOKABLE void setCenterWhenSingleStack(bool v) const;
     Q_INVOKABLE void closeFocused() const;
+    Q_INVOKABLE void setConfig(const QString &key, const QString &value) const;
 
   signals:
     void availableChanged();
