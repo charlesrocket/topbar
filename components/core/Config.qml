@@ -157,7 +157,7 @@ Singleton {
                 property string background: "#aa202020"
                 property JsonObject commands: JsonObject {
                     property string lock:
-                        "quickshell -c topbar ipc call bar lock"
+                        "quickshell -c topbar ipc call main lock"
                     // TODO logout cmd
                     property string logout: "pkill nullspace | pkill mango"
                     property string suspend: "zzz"
