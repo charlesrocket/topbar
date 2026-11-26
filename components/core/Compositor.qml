@@ -15,10 +15,10 @@ Item {
 
     function pushAnimDuration() {
         const v = String(Config.appearance.animDuration);
-        NullspaceIpc.setConfig("anim_duration_move", v);
-        NullspaceIpc.setConfig("anim_duration_open", v);
-        NullspaceIpc.setConfig("anim_duration_close", v);
-        NullspaceIpc.setConfig("anim_duration_space", v);
+        NullspaceIpc.setConfig("animations_duration_move", v);
+        NullspaceIpc.setConfig("animations_duration_open", v);
+        NullspaceIpc.setConfig("animations_duration_close", v);
+        NullspaceIpc.setConfig("animations_duration_space", v);
     }
 
     function pushRoundedCorners() {
@@ -31,13 +31,12 @@ Item {
 
     function pushBlur() {
         const v = Config.appearance.blur ? "true" : "false";
-        NullspaceIpc.setConfig("blur_window", v);
-        NullspaceIpc.setConfig("blur_wallpaper", v);
+        //NullspaceIpc.setConfig("window_blur", v);
+        NullspaceIpc.setConfig("wallpaper_blur_enabled", v);
     }
 
     function pushShadows() {
-        NullspaceIpc.setConfig("window_shadow_enabled",
-                               Config.appearance.shadows ? "true" : "false");
+        //NullspaceIpc.setConfig("window_shadow_enabled", Config.appearance.shadows ? "true" : "false");
     }
 
     function pushWallpaper() {
