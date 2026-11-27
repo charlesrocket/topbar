@@ -32,6 +32,11 @@ Item {
             States.dropdownHeight = dropdown.height + (
                         Config.appearance.borderWidth * 2);
             States.dropdownY = dropdown.y;
+            States.dropdownBottom = Math.ceil(root.mapToItem(null, 0,
+                                                             dropdown.y
+                                                             + dropdown.height).y
+                                              + Config.appearance.borderWidth
+                                              + 2);
         }
     }
 
@@ -157,6 +162,7 @@ Item {
                                 States.dropdownWidth = 0;
                                 States.dropdownHeight = 0;
                                 States.dropdownY = 0;
+                                States.dropdownBottom = 0;
                                 States.dropdownOwner = null;
                             }
                         }

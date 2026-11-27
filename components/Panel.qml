@@ -22,6 +22,7 @@ Variants {
         }
         property bool barVisible: true
         property bool barEnabled: true
+        readonly property int barArea: Config.bar.height + Config.bar.padding
 
         function setBarVisible(v) {
             root.barVisible = v;
@@ -84,7 +85,7 @@ Variants {
         screen: root.modelData
         mask: itemsRegions
         color: "transparent"
-        implicitHeight: screen.height
+        implicitHeight: States.dropdownOwner !== null ? screen.height : barArea
         exclusiveZone: bar.visible ? bar.height + Config.bar.padding : 0
         WlrLayershell.layer: WlrLayer.Top
         WlrLayershell.namespace: "topbar"
@@ -191,7 +192,7 @@ Variants {
             transform: Translate {
                 id: launchSequence
 
-                y: -(root.implicitHeight)
+                y: -(Config.bar.height + Config.bar.padding)
 
                 Behavior on y {
                     NumberAnimation {

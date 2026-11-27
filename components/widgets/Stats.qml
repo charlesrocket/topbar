@@ -41,7 +41,7 @@ RowLayout {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 1
-                height: States.cpuUsage * (parent.height - 2)
+                height: Math.round(States.cpuUsage * (parent.height - 2))
                 radius: 1
                 color: {
                     const pct = States.cpuUsage;
@@ -87,7 +87,7 @@ RowLayout {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 1
-                height: States.memoryUsage * (parent.height - 2)
+                height: Math.round(States.memoryUsage * (parent.height - 2))
                 radius: 1
                 color: {
                     const pct = States.memoryUsage;
@@ -133,7 +133,7 @@ RowLayout {
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: 1
-                height: States.diskUsage * (parent.height - 2)
+                height: Math.round(States.diskUsage * (parent.height - 2))
                 radius: 1
                 color: {
                     const pct = States.diskUsage;
